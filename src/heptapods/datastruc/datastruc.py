@@ -1,6 +1,7 @@
 """Datastruc module.
 
-This module contains definitions of the datastructure the SMLM dataitem will be parsed as.
+This module contains definitions of the datastructure the
+SMLM dataitem will be parsed as.
 
 """
 
@@ -14,28 +15,42 @@ _interpolate = {'log2': lambda d: np.log2(d),
                 'log10': lambda d: np.log10(d),
                 'linear': lambda d: d}
 
+
 class item:
     """smlm datastructure.
-    This is the basic datastructure which will contain all the information from a point set that is needed 
-    
+    This is the basic datastructure which will contain all the information
+    from a point set that is needed
+
     Attributes:
         name (string) : Contains the name of the item
-        df (polars dataframe): Dataframe with the data contained, containing columns: 'channel' 'frame' 'x' 'y' 'z'.
-            If manual annotation is done an additional column 'label' will be present
+        df (polars dataframe): Dataframe with the data contained, containing
+            columns: 'channel' 'frame' 'x' 'y' 'z'.
+            If manual annotation is done an additional column 'label'
+            will be present
         dim (int): Dimensions of data
-        channels (list): list of ints, representing channels user wants to consider in the original data
-        histo (dict): Dictionary of 2D or 3D arrays. Each key corresponds to the channel for which the histogram
-            contains the relevant binned data, in form [X,Y,Z] i.e. histo[1] = histogram of channel 1 localisations. 
-            Note that if considering an image, need to transpose the histogram to follow image conventions.
-        histo_edges (tuple of lists; each list contains floats) : Tuple containing (x_edges,y_edges) or (x_edges,y_edges, z_edges)
-                where x/y/z_edges are list of floats, each representing the edge of the bin in the original space. e.g. ([0,10,20],[13,25,20],[2,3,4])
-        histo_mask (numpy array): Array containing integers where each should represent a different label of the MANUAL segmentation. 
+        channels (list): list of ints, representing channels user wants
+            to consider in the original data
+        histo (dict): Dictionary of 2D or 3D arrays. Each key corresponds
+            to the channel for which the histogram
+            contains the relevant binned data, in form [X,Y,Z]
+            i.e. histo[1] = histogram of channel 1 localisations.
+            Note that if considering an image, need to transpose
+            the histogram to follow image conventions.
+        histo_edges (tuple of lists; each list contains floats):
+            Tuple containing (x_edges,y_edges) or (x_edges, y_edges, z_edges)
+            where x/y/z_edges are list of floats, each representing the
+            edge of the bin in the original space.
+            e.g. ([0,10,20],[13,25,20],[2,3,4])
+        histo_mask (numpy array): Array containing integers where each should
+            represent a different label of the MANUAL segmentation
             0 is reserved for background, is of form [X,Y,Z]
-        bin_sizes (tuple of floats): Size of bins of the histogram e.g. (23.2, 34.5, 21.3)
+        bin_sizes (tuple of floats): Size of bins of the histogram
+            e.g. (23.2, 34.5, 21.3)
        """
 
-    def __init__(self, name, df, dim, channels, histo = {}, histo_edges = None, histo_mask ={},
-                 bin_sizes = None):
+    def __init__(self, name, df, dim, channels, histo={},
+                 histo_edges=None, histo_mask={},
+                 bin_sizes=None):
         """ Initialises item"""
 
         self.name = name
@@ -49,110 +64,131 @@ class item:
 
     def save(self, save_loc):
         """Save the item
-            
-            Args:
-                save_loc (string): Location to save the .pkl file"""            
 
-        dict = {"name": self.name, "df": self.df, "dim":self.dim, "channels":self.channels,
-                "histo": self.histo, "histo_edges": self.histo_edges, "histo_mask":self.histo_mask,
-                "bin_sizes":self.bin_sizes}
+            Args:
+                save_loc (string): Location to save the .pkl file"""
+
+        dict = {"name": self.name, "df": self.df, "dim": self.dim,
+                "channels": self.channels, "histo": self.histo,
+                "histo_edges": self.histo_edges,
+                "histo_mask": self.histo_mask,
+                "bin_sizes": self.bin_sizes}
         pickle.dump(dict, open(save_loc, "wb"), pickle.HIGHEST_PROTOCOL)
 
     def load(self, input_file):
         """ Loads item saved as .pkl file
-        
+
             Args:
-                input_file (string) : Location of the .pkl file to load dataitem from"""
+                input_file (string) : Location of the .pkl file to
+                    load dataitem from"""
 
         with open(input_file, 'rb') as f:
             dict = pickle.load(f)
-        self.__init__(name=dict['name'], df=dict['df'], dim=dict['dim'], channels=dict['channels'],
-                     histo=dict['histo'], histo_edges=dict['histo_edges'], histo_mask=dict['histo_mask'], 
-                     bin_sizes=dict['bin_sizes'])
+        self.__init__(name=dict['name'], df=dict['df'], dim=dict['dim'],
+                      channels=dict['channels'],
+                      histo=dict['histo'],
+                      histo_edges=dict['histo_edges'],
+                      histo_mask=dict['histo_mask'],
+                      bin_sizes=dict['bin_sizes'])
 
-    def coord_2_histo(self, histo_size, cmap = ['Greens', 'Reds', 'Blues', 'Purples'], plot=False, vis_interpolation='linear'):
-            """Converts localisations into histogram of desired size, with option to plot the image (histo.T). 
-            Note the interpolation is only applied for visualisation, not for the actual data in the histogram!
-            
-            Args:
-                    histo_size (tuple): Tuple representing number of bins/pixels in x,y,z
-                    cmap (list of strings) : The colourmaps used to plot the histograms
-                    plot (bool): Whether to plot the output
-                    vis_interpolation (string): How to inerpolate the image for visualisation"""
+    def coord_2_histo(self, histo_size,
+                      cmap=['Greens', 'Reds', 'Blues', 'Purples'],
+                      plot=False, vis_interpolation='linear'):
+        """Converts localisations into histogram of desired size,
+        with option to plot the image (histo.T).
+        Note the interpolation is only applied for visualisation,
+        not for the actual data in the histogram!
 
-            # get max and min x/y/(z) values
-            df_max = self.df.max()
-            df_min = self.df.min()
-            
-            if self.dim == 2:
-                x_bins,y_bins = histo_size
-                x_max = df_max['x'][0]
-                y_max = df_max['y'][0]
-                x_min = df_min['x'][0]
-                y_min = df_min['y'][0]
-            elif self.dim == 3:
-                x_bins,y_bins,z_bins = histo_size
-                z_max = df_max['z'][0]
-                z_min = df_min['z'][0]
+        Args:
+            histo_size (tuple): Tuple representing number of
+                bins/pixels in x,y,z
+            cmap (list of strings) : The colourmaps used to
+                plot the histograms
+            plot (bool): Whether to plot the output
+            vis_interpolation (string): How to inerpolate
+                the image for visualisation"""
 
-            # if instead want desired bin size e.g. 50nm, 50nm, 50nm
-            # number of bins required for desired bin_size
-            # x_bins = int((self.max['x'] - self.min['x']) / bin_size[0])
-            # y_bins = int((self.max['y'] - self.min['y']) / bin_size[1])
-            # z_bins = int((self.max['z'] - self.min['z']) / bin_size[2])
+        # get max and min x/y/(z) values
+        df_max = self.df.max()
+        df_min = self.df.min()
 
-            # size of actual bins, given the number of bins (should be very close to desired tests size)
-            x_bin_size = (x_max - x_min) / x_bins
-            y_bin_size = (y_max - y_min) / y_bins
-            # location of edges of histogram, based on actual tests size
-            x_edges = [x_min + x_bin_size * i for i in range(x_bins + 1)]
-            y_edges = [y_min + y_bin_size * i for i in range(y_bins + 1)]
-            # treat z separately, as often only in 2D
-            if self.dim == 3:
-                z_bin_size = (z_max - z_min) / z_bins
-                z_edges = [z_min + z_bin_size * i for i in range(z_bins + 1)]
+        if self.dim == 2:
+            x_bins, y_bins = histo_size
+            x_max = df_max['x'][0]
+            y_max = df_max['y'][0]
+            x_min = df_min['x'][0]
+            y_min = df_min['y'][0]
+        elif self.dim == 3:
+            x_bins, y_bins, z_bins = histo_size
+            z_max = df_max['z'][0]
+            z_min = df_min['z'][0]
 
-            # size per tests in nm; location of histo edges in original space
-            if self.dim == 2:
-                self.bin_sizes = (x_bin_size, y_bin_size)
-                self.histo_edges = (x_edges, y_edges)
-            if self.dim == 3:
-                self.bin_sizes = (x_bin_size, y_bin_size, z_bin_size)
-                self.histo_edges = (x_edges, y_edges, z_edges)
+        # if instead want desired bin size e.g. 50nm, 50nm, 50nm
+        # number of bins required for desired bin_size
+        # x_bins = int((self.max['x'] - self.min['x']) / bin_size[0])
+        # y_bins = int((self.max['y'] - self.min['y']) / bin_size[1])
+        # z_bins = int((self.max['z'] - self.min['z']) / bin_size[2])
 
-            print('-- Bin sizes -- ')
-            print(self.bin_sizes)
+        # size of actual bins, given the number of bins (should be
+        # very close to desired tests size)
+        x_bin_size = (x_max - x_min) / x_bins
+        y_bin_size = (y_max - y_min) / y_bins
+        # location of edges of histogram, based on actual tests size
+        x_edges = [x_min + x_bin_size * i for i in range(x_bins + 1)]
+        y_edges = [y_min + y_bin_size * i for i in range(y_bins + 1)]
+        # treat z separately, as often only in 2D
+        if self.dim == 3:
+            z_bin_size = (z_max - z_min) / z_bins
+            z_edges = [z_min + z_bin_size * i for i in range(z_bins + 1)]
 
-            if self.dim == 2:
-                # 2D histogram for every channel, assigned to self.histo (dict)
-                for chan in self.channels:
-                    df = self.df.filter(pl.col('channel') == chan)
-                    sample = np.array((df['x'], df['y']))
-                    sample = np.swapaxes(sample, 0, 1)  # (D, N) where D is self.dim and N is number of localisations
-                    self.histo[chan], _ = np.histogramdd(sample, bins=self.histo_edges)
+        # size per tests in nm; location of histo edges in original space
+        if self.dim == 2:
+            self.bin_sizes = (x_bin_size, y_bin_size)
+            self.histo_edges = (x_edges, y_edges)
+        if self.dim == 3:
+            self.bin_sizes = (x_bin_size, y_bin_size, z_bin_size)
+            self.histo_edges = (x_edges, y_edges, z_edges)
 
-                if plot:
-                    # Plots 2D histogram transpose, for each channel.
-                    cmap_list = cmap
-                    for index, chan in enumerate(self.channels):
-                        plt.imshow(_interpolate[vis_interpolation](self.histo[chan].T), cmap=cmap_list[index])
-                        print(f'Channel {chan} = {cmap_list[index]}')
-                    plt.show()
+        print('-- Bin sizes -- ')
+        print(self.bin_sizes)
 
-            if self.dim == 3:
-                # 3D histogram for every channel, assigned to self.histo (dict)
-                for chan in self.channels:
-                    df = self.df[self.df['channel'] == chan]
-                    sample = np.array((df['x'], df['y'], df['z']))
-                    sample = np.swapaxes(sample, 0, 1)  # (D, N) where D is self.dim and N is number of localisations
-                    self.histo[chan], _ = np.histogramdd(sample, bins=self.histo_edges)
+        if self.dim == 2:
+            # 2D histogram for every channel, assigned to self.histo (dict)
+            for chan in self.channels:
+                df = self.df.filter(pl.col('channel') == chan)
+                sample = np.array((df['x'], df['y']))
+                sample = np.swapaxes(sample, 0, 1)
+                # (D, N) where D is
+                # self.dim and N is number of localisations
+                self.histo[chan], _ = np.histogramdd(sample,
+                                                     bins=self.histo_edges)
 
-                if plot:
-                    # 3D plot
-                    print('3D plot')
+            if plot:
+                # Plots 2D histogram transpose, for each channel.
+                cmap_list = cmap
+                for index, chan in enumerate(self.channels):
+                    plt.imshow(_interpolate[vis_interpolation]
+                               (self.histo[chan].T), cmap=cmap_list[index])
+                    print(f'Channel {chan} = {cmap_list[index]}')
+                plt.show()
 
-            # work out pixel for each localisations
-            self._coord_2_pixel()
+        if self.dim == 3:
+            # 3D histogram for every channel, assigned to self.histo (dict)
+            for chan in self.channels:
+                df = self.df[self.df['channel'] == chan]
+                sample = np.array((df['x'], df['y'], df['z']))
+                sample = np.swapaxes(sample, 0, 1)
+                # (D, N) where D is self.dim and N is number of
+                # localisations
+                self.histo[chan], _ = np.histogramdd(sample,
+                                                     bins=self.histo_edges)
+
+            if plot:
+                # 3D plot
+                print('3D plot')
+
+        # work out pixel for each localisations
+        self._coord_2_pixel()
 
     def _coord_2_pixel(self):
         """Calculate the pixels corresponding to each localisation"""
@@ -162,66 +198,94 @@ class item:
         x_min = df_min['x'][0]
         y_min = df_min['y'][0]
 
-        if self.dim  == 2:
+        if self.dim == 2:
             x_pixel_width, y_pixel_width = self.bin_sizes
         elif self.dim == 3:
             x_pixel_width, y_pixel_width, z_pixel_width = self.bin_sizes
 
         # calculate pixel indices for localisations
-        self.df = self.df.select([pl.all(), pl.col('x').map(lambda q: (q - x_min) / x_pixel_width).alias('x_pixel'),
-                                pl.col('y').map(lambda q: (q - y_min) / y_pixel_width).alias('y_pixel')])
+        self.df = self.df.select([pl.all(), pl.col('x')
+                                  .map(lambda q: (q - x_min)
+                                  / x_pixel_width).alias('x_pixel'),
+                                  pl.col('y').map(lambda q: (q - y_min)
+                                  / y_pixel_width).alias('y_pixel')])
         # floor the pixel locations
         self.df = self.df.with_column(pl.col('x_pixel').cast(int, strict=True))
         self.df = self.df.with_column(pl.col('y_pixel').cast(int, strict=True))
 
-        # localisations at the end get assigned to outside the histogram, therefore need to be assigned
-        # to previous pixel
-        self.df = self.df.with_column(pl.when(pl.col("x_pixel") == self.df.max()['x_pixel'][0])
-                                    .then(self.df.max()['x_pixel'][0] - 1)
-                                    .otherwise(pl.col('x_pixel')).alias('x_pixel'))
-        self.df = self.df.with_column(pl.when(pl.col("y_pixel") == self.df.max()['y_pixel'][0])
-                                    .then(self.df.max()['y_pixel'][0] - 1)
-                                    .otherwise(pl.col('y_pixel')).alias('y_pixel'))
-
+        # localisations at the end get assigned to outside the histogram,
+        # therefore need to be assigned to previous pixel
+        self.df = self.df.with_column(pl.when(pl.col("x_pixel") ==
+                                      self.df.max()['x_pixel'][0])
+                                      .then(self.df.max()['x_pixel'][0] - 1)
+                                      .otherwise(pl.col('x_pixel'))
+                                      .alias('x_pixel'))
+        self.df = self.df.with_column(pl.when(pl.col("y_pixel") ==
+                                      self.df.max()['y_pixel'][0])
+                                      .then(self.df.max()['y_pixel'][0] - 1)
+                                      .otherwise(pl.col('y_pixel'))
+                                      .alias('y_pixel'))
 
         if self.dim == 3:
             z_min = df_min['z'][0]
             # calculate pixel indices for localisations
-            self.df = self.df.select([pl.all(), pl.col('z').map(lambda q: (q - z_min) / z_pixel_width).alias('z_pixel')])
+            self.df = self.df.select([pl.all(), pl.col('z')
+                                      .map(lambda q: (q - z_min)
+                                           / z_pixel_width)
+                                      .alias('z_pixel')])
             # floor the pixel locations
-            self.df = self.df.with_column(pl.col('z_pixel').cast(int, strict=True))
-            # localisations at the end get assigned to outside the histogram, therefore need to be assigned
+            self.df = self.df.with_column(pl.col('z_pixel')
+                                          .cast(int, strict=True))
+            # localisations at the end get assigned to outside the histogram,
+            # therefore need to be assigned
             # to previous pixel
-            self.df = self.df.with_column(pl.when(pl.col("z_pixel") == self.df.max()['z_pixel'][0])
-                                        .then(self.df.max()['z_pixel'][0] - 1)
-                                        .otherwise(pl.col('z_pixel')).alias('z_pixel'))
+            self.df = self.df.with_column(pl.when(pl.col("z_pixel") ==
+                                          self.df.max()['z_pixel'][0])
+                                          .then(self.df.max()['z_pixel'][0]
+                                                - 1)
+                                          .otherwise(pl.col('z_pixel'))
+                                          .alias('z_pixel'))
 
-    def manual_segment(self, cmap = ['green', 'red', 'blue', 'bop purple']):
-        """Manually segment the image (histogram.T). Return the segmented histogram and extra column in dataframe
-        corresponding to label. 0 should be reserved for backgroun
-        
+    def manual_segment(self, cmap=['green', 'red', 'blue', 'bop purple']):
+        """Manually segment the image (histogram.T). Return the segmented
+        histogram and extra column in dataframe corresponding to label.
+        0 should be reserved for background
+
         Args:
-            cmap (list of strings) : Colourmaps napari uses to plot the histograms
+            cmap (list of strings) : Colourmaps napari uses to
+                plot the histograms
             """
 
         if self.dim == 2:
             # overlay all channels for src
             if len(self.channels) != 1:
-                # create the viewer and add each channel (first channel on own, then iterate through others)
+                # create the viewer and add each channel (first channel on own,
+                # then iterate through others)
                 colormap_list = cmap
                 # note image shape when plotted: [x, y]
-                viewer = napari.view_image(self.histo[self.channels[0]].T, name=f'Channel {self.channels[0]}'
-                                        , rgb=False, blending='additive', colormap=colormap_list[0], gamma = 2, contrast_limits = [0,30])
+                viewer = napari.view_image(self.histo[self.channels[0]].T,
+                                           name=f'Channel {self.channels[0]}',
+                                           rgb=False, blending='additive',
+                                           colormap=colormap_list[0],
+                                           gamma=2,
+                                           contrast_limits=[0, 30])
                 for index, chan in enumerate(self.channels[1:]):
-                    viewer.add_image(self.histo[chan].T, name=f'Channel {chan}', rgb=False,
-                                    blending='additive', colormap=colormap_list[index + 1],gamma = 2, contrast_limits = [0,30])
+                    viewer.add_image(self.histo[chan].T,
+                                     name=f'Channel {chan}',
+                                     rgb=False, blending='additive',
+                                     colormap=colormap_list[index + 1],
+                                     gamma=2, contrast_limits=[0, 30])
                 napari.run()
 
             # only one channel
             else:
                 img = self.histo[self.channels[0]].T
                 # create the viewer and add the image
-                viewer = napari.view_image(img, name=f'Channel {self.channels[0]}', rgb=False, gamma = 2, contrast_limits = [0,30])
+                viewer = napari.view_image(img,
+                                           name=f'Channel {self.channels[0]}',
+                                           rgb=False,
+                                           gamma=2,
+                                           contrast_limits=[0, 30])
                 napari.run()
 
             # histogram mask should be assigned to GUI output
@@ -232,14 +296,16 @@ class item:
 
         # segment the coordinates
         self._manual_seg_pixel_2_coord()
-        
+
     def _manual_seg_pixel_2_coord(self):
         """Get the localisations associated with manual annotation.
-        Each integer should represent a different label, where 0 is reserved for background.
+        Each integer should represent a different label, where 0 is reserved
+        for background.
         """
 
         if self.dim == 2:
-            # list of mask dataframes, each mask dataframe contains (x,y,label) columns
+            # list of mask dataframes, each mask dataframe
+            # contains (x,y,label) columns
             mask_list = []
             unique_labels = np.unique(self.histo_mask)
             # for each integer label return the coordinates
@@ -250,8 +316,11 @@ class item:
                 # make label longer list of all same value
                 label = np.full(len(x_pixels), label)
 
-                # get localisations which overlap in pixel location with mask pixels
-                mask_list.append(pl.DataFrame({'x_pixel': x_pixels, 'y_pixel': y_pixels, 'label':label}))
+                # get localisations which overlap in pixel location
+                # with mask pixels
+                mask_list.append(pl.DataFrame({'x_pixel': x_pixels,
+                                               'y_pixel': y_pixels,
+                                               'label': label}))
 
             # create mask dataframe
             mask_df = pl.concat(mask_list)
@@ -261,30 +330,38 @@ class item:
             print(self.df.columns)
             print(self.df.head(10))
 
-            # join mask dataframe        
-            self.df = self.df.join(mask_df, how='inner', on=['x_pixel', 'y_pixel'])
+            # join mask dataframe
+            self.df = self.df.join(mask_df, how='inner',
+                                   on=['x_pixel', 'y_pixel'])
 
             # sanity check
             print(len(self.df))
             print(self.df.columns)
             print(self.df.head(10))
 
-
         elif self.dim == 3:
             print('segment the 3d coords')
 
-    def pred_pixel_2_coord(self, img_seg:np.ndarray) -> pl.DataFrame:
-        """For a given predicted segmentation of the image (integer representing each label), return the dataframe with a column giving the label for each localisation
-        Note that it is assumed that the img_seg is a segmentation of the image, therefore have to transpose img_seg for it to be in the same configuration as the histogram
-            
+    def pred_pixel_2_coord(self, img_seg: np.ndarray) -> pl.DataFrame:
+        """For a given predicted segmentation of the image (integer
+        representing each label), return the dataframe with a column
+        giving the label for each localisation. Note that it is
+        assumed that the img_seg is a segmentation of the image,
+        therefore have to transpose img_seg for it to be in the same
+        configuration as the histogram
+
         Args:
-            img_seg (np.ndarray): Segmentation of the image - to reiterate, to convert this to histogram space need to transpose it
-        
+            img_seg (np.ndarray): Segmentation of the image -
+            to reiterate, to convert this to histogram space need
+            to transpose it
+
         Returns:
-            df (polars dataframe): Original dataframe with additional column with the predicted label """
+            df (polars dataframe): Original dataframe with
+            additional column with the predicted label """
 
         if self.dim == 2:
-            # list of mask dataframes, each mask dataframe contains (x,y,label) columns
+            # list of mask dataframes, each mask dataframe contains
+            # (x,y,label) columns
             mask_list = []
             # transpose the image mask to histogram space
             histo_mask = img_seg.T
@@ -295,8 +372,11 @@ class item:
                 x_pixels = np.where(histo_mask == label)[0]
                 y_pixels = np.where(histo_mask == label)[1]
 
-                # get localisations which overlap in pixel location with mask pixels
-                mask_list.append(pl.DataFrame({'x_pixel': x_pixels, 'y_pixel': y_pixels, 'pred_label':label}))
+                # get localisations which overlap in pixel
+                # location with mask pixels
+                mask_list.append(pl.DataFrame({'x_pixel': x_pixels,
+                                               'y_pixel': y_pixels,
+                                               'pred_label': label}))
 
             # create mask dataframe
             mask_df = pl.concat(mask_list)
@@ -306,7 +386,7 @@ class item:
             print(self.df.columns)
             print(self.df.head(10))
 
-            # join mask dataframe        
+            # join mask dataframe
             df = self.df.join(mask_df, how='inner', on=['x_pixel', 'y_pixel'])
 
             # sanity check
@@ -316,19 +396,22 @@ class item:
 
             return df
 
-
         elif self.dim == 3:
             print('segment the 3d coords')
 
+    def save_df_to_csv(self, csv_loc, drop_zero_label=False,
+                       drop_pixel_col=True):
+        """Save the dataframe to a .csv with option to drop positions which
+           are background and can drop the column containing pixel
+           information
 
-    def save_df_to_csv(self, csv_loc, drop_zero_label=False, drop_pixel_col=True):
-        """Save the dataframe to a .csv with opti
-            
         Args:
             csv_loc (String): Save the csv to this location
-            drop_zero_label (bool): If True then only non zero label positions are saved to csv
-            drop_pixel_col (bool): If True then don't save the column with x,y,z pixel
-        
+            drop_zero_label (bool): If True then only non zero
+                label positions are saved to csv
+            drop_pixel_col (bool): If True then don't save
+                the column with x,y,z pixel
+
         Returns:
             None"""
 
@@ -342,19 +425,18 @@ class item:
                 save_df = save_df.drop("z_pixel")
 
         # rearrange so x,y,z, ...,labels,channels
-        #if self.dim == 2:
+        # if self.dim == 2:
         #    cols = ['x', 'y', 'label', 'channel']
-        #elif self.dim == 3:
+        # elif self.dim == 3:
         #    cols = ['x', 'y', 'z', 'label', 'channel']
-        #save_df_cols = save_df.columns
-        #cols = [col for col in cols if col in save_df_cols] + [col for col in save_df_cols if col #]not in cols]
-        #save_df = save_df[cols]
+        # save_df_cols = save_df.columns
+        # cols = [col for col in cols if col in save_df_cols] +
+        # [col for col in save_df_cols if col #]not in cols]
+        # save_df = save_df[cols]
 
         # drop rows with zero label
         if drop_zero_label:
-            print(len(save_df))
             save_df = save_df.filter(pl.col('label') != 0)
-            print(len(save_df))
-        
+
         # save to location
         save_df.write_csv(csv_loc, sep=",")

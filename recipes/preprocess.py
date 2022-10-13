@@ -23,13 +23,19 @@ if __name__ == "__main__":
     csvs = os.listdir(csv_path)
     csvs = [csv for csv in csvs if csv.endswith('.csv')]
 
-    # if output directory not present create it 
+    # if output directory not present create it
     if not os.path.exists(config['output_folder']):
         os.makedirs(config['output_folder'])
 
     # go through .csv -> convert to datastructure -> save
     for csv in csvs:
         input_file = os.path.join(csv_path, csv)
-        item = preprocess.csv_to_datastruc(input_file, config['dim'], config['channel_col'], config['frame_col'], config['x_col'], config['y_col'], 
-        config['z_col'], channel_choice = None)
-        item.save(os.path.join(config['output_folder'],item.name.replace('.csv','.pkl')))
+        item = preprocess.csv_to_datastruc(input_file, config['dim'],
+                                           config['channel_col'],
+                                           config['frame_col'],
+                                           config['x_col'],
+                                           config['y_col'],
+                                           config['z_col'],
+                                           channel_choice=None)
+        item.save(os.path.join(config['output_folder'],
+                  item.name.replace('.csv', '.pkl')))
