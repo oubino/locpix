@@ -6,7 +6,7 @@ visualise histo mask, save the exported annotation .csv
 
 import yaml
 import os
-from heptapods.datastruc import datastruc
+from heptapods.preprocessing import datastruc
 
 if __name__ == "__main__":
 

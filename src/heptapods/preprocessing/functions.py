@@ -7,7 +7,7 @@ including (add as added):
 
 import polars as pl
 import os
-from ..datastruc import datastruc
+from . import datastruc
 
 
 def csv_to_datastruc(input_file, dim, channel_col, frame_col, x_col,

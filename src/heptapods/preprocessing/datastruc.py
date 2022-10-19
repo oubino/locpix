@@ -10,6 +10,8 @@ import numpy as np
 import napari
 import matplotlib.pyplot as plt
 import polars as pl
+import pyarrow.parquet as pq
+import os
 
 _interpolate = {'log2': lambda d: np.log2(d),
                 'log10': lambda d: np.log10(d),
@@ -440,3 +442,49 @@ class item:
 
         # save to location
         save_df.write_csv(csv_loc, sep=",")
+
+    def save_df_to_parquet(self, save_loc, drop_zero_label=False,
+                           drop_pixel_col=True):
+        """Save the dataframe to a parquet with option to drop positions which
+           are background and can drop the column containing pixel
+           information
+
+        Args:
+            save_loc (String): Save the df to this location
+            drop_zero_label (bool): If True then only non zero
+                label positions are saved to parquet
+            drop_pixel_col (bool): If True then don't save
+                the column with x,y,z pixel
+
+        Returns:
+            None
+        """
+
+        save_df = self.df
+
+        if drop_pixel_col:
+            # don't want to save x,y pixel to csv
+            save_df = save_df.drop("x_pixel")
+            save_df = save_df.drop("y_pixel")
+            if self.dim == 3:
+                save_df = save_df.drop("z_pixel")
+
+        # drop rows with zero label
+        if drop_zero_label:
+            save_df = save_df.filter(pl.col('label') != 0)
+
+        # convert to arrow + add in metadata 
+        arrow_table = save_df.to_arrow()
+        meta_data = {"name": self.name, "dim": str(self.dim), 
+                     "channels": str(self.channels)}
+        # merge existing with new meta data
+        merged_metadata = {**meta_data, **(arrow_table.schema.metadata or {})}
+        arrow_table = arrow_table.replace_schema_metadata(merged_metadata)
+        pq.write_table(arrow_table, save_loc)
+
+        # To access metadata write
+        # parquet_table = pq.read_table(file_path)
+        # parquet_table.schema.metadata ==> metadata
+        # note if accessing keys need
+        # parquet_table.schema.metadata[b'key_name'])
+        # note that b is bytes

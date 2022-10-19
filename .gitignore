@@ -64,3 +64,6 @@ TO_DO.md
 
 # requirements for github (will include eventually)
 requirements.txt
+
+# misc code folder for ad hoc stuff
+misc/

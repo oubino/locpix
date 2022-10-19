@@ -6,7 +6,7 @@ Module takes in the .csv files and processes saving the datastructures
 import dotenv
 import os
 import yaml
-from heptapods.prep import preprocess
+from heptapods.preprocessing import functions
 
 if __name__ == "__main__":
 
@@ -30,12 +30,24 @@ if __name__ == "__main__":
     # go through .csv -> convert to datastructure -> save
     for csv in csvs:
         input_file = os.path.join(csv_path, csv)
-        item = preprocess.csv_to_datastruc(input_file, config['dim'],
-                                           config['channel_col'],
-                                           config['frame_col'],
-                                           config['x_col'],
-                                           config['y_col'],
-                                           config['z_col'],
-                                           channel_choice=None)
+        item = functions.csv_to_datastruc(input_file, config['dim'],
+                                          config['channel_col'],
+                                          config['frame_col'],
+                                          config['x_col'],
+                                          config['y_col'],
+                                          config['z_col'],
+                                          channel_choice=None)
+        
         item.save(os.path.join(config['output_folder'],
                   item.name.replace('.csv', '.pkl')))
+
+        if config['pq_export']:
+            # if output directory not present create it
+            if not os.path.exists(config['output_pq_folder']):
+                os.makedirs(config['output_pq_folder'])
+
+            pq_save_path = os.path.join(config['output_pq_folder'],
+                                        item.name.replace('.csv', '.parquet'))
+            item.save_df_to_parquet(pq_save_path,
+                                    drop_zero_label=False,
+                                    drop_pixel_col=False)

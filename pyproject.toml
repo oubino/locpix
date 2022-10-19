@@ -26,6 +26,12 @@ dependencies = [
     "matplotlib",
     "imageio-ffmpeg", # napari needs this
     "PyQt5", # napari needs this
+    "pytorch",
+    "pyarrow",
+    # "torchvision",  check actually need this
+    # conda install pyg -c pyg
+    # pip install pyarrow
+
 ]
 
 [project.urls]
