@@ -26,8 +26,14 @@ dependencies = [
     "matplotlib",
     "imageio-ffmpeg", # napari needs this
     "PyQt5", # napari needs this
-    "pytorch",
+    "torch",
     "pyarrow",
+    "torch-scatter @ https://data.pyg.org/whl/torch-1.12.0+cu116.html",
+    "torch-sparse @ https://data.pyg.org/whl/torch-1.12.0+cu116.html",
+    "torch-cluster @ https://data.pyg.org/whl/torch-1.12.0+cu116.html",
+    "torch-spline-conv @ https://data.pyg.org/whl/torch-1.12.0+cu116.html",
+    "torch-geometric @ https://data.pyg.org/whl/torch-1.12.0+cu116.html"
+
     # "torchvision",  check actually need this
     # conda install pyg -c pyg
     # pip install pyarrow
