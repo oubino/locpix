@@ -60,6 +60,7 @@ python =
 
 [testenv]
 changedir = tests
-deps = pytest, torch
+deps = pytest
+       torch
 commands = pytest
 """
