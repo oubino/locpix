@@ -22,6 +22,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install tox tox-gh-actions
+      - name: Install pytorch # (as torch-scatter, geometric.. etc all require
+                              # torch to build)
+        run: |
+          python -m pip install torch
       - name: Test with tox
         run: tox
       #- name: Add .env file to allow subsequent steps
