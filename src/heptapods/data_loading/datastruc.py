@@ -11,6 +11,7 @@ import pyarrow.parquet as pq
 import pyarrow.compute as pc
 import ast
 
+
 class SMLMDataset(Dataset):
     """SMLM dataset class.
 
@@ -114,7 +115,7 @@ class SMLMDataset(Dataset):
                     coord_data = torch.stack((x, y), dim=1)
                 if dimensions == 3:
                     z = torch.from_numpy(arrow_table['z'].to_numpy())
-                    coord_data = torch.stack((x,y,z), dim=1)
+                    coord_data = torch.stack((x, y, z), dim=1)
                 # coord data shape is Number of points x 2/3 dimensions
                 data[str(chan)].x = coord_data
                 
@@ -151,4 +152,3 @@ class SMLMDataset(Dataset):
         file_name = self._idx_to_name[idx]
         data = torch.load(os.path.join(self.processed_dir, file_name))
         return data
-        
