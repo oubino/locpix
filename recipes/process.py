@@ -18,10 +18,15 @@ if __name__ == "__main__":
     with open('recipes/process.yaml', "r") as ymlfile:
         config = yaml.safe_load(ymlfile)
 
-    # create dataset
+    # split into train/val/test using pre filter
+
+    # create train dataset
     dataset = datastruc.SMLMDataset(config['hetero'],
                                     config['raw_dir_root'], 
                                     config['processed_dir_root'],
                                     transform=None, pre_transform=None,# T.RadiusGraph(r=0.0000003, max_num_neighbors=1), 
                                     pre_filter=None)
-    
+
+    # create val dataset
+
+    # create test dataset

@@ -6,12 +6,14 @@
 
 Preprocess
 Annotate
+Process
 Train
 
 ### Recipe 2
 
 Preprocess
 GT label generation
+Process
 Train
 
 ### Preprocess
@@ -64,3 +66,7 @@ Output the present labels and mapping as sanity check
 
 Currently the location is taken in as feature vector i.e. the values of x and y
 Obviously may want to play with this - number of photons etc.
+
+Pre transform: saves pretransform.pt saves the pre transform that was done to the data i.e. a knn graph of this shape
+
+so that it can make sure the data loaded in afterwards has gone through same preprocessing

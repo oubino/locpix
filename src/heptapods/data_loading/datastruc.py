@@ -246,5 +246,6 @@ class SMLMDataset(Dataset):
         """I believe that pytorch geometric is wrapper 
         over get item and therefore it handles the 
         transform"""
+        print('alice')
         data = torch.load(os.path.join(self.processed_dir, f'{idx}.pt'))
         return data
