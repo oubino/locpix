@@ -1,7 +1,7 @@
 """Annotate module
 
 Take in items, convert to histograms, annotate,
-visualise histo mask, save the exported annotation .csv
+visualise histo mask, save the exported annotation .parquet
 """
 
 import yaml
@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     for file in files:
         item = datastruc.item(None, None, None, None)
-        item.load(os.path.join(config['input_folder'], file))
+        item.load_from_parquet(os.path.join(config['input_folder'], file))
 
         # coord2histo
         item.coord_2_histo(histo_size, plot=config['plot'],
@@ -42,6 +42,8 @@ if __name__ == "__main__":
         # manual segment
         item.manual_segment()
 
-        # save df to csv
-        item.save_df_to_csv(os.path.join(config['output_folder'], item.name),
-                            drop_zero_label=config['drop_zero_label'])
+        # save df to parquet with mapping metadata
+        item.save_to_parquet(os.path.join(config['output_folder'], 
+                            item.name.replace('.csv', '.parquet')),
+                            drop_zero_label=config['drop_zero_label'],
+                            gt_label_map=config['gt_label_map'])

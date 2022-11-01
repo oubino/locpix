@@ -1,5 +1,0 @@
-# Directory of the .parquet files have been
-# preprocessed by preprocessing module but 
-# are raw with respect to pytorch/analysis
-raw_dir_root: output/preprocessed/parquet
-processed_dir_root: output/processed

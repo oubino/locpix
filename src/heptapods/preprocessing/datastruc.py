@@ -11,7 +11,9 @@ import napari
 import matplotlib.pyplot as plt
 import polars as pl
 import pyarrow.parquet as pq
+import ast
 import os
+import json
 
 _interpolate = {'log2': lambda d: np.log2(d),
                 'log10': lambda d: np.log10(d),
@@ -27,7 +29,7 @@ class item:
         name (string) : Contains the name of the item
         df (polars dataframe): Dataframe with the data contained, containing
             columns: 'channel' 'frame' 'x' 'y' 'z'.
-            If manual annotation is done an additional column 'label'
+            If manual annotation is done an additional column 'gt_label'
             will be present
         dim (int): Dimensions of data
         channels (list): list of ints, representing channels user wants
@@ -48,11 +50,15 @@ class item:
             0 is reserved for background, is of form [X,Y,Z]
         bin_sizes (tuple of floats): Size of bins of the histogram
             e.g. (23.2, 34.5, 21.3)
+        gt_label_map (dict): Dictionary with integer keys
+            representing the gt labels for each localisation
+            with value being a string, representing the
+            real concept e.g. 0:'dog', 1:'cat' 
        """
 
     def __init__(self, name, df, dim, channels, histo={},
                  histo_edges=None, histo_mask={},
-                 bin_sizes=None):
+                 bin_sizes=None, gt_label_map={}):
         """ Initialises item"""
 
         self.name = name
@@ -63,35 +69,36 @@ class item:
         self.dim = dim
         self.bin_sizes = bin_sizes
         self.channels = channels
+        self.gt_label_map = gt_label_map
 
-    def save(self, save_loc):
-        """Save the item
+    # def save(self, save_loc):
+    #     """Save the item
 
-            Args:
-                save_loc (string): Location to save the .pkl file"""
+    #         Args:
+    #             save_loc (string): Location to save the .pkl file"""
 
-        dict = {"name": self.name, "df": self.df, "dim": self.dim,
-                "channels": self.channels, "histo": self.histo,
-                "histo_edges": self.histo_edges,
-                "histo_mask": self.histo_mask,
-                "bin_sizes": self.bin_sizes}
-        pickle.dump(dict, open(save_loc, "wb"), pickle.HIGHEST_PROTOCOL)
+    #     dict = {"name": self.name, "df": self.df, "dim": self.dim,
+    #             "channels": self.channels, "histo": self.histo,
+    #             "histo_edges": self.histo_edges,
+    #             "histo_mask": self.histo_mask,
+    #             "bin_sizes": self.bin_sizes}
+    #     pickle.dump(dict, open(save_loc, "wb"), pickle.HIGHEST_PROTOCOL)
 
-    def load(self, input_file):
-        """ Loads item saved as .pkl file
+    # def load(self, input_file):
+    #     """ Loads item saved as .pkl file
 
-            Args:
-                input_file (string) : Location of the .pkl file to
-                    load dataitem from"""
+    #         Args:
+    #             input_file (string) : Location of the .pkl file to
+    #                 load dataitem from"""
 
-        with open(input_file, 'rb') as f:
-            dict = pickle.load(f)
-        self.__init__(name=dict['name'], df=dict['df'], dim=dict['dim'],
-                      channels=dict['channels'],
-                      histo=dict['histo'],
-                      histo_edges=dict['histo_edges'],
-                      histo_mask=dict['histo_mask'],
-                      bin_sizes=dict['bin_sizes'])
+    #     with open(input_file, 'rb') as f:
+    #         dict = pickle.load(f)
+    #     self.__init__(name=dict['name'], df=dict['df'], dim=dict['dim'],
+    #                   channels=dict['channels'],
+    #                   histo=dict['histo'],
+    #                   histo_edges=dict['histo_edges'],
+    #                   histo_mask=dict['histo_mask'],
+    #                   bin_sizes=dict['bin_sizes'])
 
     def coord_2_histo(self, histo_size,
                       cmap=['Greens', 'Reds', 'Blues', 'Purples'],
@@ -258,6 +265,11 @@ class item:
                 plot the histograms
             """
 
+        # if already has gt label raise error
+        if 'gt_label' in self.df.columns:
+            raise ValueError('Manual segment cannot be called on a file which\
+                              already has gt labels in it')
+
         if self.dim == 2:
             # overlay all channels for src
             if len(self.channels) != 1:
@@ -322,7 +334,7 @@ class item:
                 # with mask pixels
                 mask_list.append(pl.DataFrame({'x_pixel': x_pixels,
                                                'y_pixel': y_pixels,
-                                               'label': label}))
+                                               'gt_label': label}))
 
             # create mask dataframe
             mask_df = pl.concat(mask_list)
@@ -428,9 +440,9 @@ class item:
 
         # rearrange so x,y,z, ...,labels,channels
         # if self.dim == 2:
-        #    cols = ['x', 'y', 'label', 'channel']
+        #    cols = ['x', 'y', 'gt_label', 'channel']
         # elif self.dim == 3:
-        #    cols = ['x', 'y', 'z', 'label', 'channel']
+        #    cols = ['x', 'y', 'z', 'gt_label', 'channel']
         # save_df_cols = save_df.columns
         # cols = [col for col in cols if col in save_df_cols] +
         # [col for col in save_df_cols if col #]not in cols]
@@ -438,13 +450,13 @@ class item:
 
         # drop rows with zero label
         if drop_zero_label:
-            save_df = save_df.filter(pl.col('label') != 0)
+            save_df = save_df.filter(pl.col('gt_label') != 0)
 
         # save to location
         save_df.write_csv(csv_loc, sep=",")
 
-    def save_df_to_parquet(self, save_loc, drop_zero_label=False,
-                           drop_pixel_col=True):
+    def save_to_parquet(self, save_loc, drop_zero_label=False,
+                           drop_pixel_col=True, gt_label_map={}):
         """Save the dataframe to a parquet with option to drop positions which
            are background and can drop the column containing pixel
            information
@@ -455,6 +467,10 @@ class item:
                 label positions are saved to parquet
             drop_pixel_col (bool): If True then don't save
                 the column with x,y,z pixel
+            gt_label_map (dict): Dictionary with integer keys
+                representing the gt labels for each localisation
+                with value being a string, representing the
+                real concept e.g. 0:'dog', 1:'cat'
 
         Returns:
             None
@@ -471,12 +487,18 @@ class item:
 
         # drop rows with zero label
         if drop_zero_label:
-            save_df = save_df.filter(pl.col('label') != 0)
+            save_df = save_df.filter(pl.col('gt_label') != 0)
+
+        # convert gt label map to bytes
+        gt_label_map = json.dumps(gt_label_map).encode('utf-8')
 
         # convert to arrow + add in metadata 
         arrow_table = save_df.to_arrow()
-        meta_data = {"name": self.name, "dim": str(self.dim), 
-                     "channels": str(self.channels)}
+        meta_data = {"name": self.name, "dim": str(self.dim),
+                     "channels": str(self.channels),
+                     "gt_label_map": gt_label_map}
+        # add in label mapping
+        #meta_data.update(gt_label_map)
         # merge existing with new meta data
         merged_metadata = {**meta_data, **(arrow_table.schema.metadata or {})}
         arrow_table = arrow_table.replace_schema_metadata(merged_metadata)
@@ -488,3 +510,28 @@ class item:
         # note if accessing keys need
         # parquet_table.schema.metadata[b'key_name'])
         # note that b is bytes
+
+    def load_from_parquet(self, input_file):
+        """ Loads item saved as .parquet file
+
+            Args:
+                input_file (string) : Location of the .parquet file to
+                    load dataitem from"""
+
+        # read in parquet file
+        arrow_table = pq.read_table(input_file)
+
+        # metadata
+        name = arrow_table.schema.metadata[b'name'].decode("utf-8")
+        gt_label_map = json.loads(arrow_table.schema.metadata[b'gt_label_map']\
+            .decode("utf-8"))
+        # convert string keys to int keys for the mapping
+        gt_label_map = {int(key):value for key,value in gt_label_map.items()}
+        dim = arrow_table.schema.metadata[b'dim']
+        channels = arrow_table.schema.metadata[b'channels']
+        dim = int(dim)
+        channels = ast.literal_eval(channels.decode("utf-8"))
+        df = pl.from_arrow(arrow_table)
+
+        self.__init__(name=name, df=df, dim=dim,
+                      channels=channels, gt_label_map=gt_label_map)

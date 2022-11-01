@@ -6,10 +6,11 @@ SMLM dataitem will be parsed as during processing.
 
 import os
 import torch
-from torch_geometric.data import Dataset, HeteroData
+from torch_geometric.data import Dataset, HeteroData, Data
 import pyarrow.parquet as pq
 import pyarrow.compute as pc
 import ast
+import polars as pl
 
 
 class SMLMDataset(Dataset):
@@ -20,6 +21,10 @@ class SMLMDataset(Dataset):
     name before the .file_extension.
 
     Attributes:
+        heterogeneous (bool): If True then separate graph per channel
+            i.e. heterogeneous data.
+            If False then one graph for all data i.e. homogeneous 
+            graph
         raw_dir_root: A string with the directory of the the folder
             which contains the "raw" dataset i.e. the parquet files,
             is not technically raw as has passed through
@@ -32,14 +37,11 @@ class SMLMDataset(Dataset):
             to processed_dir -> Then pytorch analysis begins
         transform: The transform to be applied to each
                    loaded in graph/point cloud.
-        
         data_list: A list of the data from the dataset
             so can access via a numerical index later.
-        idx_to_name: Dictionary containing image idx
-            as key and name as value for later access.
     """
 
-    def __init__(self, raw_dir_root, processed_dir_root,
+    def __init__(self, heterogeneous, raw_dir_root, processed_dir_root,
                  transform=None, pre_transform=None, pre_filter=None):
         """Inits SMLMDataset with root directory where
         data is located and the transform to be applied when
@@ -49,6 +51,7 @@ class SMLMDataset(Dataset):
         Note the pre_filter (callable) takes in data item and returns
         whether it should be included in the final dataset"""
 
+        self.heterogeneous = heterogeneous
         # index the dataitems (idx)
         self._raw_dir_root = raw_dir_root
         self._processed_dir_root = processed_dir_root
@@ -76,6 +79,12 @@ class SMLMDataset(Dataset):
         return self._processed_file_names
 
     def process(self):
+        if self.heterogeneous:
+            self.process_heterogeneous()
+        elif self.heterogeneous is False:
+            self.process_homogeneous()
+
+    def process_heterogeneous(self):
         """Process the raw data into procesed data.
         This currently includes
             1. For each .parquet create a heterogeneous graph
@@ -88,6 +97,9 @@ class SMLMDataset(Dataset):
             2. Then if not pre-filtered the heterogeneous 
             graph is pre-transformed
             3. Then the graph is saved"""
+
+        idx = 0
+        idx_to_name = {}
 
         # convert raw parquet files to tensors 
         for raw_path in self.raw_paths:
@@ -116,39 +128,123 @@ class SMLMDataset(Dataset):
                 if dimensions == 3:
                     z = torch.from_numpy(arrow_table['z'].to_numpy())
                     coord_data = torch.stack((x, y, z), dim=1)
-                # coord data shape is Number of points x 2/3 dimensions
+
+                # feature tensor
+                # shape: [Number of points x 2/3 dimensions]
                 data[str(chan)].x = coord_data
-                
-                # if pre filter skips it then skip this item
-                if self.pre_filter is not None and not self.pre_filter(data):
-                    continue
-                
-                # pre-transform
-                if self.pre_transform is not None:
-                    data = self.pre_transform(data)
 
-                # save it
-                _, extension = os.path.splitext(raw_path)
-                _, tail = os.path.split(raw_path)
-                file_name = tail.strip(extension)
-                torch.save(data, os.path.join(self.processed_dir,
-                                              f'{file_name}.pt'))
+                # position tensor
+                # shape: [Number of points x 2/3 dimensions] 
+                data[str(chan)].pos = coord_data
 
-        # convert numerical ID to the name
-        self._idx_to_name = {}
-        for index, value in enumerate(self._processed_file_names):
-            _, extension = os.path.splitext(value)
-            _, tail = os.path.split(value)
+                # localisation level labels
+                data[str(chan)].y = torch.from_numpy(filter_table['gt_label']
+                                                     .to_numpy())
+                
+            # if pre filter skips it then skip this item
+            if self.pre_filter is not None and not self.pre_filter(data):
+                continue
+            
+            # pre-transform
+            if self.pre_transform is not None:
+                data = self.pre_transform(data)
+
+            # save it
+            _, extension = os.path.splitext(raw_path)
+            _, tail = os.path.split(raw_path)
             file_name = tail.strip(extension)
-            self._idx_to_name[index] = file_name
+            torch.save(data, os.path.join(self.processed_dir,
+                                          f'{idx}.pt'))
+            
+            # add to index
+            idx_to_name['idx'].append(idx)
+            idx_to_name['file_name'].append(file_name)
+            idx += 1
+
+        # save mapping from idx to name
+        df = pl.from_dict(idx_to_name)
+        df.write_csv(os.path.join(self.processed_dir, 'file_map.csv'))
+        
+    def process_homogeneous(self):
+        """Process the raw data into procesed data.
+        This currently includes
+            1. For each .parquet create a homogeneous graph
+            2. Then if not pre-filtered the 
+            graph is pre-transformed
+            3. Then the graph is saved"""
+        
+        idx = 0
+        idx_to_name = {'idx':[],'file_name':[]}
+
+        # convert raw parquet files to tensors 
+        for raw_path in self.raw_paths:
+            # read in parquet file
+            arrow_table = pq.read_table(raw_path)
+            # dimensions metadata
+            dimensions = arrow_table.schema.metadata[b'dim']
+            dimensions = int(dimensions)
+            # each dataitem is a homogeneous graph
+            data = Data()
+            
+            # convert to tensor (Number of points x 2/3 (dimensions))
+            x = torch.from_numpy(arrow_table['x'].to_numpy())
+            y = torch.from_numpy(arrow_table['y'].to_numpy())
+            if dimensions == 2:
+                coord_data = torch.stack((x, y), dim=1)
+            if dimensions == 3:
+                z = torch.from_numpy(arrow_table['z'].to_numpy())
+                coord_data = torch.stack((x, y, z), dim=1)
+            
+            # feature tensor
+            # shape: [Number of points x 2/3 dimensions]
+            data.x = coord_data
+
+            # position tensor
+            # shape: [Number of points x 2/3 dimensions] 
+            data.pos = coord_data
+
+            # localisation level labels
+            data.y = torch.from_numpy(arrow_table['gt_label']
+                                                    .to_numpy())
+            
+            # if pre filter skips it then skip this item
+            if self.pre_filter is not None and not self.pre_filter(data):
+                continue
+            
+            # pre-transform
+            if self.pre_transform is not None:
+                data = self.pre_transform(data)
+
+            # save it
+            _, extension = os.path.splitext(raw_path)
+            _, tail = os.path.split(raw_path)
+            file_name = tail.strip(extension)
+            torch.save(data, os.path.join(self.processed_dir,
+                                          f'{idx}.pt'))
+
+            # add to index
+            idx_to_name['idx'].append(idx)
+            idx_to_name['file_name'].append(file_name)
+            idx += 1
+
+        # save mapping from idx to name
+        df = pl.from_dict(idx_to_name)
+        df.write_csv(os.path.join(self.processed_dir, 'file_map.csv'))
+
 
     def len(self):
-        return len(self._processed_file_names)
+        files = self._processed_file_names
+        if 'pre_filter.pt' in files:
+            files.remove('pre_filter.pt')
+        if 'pre_transform.pt' in files:
+            files.remove('pre_transform.pt')
+        if 'file_map.csv' in files:
+            files.remove('file_map.csv')
+        return len(files)
 
     def get(self, idx):
         """I believe that pytorch geometric is wrapper 
         over get item and therefore it handles the 
         transform"""
-        file_name = self._idx_to_name[idx]
-        data = torch.load(os.path.join(self.processed_dir, file_name))
+        data = torch.load(os.path.join(self.processed_dir, f'{idx}.pt'))
         return data
