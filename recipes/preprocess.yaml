@@ -12,12 +12,7 @@ frame_col: 'Frame'
 # If 3 will read in and deal with z as well (currently not fully supported)
 dim: 2
 
-output_folder: 'output/preprocessed/csv'
-
-# Export to .parquet option
-pq_export: True
-# Output .csv folder
-output_pq_folder: 'output/preprocessed/parquet'
+output_folder: 'output/preprocessed/parquet'
 
 # vis interpolation
 # vis threshold
