@@ -37,17 +37,9 @@ if __name__ == "__main__":
                                           config['y_col'],
                                           config['z_col'],
                                           channel_choice=None)
-        
-        item.save(os.path.join(config['output_folder'],
-                  item.name.replace('.csv', '.pkl')))
 
-        if config['pq_export']:
-            # if output directory not present create it
-            if not os.path.exists(config['output_pq_folder']):
-                os.makedirs(config['output_pq_folder'])
-
-            pq_save_path = os.path.join(config['output_pq_folder'],
-                                        item.name.replace('.csv', '.parquet'))
-            item.save_df_to_parquet(pq_save_path,
-                                    drop_zero_label=False,
-                                    drop_pixel_col=False)
+        pq_save_path = os.path.join(config['output_folder'],
+                                    item.name.replace('.csv', '.parquet'))
+        item.save_to_parquet(pq_save_path,
+                                drop_zero_label=False,
+                                drop_pixel_col=False)

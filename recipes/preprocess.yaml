@@ -1,4 +1,5 @@
-# The following are the names of the x column, y column, z column if present, channel and frame
+# The following are the names of the 
+# x column, y column, z column if present, channel, frame,
 # in the csvs being processed
 x_col: 'X (nm)'
 y_col: 'Y (nm)'
@@ -11,12 +12,7 @@ frame_col: 'Frame'
 # If 3 will read in and deal with z as well (currently not fully supported)
 dim: 2
 
-output_folder: 'output/preprocessed/csv'
-
-# Export to .parquet option
-pq_export: True
-# Output .csv folder
-output_pq_folder: 'output/preprocessed/parquet'
+output_folder: 'output/preprocessed/no_gt_label'
 
 # vis interpolation
 # vis threshold
