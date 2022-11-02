@@ -6,13 +6,12 @@ Recipe :
     3. Train...
 """
 
-import dotenv
 import os
 import yaml
 from heptapods.data_loading import datastruc
-import torch_geometric.transforms as T
 import torch_geometric.loader as L
-import torch
+# import torch
+# import torch_geometric.transforms as T
 
 
 if __name__ == "__main__":
@@ -27,10 +26,10 @@ if __name__ == "__main__":
     test_folder = os.path.join(config['processed_dir_root'], 'test')
 
     # transform
+    # TODO: #4 add in transforms, and ensure specified in config file
     train_transform = None
     val_transform = None
     test_transform = None
-
     # Transforms that appear to be good
     # normalize rotation
     # normalizes scale
@@ -53,7 +52,6 @@ if __name__ == "__main__":
                                       transform=train_transform,
                                       pre_transform=None,
                                       pre_filter=None)
-    
 
     # load in val dataset
     val_set = datastruc.SMLMDataset(None,
@@ -71,6 +69,7 @@ if __name__ == "__main__":
                                      pre_transform=None,
                                      pre_filter=None)
 
+    # TODO: #5 configuration for dataloaders
 
     # initialise dataloaders
     train_loader = L.DataLoader(train_set, batch_size=1, shuffle=True)
@@ -80,8 +79,4 @@ if __name__ == "__main__":
     # train loop
     print('Training...')
 
-    
-
     # evaluate perf metrics
-
-    

@@ -44,5 +44,5 @@ if __name__ == "__main__":
 
         # save df to parquet with mapping metadata
         item.save_to_parquet(config['output_folder'],
-                            drop_zero_label=config['drop_zero_label'],
-                            gt_label_map=config['gt_label_map'])
+                             drop_zero_label=config['drop_zero_label'],
+                             gt_label_map=config['gt_label_map'])

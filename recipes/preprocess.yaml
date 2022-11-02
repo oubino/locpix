@@ -14,14 +14,13 @@ dim: 2
 
 output_folder: 'output/preprocessed/no_gt_label'
 
-# vis interpolation
-# vis threshold
-# vis channels
-# cmap
-# napari cmap
-# marker size
-# drop zero label
-# origin loc
-# user channels
+# choice of which channels user wants to consider
+# if null considers all
+channel_choice: null
+
+# whether to not drop the column containing
+# pixel
+drop_pixel_col: False
+
 
 

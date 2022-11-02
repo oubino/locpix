@@ -69,7 +69,5 @@ def csv_to_datastruc(input_file, dim, channel_col, frame_col, x_col,
 
     # Get name of file - assumes last part of input file name
     name = os.path.basename(os.path.normpath(input_file)).strip('.csv')
-    print('name', name)
-    input('stop 4')
 
     return datastruc.item(name, df, dim, channels)
