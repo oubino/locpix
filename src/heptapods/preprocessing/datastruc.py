@@ -455,14 +455,14 @@ class item:
         # save to location
         save_df.write_csv(csv_loc, sep=",")
 
-    def save_to_parquet(self, save_loc, drop_zero_label=False,
+    def save_to_parquet(self, save_folder, drop_zero_label=False,
                            drop_pixel_col=True, gt_label_map={}):
         """Save the dataframe to a parquet with option to drop positions which
            are background and can drop the column containing pixel
            information
 
         Args:
-            save_loc (String): Save the df to this location
+            save_folder (String): Save the df to this folder
             drop_zero_label (bool): If True then only non zero
                 label positions are saved to parquet
             drop_pixel_col (bool): If True then don't save
@@ -502,6 +502,11 @@ class item:
         # merge existing with new meta data
         merged_metadata = {**meta_data, **(arrow_table.schema.metadata or {})}
         arrow_table = arrow_table.replace_schema_metadata(merged_metadata)
+        save_loc = os.path.join(save_folder, self.name + '.parquet')
+        print('name', self.name)
+        print('save folder', save_folder)
+        print('save_loc', save_loc)
+        input('stop here 2')
         pq.write_table(arrow_table, save_loc)
 
         # To access metadata write

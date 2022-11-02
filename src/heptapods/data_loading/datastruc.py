@@ -147,9 +147,10 @@ class SMLMDataset(Dataset):
             file_name = tail.strip(extension)
 
             # assign name to data
-            print(file_name)
-            print(arrow_table.schema.)
-            #data.name = 
+            print('file name', file_name)
+            name = arrow_table.schema.metadata[b'name']
+            print('name', name)
+            input('stop dataloading')
 
             # if pre filter skips it then skip this item
             if self.pre_filter is not None and not self.pre_filter(data):
@@ -216,6 +217,11 @@ class SMLMDataset(Dataset):
             # localisation level labels
             data.y = torch.from_numpy(arrow_table['gt_label']
                                                     .to_numpy())
+
+            # assign name to data
+            name = arrow_table.schema.metadata[b'name']
+            name = str(name.decode("utf-8"))
+            data.name = name
             
             # if pre filter skips it then skip this item
             # if pre_filter is 0 - data should not be included 
@@ -245,7 +251,6 @@ class SMLMDataset(Dataset):
         df = pl.from_dict(idx_to_name)
         df.write_csv(os.path.join(self.processed_dir, 'file_map.csv'))
 
-
     def len(self):
         files = self._processed_file_names
         if 'pre_filter.pt' in files:
@@ -261,4 +266,5 @@ class SMLMDataset(Dataset):
         over get item and therefore it handles the 
         transform"""
         data = torch.load(os.path.join(self.processed_dir, f'{idx}.pt'))
+        data = data if self.transform is None else self.transform(data)
         return data

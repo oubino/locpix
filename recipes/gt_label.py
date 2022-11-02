@@ -56,8 +56,7 @@ if __name__ == "__main__":
         # channel 0 (EGFR) -> gt_label 0 -> don't want to drop this
         # drop pixel col is False as we by this point have 
         # no pixel col
-        item.save_to_parquet(os.path.join(config['output_folder'],
-                             item.name.replace('.csv', '.parquet')),
+        item.save_to_parquet(config['output_folder'],
                              drop_zero_label=False,
                              drop_pixel_col=False,
                              gt_label_map=config['gt_label_map'])

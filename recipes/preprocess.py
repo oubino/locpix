@@ -38,8 +38,6 @@ if __name__ == "__main__":
                                           config['z_col'],
                                           channel_choice=None)
 
-        pq_save_path = os.path.join(config['output_folder'],
-                                    item.name.replace('.csv', '.parquet'))
-        item.save_to_parquet(pq_save_path,
+        item.save_to_parquet(config['output_folder'],
                                 drop_zero_label=False,
                                 drop_pixel_col=False)
