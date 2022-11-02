@@ -17,13 +17,13 @@ class SMLMDataset(Dataset):
     """SMLM dataset class.
 
     All the SMLM dataitems are defined in this class.
-    Assumption that name is the last part of the file 
+    Assumption that name is the last part of the file
     name before the .file_extension.
 
     Attributes:
         heterogeneous (bool): If True then separate graph per channel
             i.e. heterogeneous data.
-            If False then one graph for all data i.e. homogeneous 
+            If False then one graph for all data i.e. homogeneous
             graph
         raw_dir_root: A string with the directory of the the folder
             which contains the "raw" dataset i.e. the parquet files,
@@ -46,17 +46,18 @@ class SMLMDataset(Dataset):
         """Inits SMLMDataset with root directory where
         data is located and the transform to be applied when
         getting item.
-        Note the pre_filter (non callable) is boolean? whether 
+        Note the pre_filter (non callable) is boolean? whether
         there is a pre-filter
-        Note the pre_filter (callable) takes in data item and returns
-        whether it should be included in the final dataset"""
+        pre_filter (function) : Takes in data object and returns 1 if
+            data should be included in dataset and 0 if it should not"""
 
         self.heterogeneous = heterogeneous
         # index the dataitems (idx)
         self._raw_dir_root = raw_dir_root
         self._processed_dir_root = processed_dir_root
         self._raw_file_names = list(sorted(os.listdir(raw_dir_root)))
-        self._processed_file_names = list(sorted(os.listdir(processed_dir_root)))
+        self._processed_file_names = \
+            list(sorted(os.listdir(processed_dir_root)))
         # Note deliberately set root to None
         # as going to overload the raw and processed
         # dir. This could cause problems so be aware
@@ -73,8 +74,8 @@ class SMLMDataset(Dataset):
     @property
     def raw_file_names(self):
         return self._raw_file_names
-    
-    @property 
+
+    @property
     def processed_file_names(self):
         return self._processed_file_names
 
@@ -90,18 +91,18 @@ class SMLMDataset(Dataset):
             1. For each .parquet create a heterogeneous graph
             , where the different (i.e. heterogeneous) nodes
             are due to there being multiple channels.
-            e.g. two channel image with 700 localisations for 
-            channel 0 and 300 for channel 1 - would have 
-            1000 nodes and each node is type (channel 0 or 
+            e.g. two channel image with 700 localisations for
+            channel 0 and 300 for channel 1 - would have
+            1000 nodes and each node is type (channel 0 or
             channel 1)
-            2. Then if not pre-filtered the heterogeneous 
+            2. Then if not pre-filtered the heterogeneous
             graph is pre-transformed
             3. Then the graph is saved"""
 
         idx = 0
         idx_to_name = {}
 
-        # convert raw parquet files to tensors 
+        # convert raw parquet files to tensors
         for raw_path in self.raw_paths:
             # read in parquet file
             arrow_table = pq.read_table(raw_path)
@@ -134,17 +135,27 @@ class SMLMDataset(Dataset):
                 data[str(chan)].x = coord_data
 
                 # position tensor
-                # shape: [Number of points x 2/3 dimensions] 
+                # shape: [Number of points x 2/3 dimensions]
                 data[str(chan)].pos = coord_data
 
                 # localisation level labels
                 data[str(chan)].y = torch.from_numpy(filter_table['gt_label']
                                                      .to_numpy())
-                
+
+            _, extension = os.path.splitext(raw_path)
+            _, tail = os.path.split(raw_path)
+            file_name = tail.strip(extension)
+
+            # assign name to data
+            print('file name', file_name)
+            name = arrow_table.schema.metadata[b'name']
+            print('name', name)
+            input('stop dataloading')
+
             # if pre filter skips it then skip this item
             if self.pre_filter is not None and not self.pre_filter(data):
                 continue
-            
+
             # pre-transform
             if self.pre_transform is not None:
                 data = self.pre_transform(data)
@@ -155,7 +166,7 @@ class SMLMDataset(Dataset):
             file_name = tail.strip(extension)
             torch.save(data, os.path.join(self.processed_dir,
                                           f'{idx}.pt'))
-            
+
             # add to index
             idx_to_name['idx'].append(idx)
             idx_to_name['file_name'].append(file_name)
@@ -164,19 +175,19 @@ class SMLMDataset(Dataset):
         # save mapping from idx to name
         df = pl.from_dict(idx_to_name)
         df.write_csv(os.path.join(self.processed_dir, 'file_map.csv'))
-        
+
     def process_homogeneous(self):
         """Process the raw data into procesed data.
         This currently includes
             1. For each .parquet create a homogeneous graph
-            2. Then if not pre-filtered the 
+            2. Then if not pre-filtered the
             graph is pre-transformed
             3. Then the graph is saved"""
-        
-        idx = 0
-        idx_to_name = {'idx':[],'file_name':[]}
 
-        # convert raw parquet files to tensors 
+        idx = 0
+        idx_to_name = {'idx': [], 'file_name': []}
+
+        # convert raw parquet files to tensors
         for raw_path in self.raw_paths:
             # read in parquet file
             arrow_table = pq.read_table(raw_path)
@@ -185,7 +196,7 @@ class SMLMDataset(Dataset):
             dimensions = int(dimensions)
             # each dataitem is a homogeneous graph
             data = Data()
-            
+
             # convert to tensor (Number of points x 2/3 (dimensions))
             x = torch.from_numpy(arrow_table['x'].to_numpy())
             y = torch.from_numpy(arrow_table['y'].to_numpy())
@@ -194,23 +205,32 @@ class SMLMDataset(Dataset):
             if dimensions == 3:
                 z = torch.from_numpy(arrow_table['z'].to_numpy())
                 coord_data = torch.stack((x, y, z), dim=1)
-            
+
             # feature tensor
             # shape: [Number of points x 2/3 dimensions]
             data.x = coord_data
 
             # position tensor
-            # shape: [Number of points x 2/3 dimensions] 
+            # shape: [Number of points x 2/3 dimensions]
             data.pos = coord_data
 
             # localisation level labels
             data.y = torch.from_numpy(arrow_table['gt_label']
-                                                    .to_numpy())
-            
+                                      .to_numpy())
+
+            # assign name to data
+            name = arrow_table.schema.metadata[b'name']
+            name = str(name.decode("utf-8"))
+            data.name = name
+
             # if pre filter skips it then skip this item
+            # if pre_filter is 0 - data should not be included
+            # and the if statement will read
+            # if not 0
+            # this is True and so continue will occur - i.e. data is skipped
             if self.pre_filter is not None and not self.pre_filter(data):
                 continue
-            
+
             # pre-transform
             if self.pre_transform is not None:
                 data = self.pre_transform(data)
@@ -230,7 +250,6 @@ class SMLMDataset(Dataset):
         # save mapping from idx to name
         df = pl.from_dict(idx_to_name)
         df.write_csv(os.path.join(self.processed_dir, 'file_map.csv'))
-
 
     def len(self):
         files = self._processed_file_names
@@ -243,9 +262,9 @@ class SMLMDataset(Dataset):
         return len(files)
 
     def get(self, idx):
-        """I believe that pytorch geometric is wrapper 
-        over get item and therefore it handles the 
+        """I believe that pytorch geometric is wrapper
+        over get item and therefore it handles the
         transform"""
-        print('alice')
         data = torch.load(os.path.join(self.processed_dir, f'{idx}.pt'))
+        data = data if self.transform is None else self.transform(data)
         return data

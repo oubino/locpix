@@ -43,7 +43,6 @@ if __name__ == "__main__":
         item.manual_segment()
 
         # save df to parquet with mapping metadata
-        item.save_to_parquet(os.path.join(config['output_folder'], 
-                            item.name.replace('.csv', '.parquet')),
-                            drop_zero_label=config['drop_zero_label'],
-                            gt_label_map=config['gt_label_map'])
+        item.save_to_parquet(config['output_folder'],
+                             drop_zero_label=config['drop_zero_label'],
+                             gt_label_map=config['gt_label_map'])

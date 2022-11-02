@@ -1,6 +1,6 @@
 """Gt label generating recipe
 
-This generates the gt label in the dataframe, 
+This generates the gt label in the dataframe,
 and checks/makes assumption that the gt label
 isn't already there
 """
@@ -10,17 +10,19 @@ import yaml
 from heptapods.preprocessing import datastruc
 import polars as pl
 
+
 def gt_label_generator(df):
-    """Custom function takes in a polars dataframe and adds a 
+    """CUSTOM function takes in a polars dataframe and adds a
     gt_label column in whichever user specified way
-        
+
         Args:
             df (polars dataframe) : Dataframe with localisations"""
-    
+
     # this just takes the channel column as the ground truth label
     df = df.with_column((pl.col('channel')).alias('gt_label'))
 
     return df
+
 
 if __name__ == "__main__":
 
@@ -52,13 +54,11 @@ if __name__ == "__main__":
         item.df = gt_label_generator(item.df)
 
         # save df to parquet with mapping metadata
-        # note drop zero label important is False as we have 
+        # note drop zero label important is False as we have
         # channel 0 (EGFR) -> gt_label 0 -> don't want to drop this
-        # drop pixel col is False as we by this point have 
+        # drop pixel col is False as we by this point have
         # no pixel col
-        item.save_to_parquet(os.path.join(config['output_folder'],
-                             item.name.replace('.csv', '.parquet')),
+        item.save_to_parquet(config['output_folder'],
                              drop_zero_label=False,
                              drop_pixel_col=False,
                              gt_label_map=config['gt_label_map'])
-

@@ -5,7 +5,6 @@ SMLM dataitem will be parsed as.
 
 """
 
-import pickle
 import numpy as np
 import napari
 import matplotlib.pyplot as plt
@@ -53,7 +52,7 @@ class item:
         gt_label_map (dict): Dictionary with integer keys
             representing the gt labels for each localisation
             with value being a string, representing the
-            real concept e.g. 0:'dog', 1:'cat' 
+            real concept e.g. 0:'dog', 1:'cat'
        """
 
     def __init__(self, name, df, dim, channels, histo={},
@@ -455,14 +454,14 @@ class item:
         # save to location
         save_df.write_csv(csv_loc, sep=",")
 
-    def save_to_parquet(self, save_loc, drop_zero_label=False,
-                           drop_pixel_col=True, gt_label_map={}):
+    def save_to_parquet(self, save_folder, drop_zero_label=False,
+                        drop_pixel_col=True, gt_label_map={}):
         """Save the dataframe to a parquet with option to drop positions which
            are background and can drop the column containing pixel
            information
 
         Args:
-            save_loc (String): Save the df to this location
+            save_folder (String): Save the df to this folder
             drop_zero_label (bool): If True then only non zero
                 label positions are saved to parquet
             drop_pixel_col (bool): If True then don't save
@@ -492,16 +491,17 @@ class item:
         # convert gt label map to bytes
         gt_label_map = json.dumps(gt_label_map).encode('utf-8')
 
-        # convert to arrow + add in metadata 
+        # convert to arrow + add in metadata
         arrow_table = save_df.to_arrow()
         meta_data = {"name": self.name, "dim": str(self.dim),
                      "channels": str(self.channels),
                      "gt_label_map": gt_label_map}
         # add in label mapping
-        #meta_data.update(gt_label_map)
+        # meta_data.update(gt_label_map)
         # merge existing with new meta data
         merged_metadata = {**meta_data, **(arrow_table.schema.metadata or {})}
         arrow_table = arrow_table.replace_schema_metadata(merged_metadata)
+        save_loc = os.path.join(save_folder, self.name + '.parquet')
         pq.write_table(arrow_table, save_loc)
 
         # To access metadata write
@@ -523,10 +523,10 @@ class item:
 
         # metadata
         name = arrow_table.schema.metadata[b'name'].decode("utf-8")
-        gt_label_map = json.loads(arrow_table.schema.metadata[b'gt_label_map']\
-            .decode("utf-8"))
+        gt_label_map = json.loads(arrow_table.schema.metadata[b'gt_label_map']
+                                  .decode("utf-8"))
         # convert string keys to int keys for the mapping
-        gt_label_map = {int(key):value for key,value in gt_label_map.items()}
+        gt_label_map = {int(key): value for key, value in gt_label_map.items()}
         dim = arrow_table.schema.metadata[b'dim']
         channels = arrow_table.schema.metadata[b'channels']
         dim = int(dim)
