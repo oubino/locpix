@@ -48,8 +48,8 @@ class SMLMDataset(Dataset):
         getting item.
         Note the pre_filter (non callable) is boolean? whether 
         there is a pre-filter
-        Note the pre_filter (callable) takes in data item and returns
-        whether it should be included in the final dataset"""
+        pre_filter (function) : Takes in data object and returns 1 if 
+            data should be included in dataset and 0 if it should not"""
 
         self.heterogeneous = heterogeneous
         # index the dataitems (idx)
@@ -141,6 +141,16 @@ class SMLMDataset(Dataset):
                 data[str(chan)].y = torch.from_numpy(filter_table['gt_label']
                                                      .to_numpy())
                 
+
+            _, extension = os.path.splitext(raw_path)
+            _, tail = os.path.split(raw_path)
+            file_name = tail.strip(extension)
+
+            # assign name to data
+            print(file_name)
+            print(arrow_table.schema.)
+            #data.name = 
+
             # if pre filter skips it then skip this item
             if self.pre_filter is not None and not self.pre_filter(data):
                 continue
@@ -208,6 +218,10 @@ class SMLMDataset(Dataset):
                                                     .to_numpy())
             
             # if pre filter skips it then skip this item
+            # if pre_filter is 0 - data should not be included 
+            # and the if statement will read
+            # if not 0
+            # this is True and so continue will occur - i.e. data is skipped
             if self.pre_filter is not None and not self.pre_filter(data):
                 continue
             
@@ -246,6 +260,5 @@ class SMLMDataset(Dataset):
         """I believe that pytorch geometric is wrapper 
         over get item and therefore it handles the 
         transform"""
-        print('alice')
         data = torch.load(os.path.join(self.processed_dir, f'{idx}.pt'))
         return data

@@ -18,7 +18,25 @@ if __name__ == "__main__":
     with open('recipes/process.yaml', "r") as ymlfile:
         config = yaml.safe_load(ymlfile)
 
+    def pre_filter(data, inclusion_list=None):
+        """Takes in data item and returns whether
+        it should be included in final dataset
+        i.e. 1 - yes ; 0 - no
+        
+        Args:
+            data (torch.geometric.data) : The pytorch
+                geometric dataitem part of the dataset
+            name (string) : Name of the dataitem
+            inclusion_list (list) : List of names
+                indicating which data should be included"""
+        
+        if data.name in inclusion_list:
+            return 1
+        else:
+            return 0 
+
     # split into train/val/test using pre filter
+
 
     # create train dataset
     dataset = datastruc.SMLMDataset(config['hetero'],
