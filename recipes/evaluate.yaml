@@ -1,0 +1,3 @@
+# batch size for evaluating
+
+batch_size: 1

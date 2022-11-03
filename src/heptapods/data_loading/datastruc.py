@@ -268,3 +268,26 @@ class SMLMDataset(Dataset):
         data = torch.load(os.path.join(self.processed_dir, f'{idx}.pt'))
         data = data if self.transform is None else self.transform(data)
         return data
+
+    # This is copied from the pytorch geometric docs
+    # because is not defined in my download for some reason
+    def _infer_num_classes(self, y) -> int:
+        if y is None:
+            return 0
+        elif y.numel() == y.size(0) and not torch.is_floating_point(y):
+            return int(y.max()) + 1
+        elif y.numel() == y.size(0) and torch.is_floating_point(y):
+            return torch.unique(y).numel()
+        else:
+            return y.size(-1)
+
+    # This is copied from the pytorch geometric docs
+    # because is not defined in my download for some reason
+    @property
+    def num_classes(self) -> int:
+        r"""Returns the number of classes in the dataset."""
+        y = torch.cat([data.y for data in self], dim=0)
+        # Do not fill cache for `InMemoryDataset`:
+        if hasattr(self, '_data_list') and self._data_list is not None:
+            self._data_list = self.len() * [None]
+        return self._infer_num_classes(y)

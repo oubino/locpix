@@ -1,2 +1,7 @@
-# processed ready for pytorch geometric
+# location of files for training
 processed_dir_root: output/processed
+
+# training parameters
+epochs: 2
+model: simplegcn2
+batch_size: 1
