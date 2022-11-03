@@ -25,6 +25,9 @@ if __name__ == "__main__":
 
     # load in config
     batch_size = config['batch_size']
+    pin_memory = config['pin_memory']
+    num_workers = config['num_workers']
+    gpu = config['gpu']
 
     # folder
     test_folder = os.path.join(config['processed_dir_root'], 'test')
@@ -39,46 +42,45 @@ if __name__ == "__main__":
                                      test_folder,
                                      transform=test_transform,
                                      pre_transform=None,
-                                     pre_filter=None)
+                                     pre_filter=None,
+                                     gpu=gpu)
 
     # initialise dataloader
-    test_loader = L.DataLoader(test_set, batch_size=batch_size, shuffle=False)
+    test_loader = L.DataLoader(test_set,
+                               batch_size=batch_size,
+                               shuffle=False,
+                               pin_memory=pin_memory,
+                               num_workers=num_workers)
 
     # load in model
-    model = model_choice(config['model'],
-                         train_set)
-
+    
     # print parameters
     print('\n')
     print('---- Params -----')
     print('\n')
-    print('Input features: ', train_set.num_node_features)
-    print('Num classes: ', train_set.num_classes)
+    print('Input features: ', test_set.num_node_features)
+    print('Num classes: ', test_set.num_classes)
     print('Batch size: ', batch_size)
-    print('Epochs: ', epochs)
 
     # model summary
     print('\n')
     print('---- Model summary ----')
     print('\n')
     number_nodes = 1000  # this is just for summary, has no bearing on training
-    summary(model, input_size=(train_set.num_node_features, number_nodes),
+    summary(model, input_size=(test_set.num_node_features, number_nodes),
             batch_size=batch_size)
 
     # evaluate model
+    # TODO: WRITE MODEL.EVAL SOMEWHERE
+    # TODO: make ure torch.no_grad() somewhere
 
-    # TODO: write model.eval() somewhere
+    print('\n')
+    print('---- Evaluating... ----')
+    print('\n')
 
-    print('\n')
-    print('---- Training... ----')
-    print('\n')
-    train.train_loop(epochs,
-                     model,
-                     )
-    print('Need checks here to make sure model weights are\
-          correct')
-    print('\n')
-    print('---- Finished training... ----')
-    print('\n')
+    
+    
+
+  
 
    

@@ -92,5 +92,3 @@ if __name__ == "__main__":
                                     transform=None,
                                     pre_transform=None,
                                     pre_filter=test_pre_filter)
-
-    print(trainset.num_classes)

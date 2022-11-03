@@ -42,14 +42,17 @@ class SMLMDataset(Dataset):
     """
 
     def __init__(self, heterogeneous, raw_dir_root, processed_dir_root,
-                 transform=None, pre_transform=None, pre_filter=None):
+                 transform=None, pre_transform=None, pre_filter=None,
+                 gpu=True):
         """Inits SMLMDataset with root directory where
         data is located and the transform to be applied when
         getting item.
         Note the pre_filter (non callable) is boolean? whether
         there is a pre-filter
         pre_filter (function) : Takes in data object and returns 1 if
-            data should be included in dataset and 0 if it should not"""
+            data should be included in dataset and 0 if it should not
+        gpu (boolean): Whether the data should be savedd from the GPU
+            or not."""
 
         self.heterogeneous = heterogeneous
         # index the dataitems (idx)
@@ -58,6 +61,7 @@ class SMLMDataset(Dataset):
         self._raw_file_names = list(sorted(os.listdir(raw_dir_root)))
         self._processed_file_names = \
             list(sorted(os.listdir(processed_dir_root)))
+        self.gpu = gpu
         # Note deliberately set root to None
         # as going to overload the raw and processed
         # dir. This could cause problems so be aware
@@ -239,6 +243,9 @@ class SMLMDataset(Dataset):
             _, extension = os.path.splitext(raw_path)
             _, tail = os.path.split(raw_path)
             file_name = tail.strip(extension)
+            # TODO: change/check this
+            # if self.gpu:
+            #    data.cuda()
             torch.save(data, os.path.join(self.processed_dir,
                                           f'{idx}.pt'))
 

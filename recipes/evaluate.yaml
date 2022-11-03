@@ -1,3 +1,9 @@
-# batch size for evaluating
+# params 
 
 batch_size: 1
+pin_memory: True 
+num_workers: 4
+
+# device
+
+gpu: True

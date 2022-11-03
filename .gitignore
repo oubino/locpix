@@ -60,6 +60,7 @@ output/
 
 # markdown files for developers
 DEVELOPMENT.md
+NOTES.md
 TO_DO.md
 
 # requirements for github (will include eventually)

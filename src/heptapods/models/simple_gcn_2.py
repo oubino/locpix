@@ -15,7 +15,6 @@ class SimpleGCN2(torch.nn.Module):
         super().__init__()
         self.conv1 = GCNConv(dataset.num_node_features, 16)
         self.conv2 = GCNConv(16, dataset.num_classes)
-        self.name = 'dog'
 
     def forward(self, data):
         x, edge_index = data.x, data.edge_index
