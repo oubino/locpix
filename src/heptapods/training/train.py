@@ -39,19 +39,21 @@ def train_loop(epochs, model, optimiser, train_loader, val_loader,
 
         # training data
         for index, data in enumerate(train_loader):
-            # make sure model in train mode
             model.train()
-
+            
             # note set to none is meant to have less memory footprint
             optimiser.zero_grad(set_to_none=True)
 
             # move data to device
             data.to(device)
 
+            x = data.x
+            edge_index = data.edge_index
 
             # forward pass - with autocasting
             with torch.autocast(device_type='cuda', dtype=torch.float16):
-                output = model(data)
+                print(x)
+                output = model(x.half(), edge_index)
                 loss = loss_fn(output, data.y)
                 print('data shape')
                 print(data.x.shape)

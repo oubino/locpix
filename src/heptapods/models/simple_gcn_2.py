@@ -9,6 +9,8 @@ import torch
 import torch.nn.functional as F
 from torch_geometric.nn import GCNConv
 
+# TODO: layer sizes
+# make sure sizes multiples of 8 to map onto tensor cores
 
 class SimpleGCN2(torch.nn.Module):
     def __init__(self, dataset):
@@ -16,8 +18,12 @@ class SimpleGCN2(torch.nn.Module):
         self.conv1 = GCNConv(dataset.num_node_features, 16)
         self.conv2 = GCNConv(16, dataset.num_classes)
 
-    def forward(self, data):
-        x, edge_index = data.x, data.edge_index
+    def forward(self, x, edge_index):
+        #x, edge_index = data.x, data.edge_index
+
+        print('data type')
+        print(x.dtype)
+        print(edge_index)
 
         x = self.conv1(x, edge_index)
         x = F.relu(x)
