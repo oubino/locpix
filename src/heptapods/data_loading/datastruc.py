@@ -42,14 +42,17 @@ class SMLMDataset(Dataset):
     """
 
     def __init__(self, heterogeneous, raw_dir_root, processed_dir_root,
-                 transform=None, pre_transform=None, pre_filter=None):
+                 transform=None, pre_transform=None, pre_filter=None,
+                 gpu=True):
         """Inits SMLMDataset with root directory where
         data is located and the transform to be applied when
         getting item.
         Note the pre_filter (non callable) is boolean? whether
         there is a pre-filter
         pre_filter (function) : Takes in data object and returns 1 if
-            data should be included in dataset and 0 if it should not"""
+            data should be included in dataset and 0 if it should not
+        gpu (boolean): Whether the data should be savedd from the GPU
+            or not."""
 
         self.heterogeneous = heterogeneous
         # index the dataitems (idx)
@@ -58,6 +61,7 @@ class SMLMDataset(Dataset):
         self._raw_file_names = list(sorted(os.listdir(raw_dir_root)))
         self._processed_file_names = \
             list(sorted(os.listdir(processed_dir_root)))
+        self.gpu = gpu
         # Note deliberately set root to None
         # as going to overload the raw and processed
         # dir. This could cause problems so be aware
@@ -239,6 +243,9 @@ class SMLMDataset(Dataset):
             _, extension = os.path.splitext(raw_path)
             _, tail = os.path.split(raw_path)
             file_name = tail.strip(extension)
+            # TODO: change/check this
+            # if self.gpu:
+            #    data.cuda()
             torch.save(data, os.path.join(self.processed_dir,
                                           f'{idx}.pt'))
 
@@ -268,3 +275,26 @@ class SMLMDataset(Dataset):
         data = torch.load(os.path.join(self.processed_dir, f'{idx}.pt'))
         data = data if self.transform is None else self.transform(data)
         return data
+
+    # This is copied from the pytorch geometric docs
+    # because is not defined in my download for some reason
+    def _infer_num_classes(self, y) -> int:
+        if y is None:
+            return 0
+        elif y.numel() == y.size(0) and not torch.is_floating_point(y):
+            return int(y.max()) + 1
+        elif y.numel() == y.size(0) and torch.is_floating_point(y):
+            return torch.unique(y).numel()
+        else:
+            return y.size(-1)
+
+    # This is copied from the pytorch geometric docs
+    # because is not defined in my download for some reason
+    @property
+    def num_classes(self) -> int:
+        r"""Returns the number of classes in the dataset."""
+        y = torch.cat([data.y for data in self], dim=0)
+        # Do not fill cache for `InMemoryDataset`:
+        if hasattr(self, '_data_list') and self._data_list is not None:
+            self._data_list = self.len() * [None]
+        return self._infer_num_classes(y)

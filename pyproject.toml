@@ -33,7 +33,9 @@ dependencies = [
     "torch-sparse",
     "torch-cluster",
     "torch-spline-conv",
-    "torch-geometric"
+    "torch-geometric",
+    "torch-summary",
+    
 
     # "torchvision",  check actually need this
     # conda install pyg -c pyg
