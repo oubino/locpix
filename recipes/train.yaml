@@ -5,7 +5,7 @@ processed_dir_root: output/processed
 gpu: True
 
 # model parameters
-model: simplegcn2
+model: pointnet
 
 # optimiser parameters
 optimiser: adam

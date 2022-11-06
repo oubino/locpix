@@ -9,13 +9,13 @@ of the model in models/ just the name!
 """
 
 from .simple_gcn_1 import SimpleGCN1
-from .simple_gcn_2 import SimpleGCN2
+from .point_net import PointNet
 
 
 def model_choice(name, *args):
     if name == 'simplegcn1':
         return SimpleGCN1(*args)
-    elif name == 'simplegcn2':
-        return SimpleGCN2(*args)
+    elif name == 'pointnet':
+        return PointNet(*args)
     else:
         raise ValueError(f'{name} is not a supported model')
