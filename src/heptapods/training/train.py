@@ -47,16 +47,10 @@ def train_loop(epochs, model, optimiser, train_loader, val_loader,
             # move data to device
             data.to(device)
 
-            x = data.x
-            edge_index = data.edge_index
-
             # forward pass - with autocasting
             with torch.autocast(device_type='cuda', dtype=torch.float16):
-                print(x)
-                output = model(x.half(), edge_index)
+                output = model(data)
                 loss = loss_fn(output, data.y)
-                print('data shape')
-                print(data.x.shape)
 
             # scales loss - calls backward on scaled loss creating scaled gradients
             scaler.scale(loss).backward()

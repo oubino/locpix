@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     # split into train/val/test using pre filter
     file_list = os.listdir(config['raw_dir_root'])
-    file_list = [file.strip('.parquet') for file in file_list]
+    file_list = [file.removesuffix('.parquet') for file in file_list]
     random.shuffle(file_list)
     # split into train/test/val
     train_length = int(len(file_list) * config['train_ratio'])

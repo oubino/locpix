@@ -126,12 +126,12 @@ class SMLMDataset(Dataset):
                 filter = pc.field("channel") == chan
                 filter_table = arrow_table.filter(filter)
                 # convert to tensor (Number of points x 2/3 (dimensions))
-                x = torch.from_numpy(filter_table['x'].to_numpy())
-                y = torch.from_numpy(filter_table['y'].to_numpy())
+                x = torch.tensor(filter_table['x'].to_numpy())
+                y = torch.tensor(filter_table['y'].to_numpy())
                 if dimensions == 2:
                     coord_data = torch.stack((x, y), dim=1)
                 if dimensions == 3:
-                    z = torch.from_numpy(arrow_table['z'].to_numpy())
+                    z = torch.tensor(arrow_table['z'].to_numpy())
                     coord_data = torch.stack((x, y, z), dim=1)
 
                 # feature tensor
@@ -143,7 +143,7 @@ class SMLMDataset(Dataset):
                 data[str(chan)].pos = coord_data
 
                 # localisation level labels
-                data[str(chan)].y = torch.from_numpy(filter_table['gt_label']
+                data[str(chan)].y = torch.tensor(filter_table['gt_label']
                                                      .to_numpy())
 
             _, extension = os.path.splitext(raw_path)
@@ -202,12 +202,12 @@ class SMLMDataset(Dataset):
             data = Data()
 
             # convert to tensor (Number of points x 2/3 (dimensions))
-            x = torch.from_numpy(arrow_table['x'].to_numpy())
-            y = torch.from_numpy(arrow_table['y'].to_numpy())
+            x = torch.tensor(arrow_table['x'].to_numpy())
+            y = torch.tensor(arrow_table['y'].to_numpy())
             if dimensions == 2:
                 coord_data = torch.stack((x, y), dim=1)
             if dimensions == 3:
-                z = torch.from_numpy(arrow_table['z'].to_numpy())
+                z = torch.tensor(arrow_table['z'].to_numpy())
                 coord_data = torch.stack((x, y, z), dim=1)
 
             # feature tensor
@@ -219,7 +219,7 @@ class SMLMDataset(Dataset):
             data.pos = coord_data
 
             # localisation level labels
-            data.y = torch.from_numpy(arrow_table['gt_label']
+            data.y = torch.tensor(arrow_table['gt_label']
                                       .to_numpy())
 
             # assign name to data
