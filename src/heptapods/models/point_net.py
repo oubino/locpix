@@ -53,18 +53,15 @@ class PointNet(torch.nn.Module):
         super().__init__()
 
         # Input channels account for both `pos` and node features.
-        self.sa1_module = SAModule(0.5, 0.2, MLP([3, 8, 8, 128]))
+        self.sa1_module = SAModule(0.5, 0.2, MLP([4, 8, 8, 128]))
         self.sa2_module = SAModule(0.25, 0.4, MLP([16 + 3, 16, 16, 32]))
         self.sa3_module = GlobalSAModule(MLP([32 + 3, 32, 32, 32]))
 
         self.mlp = MLP([32, 32, 16, 8], dropout=0.5, norm=None)
 
     def forward(self, data):
-        print('here2')
         sa0_out = (data.x, data.pos, data.batch)
         sa1_out = self.sa1_module(*sa0_out)
-        print(sa1_out[0].shape)
-        print('here3')
         sa2_out = self.sa2_module(*sa1_out)
         sa3_out = self.sa3_module(*sa2_out)
         x, pos, batch = sa3_out
