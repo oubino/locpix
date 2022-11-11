@@ -1,0 +1,18 @@
+# input folder
+input_folder: 'output/preprocessed/annotated'
+
+# input histo folder
+input_histo_folder: 'output/preprocessed/histos'
+
+# whether to get markers
+# if false the markers loc should point to where markers are saved
+# if true the markers loc should point to where to save markers
+get_markers: True
+markers_loc: 'output/markers'
+
+# threshold for visualisation
+vis_threshold: 0
+vis_interpolate: 'log2'
+
+# Output folder
+output_folder: 'output/classic/seg'

@@ -1,0 +1,8 @@
+# input folder
+input_folder: 'output/preprocessed/no_gt_label'
+
+# input histo folder
+input_histo_folder: 'output/preprocessed/histos'
+
+# maerks folder
+markers_folder: 'output/markers'

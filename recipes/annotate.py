@@ -7,6 +7,8 @@ visualise histo mask, save the exported annotation .parquet
 import yaml
 import os
 from heptapods.preprocessing import datastruc
+from heptapods.visualise import vis_img
+import pickle as pkl
 
 if __name__ == "__main__":
 
@@ -24,6 +26,16 @@ if __name__ == "__main__":
         print('Making folder')
         os.makedirs(config['output_folder'])
 
+    # if output directory for seg imgs not present create it
+    if not os.path.exists(config['output_seg_folder']):
+        print('Making folder')
+        os.makedirs(config['output_seg_folder'])
+
+    # if output directory for seg imgs not present create it
+    if not os.path.exists(config['histo_folder']):
+        print('Making folder')
+        os.makedirs(config['histo_folder'])
+
     if config['dim'] == 2:
         histo_size = (config['x_bins'], config['y_bins'])
     elif config['dim'] == 3:
@@ -36,7 +48,7 @@ if __name__ == "__main__":
         item.load_from_parquet(os.path.join(config['input_folder'], file))
 
         # coord2histo
-        item.coord_2_histo(histo_size, plot=config['plot'],
+        item.coord_2_histo(histo_size,
                            vis_interpolation=config['vis_interpolation'])
 
         # manual segment
@@ -46,3 +58,32 @@ if __name__ == "__main__":
         item.save_to_parquet(config['output_folder'],
                              drop_zero_label=config['drop_zero_label'],
                              gt_label_map=config['gt_label_map'])
+        
+        # save histogram
+        save_loc = os.path.join(config['histo_folder'], item.name + '.pkl')
+        with open(save_loc, 'wb') as f:
+            pkl.dump(item.histo, f)
+
+        # save images
+        if config['save_img'] == True:
+            save_loc = config['output_seg_folder']
+            img_dict = item.get_img_dict()
+            save_loc = os.path.join(config['output_seg_folder'], 
+                                    item.name + '.png')
+            vis_img.visualise_seg(img_dict, 
+                                  item.histo_mask.T, 
+                                  item.bin_sizes,
+                                  item.channels, 
+                                  threshold=config['save_threshold'],
+                                  how=config['save_interpolate'],
+                                  alphas = config['alphas'],
+                                  cmap_img=None,
+                                  cmap_seg=config['cmap_seg'],
+                                  figsize = config['fig_size'],
+                                  origin='upper',
+                                  save=True,
+                                  save_loc=save_loc,
+                                  four_colour=config['four_colour'],
+                                  background_one_colour=config['background_one_colour'],
+                                  interactive=False)
+

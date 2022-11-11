@@ -27,6 +27,8 @@ dependencies = [
     "imageio-ffmpeg", # napari needs this
     "PyQt5", # napari needs this
     "pyarrow",
+    "scikit-learn",
+    "python-dotenv",
 
 ]
 

@@ -27,68 +27,107 @@ Note that your directory CANNOT HAVE SPACES IN THE NAME i.e. if your directory i
 
 This will assume all your .csv files are in data_folder - note the paths are normally taken as relative to the .env file - so this may take some fiddling around to get it correct (alternatively copy your data_folder folder into /data then the path would be = data/data_folder)
 
-Navigate to where you want this code repository, clone this repository
+Create a new environment and activate it
 
 ```
-git clone https://github.com/oubino/smlm_analysis
-```
-Create environment then activate it
-
-If on:
-
-- Linux: 
-    ```
-    make create_environment
-    conda activate ENV_NAME
-    ```
-- Windows:
-    ```
-    conda create -n smlm_analysis python=3.9
-    conda activate smlm_analysis
-    ```
-
-Install dependencies
-
-```
-make requirements
+conda create -n heptapods_img python==3.10
+conda activate heptapods_img
 ```
 
-Install smlm - this will be depreceated once smlm is open source
+Navigate to where you want this code repository.
+
+Then clone this repository; move into it and install 
 
 ```
-pip install git+https://github.com/oubino/smlm.git
+git clone git clone https://github.com/oubino/heptapods_img
+cd heptapods_img
+pip install .
 ```
 
-For remaining instructions, could simplify makefile on Linux but windows doesn't allow easy creation of directories from makefile - therefore default to more convoluted Windows way which should still work on Linux.
+Run tests 
 
-Furthermore, we trialed doing all on Linux subsystem for windows BUT napari doesn't like wsl2!
+```
+pip install pytest
+pytest -s
+```
+
+Running the code
+----------------
+
+All the code to run can be found in recipes.
+
+Each recipe has a .yaml file 
+
+This .yaml file specifies the recipe's configuration - and so should be amended before running each recipe!
+
+Make sure you are located in the github directory
 
 Preprocess the data
 -------------------
+Run
 
-Create directories
 ```
-mkdir data/dataitems
-mkdir data/dataitems/histo
-```
-
-Perform preprocessing
-```
-make preprocess
+python recipes/preprocess.py
 ```
 
 Manually segment data
 ---------------------
-
-Create directories
+Run
 ```
-mkdir data/seg/csvs
-mkdir data/seg/histo
-mkdir data/seg/histo_boundary
+python recipes/annotate.py
 ```
 
-Perform manual segmentation
+Get markers
+-----------
+
+Run
 
 ```
-make manual_segment
+python recipes/img_seg/get_markers.py
 ```
+
+Classic segmentation
+--------------------
+
+Run
+
+```
+python recipes/img_seg/classic.py
+```
+
+Cellpose segmentation
+---------------------
+
+### Requirements
+
+Need to activate extra requirements - these are big and not included in initial install.
+
+Note that if you have a GPU this will speed this up.
+
+If you:
+
+- have a GPU
+  ```
+  conda install pytorch cudatoolkit=11.3 -c pytorch
+  pip install cellpose
+  ```
+- don't have a GPU
+    ```
+    pip install pytorch cellpose
+    ```
+
+### Running
+Run
+
+```
+python recipes/cellpose.py
+```
+
+Ilastik segmentation
+--------------------
+
+
+
+
+
+

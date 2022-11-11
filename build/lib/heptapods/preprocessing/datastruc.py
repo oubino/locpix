@@ -101,7 +101,7 @@ class item:
 
     def coord_2_histo(self, histo_size,
                       cmap=['Greens', 'Reds', 'Blues', 'Purples'],
-                      vis_interpolation='linear'):
+                      plot=False, vis_interpolation='linear'):
         """Converts localisations into histogram of desired size,
         with option to plot the image (histo.T).
         Note the interpolation is only applied for visualisation,
@@ -171,6 +171,15 @@ class item:
                 self.histo[chan], _ = np.histogramdd(sample,
                                                      bins=self.histo_edges)
 
+            if plot:
+                # Plots 2D histogram transpose, for each channel.
+                cmap_list = cmap
+                for index, chan in enumerate(self.channels):
+                    plt.imshow(_interpolate[vis_interpolation]
+                               (self.histo[chan].T), cmap=cmap_list[index])
+                    print(f'Channel {chan} = {cmap_list[index]}')
+                plt.show()
+
         if self.dim == 3:
             # 3D histogram for every channel, assigned to self.histo (dict)
             for chan in self.channels:
@@ -182,7 +191,9 @@ class item:
                 self.histo[chan], _ = np.histogramdd(sample,
                                                      bins=self.histo_edges)
 
-        plt.close()
+            if plot:
+                # 3D plot
+                print('3D plot')
 
         # work out pixel for each localisations
         self._coord_2_pixel()
@@ -524,13 +535,3 @@ class item:
 
         self.__init__(name=name, df=df, dim=dim,
                       channels=channels, gt_label_map=gt_label_map)
-
-    def get_img_dict(self):
-        """Return dictionary of images, 
-        where each key represents a channel"""
-
-        img_dict = {}
-        for key, value in self.histo.items():
-            img_dict[key] = value.T
-        
-        return img_dict

@@ -18,6 +18,9 @@ vis_interpolation: 'log2'
 # input folder
 input_folder: 'output/preprocessed/no_gt_label'
 
+# save histogram
+histo_folder: 'output/preprocessed/histos'
+
 # Output folder
 output_folder: 'output/preprocessed/annotated'
 
@@ -29,3 +32,14 @@ drop_zero_label: True
 gt_label_map:
   0 : 'background'
   1 : 'membrane'
+
+# Save segmentation images settings
+save_img: True
+save_threshold: 0
+save_interpolate: 'log2'
+background_one_colour: True
+four_colour: True
+alphas: [1,.5,.2,.1]
+cmap_seg: ["m", "g", "lightsalmon", "r", "b"]
+fig_size: [10,10]
+output_seg_folder: 'output/preprocessed/seg_imgs'
