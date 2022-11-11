@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 where = ["src"]  
 
 [project]
-name = "heptapods"
+name = "heptapods_img"
 version = "0.0.1"
 authors = [
   { name="Oliver Umney", email="scou@leeds.ac.uk" },
@@ -26,26 +26,13 @@ dependencies = [
     "matplotlib",
     "imageio-ffmpeg", # napari needs this
     "PyQt5", # napari needs this
-    "torch",
     "pyarrow",
-    "torch-scatter",
-    # "torch-scatter @ https://data.pyg.org/whl/torch-1.12.0+cu116.html",
-    "torch-sparse",
-    "torch-cluster",
-    "torch-spline-conv",
-    "torch-geometric",
-    "torch-summary",
-    
-
-    # "torchvision",  check actually need this
-    # conda install pyg -c pyg
-    # pip install pyarrow
 
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/oubino/heptapods"
-"Bug Tracker" = "https://github.com/oubino/heptapods/issues"
+"Homepage" = "https://github.com/oubino/heptapods_img"
+"Bug Tracker" = "https://github.com/oubino/heptapods_img/issues"
 
 [tool.tox]
 legacy_tox_ini = """
@@ -63,7 +50,5 @@ python =
 [testenv]
 changedir = tests
 deps = pytest
-       torch # this is required as torch-scatter, geometric etc.
-             # all depend on having torch
 commands = pytest
 """
