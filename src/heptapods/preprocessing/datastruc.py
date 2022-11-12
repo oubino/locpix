@@ -352,6 +352,10 @@ class item:
         therefore have to transpose img_seg for it to be in the same
         configuration as the histogram
 
+        Note we also use this for not just labels but when 
+        the img_seg represents probabilities.
+        It should work but will be less performant!
+
         Args:
             img_seg (np.ndarray): Segmentation of the image -
             to reiterate, to convert this to histogram space need
@@ -376,6 +380,8 @@ class item:
 
                 # get localisations which overlap in pixel
                 # location with mask pixels
+                # make label longer list of all same value
+                label = np.full(len(x_pixels), label)
                 mask_list.append(pl.DataFrame({'x_pixel': x_pixels,
                                                'y_pixel': y_pixels,
                                                'pred_label': label}))
@@ -400,6 +406,7 @@ class item:
 
         elif self.dim == 3:
             print('segment the 3d coords')
+            
 
     def save_df_to_csv(self, csv_loc, drop_zero_label=False,
                        drop_pixel_col=True):
@@ -444,7 +451,7 @@ class item:
         save_df.write_csv(csv_loc, sep=",")
 
     def save_to_parquet(self, save_folder, drop_zero_label=False,
-                        drop_pixel_col=True, gt_label_map={}):
+                        drop_pixel_col=False, gt_label_map={}):
         """Save the dataframe to a parquet with option to drop positions which
            are background and can drop the column containing pixel
            information

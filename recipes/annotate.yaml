@@ -26,7 +26,7 @@ output_folder: 'output/preprocessed/annotated'
 
 # When saving annotations - you can choose to not save the localisations associated with the background
 # which are assigned a label of zero
-drop_zero_label: True
+drop_zero_label: False
 
 # Mapping from integers to real terms
 gt_label_map:

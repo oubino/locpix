@@ -7,7 +7,7 @@ __pycache__/
 
 # Distribution / packaging
 #.Python
-#build/
+build/
 #develop-eggs/
 #dist/
 #downloads/
@@ -68,3 +68,6 @@ requirements.txt
 
 # misc code folder for ad hoc stuff
 misc/
+
+# Sandpit for testing functions etc
+sandpit/
