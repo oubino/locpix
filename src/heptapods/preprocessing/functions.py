@@ -10,8 +10,9 @@ import os
 from . import datastruc
 
 
-def csv_to_datastruc(input_file, dim, channel_col, frame_col, x_col,
-                     y_col, z_col, channel_choice=None):
+def csv_to_datastruc(
+    input_file, dim, channel_col, frame_col, x_col, y_col, z_col, channel_choice=None
+):
     """Loads in .csv and converts to the required datastructure.
     Currently considers the following columns:
         channel frame x y z
@@ -39,7 +40,7 @@ def csv_to_datastruc(input_file, dim, channel_col, frame_col, x_col,
     if dim != 2 and dim != 3:
         raise ValueError("Dimensions must be 2 or 3")
     if z_col is not None:
-        print('here', z_col)
+        print("here", z_col)
     if dim == 2 and z_col is not None:
         raise ValueError("If dimensions are two no z should be specified")
     if dim == 3 and z_col is None:
@@ -47,27 +48,32 @@ def csv_to_datastruc(input_file, dim, channel_col, frame_col, x_col,
 
     # Load in data
     if dim == 2:
-        df = pl.read_csv(input_file,
-                         columns=[channel_col, frame_col, x_col, y_col])
-        df = df.rename({channel_col: "channel",
-                        frame_col: "frame", x_col: "x", y_col: "y"})
+        df = pl.read_csv(input_file, columns=[channel_col, frame_col, x_col, y_col])
+        df = df.rename(
+            {channel_col: "channel", frame_col: "frame", x_col: "x", y_col: "y"}
+        )
     elif dim == 3:
-        df = pl.read_csv(input_file,
-                         columns=[channel_col, frame_col, x_col, y_col, z_col])
-        df = df.rename({channel_col: "channel",
-                        frame_col: "frame",
-                        x_col: "x",
-                        y_col: "y",
-                        z_col: "z"})
+        df = pl.read_csv(
+            input_file, columns=[channel_col, frame_col, x_col, y_col, z_col]
+        )
+        df = df.rename(
+            {
+                channel_col: "channel",
+                frame_col: "frame",
+                x_col: "x",
+                y_col: "y",
+                z_col: "z",
+            }
+        )
 
     # Specify channels to consider
     if channel_choice is None:
-        channels = df['channel'].unique()
+        channels = df["channel"].unique()
         channels = sorted(channels)
     else:
         channels = channel_choice
 
     # Get name of file - assumes last part of input file name
-    name = os.path.basename(os.path.normpath(input_file)).strip('.csv')
+    name = os.path.basename(os.path.normpath(input_file)).strip(".csv")
 
     return datastruc.item(name, df, dim, channels)

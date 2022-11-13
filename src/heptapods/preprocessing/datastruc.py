@@ -14,9 +14,11 @@ import ast
 import os
 import json
 
-_interpolate = {'log2': lambda d: np.log2(d),
-                'log10': lambda d: np.log10(d),
-                'linear': lambda d: d}
+_interpolate = {
+    "log2": lambda d: np.log2(d),
+    "log10": lambda d: np.log10(d),
+    "linear": lambda d: d,
+}
 
 
 class item:
@@ -53,12 +55,21 @@ class item:
             representing the gt labels for each localisation
             with value being a string, representing the
             real concept e.g. 0:'dog', 1:'cat'
-       """
+    """
 
-    def __init__(self, name, df, dim, channels, histo={},
-                 histo_edges=None, histo_mask={},
-                 bin_sizes=None, gt_label_map={}):
-        """ Initialises item"""
+    def __init__(
+        self,
+        name,
+        df,
+        dim,
+        channels,
+        histo={},
+        histo_edges=None,
+        histo_mask={},
+        bin_sizes=None,
+        gt_label_map={},
+    ):
+        """Initialises item"""
 
         self.name = name
         self.df = df
@@ -99,9 +110,12 @@ class item:
     #                   histo_mask=dict['histo_mask'],
     #                   bin_sizes=dict['bin_sizes'])
 
-    def coord_2_histo(self, histo_size,
-                      cmap=['Greens', 'Reds', 'Blues', 'Purples'],
-                      vis_interpolation='linear'):
+    def coord_2_histo(
+        self,
+        histo_size,
+        cmap=["Greens", "Reds", "Blues", "Purples"],
+        vis_interpolation="linear",
+    ):
         """Converts localisations into histogram of desired size,
         with option to plot the image (histo.T).
         Note the interpolation is only applied for visualisation,
@@ -122,14 +136,14 @@ class item:
 
         if self.dim == 2:
             x_bins, y_bins = histo_size
-            x_max = df_max['x'][0]
-            y_max = df_max['y'][0]
-            x_min = df_min['x'][0]
-            y_min = df_min['y'][0]
+            x_max = df_max["x"][0]
+            y_max = df_max["y"][0]
+            x_min = df_min["x"][0]
+            y_min = df_min["y"][0]
         elif self.dim == 3:
             x_bins, y_bins, z_bins = histo_size
-            z_max = df_max['z'][0]
-            z_min = df_min['z'][0]
+            z_max = df_max["z"][0]
+            z_min = df_min["z"][0]
 
         # if instead want desired bin size e.g. 50nm, 50nm, 50nm
         # number of bins required for desired bin_size
@@ -157,30 +171,28 @@ class item:
             self.bin_sizes = (x_bin_size, y_bin_size, z_bin_size)
             self.histo_edges = (x_edges, y_edges, z_edges)
 
-        print('-- Bin sizes -- ')
+        print("-- Bin sizes -- ")
         print(self.bin_sizes)
 
         if self.dim == 2:
             # 2D histogram for every channel, assigned to self.histo (dict)
             for chan in self.channels:
-                df = self.df.filter(pl.col('channel') == chan)
-                sample = np.array((df['x'], df['y']))
+                df = self.df.filter(pl.col("channel") == chan)
+                sample = np.array((df["x"], df["y"]))
                 sample = np.swapaxes(sample, 0, 1)
                 # (D, N) where D is
                 # self.dim and N is number of localisations
-                self.histo[chan], _ = np.histogramdd(sample,
-                                                     bins=self.histo_edges)
+                self.histo[chan], _ = np.histogramdd(sample, bins=self.histo_edges)
 
         if self.dim == 3:
             # 3D histogram for every channel, assigned to self.histo (dict)
             for chan in self.channels:
-                df = self.df[self.df['channel'] == chan]
-                sample = np.array((df['x'], df['y'], df['z']))
+                df = self.df[self.df["channel"] == chan]
+                sample = np.array((df["x"], df["y"], df["z"]))
                 sample = np.swapaxes(sample, 0, 1)
                 # (D, N) where D is self.dim and N is number of
                 # localisations
-                self.histo[chan], _ = np.histogramdd(sample,
-                                                     bins=self.histo_edges)
+                self.histo[chan], _ = np.histogramdd(sample, bins=self.histo_edges)
 
         plt.close()
 
@@ -192,8 +204,8 @@ class item:
 
         # necessary for pd.eval below
         df_min = self.df.min()
-        x_min = df_min['x'][0]
-        y_min = df_min['y'][0]
+        x_min = df_min["x"][0]
+        y_min = df_min["y"][0]
 
         if self.dim == 2:
             x_pixel_width, y_pixel_width = self.bin_sizes
@@ -201,49 +213,56 @@ class item:
             x_pixel_width, y_pixel_width, z_pixel_width = self.bin_sizes
 
         # calculate pixel indices for localisations
-        self.df = self.df.select([pl.all(), pl.col('x')
-                                  .map(lambda q: (q - x_min)
-                                  / x_pixel_width).alias('x_pixel'),
-                                  pl.col('y').map(lambda q: (q - y_min)
-                                  / y_pixel_width).alias('y_pixel')])
+        self.df = self.df.select(
+            [
+                pl.all(),
+                pl.col("x").map(lambda q: (q - x_min) / x_pixel_width).alias("x_pixel"),
+                pl.col("y").map(lambda q: (q - y_min) / y_pixel_width).alias("y_pixel"),
+            ]
+        )
         # floor the pixel locations
-        self.df = self.df.with_column(pl.col('x_pixel').cast(int, strict=True))
-        self.df = self.df.with_column(pl.col('y_pixel').cast(int, strict=True))
+        self.df = self.df.with_column(pl.col("x_pixel").cast(int, strict=True))
+        self.df = self.df.with_column(pl.col("y_pixel").cast(int, strict=True))
 
         # localisations at the end get assigned to outside the histogram,
         # therefore need to be assigned to previous pixel
-        self.df = self.df.with_column(pl.when(pl.col("x_pixel") ==
-                                      self.df.max()['x_pixel'][0])
-                                      .then(self.df.max()['x_pixel'][0] - 1)
-                                      .otherwise(pl.col('x_pixel'))
-                                      .alias('x_pixel'))
-        self.df = self.df.with_column(pl.when(pl.col("y_pixel") ==
-                                      self.df.max()['y_pixel'][0])
-                                      .then(self.df.max()['y_pixel'][0] - 1)
-                                      .otherwise(pl.col('y_pixel'))
-                                      .alias('y_pixel'))
+        self.df = self.df.with_column(
+            pl.when(pl.col("x_pixel") == self.df.max()["x_pixel"][0])
+            .then(self.df.max()["x_pixel"][0] - 1)
+            .otherwise(pl.col("x_pixel"))
+            .alias("x_pixel")
+        )
+        self.df = self.df.with_column(
+            pl.when(pl.col("y_pixel") == self.df.max()["y_pixel"][0])
+            .then(self.df.max()["y_pixel"][0] - 1)
+            .otherwise(pl.col("y_pixel"))
+            .alias("y_pixel")
+        )
 
         if self.dim == 3:
-            z_min = df_min['z'][0]
+            z_min = df_min["z"][0]
             # calculate pixel indices for localisations
-            self.df = self.df.select([pl.all(), pl.col('z')
-                                      .map(lambda q: (q - z_min)
-                                           / z_pixel_width)
-                                      .alias('z_pixel')])
+            self.df = self.df.select(
+                [
+                    pl.all(),
+                    pl.col("z")
+                    .map(lambda q: (q - z_min) / z_pixel_width)
+                    .alias("z_pixel"),
+                ]
+            )
             # floor the pixel locations
-            self.df = self.df.with_column(pl.col('z_pixel')
-                                          .cast(int, strict=True))
+            self.df = self.df.with_column(pl.col("z_pixel").cast(int, strict=True))
             # localisations at the end get assigned to outside the histogram,
             # therefore need to be assigned
             # to previous pixel
-            self.df = self.df.with_column(pl.when(pl.col("z_pixel") ==
-                                          self.df.max()['z_pixel'][0])
-                                          .then(self.df.max()['z_pixel'][0]
-                                                - 1)
-                                          .otherwise(pl.col('z_pixel'))
-                                          .alias('z_pixel'))
+            self.df = self.df.with_column(
+                pl.when(pl.col("z_pixel") == self.df.max()["z_pixel"][0])
+                .then(self.df.max()["z_pixel"][0] - 1)
+                .otherwise(pl.col("z_pixel"))
+                .alias("z_pixel")
+            )
 
-    def manual_segment(self, cmap=['green', 'red', 'blue', 'bop purple']):
+    def manual_segment(self, cmap=["green", "red", "blue", "bop purple"]):
         """Manually segment the image (histogram.T). Return the segmented
         histogram and extra column in dataframe corresponding to label.
         0 should be reserved for background
@@ -251,12 +270,14 @@ class item:
         Args:
             cmap (list of strings) : Colourmaps napari uses to
                 plot the histograms
-            """
+        """
 
         # if already has gt label raise error
-        if 'gt_label' in self.df.columns:
-            raise ValueError('Manual segment cannot be called on a file which\
-                              already has gt labels in it')
+        if "gt_label" in self.df.columns:
+            raise ValueError(
+                "Manual segment cannot be called on a file which\
+                              already has gt labels in it"
+            )
 
         if self.dim == 2:
             # overlay all channels for src
@@ -265,36 +286,45 @@ class item:
                 # then iterate through others)
                 colormap_list = cmap
                 # note image shape when plotted: [x, y]
-                viewer = napari.view_image(self.histo[self.channels[0]].T,
-                                           name=f'Channel {self.channels[0]}',
-                                           rgb=False, blending='additive',
-                                           colormap=colormap_list[0],
-                                           gamma=2,
-                                           contrast_limits=[0, 30])
+                viewer = napari.view_image(
+                    self.histo[self.channels[0]].T,
+                    name=f"Channel {self.channels[0]}",
+                    rgb=False,
+                    blending="additive",
+                    colormap=colormap_list[0],
+                    gamma=2,
+                    contrast_limits=[0, 30],
+                )
                 for index, chan in enumerate(self.channels[1:]):
-                    viewer.add_image(self.histo[chan].T,
-                                     name=f'Channel {chan}',
-                                     rgb=False, blending='additive',
-                                     colormap=colormap_list[index + 1],
-                                     gamma=2, contrast_limits=[0, 30])
+                    viewer.add_image(
+                        self.histo[chan].T,
+                        name=f"Channel {chan}",
+                        rgb=False,
+                        blending="additive",
+                        colormap=colormap_list[index + 1],
+                        gamma=2,
+                        contrast_limits=[0, 30],
+                    )
                 napari.run()
 
             # only one channel
             else:
                 img = self.histo[self.channels[0]].T
                 # create the viewer and add the image
-                viewer = napari.view_image(img,
-                                           name=f'Channel {self.channels[0]}',
-                                           rgb=False,
-                                           gamma=2,
-                                           contrast_limits=[0, 30])
+                viewer = napari.view_image(
+                    img,
+                    name=f"Channel {self.channels[0]}",
+                    rgb=False,
+                    gamma=2,
+                    contrast_limits=[0, 30],
+                )
                 napari.run()
 
             # histogram mask should be assigned to GUI output
-            self.histo_mask = viewer.layers['Labels'].data.T
+            self.histo_mask = viewer.layers["Labels"].data.T
 
         elif self.dim == 3:
-            print('segment 3D image')
+            print("segment 3D image")
 
         # segment the coordinates
         self._manual_seg_pixel_2_coord()
@@ -320,9 +350,11 @@ class item:
 
                 # get localisations which overlap in pixel location
                 # with mask pixels
-                mask_list.append(pl.DataFrame({'x_pixel': x_pixels,
-                                               'y_pixel': y_pixels,
-                                               'gt_label': label}))
+                mask_list.append(
+                    pl.DataFrame(
+                        {"x_pixel": x_pixels, "y_pixel": y_pixels, "gt_label": label}
+                    )
+                )
 
             # create mask dataframe
             mask_df = pl.concat(mask_list)
@@ -333,8 +365,7 @@ class item:
             print(self.df.head(10))
 
             # join mask dataframe
-            self.df = self.df.join(mask_df, how='inner',
-                                   on=['x_pixel', 'y_pixel'])
+            self.df = self.df.join(mask_df, how="inner", on=["x_pixel", "y_pixel"])
 
             # sanity check
             print(len(self.df))
@@ -342,7 +373,7 @@ class item:
             print(self.df.head(10))
 
         elif self.dim == 3:
-            print('segment the 3d coords')
+            print("segment the 3d coords")
 
     def pred_pixel_2_coord(self, img_seg: np.ndarray) -> pl.DataFrame:
         """For a given predicted segmentation of the image (integer
@@ -352,7 +383,7 @@ class item:
         therefore have to transpose img_seg for it to be in the same
         configuration as the histogram
 
-        Note we also use this for not just labels but when 
+        Note we also use this for not just labels but when
         the img_seg represents probabilities.
         It should work but will be less performant!
 
@@ -363,7 +394,7 @@ class item:
 
         Returns:
             df (polars dataframe): Original dataframe with
-            additional column with the predicted label """
+            additional column with the predicted label"""
 
         if self.dim == 2:
             # list of mask dataframes, each mask dataframe contains
@@ -382,9 +413,11 @@ class item:
                 # location with mask pixels
                 # make label longer list of all same value
                 label = np.full(len(x_pixels), label)
-                mask_list.append(pl.DataFrame({'x_pixel': x_pixels,
-                                               'y_pixel': y_pixels,
-                                               'pred_label': label}))
+                mask_list.append(
+                    pl.DataFrame(
+                        {"x_pixel": x_pixels, "y_pixel": y_pixels, "pred_label": label}
+                    )
+                )
 
             # create mask dataframe
             mask_df = pl.concat(mask_list)
@@ -395,7 +428,7 @@ class item:
             print(self.df.head(10))
 
             # join mask dataframe
-            df = self.df.join(mask_df, how='inner', on=['x_pixel', 'y_pixel'])
+            df = self.df.join(mask_df, how="inner", on=["x_pixel", "y_pixel"])
 
             # sanity check
             print(len(df))
@@ -405,11 +438,9 @@ class item:
             return df
 
         elif self.dim == 3:
-            print('segment the 3d coords')
-            
+            print("segment the 3d coords")
 
-    def save_df_to_csv(self, csv_loc, drop_zero_label=False,
-                       drop_pixel_col=True):
+    def save_df_to_csv(self, csv_loc, drop_zero_label=False, drop_pixel_col=True):
         """Save the dataframe to a .csv with option to drop positions which
            are background and can drop the column containing pixel
            information
@@ -445,13 +476,18 @@ class item:
 
         # drop rows with zero label
         if drop_zero_label:
-            save_df = save_df.filter(pl.col('gt_label') != 0)
+            save_df = save_df.filter(pl.col("gt_label") != 0)
 
         # save to location
         save_df.write_csv(csv_loc, sep=",")
 
-    def save_to_parquet(self, save_folder, drop_zero_label=False,
-                        drop_pixel_col=False, gt_label_map={}):
+    def save_to_parquet(
+        self,
+        save_folder,
+        drop_zero_label=False,
+        drop_pixel_col=False,
+        gt_label_map=None,
+    ):
         """Save the dataframe to a parquet with option to drop positions which
            are background and can drop the column containing pixel
            information
@@ -482,22 +518,35 @@ class item:
 
         # drop rows with zero label
         if drop_zero_label:
-            save_df = save_df.filter(pl.col('gt_label') != 0)
+            save_df = save_df.filter(pl.col("gt_label") != 0)
+
+        # convert to arrow + add in metadata if doesn't exist
+        arrow_table = save_df.to_arrow()
 
         # convert gt label map to bytes
-        gt_label_map = json.dumps(gt_label_map).encode('utf-8')
+        old_metadata = arrow_table.schema.metadata
 
-        # convert to arrow + add in metadata
-        arrow_table = save_df.to_arrow()
-        meta_data = {"name": self.name, "dim": str(self.dim),
-                     "channels": str(self.channels),
-                     "gt_label_map": gt_label_map}
+        if old_metadata is not {}:
+            input("check in save to parquet 1")
+            print("Appending metadata...")
+            # convert to bytes
+            gt_label_map = json.dumps(gt_label_map).encode("utf-8")
+            meta_data = {
+                "name": self.name,
+                "dim": str(self.dim),
+                "channels": str(self.channels),
+                "gt_label_map": gt_label_map,
+            }
+        else:
+            input("check in save to parquet 2")
+            meta_data = {}
+
         # add in label mapping
         # meta_data.update(gt_label_map)
         # merge existing with new meta data
-        merged_metadata = {**meta_data, **(arrow_table.schema.metadata or {})}
+        merged_metadata = {**meta_data, **(old_metadata or {})}
         arrow_table = arrow_table.replace_schema_metadata(merged_metadata)
-        save_loc = os.path.join(save_folder, self.name + '.parquet')
+        save_loc = os.path.join(save_folder, self.name + ".parquet")
         pq.write_table(arrow_table, save_loc)
 
         # To access metadata write
@@ -508,36 +557,38 @@ class item:
         # note that b is bytes
 
     def load_from_parquet(self, input_file):
-        """ Loads item saved as .parquet file
+        """Loads item saved as .parquet file
 
-            Args:
-                input_file (string) : Location of the .parquet file to
-                    load dataitem from"""
+        Args:
+            input_file (string) : Location of the .parquet file to
+                load dataitem from"""
 
         # read in parquet file
         arrow_table = pq.read_table(input_file)
 
         # metadata
-        name = arrow_table.schema.metadata[b'name'].decode("utf-8")
-        gt_label_map = json.loads(arrow_table.schema.metadata[b'gt_label_map']
-                                  .decode("utf-8"))
+        name = arrow_table.schema.metadata[b"name"].decode("utf-8")
+        gt_label_map = json.loads(
+            arrow_table.schema.metadata[b"gt_label_map"].decode("utf-8")
+        )
         # convert string keys to int keys for the mapping
         gt_label_map = {int(key): value for key, value in gt_label_map.items()}
-        dim = arrow_table.schema.metadata[b'dim']
-        channels = arrow_table.schema.metadata[b'channels']
+        dim = arrow_table.schema.metadata[b"dim"]
+        channels = arrow_table.schema.metadata[b"channels"]
         dim = int(dim)
         channels = ast.literal_eval(channels.decode("utf-8"))
         df = pl.from_arrow(arrow_table)
 
-        self.__init__(name=name, df=df, dim=dim,
-                      channels=channels, gt_label_map=gt_label_map)
+        self.__init__(
+            name=name, df=df, dim=dim, channels=channels, gt_label_map=gt_label_map
+        )
 
     def get_img_dict(self):
-        """Return dictionary of images, 
+        """Return dictionary of images,
         where each key represents a channel"""
 
         img_dict = {}
         for key, value in self.histo.items():
             img_dict[key] = value.T
-        
+
         return img_dict

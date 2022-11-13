@@ -1,16 +1,14 @@
-"""Cellpose segmentation module
+"""Ilastik segmentation module
 
-Take in items and segment using Cellpose methods
+Process output of Ilastik
 """
 
 import yaml
 import os
 from heptapods.preprocessing import datastruc
 from heptapods.visualise import vis_img
-from heptapods.img_processing import watershed
 import numpy as np
 import pickle as pkl
-from cellpose import models
 
 
 if __name__ == "__main__":
@@ -49,56 +47,36 @@ if __name__ == "__main__":
         with open(histo_loc, "rb") as f:
             histo = pkl.load(f)
 
-        # ---- segment membranes ----
+        # ---- membrane segmentation ----
 
-        if config["sum_chan"] is False:
-            img = histo[0].T  # consider only the zero channel
-        elif config["sum_chan"] is True:
-            img = histo[0].T + histo[1].T
-        else:
-            raise ValueError("sum_chan should be true or false")
-        img = vis_img.manual_threshold(
-            img, config["vis_threshold"], how=config["vis_interpolate"]
+        # load in ilastik_seg
+        membrane_prob_mask_loc = os.path.join(
+            config["input_membrane_prob"], item.name + ".npy"
         )
-        imgs = [img]
-        model = models.CellposeModel(model_type=config["model"])
-        channels = config["channels"]
-        # note diameter is set here may want to make user choice
-        # doing one at a time (rather than in batch) like this might be very slow
-        _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
-        semantic_mask = flows[0][2]
+        ilastik_seg = np.load(membrane_prob_mask_loc)
 
-        # convert mask (probabilities) to range 0-1
-        semantic_mask = (semantic_mask - np.min(semantic_mask)) / (
-            np.max(semantic_mask) - np.min(semantic_mask)
-        )
+        # ilastik_seg is [y,x,c] where channel 0 is membranes, channel 1 is inside cells
+        # given we only have labels for membranes and not inside cells will currently ignore
+        # chanel 1
+        ilastik_seg = ilastik_seg[:, :, 0]
 
-        # ---- segment cells ----
-        # get markers
-        markers_loc = os.path.join(config["markers_loc"], item.name + ".npy")
-        try:
-            markers = np.load(markers_loc)
-        except FileNotFoundError:
-            raise ValueError(
-                "Couldn't open the file/No markers were found in relevant location"
-            )
+        # save the probability map
+        prob_loc = os.path.join(config["output_membrane_prob"], item.name + ".npy")
+        np.save(prob_loc, ilastik_seg)
 
-        # tested very small amount annd line below is better than doing watershed on grey_log_img
-        instance_mask = watershed.watershed_segment(
-            semantic_mask, coords=markers
-        )  # watershed on the grey image
+        # ---- cell segmentation ----
 
-        # ---- save ----
+        # load in ilastik_seg
+        cell_mask_loc = os.path.join(config["input_cell_mask"], item.name + ".npy")
+        ilastik_seg = np.load(cell_mask_loc)
 
-        # save membrane mask
-        save_loc = os.path.join(config["output_membrane_prob"], item.name + ".npy")
-        np.save(save_loc, semantic_mask)
-
-        # save markers
-        np.save(markers_loc, markers)
+        # ilastik_seg is [y,x,c] where channel 0 is segmentation
+        # where each integer represents different instance of a cell
+        # i.e. 1 = one cell; 2 = different cell; etc.
+        ilastik_seg = ilastik_seg[:, :, 0]
 
         # save instance mask to dataframe
-        df = item.pred_pixel_2_coord(instance_mask)
+        df = item.pred_pixel_2_coord(ilastik_seg)
         item.df = df
         item.save_to_parquet(
             config["output_cell_df"], drop_zero_label=False, drop_pixel_col=True
@@ -109,7 +87,7 @@ if __name__ == "__main__":
         save_loc = os.path.join(config["output_cell_img"], item.name + ".png")
         vis_img.visualise_seg(
             imgs,
-            instance_mask,
+            ilastik_seg,
             item.bin_sizes,
             channels=[0],
             threshold=config["vis_threshold"],

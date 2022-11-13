@@ -1,6 +1,6 @@
-"""Cellpose segmentation module
+"""Classic segmentation module
 
-Take in items and segment using Cellpose methods
+Take in items and segment using classic methods
 """
 
 import yaml
@@ -10,7 +10,6 @@ from heptapods.visualise import vis_img
 from heptapods.img_processing import watershed
 import numpy as np
 import pickle as pkl
-from cellpose import models
 
 
 if __name__ == "__main__":
@@ -50,27 +49,21 @@ if __name__ == "__main__":
             histo = pkl.load(f)
 
         # ---- segment membranes ----
-
         if config["sum_chan"] is False:
             img = histo[0].T  # consider only the zero channel
         elif config["sum_chan"] is True:
             img = histo[0].T + histo[1].T
         else:
             raise ValueError("sum_chan should be true or false")
-        img = vis_img.manual_threshold(
+        log_img = vis_img.manual_threshold(
             img, config["vis_threshold"], how=config["vis_interpolate"]
         )
-        imgs = [img]
-        model = models.CellposeModel(model_type=config["model"])
-        channels = config["channels"]
-        # note diameter is set here may want to make user choice
-        # doing one at a time (rather than in batch) like this might be very slow
-        _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
-        semantic_mask = flows[0][2]
+        grey_log_img = vis_img.img_2_grey(log_img)  # convert img to grey
+        grey_img = vis_img.img_2_grey(img)  # convert img to grey
 
-        # convert mask (probabilities) to range 0-1
-        semantic_mask = (semantic_mask - np.min(semantic_mask)) / (
-            np.max(semantic_mask) - np.min(semantic_mask)
+        # img mask
+        semantic_mask = (grey_log_img - np.min(grey_log_img)) / (
+            np.max(grey_log_img) - np.min(grey_log_img)
         )
 
         # ---- segment cells ----
@@ -85,7 +78,7 @@ if __name__ == "__main__":
 
         # tested very small amount annd line below is better than doing watershed on grey_log_img
         instance_mask = watershed.watershed_segment(
-            semantic_mask, coords=markers
+            grey_img, coords=markers
         )  # watershed on the grey image
 
         # ---- save ----
