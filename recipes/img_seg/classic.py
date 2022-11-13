@@ -93,7 +93,7 @@ if __name__ == "__main__":
         np.save(markers_loc, markers)
 
         # save instance mask to dataframe
-        df = item.pred_pixel_2_coord(instance_mask)
+        df = item.mask_pixel_2_coord(instance_mask)
         item.df = df
         item.save_to_parquet(
             config["output_cell_df"], drop_zero_label=False, drop_pixel_col=True

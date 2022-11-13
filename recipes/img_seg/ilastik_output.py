@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     # load yaml
     with open("recipes/img_seg/ilastik.yaml", "r") as ymlfile:
-        config = yaml.safe_load(ymlfile)
+        config = yaml.safe_load(ymlfile)["processing"]
 
     # list items
     try:

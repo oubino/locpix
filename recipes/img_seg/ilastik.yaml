@@ -12,6 +12,9 @@ preprocessing:
 
 processing:
 
+  # input folder
+  input_folder: 'output/preprocessed/annotated'
+
   # input histo folder
   input_histo_folder: 'output/preprocessed/histos'
 
@@ -30,3 +33,7 @@ processing:
 
   # output cell image
   output_cell_img: 'output/ilastik/cell/img'
+
+  vis_threshold: 0
+
+  vis_interpolate: 'log2'
