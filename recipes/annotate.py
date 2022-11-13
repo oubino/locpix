@@ -86,5 +86,4 @@ if __name__ == "__main__":
                 save_loc=save_loc,
                 four_colour=config["four_colour"],
                 background_one_colour=config["background_one_colour"],
-                interactive=False,
             )

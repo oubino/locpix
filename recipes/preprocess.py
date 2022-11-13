@@ -23,6 +23,11 @@ if __name__ == "__main__":
     csvs = os.listdir(csv_path)
     csvs = [csv for csv in csvs if csv.endswith(".csv")]
 
+    # remove excluded files
+    csvs = [
+        csv for csv in csvs if csv.removesuffix(".csv") not in config["exclude_files"]
+    ]
+
     # if output directory not present create it
     if not os.path.exists(config["output_folder"]):
         os.makedirs(config["output_folder"])

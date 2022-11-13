@@ -16,7 +16,7 @@ from cellpose import models
 if __name__ == "__main__":
 
     # load yaml
-    with open("recipes/img_seg/classic.yaml", "r") as ymlfile:
+    with open("recipes/img_seg/cellpose.yaml", "r") as ymlfile:
         config = yaml.safe_load(ymlfile)
 
     # list items
@@ -105,7 +105,7 @@ if __name__ == "__main__":
         )
 
         # save cell segmentation image - consider only zero channel
-        imgs = {key: value.T for (key, value) in histo}
+        imgs = {key: value.T for (key, value) in histo.items()}
         save_loc = os.path.join(config["output_cell_img"], item.name + ".png")
         vis_img.visualise_seg(
             imgs,

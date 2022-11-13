@@ -113,7 +113,7 @@ If you:
 ### Running
 
 ```
-python recipes/img_seg/cellpose.py
+python recipes/img_seg/cellpose_module.py
 ```
 
 Ilastik segmentation

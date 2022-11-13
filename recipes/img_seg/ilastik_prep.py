@@ -39,7 +39,7 @@ if __name__ == "__main__":
         for histo in histo.values():
             img = histo.T
             log_img = vis_img.manual_threshold(
-                img, config["threshold"], how=config["interpolation"], plot=False
+                img, config["threshold"], how=config["interpolation"]
             )
             img_list.append(vis_img.img_2_grey(log_img))
         img = np.stack(img_list, axis=2)

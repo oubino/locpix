@@ -13,12 +13,12 @@ import pickle as pkl
 if __name__ == "__main__":
 
     # load yaml
-    with open("recipes/img_seg/classic.yaml", "r") as ymlfile:
+    with open("recipes/img_seg/get_markers.yaml", "r") as ymlfile:
         config = yaml.safe_load(ymlfile)
 
     # list items
     try:
-        files = os.listdir(config["input_histo_folder"])
+        files = os.listdir(config["input_folder"])
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 

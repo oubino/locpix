@@ -43,6 +43,8 @@ if __name__ == "__main__":
         item = datastruc.item(None, None, None, None)
         item.load_from_parquet(os.path.join(config["input_folder"], file))
 
+        print("bin sizes", item.bin_sizes)
+
         # load in histograms
         histo_loc = os.path.join(config["input_histo_folder"], item.name + ".pkl")
         with open(histo_loc, "rb") as f:
@@ -98,7 +100,7 @@ if __name__ == "__main__":
         )
 
         # save cell segmentation image - consider only zero channel
-        imgs = {key: value.T for (key, value) in histo}
+        imgs = {key: value.T for key, value in histo.items()}
         save_loc = os.path.join(config["output_cell_img"], item.name + ".png")
         vis_img.visualise_seg(
             imgs,

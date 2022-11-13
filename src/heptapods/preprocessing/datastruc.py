@@ -9,6 +9,7 @@ import numpy as np
 import napari
 import matplotlib.pyplot as plt
 import polars as pl
+from polars.testing import assert_frame_equal
 import pyarrow.parquet as pq
 import ast
 import os
@@ -360,35 +361,34 @@ class item:
             mask_df = pl.concat(mask_list)
 
             # sanity check
-            print(len(self.df))
-            print(self.df.columns)
-            print(self.df.head(10))
+            # print(len(self.df))
+            # print(self.df.columns)
+            # print(self.df.head(10))
 
             # join mask dataframe
             self.df = self.df.join(mask_df, how="inner", on=["x_pixel", "y_pixel"])
 
             # sanity check
-            print(len(self.df))
-            print(self.df.columns)
-            print(self.df.head(10))
+            # print(len(self.df))
+            # print(self.df.columns)
+            # print(self.df.head(10))
 
         elif self.dim == 3:
             print("segment the 3d coords")
 
-    def pred_pixel_2_coord(self, img_seg: np.ndarray) -> pl.DataFrame:
-        """For a given predicted segmentation of the image (integer
-        representing each label), return the dataframe with a column
-        giving the label for each localisation. Note that it is
-        assumed that the img_seg is a segmentation of the image,
-        therefore have to transpose img_seg for it to be in the same
+    def mask_pixel_2_coord(self, img_mask: np.ndarray) -> pl.DataFrame:
+        """For a given mask over the image (value at each pixel
+        normally representing a label), return the dataframe with a column
+        giving the value for each localisation. Note that it is
+        assumed that the img_mask is a mask of the image,
+        therefore have to transpose img_mask for it to be in the same
         configuration as the histogram
 
-        Note we also use this for not just labels but when
-        the img_seg represents probabilities.
-        It should work but will be less performant!
+        Note we also use this for  labels and when
+        the img_mask represents probabilities.
 
         Args:
-            img_seg (np.ndarray): Segmentation of the image -
+            img_mask (np.ndarray): Mask over the image -
             to reiterate, to convert this to histogram space need
             to transpose it
 
@@ -401,39 +401,33 @@ class item:
             # (x,y,label) columns
             mask_list = []
             # transpose the image mask to histogram space
-            histo_mask = img_seg.T
-
-            unique_labels = np.unique(histo_mask)
-            # for each integer label return the coordinates
-            for label in unique_labels:
-                x_pixels = np.where(histo_mask == label)[0]
-                y_pixels = np.where(histo_mask == label)[1]
-
-                # get localisations which overlap in pixel
-                # location with mask pixels
-                # make label longer list of all same value
-                label = np.full(len(x_pixels), label)
-                mask_list.append(
-                    pl.DataFrame(
-                        {"x_pixel": x_pixels, "y_pixel": y_pixels, "pred_label": label}
-                    )
-                )
-
-            # create mask dataframe
-            mask_df = pl.concat(mask_list)
+            histo_mask = img_mask.T
+            
+            # create dataframe
+            flatten_mask = np.ravel(histo_mask)
+            mesh_grid = np.meshgrid(range(histo_mask.shape[0]), range(histo_mask.shape[1]))
+            x_pixel = np.ravel(mesh_grid[1])
+            y_pixel = np.ravel(mesh_grid[0])
+            label = flatten_mask
+            data = {"x_pixel": x_pixel, "y_pixel": y_pixel, "pred_label": label}
+            mask_df = pl.DataFrame(
+                data, columns=[("x_pixel", pl.Int64),
+                                ("y_pixel", pl.Int64),
+                                ("pred_label", pl.Float64)]
+                    ).sort(['x_pixel', 'y_pixel'])
 
             # sanity check
-            print(len(self.df))
-            print(self.df.columns)
-            print(self.df.head(10))
+            # print(len(self.df))
+            # print(self.df.columns)
+            # print(self.df.head(10))
 
             # join mask dataframe
             df = self.df.join(mask_df, how="inner", on=["x_pixel", "y_pixel"])
 
             # sanity check
-            print(len(df))
-            print(df.columns)
-            print(df.head(10))
+            # print(len(df))
+            # print(df.columns)
+            # print(df.head(10))
 
             return df
 
@@ -526,20 +520,15 @@ class item:
         # convert gt label map to bytes
         old_metadata = arrow_table.schema.metadata
 
-        if old_metadata is not {}:
-            input("check in save to parquet 1")
-            print("Appending metadata...")
-            # convert to bytes
-            gt_label_map = json.dumps(gt_label_map).encode("utf-8")
-            meta_data = {
-                "name": self.name,
-                "dim": str(self.dim),
-                "channels": str(self.channels),
-                "gt_label_map": gt_label_map,
-            }
-        else:
-            input("check in save to parquet 2")
-            meta_data = {}
+        # convert to bytes
+        gt_label_map = json.dumps(gt_label_map).encode("utf-8")
+        meta_data = {
+            "name": self.name,
+            "dim": str(self.dim),
+            "channels": str(self.channels),
+            "gt_label_map": gt_label_map,
+            "bin_sizes": str(self.bin_sizes),
+        }
 
         # add in label mapping
         # meta_data.update(gt_label_map)
@@ -566,21 +555,32 @@ class item:
         # read in parquet file
         arrow_table = pq.read_table(input_file)
 
+        # print("loaded metadata", arrow_table.schema.metadata)
+
         # metadata
         name = arrow_table.schema.metadata[b"name"].decode("utf-8")
         gt_label_map = json.loads(
             arrow_table.schema.metadata[b"gt_label_map"].decode("utf-8")
         )
+        if gt_label_map is not None:
+            # convert string keys to int keys for the mapping
+            gt_label_map = {int(key): value for key, value in gt_label_map.items()}
         # convert string keys to int keys for the mapping
-        gt_label_map = {int(key): value for key, value in gt_label_map.items()}
         dim = arrow_table.schema.metadata[b"dim"]
         channels = arrow_table.schema.metadata[b"channels"]
         dim = int(dim)
         channels = ast.literal_eval(channels.decode("utf-8"))
+        bin_sizes = arrow_table.schema.metadata[b"bin_sizes"]
+        bin_sizes = ast.literal_eval(bin_sizes.decode("utf-8"))
         df = pl.from_arrow(arrow_table)
 
         self.__init__(
-            name=name, df=df, dim=dim, channels=channels, gt_label_map=gt_label_map
+            name=name,
+            df=df,
+            dim=dim,
+            channels=channels,
+            gt_label_map=gt_label_map,
+            bin_sizes=bin_sizes,
         )
 
     def get_img_dict(self):

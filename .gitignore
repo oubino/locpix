@@ -71,3 +71,6 @@ misc/
 
 # Sandpit for testing functions etc
 sandpit/
+
+# Moddels
+models/

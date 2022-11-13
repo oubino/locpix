@@ -13,7 +13,7 @@ test_files:
   Fov10_DC
 
 # which to maximise (recall or f)
-maximise_choice: 'recall'
+maximise_choice: 'f'
 
 # location of gt labelled file
 gt_files: 'output/preprocessed/annotated'

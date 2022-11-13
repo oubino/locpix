@@ -14,7 +14,7 @@ import pickle as pkl
 if __name__ == "__main__":
 
     # load yaml
-    with open("recipes/img_seg/classic.yaml", "r") as ymlfile:
+    with open("recipes/img_seg/ilastik.yaml", "r") as ymlfile:
         config = yaml.safe_load(ymlfile)
 
     # list items
@@ -76,14 +76,14 @@ if __name__ == "__main__":
         ilastik_seg = ilastik_seg[:, :, 0]
 
         # save instance mask to dataframe
-        df = item.pred_pixel_2_coord(ilastik_seg)
+        df = item.mask_pixel_2_coord(ilastik_seg)
         item.df = df
         item.save_to_parquet(
             config["output_cell_df"], drop_zero_label=False, drop_pixel_col=True
         )
 
         # save cell segmentation image - consider only zero channel
-        imgs = {key: value.T for (key, value) in histo}
+        imgs = {key: value.T for (key, value) in histo.items()}
         save_loc = os.path.join(config["output_cell_img"], item.name + ".png")
         vis_img.visualise_seg(
             imgs,

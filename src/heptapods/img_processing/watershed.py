@@ -57,6 +57,7 @@ class WatershedWidget(QWidget):
 
         # image in format pyqt needs
         # create pixmap item and add to scene
+        img = img.copy()
         image = QImage(img, img.shape[1], img.shape[0], QImage.Format.Format_Grayscale8)
         self.pixmap_item = QGraphicsPixmapItem(QPixmap(image))
         self.scene.addItem(self.pixmap_item)

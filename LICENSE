@@ -19,3 +19,99 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+Please note that Cellpose and Ilastik have separate licenses as detailed below
+
+## Cellpose
+
+Copyright © 2020 Howard Hughes Medical Institute
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+Neither the name of HHMI nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## Ilastik
+
+Copyright ilastik developers
+
+This repository contains two previously separate projects: ilastik and lazyflow
+respective licenses follow:
+
+====
+
+  ilastik: interactive learning and segmentation toolkit
+
+      Copyright (C) 2011-2020, the ilastik developers
+                               <team@ilastik.org>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+See the files LICENSE.gpl2 and LICENSE.gpl3 for full text of the
+GNU General Public License version 2 and 3 respectively.
+
+
+Extending ilastik with other modules is making a combined work based
+on ilastik. Thus, the terms and conditions of the GNU General Public
+License cover the whole combination.
+
+In addition, as a special exception, the copyright holders of ilastik
+give you permission to combine ilastik with applets, workflows and
+plugins which are not covered under the GNU General Public License.
+These are considered independent modules provided that
+
+(i) plugins are subclasses of IPlugin and communicate with ilastik
+  through the plugin interface defined in the documentation
+
+(ii) applets are subclasses of Applet and AppletGuiInteface classes
+  and communicate with ilastik through the Applet API defined in
+  the documentation
+
+(iii) workflows are subclasses of Workflow and communicate with
+  ilastik through the Workflow API defined in the documentation.
+  Workflows can make use of standard applets provided in ilastik.
+
+You may copy and distribute such a combined work following the
+terms of the GNU GPL for the ilastik part, and terms of your
+choice for independent modules as specified in items (i), (ii)
+and (iii) provided that you also meet, for each of these
+modules, the terms and conditions of the license of that module.
+
+A modified version of ilastik that involves changes to the
+interface of the ilastik applet, workflow or plugin interface must
+be distributed under the GNU GPL without this exception. Modified
+versions of ilastik that preserve the original ilastik applet,
+workflow or plugin interfaces must be distributed under the GNU
+GPL; in which case the license may, but need not, carry forward
+this exception.
+
+====
+
+  lazyflow: data flow based lazy parallel computation framework
+
+      Copyright (C) 2011-2020, the ilastik developers
+                               <team@ilastik.org>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the Lesser GNU General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License for more details.
+
+See the files LICENSE.lgpl2 and LICENSE.lgpl3 for full text of the
+GNU Lesser General Public License version 2.1 and 3 respectively.
+

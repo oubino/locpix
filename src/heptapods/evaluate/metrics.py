@@ -159,6 +159,7 @@ def aggregated_metric_calculation(
         gt_list = np.append(gt_list, gt)
         pred_list = np.append(pred_list, pred)
 
+    """
     print("Sklearn results")
     acc = sklearn.metrics.accuracy_score(gt_list, pred_list)
     report = sklearn.metrics.classification_report(gt_list, pred_list)
@@ -170,11 +171,7 @@ def aggregated_metric_calculation(
     print("confusion matrix", confusion_matrix)
     print("prec", prec)
     print("recall", recall)
-
-    print("Our results")
-    print(results)
-
-    input("stop and check!")
+    """
 
     # Create text file and save overall results/configuration to this
     lines = ["Overall results", "-----------"]
