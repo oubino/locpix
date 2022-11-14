@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     for method in ["classic", "cellpose", "ilastik"]:
 
-        print(f'{method} ...')
+        print(f"{method} ...")
 
         # get folder names
         seg_folder = config[method + "_seg_folder"]
@@ -82,10 +82,10 @@ if __name__ == "__main__":
 
         for file in files:
 
-            if file.removesuffix('.parquet') not in config["train_files"]:
+            if file.removesuffix(".parquet") not in config["train_files"]:
                 continue
 
-            print('File ', file)
+            print("File ", file)
 
             # load df
             item = datastruc.item(None, None, None, None)
@@ -152,10 +152,10 @@ if __name__ == "__main__":
         # threshold dataframe and save to parquet file with pred label
         for file in files:
 
-            if file.removesuffix('.parquet') not in config["test_files"]:
+            if file.removesuffix(".parquet") not in config["test_files"]:
                 continue
 
-            print('File ', file)
+            print("File ", file)
 
             item = datastruc.item(None, None, None, None)
             item.load_from_parquet(os.path.join(config["gt_files"], file))

@@ -402,19 +402,24 @@ class item:
             mask_list = []
             # transpose the image mask to histogram space
             histo_mask = img_mask.T
-            
+
             # create dataframe
             flatten_mask = np.ravel(histo_mask)
-            mesh_grid = np.meshgrid(range(histo_mask.shape[0]), range(histo_mask.shape[1]))
+            mesh_grid = np.meshgrid(
+                range(histo_mask.shape[0]), range(histo_mask.shape[1])
+            )
             x_pixel = np.ravel(mesh_grid[1])
             y_pixel = np.ravel(mesh_grid[0])
             label = flatten_mask
             data = {"x_pixel": x_pixel, "y_pixel": y_pixel, "pred_label": label}
             mask_df = pl.DataFrame(
-                data, columns=[("x_pixel", pl.Int64),
-                                ("y_pixel", pl.Int64),
-                                ("pred_label", pl.Float64)]
-                    ).sort(['x_pixel', 'y_pixel'])
+                data,
+                columns=[
+                    ("x_pixel", pl.Int64),
+                    ("y_pixel", pl.Int64),
+                    ("pred_label", pl.Float64),
+                ],
+            ).sort(["x_pixel", "y_pixel"])
 
             # sanity check
             # print(len(self.df))

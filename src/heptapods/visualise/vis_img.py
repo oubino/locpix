@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap
 import networkx as nx
 from skimage.future.graph import RAG
+from skimage.transform import resize
 import matplotlib.patches as mpatches
 
 _interpolate = {
@@ -81,6 +82,7 @@ def visualise_seg(
     threshold=0,
     how="linear",
     alphas=[1, 0.5, 0.2, 0.1],
+    alpha_seg=.8,
     cmap_img=None,
     cmap_seg=["m", "g", "lightsalmon", "r", "b"],
     figsize=(10, 10),
@@ -110,6 +112,7 @@ def visualise_seg(
         how (string) : Interpolation applied to image
             when plotting
         alphas (list) : List of alpha to be used in plt.imshow
+        alpha_seg (float) : Value of alpha for segmentation
         cmap_img (list) : List of cmaps to plot images
             (transpose of histograms)
         cmap_seg (list) : List of cmaps to plot segmentations
@@ -158,43 +161,46 @@ def visualise_seg(
         img = manual_threshold(image_dict[chan], threshold=threshold, how=how)
         img = img_2_grey(img)
         img = np.where(img > 100, 255, 0)
-        ax.imshow(img, cmap=cmap_img[index], origin=origin, alpha=alphas[index])
+
+        # resize img according to bin size - so that pixel size same in x and y
+        h_old, w_old = img.shape
+        img = resize(img,(h_old*bin_sizes[1]/bin_sizes[0],w_old))
+        segmentation = resize(segmentation,(h_old*bin_sizes[1]/bin_sizes[0],w_old))
+        img = img[0:h_old,0:w_old]
+        segmentation = segmentation[0:h_old,0:w_old]
+
+        ax.imshow(
+            img, cmap=cmap_img[index], origin=origin, alpha=alphas[index]
+        )  # cmap=cmap_list[index]
         # x,y scale bars
-        x = [25, 75]
-        y = [25, 25]
+        x = [15, 115]
+        y = [465, 465]
         ax.plot(x, y, color="w", lw=3)
         ax.text(
-            25,
-            5,
-            f"{bin_sizes[0]*50:.0f}nm",
-            fontsize=15,
+            35,
+            490,
+            f"{bin_sizes[0]*100/1000:.0f}\u03BCm",
+            fontsize=25,
             color="w",
-            bbox={"facecolor": "black", "edgecolor": "none", "pad": 2, "alpha": 0.4},
-        )
-        x = [25, 25]
-        y = [25, 75]
-        ax.plot(x, y, color="w", lw=3)
-        ax.text(
-            5,
-            25,
-            f"{bin_sizes[1]*50:.0f}nm",
-            rotation="vertical",
-            fontsize=15,
-            color="w",
-            bbox={"facecolor": "black", "edgecolor": "none", "pad": 2, "alpha": 0.4},
+            bbox={"facecolor": "black", "edgecolor": "none", "pad": 2, "alpha": 0.7},
         )
         ax.set_axis_off()
+        # cmap = plt.cm.get_cmap(cmap_list[index]) # legend creation
+
         # legend creation
-        cmap = plt.cm.get_cmap(cmap_img[index])
-        patches.append(mpatches.Patch(color=cmap(255), label=f"Chan {chan}"))
-    plt.legend(
-        handles=patches,
-        bbox_to_anchor=(0.8, 1),
-        loc=2,
-        borderaxespad=0.0,
-        prop={"size": 15},
-    )
-    plt.imshow(segmentation, cmap=cmap_seg, alpha=0.3, origin=origin)
+        #cmap = plt.cm.get_cmap(cmap_img[index])
+        #patches.append(mpatches.Patch(color=cmap(255), label=f"Chan {chan}"))
+        #plt.legend(
+        #    handles=patches,
+        #    bbox_to_anchor=(0.8, 1),
+        #    loc=2,
+        #    borderaxespad=0.0,
+        #    prop={"size": 15},
+        #)
+
+    alphas = np.where(segmentation>0, alpha_seg, 0).astype(float)
+    alphas = .3
+    plt.imshow(segmentation, cmap=cmap_seg, alpha=alphas, origin=origin)
 
     if save:
         if save_loc is None:
