@@ -11,6 +11,10 @@ def visualise_seg_item(item, column):
     Where column is the column the histogram values are 
     in
 
+    Note that as not every pixel will contain localisations
+    there may be pixels which get set to zero.
+
+
     Args:
         item (datastruc.item) : This contains the
             df and the labels to visualise.
@@ -18,7 +22,7 @@ def visualise_seg_item(item, column):
 
     """
 
-    gt_labels = item.df.select(pl.col(column)).to_numpy()
+    labels = item.df.select(pl.col(column)).to_numpy()
     x_pixels = item.df.select(pl.col("x_pixel")).to_numpy()
     y_pixels = item.df.select(pl.col("y_pixel")).to_numpy()
 
@@ -27,6 +31,6 @@ def visualise_seg_item(item, column):
 
     histo = np.empty((histo_width, histo_height))
 
-    histo[x_pixels, y_pixels] = gt_labels
+    histo[x_pixels, y_pixels] = labels
 
     return histo
