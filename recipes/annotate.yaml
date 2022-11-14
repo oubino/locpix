@@ -5,6 +5,9 @@ x_bins: 500
 y_bins: 500
 z_bins: None
 
+# Bin size
+bin_size: [50, 50]
+
 # Dimensions of the data either 2 or 3
 dim: 2
 

@@ -114,6 +114,7 @@ class item:
     def coord_2_histo(
         self,
         histo_size,
+        bin_size,
         cmap=["Greens", "Reds", "Blues", "Purples"],
         vis_interpolation="linear",
     ):
@@ -136,21 +137,24 @@ class item:
         df_min = self.df.min()
 
         if self.dim == 2:
-            x_bins, y_bins = histo_size
+            # x_bins, y_bins = histo_size
             x_max = df_max["x"][0]
             y_max = df_max["y"][0]
             x_min = df_min["x"][0]
             y_min = df_min["y"][0]
         elif self.dim == 3:
-            x_bins, y_bins, z_bins = histo_size
+            # x_bins, y_bins, z_bins = histo_size
             z_max = df_max["z"][0]
             z_min = df_min["z"][0]
 
         # if instead want desired bin size e.g. 50nm, 50nm, 50nm
         # number of bins required for desired bin_size
-        # x_bins = int((self.max['x'] - self.min['x']) / bin_size[0])
-        # y_bins = int((self.max['y'] - self.min['y']) / bin_size[1])
-        # z_bins = int((self.max['z'] - self.min['z']) / bin_size[2])
+        x_bins = int((x_max - x_min) / bin_size[0])
+        y_bins = int((y_max - y_min) / bin_size[1])
+        #z_bins = int((z_max - z_min) / bin_size[2])
+
+        print(bin_size)
+        print(x_bins)
 
         # size of actual bins, given the number of bins (should be
         # very close to desired tests size)

@@ -43,12 +43,13 @@ if __name__ == "__main__":
     else:
         raise ValueError("Dim should be 2 or 3")
 
+    bin_size = config["bin_size"]
     for file in files:
         item = datastruc.item(None, None, None, None)
         item.load_from_parquet(os.path.join(config["input_folder"], file))
 
         # coord2histo
-        item.coord_2_histo(histo_size, vis_interpolation=config["vis_interpolation"])
+        item.coord_2_histo(histo_size, bin_size, vis_interpolation=config["vis_interpolation"])
 
         # manual segment
         item.manual_segment()

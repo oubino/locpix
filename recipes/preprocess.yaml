@@ -24,12 +24,5 @@ drop_pixel_col: False
 
 # files to exclude
 exclude_files:
-  Fov1
-  Fov2
-  Fov3
-  Fov5
-  Fov6
-  Fov7
-  Fov8
-  Fov9
-  Fov10
+  - foo
+
