@@ -339,3 +339,25 @@ For more on mIOU see http://www.semantic-kitti.org/tasks.html#semseg)
 We also produce ROC curves and precision-recall curves - where the latter is usually favoured in cases of imbalanced datasets, which we have here.
 
 Similarly to above, we aggregate all the localisations into one aggregated test dataset and evaluate the precision and recall for all of these localisations. 
+
+## Development
+
+Sphinx documentation steps
+
+Ran
+
+```
+sphinx-quickstart docs
+```
+
+Choose yes for separate docs and src directories.
+
+Then followed:
+
+https://www.sphinx-doc.org/en/master/tutorial/automatic-doc-generation.html
+
+Before running
+
+```
+make html
+```

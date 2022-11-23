@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Ilastik segmentation module
 
 Process output of Ilastik
@@ -92,6 +93,8 @@ if __name__ == "__main__":
             channels=[0],
             threshold=config["vis_threshold"],
             how=config["vis_interpolate"],
+            blend_overlays=True,
+            alpha_seg=0.5,
             origin="upper",
             save=True,
             save_loc=save_loc,

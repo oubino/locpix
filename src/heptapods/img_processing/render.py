@@ -8,7 +8,7 @@ import polars as pl
 def visualise_seg_item(item, column):
     """Function for visualising the segmentation of
     a point cloud and saving
-    Where column is the column the histogram values are 
+    Where column is the column the histogram values are
     in
 
     Note that as not every pixel will contain localisations

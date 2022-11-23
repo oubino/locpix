@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Ilastik prep module
 
 Take in items and prepare for Ilastik

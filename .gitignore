@@ -72,5 +72,8 @@ misc/
 # Sandpit for testing functions etc
 sandpit/
 
-# Moddels
+# Models
 models/
+
+# Figures for paper
+paper_figures/

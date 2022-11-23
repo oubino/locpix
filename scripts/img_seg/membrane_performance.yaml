@@ -15,6 +15,9 @@ test_files:
 # which to maximise (recall or f)
 maximise_choice: 'f'
 
+# input histo folder
+input_histo_folder: 'output/preprocessed/histos'
+
 # location of gt labelled file
 gt_files: 'output/preprocessed/annotated'
 
@@ -47,3 +50,15 @@ output_test_ilastik_pr: output/ilastik/membrane/test_pr
 output_metrics_classic: output/classic/membrane/metrics
 output_metrics_cellpose: output/cellpose/membrane/metrics
 output_metrics_ilastik: output/ilastik/membrane/metrics
+
+# where to save output confusion matrix
+output_conf_matrix_classic: output/classic/membrane/conf_matrix
+output_conf_matrix_cellpose: output/cellpose/membrane/conf_matrix
+output_conf_matrix_ilastik: output/ilastik/membrane/conf_matrix
+
+# where to save pr curves overalid
+output_overlay_pr_curves: output/overlaid_pr_curves/
+
+# membrane images
+vis_threshold: 0
+vis_interpolate: 'log2'

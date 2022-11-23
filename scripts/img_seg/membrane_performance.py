@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Module for evluating performance of membrane
 segmentation
 
@@ -20,11 +21,14 @@ import yaml
 import os
 import numpy as np
 from heptapods.preprocessing import datastruc
-from heptapods.visualise.performance import plot_pr_curve
+from heptapods.visualise.performance import plot_pr_curve, generate_conf_matrix
 import heptapods.evaluate.metrics as metrics
 from sklearn.metrics import precision_recall_curve, auc
 import polars as pl
 from datetime import datetime
+import matplotlib.pyplot as plt
+import pickle as pkl
+from heptapods.visualise import vis_img
 
 if __name__ == "__main__":
 
@@ -38,7 +42,13 @@ if __name__ == "__main__":
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
-    for method in ["classic", "cellpose", "ilastik"]:
+    fig_train, ax_train = plt.subplots()
+    fig_test, ax_test = plt.subplots()
+
+    linestyles = ["dashdot", "-", "--"]
+    methods = ["classic", "cellpose", "ilastik"]
+
+    for index, method in enumerate(methods):
 
         print(f"{method} ...")
 
@@ -49,6 +59,8 @@ if __name__ == "__main__":
         output_train_pr = config["output_train_" + method + "_pr"]
         output_test_pr = config["output_test_" + method + "_pr"]
         output_metrics = config["output_metrics_" + method]
+        output_overlay_pr_curves = config["output_overlay_pr_curves"]
+        output_conf_matrix = config["output_conf_matrix_" + method]
 
         # if output directory not present create it
         if not os.path.exists(output_df_folder):
@@ -75,9 +87,19 @@ if __name__ == "__main__":
             print("Making folder")
             os.makedirs(output_metrics)
 
+        # if output directory not present create it
+        if not os.path.exists(output_overlay_pr_curves):
+            print("Making folder")
+            os.makedirs(output_overlay_pr_curves)
+
+        # if output directory not present create it
+        if not os.path.exists(output_conf_matrix):
+            print("Making folder")
+            os.makedirs(output_conf_matrix)
+
         print("Train set...")
 
-        pred_list = np.array([])
+        prob_list = np.array([])
         gt_list = np.array([])
 
         for file in files:
@@ -101,10 +123,10 @@ if __name__ == "__main__":
 
             # get gt and predicted probability
             gt = merged_df.select(pl.col("gt_label")).to_numpy()
-            pred = merged_df.select(pl.col("prob")).to_numpy()
+            prob = merged_df.select(pl.col("prob")).to_numpy()
 
             # append to aggregated data set
-            pred_list = np.append(pred_list, pred)
+            prob_list = np.append(prob_list, prob)
             gt_list = np.append(gt_list, gt)
 
         # print("Sanity check... ")
@@ -112,12 +134,24 @@ if __name__ == "__main__":
         # print("pred", len(pred_list), pred_list)
 
         # calculate precision recall curve
-        pr, rec, pr_threshold = precision_recall_curve(gt, pred, pos_label=1)
+        gt_list = gt_list.flatten()
+        prob_list = prob_list.flatten()
+        pr, rec, pr_threshold = precision_recall_curve(gt_list, prob_list, pos_label=1)
         baseline = len(gt[gt == 1]) / len(gt)
 
         # plot pr curve
-        save_loc = os.path.join(output_train_pr, "pr_curve.png")
-        plot_pr_curve(pr, rec, baseline, save_loc)
+        save_loc = os.path.join(output_train_pr, "_curve.pkl")
+        plot_pr_curve(
+            ax_train,
+            method.capitalize(),
+            linestyles[index],
+            "darkorange",
+            pr,
+            rec,
+            baseline,
+            save_loc,
+            pickle=True,
+        )
 
         # calculate optimal threshold
         if config["maximise_choice"] == "recall":
@@ -143,8 +177,9 @@ if __name__ == "__main__":
             "threshold": threshold,
         }
 
-        pred_list = np.array([])
+        prob_list = np.array([])
         gt_list = np.array([])
+        pred_list = np.array([])
 
         # sanity check all have same gt label map
         gt_label_map = None
@@ -160,6 +195,11 @@ if __name__ == "__main__":
             item = datastruc.item(None, None, None, None)
             item.load_from_parquet(os.path.join(config["gt_files"], file))
 
+            # load in histograms
+            histo_loc = os.path.join(config["input_histo_folder"], item.name + ".pkl")
+            with open(histo_loc, "rb") as f:
+                histo = pkl.load(f)
+
             # load prob map
             img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
 
@@ -169,11 +209,7 @@ if __name__ == "__main__":
 
             # get gt and predicted probability
             gt = merged_df.select(pl.col("gt_label")).to_numpy()
-            pred = merged_df.select(pl.col("prob")).to_numpy()
-
-            # append to aggregated data set
-            pred_list = np.append(pred_list, pred)
-            gt_list = np.append(gt_list, gt)
+            prob = merged_df.select(pl.col("prob")).to_numpy()
 
             save_df = merged_df.select(
                 [
@@ -185,6 +221,13 @@ if __name__ == "__main__":
                 ]
             )
 
+            # append to aggregated data set
+            prob_list = np.append(prob_list, prob)
+            gt_list = np.append(gt_list, gt)
+            pred = save_df.select(pl.col("pred_label")).to_numpy()
+            pred_list = np.append(pred_list, pred)
+
+
             # assign save dataframe to item
             item.df = save_df
 
@@ -194,9 +237,26 @@ if __name__ == "__main__":
             )
 
             # also save image of predicted membrane
-            img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
             output_img = np.where(img_prob > threshold, 1, 0)
-            np.save(os.path.join(output_seg_imgs, item.name + ".npy"), output_img)
+            imgs = {key: value.T for key, value in histo.items()}
+
+            # consider only zero channel
+            save_loc = os.path.join(output_seg_imgs, item.name + ".png")
+            vis_img.visualise_seg(
+                imgs,
+                output_img,
+                item.bin_sizes,
+                channels=[0],
+                threshold=config["vis_threshold"],
+                how=config["vis_interpolate"],
+                origin="upper",
+                blend_overlays=False,
+                alpha_seg=0.8,
+                cmap_seg=["k", "y"],
+                save=True,
+                save_loc=save_loc,
+                four_colour=False,
+            )
 
             # sanity check all have same gt label map
             if gt_label_map is None:
@@ -209,17 +269,36 @@ if __name__ == "__main__":
         # print("pred", len(pred_list), pred_list)
 
         # calculate precision recall curve
-        pr, rec, pr_threshold = precision_recall_curve(gt, pred, pos_label=1)
+        gt_list = gt_list.flatten()
+        prob_list = prob_list.flatten()
+        pr, rec, pr_threshold = precision_recall_curve(gt_list, prob_list, pos_label=1)
         baseline = len(gt[gt == 1]) / len(gt)
 
+        # calculate confusion matrix
+        date = datetime.today().strftime("%H_%M_%d_%m_%Y")
+        saveloc = os.path.join(output_conf_matrix, f"conf_matrix_{date}.png")
+        classes = [item.gt_label_map[0], item.gt_label_map[1]]
+        pred_list = pred_list.flatten()
+        generate_conf_matrix(gt_list, pred_list, classes, saveloc) 
+        # could just use aggregated metric function to plot the confusion matrix
+
         # plot pr curve
-        save_loc = os.path.join(output_test_pr, "pr_curve.png")
-        plot_pr_curve(pr, rec, baseline, save_loc)
+        save_loc = os.path.join(output_test_pr, "_curve.pkl")
+        plot_pr_curve(
+            ax_test,
+            method.capitalize(),
+            linestyles[index],
+            "darkorange",
+            pr,
+            rec,
+            baseline,
+            save_loc,
+            pickle=True,
+        )
         pr_auc = auc(rec, pr)
         add_metrics = {"pr_auc": pr_auc}
 
         # metric calculations based on final prediction
-        date = datetime.today().strftime("%H_%M_%d_%m_%Y")
         save_loc = os.path.join(output_metrics, f"{date}.txt")
         metrics.aggregated_metric_calculation(
             output_df_folder,
@@ -228,3 +307,20 @@ if __name__ == "__main__":
             add_metrics=add_metrics,
             metadata=metadata,
         )
+
+    fig_train.tight_layout()
+    fig_test.tight_layout()
+
+    # get handles and labels
+    # handles_train, labels_train = ax_train.get_legend_handles_labels()
+    # handles_test, labels_test = ax_test.get_legend_handles_labels()
+
+    # specify order of items in legend
+    # order = [1,0,2]
+
+    # add legend to plot
+    # ax_train.legend([handles_train[idx] for idx in order],[methods[idx] for idx in order])
+    # ax_test.legend([handles_test[idx] for idx in order],[methods[idx] for idx in order])
+
+    fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
+    fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Annotate module
 
 Take in items, convert to histograms, annotate,
@@ -74,10 +75,12 @@ if __name__ == "__main__":
                 img_dict,
                 item.histo_mask.T,
                 item.bin_sizes,
-                item.channels,
+                channels=config["vis_channels"],
                 threshold=config["save_threshold"],
                 how=config["save_interpolate"],
                 alphas=config["alphas"],
+                blend_overlays=False,
+                alpha_seg=config["alpha_seg"],
                 cmap_img=None,
                 cmap_seg=config["cmap_seg"],
                 figsize=config["fig_size"],

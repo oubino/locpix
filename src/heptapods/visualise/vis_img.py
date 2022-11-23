@@ -82,7 +82,8 @@ def visualise_seg(
     threshold=0,
     how="linear",
     alphas=[1, 0.5, 0.2, 0.1],
-    alpha_seg=.8,
+    alpha_seg=0.8,
+    blend_overlays=False,
     cmap_img=None,
     cmap_seg=["m", "g", "lightsalmon", "r", "b"],
     figsize=(10, 10),
@@ -113,6 +114,7 @@ def visualise_seg(
             when plotting
         alphas (list) : List of alpha to be used in plt.imshow
         alpha_seg (float) : Value of alpha for segmentation
+        blend_overlays (bool) : Whether to blend img and seg
         cmap_img (list) : List of cmaps to plot images
             (transpose of histograms)
         cmap_seg (list) : List of cmaps to plot segmentations
@@ -164,10 +166,12 @@ def visualise_seg(
 
         # resize img according to bin size - so that pixel size same in x and y
         h_old, w_old = img.shape
-        img = resize(img,(h_old*bin_sizes[1]/bin_sizes[0],w_old))
-        segmentation = resize(segmentation,(h_old*bin_sizes[1]/bin_sizes[0],w_old))
-        img = img[0:h_old,0:w_old]
-        segmentation = segmentation[0:h_old,0:w_old]
+        img = resize(img, (h_old * bin_sizes[1] / bin_sizes[0], w_old))
+        segmentation = resize(
+            segmentation, (h_old * bin_sizes[1] / bin_sizes[0], w_old)
+        )
+        img = img[0:h_old, 0:w_old]
+        segmentation = segmentation[0:h_old, 0:w_old]
 
         ax.imshow(
             img, cmap=cmap_img[index], origin=origin, alpha=alphas[index]
@@ -188,18 +192,20 @@ def visualise_seg(
         # cmap = plt.cm.get_cmap(cmap_list[index]) # legend creation
 
         # legend creation
-        #cmap = plt.cm.get_cmap(cmap_img[index])
-        #patches.append(mpatches.Patch(color=cmap(255), label=f"Chan {chan}"))
-        #plt.legend(
+        # cmap = plt.cm.get_cmap(cmap_img[index])
+        # patches.append(mpatches.Patch(color=cmap(255), label=f"Chan {chan}"))
+        # plt.legend(
         #    handles=patches,
         #    bbox_to_anchor=(0.8, 1),
         #    loc=2,
         #    borderaxespad=0.0,
         #    prop={"size": 15},
-        #)
+        # )
 
-    alphas = np.where(segmentation>0, alpha_seg, 0).astype(float)
-    alphas = .3
+    if blend_overlays:
+        alphas = alpha_seg
+    elif blend_overlays is False:
+        alphas = np.where(segmentation > 0, alpha_seg, 0).astype(float)
     plt.imshow(segmentation, cmap=cmap_seg, alpha=alphas, origin=origin)
 
     if save:

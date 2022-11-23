@@ -1,6 +1,7 @@
-"""Classic segmentation module
+#!/usr/bin/env python
+"""Cellpose segmentation module
 
-Take in items and segment using classic methods
+Take in items and segment using Cellpose methods
 """
 
 import yaml
@@ -10,12 +11,13 @@ from heptapods.visualise import vis_img
 from heptapods.img_processing import watershed
 import numpy as np
 import pickle as pkl
+from cellpose import models
 
 
 if __name__ == "__main__":
 
     # load yaml
-    with open("recipes/img_seg/classic.yaml", "r") as ymlfile:
+    with open("recipes/img_seg/cellpose.yaml", "r") as ymlfile:
         config = yaml.safe_load(ymlfile)
 
     # list items
@@ -43,29 +45,33 @@ if __name__ == "__main__":
         item = datastruc.item(None, None, None, None)
         item.load_from_parquet(os.path.join(config["input_folder"], file))
 
-        print("bin sizes", item.bin_sizes)
-
         # load in histograms
         histo_loc = os.path.join(config["input_histo_folder"], item.name + ".pkl")
         with open(histo_loc, "rb") as f:
             histo = pkl.load(f)
 
         # ---- segment membranes ----
+
         if config["sum_chan"] is False:
             img = histo[0].T  # consider only the zero channel
         elif config["sum_chan"] is True:
             img = histo[0].T + histo[1].T
         else:
             raise ValueError("sum_chan should be true or false")
-        log_img = vis_img.manual_threshold(
+        img = vis_img.manual_threshold(
             img, config["vis_threshold"], how=config["vis_interpolate"]
         )
-        grey_log_img = vis_img.img_2_grey(log_img)  # convert img to grey
-        grey_img = vis_img.img_2_grey(img)  # convert img to grey
+        imgs = [img]
+        model = models.CellposeModel(model_type=config["model"])
+        channels = config["channels"]
+        # note diameter is set here may want to make user choice
+        # doing one at a time (rather than in batch) like this might be very slow
+        _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
+        semantic_mask = flows[0][2]
 
-        # img mask
-        semantic_mask = (grey_log_img - np.min(grey_log_img)) / (
-            np.max(grey_log_img) - np.min(grey_log_img)
+        # convert mask (probabilities) to range 0-1
+        semantic_mask = (semantic_mask - np.min(semantic_mask)) / (
+            np.max(semantic_mask) - np.min(semantic_mask)
         )
 
         # ---- segment cells ----
@@ -80,7 +86,7 @@ if __name__ == "__main__":
 
         # tested very small amount annd line below is better than doing watershed on grey_log_img
         instance_mask = watershed.watershed_segment(
-            grey_img, coords=markers
+            semantic_mask, coords=markers
         )  # watershed on the grey image
 
         # ---- save ----
@@ -100,7 +106,7 @@ if __name__ == "__main__":
         )
 
         # save cell segmentation image - consider only zero channel
-        imgs = {key: value.T for key, value in histo.items()}
+        imgs = {key: value.T for (key, value) in histo.items()}
         save_loc = os.path.join(config["output_cell_img"], item.name + ".png")
         vis_img.visualise_seg(
             imgs,
@@ -109,6 +115,8 @@ if __name__ == "__main__":
             channels=[0],
             threshold=config["vis_threshold"],
             how=config["vis_interpolate"],
+            blend_overlays=True,
+            alpha_seg=0.5,
             origin="upper",
             save=True,
             save_loc=save_loc,

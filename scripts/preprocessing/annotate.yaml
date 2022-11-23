@@ -40,6 +40,8 @@ save_interpolate: 'log2'
 background_one_colour: True
 four_colour: True
 alphas: [1,.5,.2,.1]
-cmap_seg: ["m", "g", "lightsalmon", "r", "b"]
+alpha_seg: .8
+cmap_seg: ["k", "y"]
 fig_size: [10,10]
 output_seg_folder: 'output/preprocessed/seg_imgs'
+vis_channels: [0]
