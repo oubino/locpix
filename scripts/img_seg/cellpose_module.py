@@ -17,7 +17,7 @@ from cellpose import models
 if __name__ == "__main__":
 
     # load yaml
-    with open("recipes/img_seg/cellpose.yaml", "r") as ymlfile:
+    with open("scripts/img_seg/cellpose.yaml", "r") as ymlfile:
         config = yaml.safe_load(ymlfile)
 
     # list items
@@ -67,6 +67,9 @@ if __name__ == "__main__":
         # note diameter is set here may want to make user choice
         # doing one at a time (rather than in batch) like this might be very slow
         _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
+        # flows[0] as we have only one image so get first flow
+        # flows[0][2] as this is the probability see 
+        # (https://cellpose.readthedocs.io/en/latest/api.html)
         semantic_mask = flows[0][2]
 
         # convert mask (probabilities) to range 0-1

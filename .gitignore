@@ -44,7 +44,7 @@ eggs/
 #docs/_build/
 
 # Environments
-.env
+*.env
 #.venv
 #env/
 #venv/

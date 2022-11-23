@@ -14,6 +14,8 @@ You will need anaconda/miniconda or mamba.
 Setup
 -----
 
+This needs to change now have options
+
 For security reasons we use a .env file to store the path to the data, this is ignored by Git by default.
 
 Therefore, you should add a file called .env to the top level (i.e. same level as License, Makefile, Readme.md,...).
@@ -53,6 +55,8 @@ pytest -s
 
 Running the code
 ----------------
+
+This needs to change as now have inputs or gui for loading in
 
 All the code to run can be found in recipes.
 

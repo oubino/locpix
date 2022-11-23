@@ -11,25 +11,32 @@ from heptapods.preprocessing import functions
 import argparse
 import tkinter as tk
 from tkinter import filedialog
+from . import preprocess_config
 
 if __name__ == "__main__":
 
     # load path of .csv 
     parser = argparse.ArgumentParser(description='Preprocess the data for\
         further processing')
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-e', '--env', action='store_true',
-                        help='whether to take in .env file for data path')
-    group.add_argument('-g', '--gui', action='store_true',
+    data_group = parser.add_mutually_exclusive_group()
+    data_group.add_argument('-e', '--env', action='store', type=str,
+                        help='location of .env file for data path')
+    data_group.add_argument('-g', '--gui', action='store_true',
                         help='whether to use gui to get data path')
-    group.add_argument('-f', '--folder', action='store', type=str,
+    data_group.add_argument('-f', '--folder', action='store', type=str,
                         help='path for the data folder')
-    parser.add_argument('-c', '--check', action='store_true',
-                        help='whether to check csvs')
-
+    parser.add_argument('-s', '--sanitycheck', action='store_true',
+                        help='whether to check correct csvs loaded in')
+    config_group = parser.add_mutually_exclusive_group()
+    config_group.add_argument('-c', '--config', action='store', type=str,
+                        help='the location of the .yaml configuaration file\
+                             for preprocessing')
+    config_group.add_argument('-cg', '--configgui', action='store_true',
+                        help='whether to use gui to get the configuration')
+    
     args = parser.parse_args()
     
-    if args.env:
+    if args.env is not None:
         dotenv_path = ".env"
         dotenv.load_dotenv(dotenv_path)
         csv_path = os.getenv("RAW_DATA_PATH")
@@ -39,16 +46,20 @@ if __name__ == "__main__":
         root.withdraw()
         csv_path = filedialog.askdirectory()
 
-    elif args.folder:
+    elif args.folder is not None:
         csv_path = args.folder
 
     # list all .csv in this location
     csvs = os.listdir(csv_path)
     csvs = [csv for csv in csvs if csv.endswith(".csv")]
 
-    # load yaml
-    with open("scripts/preprocessing/preprocess.yaml", "r") as ymlfile:
-        config = yaml.safe_load(ymlfile)
+    if args.config is not None:
+        # load yaml
+        with open(args.config, "r") as ymlfile:
+            config = yaml.safe_load(ymlfile)
+            preprocess_config.parse_config(config)
+    elif args.configgui:
+        preprocess_config.config_gui('output/preprocess/preprocess.yaml')
 
     # remove excluded files
     csvs = [
@@ -58,7 +69,7 @@ if __name__ == "__main__":
     # check with user
     print('List of csvs wich will be processed')
     print(csvs)
-    if args.check:
+    if args.sanitycheck:
         check = input('If you are happy with these csvs type YES: ')
         if check != 'YES':
             exit()
