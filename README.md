@@ -1,7 +1,36 @@
-Analysis of histograms/images of the SMLM data. 
-Including: Classical methods, Cellpose and Ilastik
+Overview
+--------
+
+This package/repository provides a pipeline for analysing SMLM data.
+
+This includes:
+1. Converting .csv files representing SMLM data (point cloud) into histograms
+2. Manually annotating these histograms to extract relevant localisations
+3. Utilising Classic method, Cellpose and Ilastik to segment the histograms to extract relevant localisations
+4. Performance metrics calculation based on the localisations (not the histograms!)
 
 Project organisation
+--------------------
+
+To first use this code you will need the prerequisites detailed below, see "Prerequisites".
+
+Once these are satisfied you will need to "Setup" detailed below.
+
+To run the code see "Running the Code" below.
+
+If you are
+
+1. a novice coder, please follow "Beginner" steps.
+2. an experienced coder, please follow "Advanced" steps.
+3. developing the code, please follow "Developer" steps.
+
+Please note that the difference between "Beginner" and "Advanced", is that in "Beginner" we use gui whereas in advanced we run in headless mode.
+By running in headless mode, we can often be quicker to set up the code and allows for running on a hpc. 
+
+All the code to run analysis can be found in src/locpix/scripts while all the library code is in the other folders under src/locpix
+
+
+Directory structure
 --------------------
 
 Fill in 
@@ -9,10 +38,157 @@ Fill in
 Prerequisites
 ----------
 
+### Beginner
+-------------------
+
+If you do not have anaconda installed please go to https://www.anaconda.com/ and install anaconda.
+
+If you already have anaconda installed move on to setup!
+
+Note this will be different if you are using linux, we make the potentially optimistic assumption that linux users will likely not need further details, but if you are a "Beginner" linux user please send a message or raise an issue and we will insert some instructions for linux users.
+
+### Advanced
+-------------------
+
 You will need anaconda/miniconda or mamba.
+
+We recommend mamba, though take care as mamba recommends fresh install without anaaconda.
 
 Setup
 -----
+
+### Beginner
+-------------------
+
+Anaconda helps keep all the python packages and code in one contained environment.
+We therefore create this environment (called locpix-env) and install python 3.10 in it.
+We then activate this environment (we can have multiple environments therefore we need to make sure to activate the one we want to be in)
+We can then install the locpixc code in this environment
+
+To do this we need to open up Anaconda powershell, we can do this by searching on our computer for this application.
+
+Type into the search bar "Anaconda powershell" and open it.
+
+A terminal should appear.
+
+In this terminal we need to navigate to where we want to do our work.
+We don't strictly need to be in this folder to proceed, but it will make our lives easier late.
+Therefore, we should cd to the working directory we want to be in to do the analysis.
+
+If this is unfamiliar to you please watch https://www.youtube.com/watch?v=TQqJD-v6glE
+
+Assume for example on my computer I have folder working_directory under C:\Users\Louise and my current working directory is C:\Users\Louise I would write in my Anaconda powershell
+
+```
+cd working_directory
+```
+
+Then enter the following three commands in the Anaconda powershell
+
+```
+conda create -n locpix-env python==3.10
+conda activate locpix
+pip install locpix
+```
+
+### Advanced
+-------------------
+
+You can either pip install the code inside a fresh environment as detailed above or install it inside a pre-existing environment.
+
+Alternatively you can clone this repository and install it.
+
+To do this we first need to change directory to the folder we want to be in (cd into the required directory in your terminal).
+Then clone the repository
+
+```
+git clone https://github.com/oubino/locpix
+```
+
+Then move into the directory and install it
+
+```
+cd locpix
+pip install .
+```
+
+We should then check the install was successful by running tests
+
+```
+pip install pytest
+pytest -s
+```
+
+### Developer
+-------------------
+
+To develop the code clone this repository and we recommend installing an editable version, using the follow commands
+
+```
+git clone https://github.com/oubino/locpix
+```
+
+Then move into the directory and install it using an editable version
+
+```
+cd locpix
+pip install -e .
+```
+
+We should then check the install was successful by running tests
+
+```
+pip install pytest
+pytest -s
+```
+
+Running the code
+----------------
+
+Describe flags and gui for each
+
+### Basics
+
+
+#### Beginner
+-------------------
+
+To run analysis we need to define the configuration for our analysis, when we do this we will save this configuration, in case we want to use this later.
+
+This configuration will be saved to a .yaml file.
+
+Each part of the analysis has an associated python script and .yaml file 
+
+#### Advanced
+-------------------
+
+The scripts to perform analysis can be found in
+
+```
+src/locpix/scripts
+```
+
+while the library code is located in the other folders in 
+
+```
+src/locpix
+```
+
+Each script has an associated .yaml file which defines the configuration for the script. 
+
+### Preprocess the data
+
+#### Beginner
+-------------------
+
+In the anaconda powershell write
+
+```
+preprocess -g -cg
+```
+
+#### Advanced
+-------------------
 
 For security reasons we use a .env file to store the path to the data, this is ignored by Git by default.
 
@@ -26,53 +202,16 @@ RAW_DATA_PATH = path/to/data_folder
 Note that your directory CANNOT HAVE SPACES IN THE NAME i.e. if your directory is named "data/my data folder/" it will not work - you should rename your directory on your computer to something like "data/my_data_folder/"
 
 This will assume all your .csv files are in data_folder - note the paths are normally taken as relative to the .env file - so this may take some fiddling around to get it correct (alternatively copy your data_folder folder into /data then the path would be = data/data_folder)
-
-Create a new environment and activate it
-
-```
-conda create -n heptapods_img python==3.10
-conda activate heptapods_img
-```
-
-Navigate to where you want this code repository.
-
-Then clone this repository; move into it and install 
+Describe the flags and .env file
 
 ```
-git clone git clone https://github.com/oubino/heptapods_img
-cd heptapods_img
-pip install .
-```
-
-Run tests 
-
-```
-pip install pytest
-pytest -s
-```
-
-Running the code
-----------------
-
-All the code to run can be found in recipes.
-
-Each recipe has a .yaml file 
-
-This .yaml file specifies the recipe's configuration - and so should be amended before running each recipe!
-
-Make sure you are located in the github directory
-
-Preprocess the data
--------------------
-
-```
-python recipes/preprocess.py
+preprocess
 ```
 
 Manually segment data
 ---------------------
 ```
-python recipes/annotate.py
+annotate
 ```
 
 Get markers
@@ -339,3 +478,25 @@ For more on mIOU see http://www.semantic-kitti.org/tasks.html#semseg)
 We also produce ROC curves and precision-recall curves - where the latter is usually favoured in cases of imbalanced datasets, which we have here.
 
 Similarly to above, we aggregate all the localisations into one aggregated test dataset and evaluate the precision and recall for all of these localisations. 
+
+## Development
+
+Sphinx documentation steps
+
+Ran
+
+```
+sphinx-quickstart docs
+```
+
+Choose yes for separate docs and src directories.
+
+Then followed:
+
+https://www.sphinx-doc.org/en/master/tutorial/automatic-doc-generation.html
+
+Before running
+
+```
+make html
+```

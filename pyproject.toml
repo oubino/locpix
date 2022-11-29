@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 where = ["src"]  
 
 [project]
-name = "heptapods_img"
+name = "locpix"
 version = "0.0.1"
 authors = [
   { name="Oliver Umney", email="scou@leeds.ac.uk" },
@@ -29,8 +29,17 @@ dependencies = [
     "pyarrow",
     "scikit-learn",
     "python-dotenv",
-
 ]
+
+[project.scripts]
+preprocess = "locpix.scripts.preprocessing.preprocess:main"
+annotate = "locpix.scripts.preprocessing.annotate:main"
+get_markers = "locpix.scripts.img_seg.get_markers:main"
+classic = "locpix.scripts.img_seg.classic:main"
+cellpose = "locpix.scripts.img_seg.cellpose_module:main"
+ilastik_prep = "locpix.scripts.img_seg.ilastik_prep:main"
+ilastik_output = "locpix.scripts.img_seg.ilastik_output:main"
+membrane_performance = "locpix.scripts.img_seg.membrane_performance:main"
 
 [project.urls]
 "Homepage" = "https://github.com/oubino/heptapods_img"

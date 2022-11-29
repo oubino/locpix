@@ -1,0 +1,38 @@
+# The following are the names of the 
+# x column, y column, z column if present, channel, frame,
+# in the csvs being processed
+x_col: 'X (nm)'
+y_col: 'Y (nm)'
+z_col: null
+channel_col: 'Channel'
+frame_col: 'Frame'
+
+# The number of dimensions to consider
+# If 2 only deals with x and y 
+# If 3 will read in and deal with z as well (currently not fully supported)
+dim: 2
+
+output_folder: 'output/preprocess/no_gt_label'
+
+# choice of which channels user wants to consider
+# if null considers all
+channel_choice: null
+
+# whether to not drop the column containing
+# pixel
+drop_pixel_col: False
+
+# files to exclude
+exclude_files:
+  Fov1
+  Fov2
+  Fov3
+  Fov5
+  Fov6
+  Fov7
+  Fov8
+  Fov9
+  Fov10
+
+# yaml save location
+yaml_save_loc: output/preprocess/preprocess.yaml
