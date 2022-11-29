@@ -12,18 +12,28 @@ import pickle as pkl
 import argparse
 from locpix.scripts.img_seg import ilastik_prep_config
 
+
 def main():
 
-    parser = argparse.ArgumentParser(description='Ilastik prep')
+    parser = argparse.ArgumentParser(description="Ilastik prep")
     config_group = parser.add_mutually_exclusive_group(required=True)
-    config_group.add_argument('-c', '--config', action='store', type=str,
-                        help='the location of the .yaml configuaration file\
-                             for ilastik prep')
-    config_group.add_argument('-cg', '--configgui', action='store_true',
-                        help='whether to use gui to get the configuration')
-    
+    config_group.add_argument(
+        "-c",
+        "--config",
+        action="store",
+        type=str,
+        help="the location of the .yaml configuaration file\
+                             for ilastik prep",
+    )
+    config_group.add_argument(
+        "-cg",
+        "--configgui",
+        action="store_true",
+        help="whether to use gui to get the configuration",
+    )
+
     args = parser.parse_args()
-    
+
     if args.config is not None:
         # load yaml
         with open(args.config, "r") as ymlfile:
@@ -64,6 +74,7 @@ def main():
         file_name = file.removesuffix(".pkl")
         save_loc = os.path.join(config["output_folder"], file_name + ".npy")
         np.save(save_loc, img)
+
 
 if __name__ == "__main__":
     main()

@@ -7,7 +7,17 @@ Including:
 Creating a GUI for user to choose configuration
 Parsing config file to check all specified"""
 
-from PyQt5.QtWidgets import QLabel, QApplication, QWidget, QHBoxLayout, QMessageBox, QLineEdit, QFormLayout, QCheckBox, QListWidget
+from PyQt5.QtWidgets import (
+    QLabel,
+    QApplication,
+    QWidget,
+    QHBoxLayout,
+    QMessageBox,
+    QLineEdit,
+    QFormLayout,
+    QCheckBox,
+    QListWidget,
+)
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 
 default_config_keys = [
@@ -23,6 +33,7 @@ default_config_keys = [
     "yaml_save_loc",
 ]
 
+
 class InputWidget(QWidget):
     """Input
     Widget to take in user configuration
@@ -30,7 +41,7 @@ class InputWidget(QWidget):
     Args:
         None
     Attributes:
-       
+
     """
 
     def __init__(self, config):
@@ -51,11 +62,15 @@ class InputWidget(QWidget):
         self.input_histo_folder.setToolTip("Input folder for histograms")
         self.flo.addRow("Histo folder", self.input_histo_folder)
 
-        self.input_membrane_prob = QLineEdit("output/ilastik/ilastik_output/membrane/prob_map_unprocessed")
+        self.input_membrane_prob = QLineEdit(
+            "output/ilastik/ilastik_output/membrane/prob_map_unprocessed"
+        )
         self.input_membrane_prob.setToolTip("Membrane prob mask - this is from ilastik")
         self.flo.addRow("Membrane prob map", self.input_membrane_prob)
 
-        self.input_cell_mask = QLineEdit("output/ilastik/ilastik_output/cell/ilastik_output_mask")
+        self.input_cell_mask = QLineEdit(
+            "output/ilastik/ilastik_output/cell/ilastik_output_mask"
+        )
         self.input_cell_mask.setToolTip("Input cell mask")
         self.flo.addRow("Input cell mask", self.input_cell_mask)
 
@@ -84,29 +99,29 @@ class InputWidget(QWidget):
 
         # yaml save loc
         self.save_loc_input = QLineEdit("output/ilastik/output/ilastik_output.yaml")
-        self.save_loc_input.setToolTip('Yaml save location')
+        self.save_loc_input.setToolTip("Yaml save location")
         self.flo.addRow("yaml save location", self.save_loc_input)
 
         self.setLayout(self.flo)
-        
+
         self.config = config
 
     def set_config(self, config):
         """Set the configuration file
-        
+
         Args:
             config (dictionary) : Configuration dict"""
 
-        config['input_folder'] = self.input_folder.text()
-        config['input_histo_folder'] = self.input_histo_folder.text()
-        config['input_membrane_prob'] = self.input_membrane_prob.text()
-        config['input_cell_mask'] = self.input_cell_mask.text()
-        config['output_membrane_prob'] = self.output_membrane_prob.text()
-        config['output_cell_df'] = self.output_cell_df.text()
-        config['output_cell_img'] = self.output_cell_img.text()
-        config['vis_threshold'] = self.vis_threshold
-        config['vis_interpolate'] = self.vis_interpolate.selectedItems()[0].text()
-        config['yaml_save_loc'] = self.save_loc_input.text()
+        config["input_folder"] = self.input_folder.text()
+        config["input_histo_folder"] = self.input_histo_folder.text()
+        config["input_membrane_prob"] = self.input_membrane_prob.text()
+        config["input_cell_mask"] = self.input_cell_mask.text()
+        config["output_membrane_prob"] = self.output_membrane_prob.text()
+        config["output_cell_df"] = self.output_cell_df.text()
+        config["output_cell_img"] = self.output_cell_img.text()
+        config["vis_threshold"] = self.vis_threshold
+        config["vis_interpolate"] = self.vis_interpolate.selectedItems()[0].text()
+        config["yaml_save_loc"] = self.save_loc_input.text()
 
         # check config is correct
         parse_config(config)
@@ -136,13 +151,13 @@ def config_gui():
     """Config gui
     This function opens up a GUI for user to specify
     the configuration
-    List of files files can then be unchecked if users want to ignore 
-    
+    List of files files can then be unchecked if users want to ignore
+
     Attributes:
         save_loc(string): Where to save the output
             .yaml file for the configuration
         files (list): List of files to be preprocessed"""
-    
+
     app = QApplication([])  # sys.argv if need command line inputs
     # create widget
     config = {}
@@ -151,17 +166,19 @@ def config_gui():
     app.exec()
     return config
 
+
 def parse_config(config):
     """Parse config
     This function takes in the configuration .yaml
-    file and checks all the necessary arguments are 
+    file and checks all the necessary arguments are
     specified
-    
+
     Attributes:
         config (yml file): The configuration
             .yaml file"""
-    
-    if sorted(config.keys()) != sorted(default_config_keys):
-        raise ValueError("Did not specify necessary default \
-            configutation arguments")
 
+    if sorted(config.keys()) != sorted(default_config_keys):
+        raise ValueError(
+            "Did not specify necessary default \
+            configutation arguments"
+        )

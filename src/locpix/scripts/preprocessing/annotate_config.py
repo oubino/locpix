@@ -7,7 +7,17 @@ Including:
 Creating a GUI for user to choose configuration
 Parsing config file to check all specified"""
 
-from PyQt5.QtWidgets import QLabel, QApplication, QWidget, QHBoxLayout, QMessageBox, QLineEdit, QFormLayout, QCheckBox, QListWidget
+from PyQt5.QtWidgets import (
+    QLabel,
+    QApplication,
+    QWidget,
+    QHBoxLayout,
+    QMessageBox,
+    QLineEdit,
+    QFormLayout,
+    QCheckBox,
+    QListWidget,
+)
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 
 default_config_keys = [
@@ -34,8 +44,8 @@ default_config_keys = [
     "output_seg_folder",
     "vis_channels",
     "yaml_save_loc",
-
 ]
+
 
 class InputWidget(QWidget):
     """Input
@@ -44,7 +54,7 @@ class InputWidget(QWidget):
     Args:
         None
     Attributes:
-       
+
     """
 
     def __init__(self, config):
@@ -59,27 +69,27 @@ class InputWidget(QWidget):
 
         self.x_bins = QLineEdit("500")
         self.x_bins.setValidator(QIntValidator())
-        self.x_bins.setToolTip('Number of bins in x dimension')
+        self.x_bins.setToolTip("Number of bins in x dimension")
         self.flo.addRow("X bins", self.x_bins)
 
         self.y_bins = QLineEdit("500")
         self.y_bins.setValidator(QIntValidator())
-        self.y_bins.setToolTip('Number of bins in y dimension')
+        self.y_bins.setToolTip("Number of bins in y dimension")
         self.flo.addRow("Y bins", self.y_bins)
 
         self.z_bins = QLineEdit("500")
         self.z_bins.setValidator(QIntValidator())
-        self.z_bins.setToolTip('Number of bins in z dimension')
+        self.z_bins.setToolTip("Number of bins in z dimension")
         self.flo.addRow("Z bins", self.z_bins)
 
         self.dim = QLineEdit("2")
         self.dim.setValidator(QIntValidator())
-        self.dim.setToolTip('Dimensions of the data either 2 or 3')
+        self.dim.setToolTip("Dimensions of the data either 2 or 3")
         self.flo.addRow("Dimensions", self.dim)
 
         self.plot = QCheckBox()
         self.plot.setChecked(True)
-        self.plot.setToolTip('Whether plot should occur to screen')
+        self.plot.setToolTip("Whether plot should occur to screen")
         self.flo.addRow("Plot", self.plot)
 
         self.vis_interpolation = QListWidget()
@@ -87,7 +97,9 @@ class InputWidget(QWidget):
         self.vis_interpolation.insertItem(1, "log10")
         self.vis_interpolation.insertItem(2, "linear")
         self.vis_interpolation.item(0).setSelected(True)
-        self.vis_interpolation.setToolTip("Interpolation applied to the histogram when visualising the image of the histogram")
+        self.vis_interpolation.setToolTip(
+            "Interpolation applied to the histogram when visualising the image of the histogram"
+        )
         self.flo.addRow("Vis interpolation", self.vis_interpolation)
 
         self.input_folder = QLineEdit("output/preprocess/no_gt_label")
@@ -103,19 +115,21 @@ class InputWidget(QWidget):
         self.flo.addRow("Output folder", self.output_folder)
 
         self.drop_zero_label = QCheckBox()
-        help = ("When saving annotations - you can choose to"
-                "not save the localisations associated with the background"
-                "which are assigned a label of zero")
+        help = (
+            "When saving annotations - you can choose to"
+            "not save the localisations associated with the background"
+            "which are assigned a label of zero"
+        )
         self.drop_zero_label.setToolTip(help)
         self.flo.addRow("Drop zero label", self.drop_zero_label)
 
         h_box = QHBoxLayout()
         zero_label = QLabel("0: ")
-        self.gt_label_map_zero = QLineEdit("background") 
+        self.gt_label_map_zero = QLineEdit("background")
         h_box.addWidget(zero_label)
         h_box.addWidget(self.gt_label_map_zero)
         one_label = QLabel("1: ")
-        self.gt_label_map_one = QLineEdit("membrane") 
+        self.gt_label_map_one = QLineEdit("membrane")
         h_box.addWidget(one_label)
         h_box.addWidget(self.gt_label_map_one)
         self.gt_label_map_zero.setToolTip("0 label in real terms")
@@ -149,22 +163,22 @@ class InputWidget(QWidget):
         h_box = QHBoxLayout()
         zero_alpha = QLabel("Alpha chan zero: ")
         self.alpha_zero = QLineEdit("1")
-        self.alpha_zero.setValidator(QDoubleValidator()) 
+        self.alpha_zero.setValidator(QDoubleValidator())
         h_box.addWidget(zero_alpha)
         h_box.addWidget(self.alpha_zero)
         one_alpha = QLabel("Alpha chan one: ")
         self.alpha_one = QLineEdit(".5")
-        self.alpha_one.setValidator(QDoubleValidator()) 
+        self.alpha_one.setValidator(QDoubleValidator())
         h_box.addWidget(one_alpha)
         h_box.addWidget(self.alpha_one)
         two_alpha = QLabel("Alpha chan two: ")
         self.alpha_two = QLineEdit(".2")
-        self.alpha_two.setValidator(QDoubleValidator()) 
+        self.alpha_two.setValidator(QDoubleValidator())
         h_box.addWidget(two_alpha)
         h_box.addWidget(self.alpha_two)
         three_alpha = QLabel("Alpha chan three: ")
         self.alpha_three = QLineEdit(".1")
-        self.alpha_three.setValidator(QDoubleValidator()) 
+        self.alpha_three.setValidator(QDoubleValidator())
         h_box.addWidget(three_alpha)
         h_box.addWidget(self.alpha_three)
         self.flo.addRow("Alphas", h_box)
@@ -197,7 +211,7 @@ class InputWidget(QWidget):
         h_box.addWidget(self.fig_size_y)
         self.flo.addRow("Fig size", h_box)
 
-        self.output_seg_folder = QLineEdit("output/annotate/seg_imgs") 
+        self.output_seg_folder = QLineEdit("output/annotate/seg_imgs")
         self.flo.addRow("Output seg folder", self.output_seg_folder)
 
         self.vis_channels = QListWidget()
@@ -206,48 +220,57 @@ class InputWidget(QWidget):
         self.vis_channels.insertItem(2, "2")
         self.vis_channels.insertItem(3, "3")
         self.vis_channels.setSelectionMode(2)
-        self.vis_channels.setToolTip('Choice of which channels user wants to view for seg')
+        self.vis_channels.setToolTip(
+            "Choice of which channels user wants to view for seg"
+        )
         self.vis_channels.item(0).setSelected(True)
         self.flo.addRow("Channels", self.vis_channels)
 
         # yaml save loc
         self.save_loc_input = QLineEdit("output/annotate/annotate.yaml")
-        self.save_loc_input.setToolTip('Yaml save location')
+        self.save_loc_input.setToolTip("Yaml save location")
         self.flo.addRow("yaml save location", self.save_loc_input)
 
         self.setLayout(self.flo)
-        
+
         self.config = config
 
     def set_config(self, config):
         """Set the configuration file
-        
+
         Args:
             config (dictionary) : Configuration dict"""
 
-        config['x_bins'] = self.x_bins
-        config['y_bins'] = self.y_bins
-        config['z_bins'] = self.z_bins
-        config['dim'] = self.dim
-        config['plot'] = self.plot.isChecked()
-        config['vis_interpolation'] = self.vis_interpolation.selectedItems()[0].text()
-        config['input_folder'] = self.input_folder.text()
-        config['histo_folder'] = self.histo_folder.text()
-        config['output_folder'] = self.output_folder.text()
-        config['drop_zero_label'] = self.drop_zero_label.isChecked()
-        config['gt_label_map'] = {0: self.gt_label_map_zero, 1: self.gt_label_map_one}
-        config['save_img'] = self.save_img.isChecked()
-        config['save_threshold'] = self.save_threshold
-        config['save_interpolate'] = self.save_interpolation.selectedItems()[0].text()
-        config['background_one_colour'] = self.background_one_colour.isChecked()
-        config['four_colour'] = self.four_colour.isChecked()
-        config['alphas'] = [self.alpha_zero, self.alpha_one, self.alpha_two, self.alpha_three]
-        config['alpha_seg'] = self.alpha_seg
-        config['cmap_seg'] = [self.zero_cmap, self.one_cmap]
-        config['fig_size'] = [self.fig_size_x, self.fig_size_y]
-        config['output_seg_folder'] = self.output_seg_folder
-        config['vis_channels'] = [item.text() for item in self.vis_channels.selectedItems()]
-        config['yaml_save_loc'] = self.save_loc_input.text()
+        config["x_bins"] = self.x_bins
+        config["y_bins"] = self.y_bins
+        config["z_bins"] = self.z_bins
+        config["dim"] = self.dim
+        config["plot"] = self.plot.isChecked()
+        config["vis_interpolation"] = self.vis_interpolation.selectedItems()[0].text()
+        config["input_folder"] = self.input_folder.text()
+        config["histo_folder"] = self.histo_folder.text()
+        config["output_folder"] = self.output_folder.text()
+        config["drop_zero_label"] = self.drop_zero_label.isChecked()
+        config["gt_label_map"] = {0: self.gt_label_map_zero, 1: self.gt_label_map_one}
+        config["save_img"] = self.save_img.isChecked()
+        config["save_threshold"] = self.save_threshold
+        config["save_interpolate"] = self.save_interpolation.selectedItems()[0].text()
+        config["background_one_colour"] = self.background_one_colour.isChecked()
+        config["four_colour"] = self.four_colour.isChecked()
+        config["alphas"] = [
+            self.alpha_zero,
+            self.alpha_one,
+            self.alpha_two,
+            self.alpha_three,
+        ]
+        config["alpha_seg"] = self.alpha_seg
+        config["cmap_seg"] = [self.zero_cmap, self.one_cmap]
+        config["fig_size"] = [self.fig_size_x, self.fig_size_y]
+        config["output_seg_folder"] = self.output_seg_folder
+        config["vis_channels"] = [
+            item.text() for item in self.vis_channels.selectedItems()
+        ]
+        config["yaml_save_loc"] = self.save_loc_input.text()
 
         # check config is correct
         parse_config(config)
@@ -277,13 +300,13 @@ def config_gui():
     """Config gui
     This function opens up a GUI for user to specify
     the configuration
-    List of files files can then be unchecked if users want to ignore 
-    
+    List of files files can then be unchecked if users want to ignore
+
     Attributes:
         save_loc(string): Where to save the output
             .yaml file for the configuration
         files (list): List of files to be preprocessed"""
-    
+
     app = QApplication([])  # sys.argv if need command line inputs
     # create widget
     config = {}
@@ -292,17 +315,19 @@ def config_gui():
     app.exec()
     return config
 
+
 def parse_config(config):
     """Parse config
     This function takes in the configuration .yaml
-    file and checks all the necessary arguments are 
+    file and checks all the necessary arguments are
     specified
-    
+
     Attributes:
         config (yml file): The configuration
             .yaml file"""
-    
-    if sorted(config.keys()) != sorted(default_config_keys):
-        raise ValueError("Did not specify necessary default \
-            configutation arguments")
 
+    if sorted(config.keys()) != sorted(default_config_keys):
+        raise ValueError(
+            "Did not specify necessary default \
+            configutation arguments"
+        )

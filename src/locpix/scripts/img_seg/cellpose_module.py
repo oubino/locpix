@@ -15,18 +15,28 @@ from cellpose import models
 import argparse
 from locpix.scripts.img_seg import cellpose_config
 
+
 def main():
 
-    parser = argparse.ArgumentParser(description='Cellpose')
+    parser = argparse.ArgumentParser(description="Cellpose")
     config_group = parser.add_mutually_exclusive_group(required=True)
-    config_group.add_argument('-c', '--config', action='store', type=str,
-                        help='the location of the .yaml configuaration file\
-                             for cellpose')
-    config_group.add_argument('-cg', '--configgui', action='store_true',
-                        help='whether to use gui to get the configuration')
-    
+    config_group.add_argument(
+        "-c",
+        "--config",
+        action="store",
+        type=str,
+        help="the location of the .yaml configuaration file\
+                             for cellpose",
+    )
+    config_group.add_argument(
+        "-cg",
+        "--configgui",
+        action="store_true",
+        help="whether to use gui to get the configuration",
+    )
+
     args = parser.parse_args()
-    
+
     if args.config is not None:
         # load yaml
         with open(args.config, "r") as ymlfile:
@@ -83,7 +93,7 @@ def main():
         # doing one at a time (rather than in batch) like this might be very slow
         _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
         # flows[0] as we have only one image so get first flow
-        # flows[0][2] as this is the probability see 
+        # flows[0][2] as this is the probability see
         # (https://cellpose.readthedocs.io/en/latest/api.html)
         semantic_mask = flows[0][2]
 
@@ -140,6 +150,7 @@ def main():
             save_loc=save_loc,
             four_colour=True,
         )
+
 
 if __name__ == "__main__":
     main()

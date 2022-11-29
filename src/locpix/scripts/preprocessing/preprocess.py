@@ -13,34 +13,57 @@ import tkinter as tk
 from tkinter import filedialog
 from locpix.scripts.preprocessing import preprocess_config
 
+
 def main():
 
-    # load path of .csv 
-    parser = argparse.ArgumentParser(description='Preprocess the data for\
-        further processing')
+    # load path of .csv
+    parser = argparse.ArgumentParser(
+        description="Preprocess the data for\
+        further processing"
+    )
     data_group = parser.add_mutually_exclusive_group(required=True)
-    data_group.add_argument('-e', '--env', action='store', type=str,
-                        help='location of .env file for data path')
-    data_group.add_argument('-g', '--gui', action='store_true',
-                        help='whether to use gui to get data path')
-    data_group.add_argument('-f', '--folder', action='store', type=str,
-                        help='path for the data folder')
-    parser.add_argument('-s', '--sanitycheck', action='store_true',
-                        help='whether to check correct csvs loaded in')
+    data_group.add_argument(
+        "-e",
+        "--env",
+        action="store",
+        type=str,
+        help="location of .env file for data path",
+    )
+    data_group.add_argument(
+        "-g", "--gui", action="store_true", help="whether to use gui to get data path"
+    )
+    data_group.add_argument(
+        "-f", "--folder", action="store", type=str, help="path for the data folder"
+    )
+    parser.add_argument(
+        "-s",
+        "--sanitycheck",
+        action="store_true",
+        help="whether to check correct csvs loaded in",
+    )
     config_group = parser.add_mutually_exclusive_group(required=True)
-    config_group.add_argument('-c', '--config', action='store', type=str,
-                        help='the location of the .yaml configuaration file\
-                             for preprocessing')
-    config_group.add_argument('-cg', '--configgui', action='store_true',
-                        help='whether to use gui to get the configuration')
-    
+    config_group.add_argument(
+        "-c",
+        "--config",
+        action="store",
+        type=str,
+        help="the location of the .yaml configuaration file\
+                             for preprocessing",
+    )
+    config_group.add_argument(
+        "-cg",
+        "--configgui",
+        action="store_true",
+        help="whether to use gui to get the configuration",
+    )
+
     args = parser.parse_args()
-    
+
     if args.env is not None:
         dotenv_path = ".env"
         dotenv.load_dotenv(dotenv_path)
         csv_path = os.getenv("RAW_DATA_PATH")
-    
+
     elif args.gui:
         root = tk.Tk()
         root.withdraw()
@@ -59,7 +82,11 @@ def main():
             config = yaml.safe_load(ymlfile)
             preprocess_config.parse_config(config)
     elif args.configgui:
-        config = preprocess_config.config_gui(csvs)
+        load_yaml = config.load_yaml_gui()
+        if not load_yaml:
+            config = preprocess_config.config_gui(csvs)
+        # elif load_yaml:
+        # load yaml using file dialog
 
     # remove excluded files
     csvs = [
@@ -67,11 +94,11 @@ def main():
     ]
 
     # check with user
-    print('List of csvs wich will be processed')
+    print("List of csvs wich will be processed")
     print(csvs)
     if args.sanitycheck:
-        check = input('If you are happy with these csvs type YES: ')
-        if check != 'YES':
+        check = input("If you are happy with these csvs type YES: ")
+        if check != "YES":
             exit()
 
     # if output directory not present create it
@@ -101,9 +128,10 @@ def main():
         )
 
     # save yaml file
-    config['input_csv_path'] = csv_path
-    with open(config["yaml_save_loc"], 'w') as outfile:
+    config["input_csv_path"] = csv_path
+    with open(config["yaml_save_loc"], "w") as outfile:
         yaml.dump(config, outfile)
 
-if __name__ == '__main__':  
+
+if __name__ == "__main__":
     main()

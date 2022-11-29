@@ -34,18 +34,28 @@ from locpix.scripts.img_seg import membrane_performance_config
 import tkinter as tk
 from tkinter import filedialog
 
+
 def main():
 
-    parser = argparse.ArgumentParser(description='Membrane performance metrics on data')
+    parser = argparse.ArgumentParser(description="Membrane performance metrics on data")
     config_group = parser.add_mutually_exclusive_group(required=True)
-    config_group.add_argument('-c', '--config', action='store', type=str,
-                        help='the location of the .yaml configuaration file\
-                             for membrane performance')
-    config_group.add_argument('-cg', '--configgui', action='store_true',
-                        help='whether to use gui to get the configuration')
-    
+    config_group.add_argument(
+        "-c",
+        "--config",
+        action="store",
+        type=str,
+        help="the location of the .yaml configuaration file\
+                             for membrane performance",
+    )
+    config_group.add_argument(
+        "-cg",
+        "--configgui",
+        action="store_true",
+        help="whether to use gui to get the configuration",
+    )
+
     args = parser.parse_args()
-    
+
     if args.config is not None:
         # load yaml
         with open(args.config, "r") as ymlfile:
@@ -248,7 +258,6 @@ def main():
             pred = save_df.select(pl.col("pred_label")).to_numpy()
             pred_list = np.append(pred_list, pred)
 
-
             # assign save dataframe to item
             item.df = save_df
 
@@ -300,7 +309,7 @@ def main():
         saveloc = os.path.join(output_conf_matrix, f"conf_matrix_{date}.png")
         classes = [item.gt_label_map[0], item.gt_label_map[1]]
         pred_list = pred_list.flatten()
-        generate_conf_matrix(gt_list, pred_list, classes, saveloc) 
+        generate_conf_matrix(gt_list, pred_list, classes, saveloc)
         # could just use aggregated metric function to plot the confusion matrix
 
         # plot pr curve
@@ -345,6 +354,7 @@ def main():
 
     fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
     fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)
+
 
 if __name__ == "__main__":
     main()
