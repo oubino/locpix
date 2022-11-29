@@ -20,25 +20,46 @@ remaining performance metrics."""
 import yaml
 import os
 import numpy as np
-from heptapods.preprocessing import datastruc
-from heptapods.visualise.performance import plot_pr_curve, generate_conf_matrix
-import heptapods.evaluate.metrics as metrics
+from locpix.preprocessing import datastruc
+from locpix.visualise.performance import plot_pr_curve, generate_conf_matrix
+import locpix.evaluate.metrics as metrics
 from sklearn.metrics import precision_recall_curve, auc
 import polars as pl
 from datetime import datetime
 import matplotlib.pyplot as plt
 import pickle as pkl
-from heptapods.visualise import vis_img
+from locpix.visualise import vis_img
+import argparse
+from locpix.scripts.img_seg import membrane_performance_config
+import tkinter as tk
+from tkinter import filedialog
 
-if __name__ == "__main__":
+def main():
 
-    # load yaml
-    with open("recipes/img_seg/membrane_performance.yaml", "r") as ymlfile:
-        config = yaml.safe_load(ymlfile)
+    parser = argparse.ArgumentParser(description='Membrane performance metrics on data')
+    config_group = parser.add_mutually_exclusive_group(required=True)
+    config_group.add_argument('-c', '--config', action='store', type=str,
+                        help='the location of the .yaml configuaration file\
+                             for membrane performance')
+    config_group.add_argument('-cg', '--configgui', action='store_true',
+                        help='whether to use gui to get the configuration')
+    
+    args = parser.parse_args()
+    
+    if args.config is not None:
+        # load yaml
+        with open(args.config, "r") as ymlfile:
+            config = yaml.safe_load(ymlfile)
+            membrane_performance_config.parse_config(config)
+    elif args.configgui:
+        root = tk.Tk()
+        root.withdraw()
+        gt_file_path = filedialog.askdirectory()
+        config = membrane_performance_config.config_gui(gt_file_path)
 
     # list items
     try:
-        files = os.listdir(config["gt_files"])
+        files = os.listdir(config["gt_file_path"])
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
@@ -111,7 +132,7 @@ if __name__ == "__main__":
 
             # load df
             item = datastruc.item(None, None, None, None)
-            item.load_from_parquet(os.path.join(config["gt_files"], file))
+            item.load_from_parquet(os.path.join(config["gt_file_path"], file))
 
             # load prob map
             img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
@@ -193,7 +214,7 @@ if __name__ == "__main__":
             print("File ", file)
 
             item = datastruc.item(None, None, None, None)
-            item.load_from_parquet(os.path.join(config["gt_files"], file))
+            item.load_from_parquet(os.path.join(config["gt_file_path"], file))
 
             # load in histograms
             histo_loc = os.path.join(config["input_histo_folder"], item.name + ".pkl")
@@ -324,3 +345,6 @@ if __name__ == "__main__":
 
     fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
     fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)
+
+if __name__ == "__main__":
+    main()

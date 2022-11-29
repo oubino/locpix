@@ -1,6 +1,6 @@
 """Module for calculating performance metrics"""
 
-from heptapods.preprocessing import datastruc
+from locpix.preprocessing import datastruc
 import os
 import polars as pl
 import numpy as np

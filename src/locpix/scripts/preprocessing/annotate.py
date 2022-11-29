@@ -7,14 +7,31 @@ visualise histo mask, save the exported annotation .parquet
 
 import yaml
 import os
-from heptapods.preprocessing import datastruc
-from heptapods.visualise import vis_img
+from locpix.preprocessing import datastruc
+from locpix.visualise import vis_img
 import pickle as pkl
+import argparse
+from locpix.scripts.preprocessing import annotate_config
 
-if __name__ == "__main__":
+def main():
 
-    with open("recipes/annotate.yaml", "r") as ymlfile:
-        config = yaml.safe_load(ymlfile)
+    parser = argparse.ArgumentParser(description='Annotate the data')
+    config_group = parser.add_mutually_exclusive_group(required=True)
+    config_group.add_argument('-c', '--config', action='store', type=str,
+                        help='the location of the .yaml configuaration file\
+                             for preprocessing')
+    config_group.add_argument('-cg', '--configgui', action='store_true',
+                        help='whether to use gui to get the configuration')
+    
+    args = parser.parse_args()
+    
+    if args.config is not None:
+        # load yaml
+        with open(args.config, "r") as ymlfile:
+            config = yaml.safe_load(ymlfile)
+            annotate_config.parse_config(config)
+    elif args.configgui:
+        config = annotate_config.config_gui()
 
     # list items
     try:
@@ -90,3 +107,10 @@ if __name__ == "__main__":
                 four_colour=config["four_colour"],
                 background_one_colour=config["background_one_colour"],
             )
+        
+    # save yaml file
+    with open(config["yaml_save_loc"], 'w') as outfile:
+        yaml.dump(config, outfile)
+
+if __name__ == "__main__":
+    main()

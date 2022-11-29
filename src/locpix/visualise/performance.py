@@ -38,6 +38,8 @@ def plot_pr_curve(
 
     # baseline is just always predicting all positive class
     ax.plot([0, 1], [baseline, baseline], color="navy", lw=lw, linestyle="--")
+    ax.plot([0,1], [1,1], color='#D41159', lw=lw, linestyle='-')
+    ax.plot([1,1], [0,1], color='#D41159', lw=lw, linestyle='-')
     ax.set_xlabel("Recall", fontsize=18)
     ax.set_ylabel("Precision", fontsize=18)
     ax.set_xticks(np.linspace(0, 1, 11), fontsize=18)
@@ -88,7 +90,7 @@ def generate_conf_matrix(gtlist, predlist, classes, saveloc):
     # Loop over data dimensions and create text annotations
     for i in range(len(classes)):
         for j in range(len(classes)):
-            text = ax.text(j, i, "{:.2e}".format(conf_mat[i, j]), ha="center", va="center", color="r", size=10)
+            text = ax.text(j, i, "{:.2e}".format(conf_mat[i, j]), ha="center", va="center", color="r", size=16)
 
     #ax.set_title("Confusion matrix")
     fig.tight_layout()

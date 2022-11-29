@@ -41,7 +41,7 @@ def csv_to_datastruc(
         raise ValueError("Dimensions must be 2 or 3")
     if z_col is not None:
         print("here", z_col)
-    if dim == 2 and z_col is not None:
+    if dim == 2 and z_col is not None and z_col:
         raise ValueError("If dimensions are two no z should be specified")
     if dim == 3 and z_col is None:
         raise ValueError("If dimensions are 3 then z_col must be specified")

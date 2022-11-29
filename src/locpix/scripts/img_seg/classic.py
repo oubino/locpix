@@ -6,18 +6,34 @@ Take in items and segment using classic methods
 
 import yaml
 import os
-from heptapods.preprocessing import datastruc
-from heptapods.visualise import vis_img
-from heptapods.img_processing import watershed
+from locpix.preprocessing import datastruc
+from locpix.visualise import vis_img
+from locpix.img_processing import watershed
 import numpy as np
 import pickle as pkl
+import argparse
+from locpix.scripts.img_seg import classic_config
 
 
-if __name__ == "__main__":
+def main():
 
-    # load yaml
-    with open("recipes/img_seg/classic.yaml", "r") as ymlfile:
-        config = yaml.safe_load(ymlfile)
+    parser = argparse.ArgumentParser(description='Classic')
+    config_group = parser.add_mutually_exclusive_group(required=True)
+    config_group.add_argument('-c', '--config', action='store', type=str,
+                        help='the location of the .yaml configuaration file\
+                             for classic')
+    config_group.add_argument('-cg', '--configgui', action='store_true',
+                        help='whether to use gui to get the configuration')
+    
+    args = parser.parse_args()
+    
+    if args.config is not None:
+        # load yaml
+        with open(args.config, "r") as ymlfile:
+            config = yaml.safe_load(ymlfile)
+            classic_config.parse_config(config)
+    elif args.configgui:
+        config = classic_config.config_gui()
 
     # list items
     try:
@@ -118,3 +134,6 @@ if __name__ == "__main__":
             save_loc=save_loc,
             four_colour=True,
         )
+
+if __name__ == "__main__":
+    main()

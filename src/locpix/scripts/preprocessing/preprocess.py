@@ -7,18 +7,18 @@ Module takes in the .csv files and processes saving the datastructures
 import dotenv
 import os
 import yaml
-from heptapods.preprocessing import functions
+from locpix.preprocessing import functions
 import argparse
 import tkinter as tk
 from tkinter import filedialog
-from . import preprocess_config
+from locpix.scripts.preprocessing import preprocess_config
 
-if __name__ == "__main__":
+def main():
 
     # load path of .csv 
     parser = argparse.ArgumentParser(description='Preprocess the data for\
         further processing')
-    data_group = parser.add_mutually_exclusive_group()
+    data_group = parser.add_mutually_exclusive_group(required=True)
     data_group.add_argument('-e', '--env', action='store', type=str,
                         help='location of .env file for data path')
     data_group.add_argument('-g', '--gui', action='store_true',
@@ -27,7 +27,7 @@ if __name__ == "__main__":
                         help='path for the data folder')
     parser.add_argument('-s', '--sanitycheck', action='store_true',
                         help='whether to check correct csvs loaded in')
-    config_group = parser.add_mutually_exclusive_group()
+    config_group = parser.add_mutually_exclusive_group(required=True)
     config_group.add_argument('-c', '--config', action='store', type=str,
                         help='the location of the .yaml configuaration file\
                              for preprocessing')
@@ -59,7 +59,7 @@ if __name__ == "__main__":
             config = yaml.safe_load(ymlfile)
             preprocess_config.parse_config(config)
     elif args.configgui:
-        preprocess_config.config_gui('output/preprocess/preprocess.yaml')
+        config = preprocess_config.config_gui(csvs)
 
     # remove excluded files
     csvs = [
@@ -99,3 +99,11 @@ if __name__ == "__main__":
             drop_zero_label=False,
             drop_pixel_col=config["drop_pixel_col"],
         )
+
+    # save yaml file
+    config['input_csv_path'] = csv_path
+    with open(config["yaml_save_loc"], 'w') as outfile:
+        yaml.dump(config, outfile)
+
+if __name__ == '__main__':  
+    main()

@@ -1,12 +1,10 @@
 # input folder
-input_folder: 'output/preprocessed/annotated'
+input_folder: 'output/annotate/annotated'
 
 # input histo folder
-input_histo_folder: 'output/preprocessed/histos'
+input_histo_folder: 'output/annotate/histos'
 
-# whether to get markers
-# if false the markers loc should point to where markers are saved
-# if true the markers loc should point to where to save markers
+# location of the markers
 markers_loc: 'output/markers'
 
 # threshold for visualisation
@@ -23,10 +21,6 @@ diameter: 50
 #   b. 0=None (will set to zero), 1=red, 2=green, 3=blue
 # e.g. channels = [0,0] if you want to segment cells in grayscale
 channels: [0,0]
-# if False then it will attempt to load in markers already calculated to use for watershed, 
-# if no markers are found then it will exit
-# If True then user can pick the markers, this should always be set true to get markers first time
-# in subsequent runs may want to retain same markers therefore set to False
 
 # whether to sum channels (currently only channel 0 and 1)
 sum_chan: False
@@ -39,3 +33,6 @@ output_cell_df: 'output/cellpose/cell/seg_dataframes'
 
 # output image of cell segmentation
 output_cell_img: 'output/cellpose/cell/seg_img'
+
+# yaml save location
+yaml_save_loc: output/cellpose/cellpose.yaml

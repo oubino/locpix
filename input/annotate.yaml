@@ -16,13 +16,13 @@ plot: True
 vis_interpolation: 'log2' 
 
 # input folder
-input_folder: 'output/preprocessed/no_gt_label'
+input_folder: 'output/preprocess/no_gt_label'
 
 # save histogram
-histo_folder: 'output/preprocessed/histos'
+histo_folder: 'output/annotate/histos'
 
 # Output folder
-output_folder: 'output/preprocessed/annotated'
+output_folder: 'output/annotate/annotated'
 
 # When saving annotations - you can choose to not save the localisations associated with the background
 # which are assigned a label of zero
@@ -43,5 +43,8 @@ alphas: [1,.5,.2,.1]
 alpha_seg: .8
 cmap_seg: ["k", "y"]
 fig_size: [10,10]
-output_seg_folder: 'output/preprocessed/seg_imgs'
+output_seg_folder: 'output/annotate/seg_imgs'
 vis_channels: [0]
+
+# yaml save location
+yaml_save_loc: output/annotate/annotate.yaml
