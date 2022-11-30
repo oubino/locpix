@@ -17,8 +17,12 @@ from PyQt5.QtWidgets import (
     QFormLayout,
     QCheckBox,
     QListWidget,
+    QPushButton,
+    QFileDialog,
 )
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
+from PyQt5.QtCore import Qt
+import yaml
 
 default_config_keys = [
     "input_folder",
@@ -49,6 +53,11 @@ class InputWidget(QWidget):
 
         super().__init__()
         self.flo = QFormLayout()
+
+        # Load .yaml with button
+        self.load_button = QPushButton("Load yaml")
+        self.load_button.clicked.connect(self.load_yaml)
+        self.flo.addRow(self.load_button)
 
         self.input_folder = QLineEdit("output/preprocess/no_gt_label")
         self.input_folder.setToolTip("Input folder")
@@ -81,6 +90,38 @@ class InputWidget(QWidget):
         self.setLayout(self.flo)
 
         self.config = config
+
+    def load_yaml(self):
+        """Load the yaml"""
+
+        # Load yaml
+        fname = QFileDialog.getOpenFileName(self, 'Open file', 
+                "/home/some/folder","Yaml (*.yaml)")
+
+        fname = str(fname[0])
+        if fname != '':
+            with open(fname, "r") as ymlfile:
+                load_config = yaml.safe_load(ymlfile)
+                if sorted(load_config.keys()) == sorted(default_config_keys):
+                    self.load_config(load_config)
+                else:
+                    print("Can't load in as keys don't match!")
+    
+    def load_config(self, load_config):
+        """Load the config into the gui
+        
+        Args:
+            load_config (yaml file): Config file
+                to load into the gui"""
+
+        self.input_folder.setText(load_config["input_folder"])
+        self.input_histo_folder.setText(load_config["input_histo_folder"])
+        self.markers_folder.setText(load_config["markers_folder"])
+        self.vis_threshold = load_config["vis_threshold"]
+        self.vis_interpolation.clearSelection()
+        item = self.vis_interpolation.findItems(load_config["vis_interpolate"], Qt.MatchFlag.MatchExactly)
+        item[0].setSelected(True)
+        self.save_loc_input.setText(load_config["yaml_save_loc"])
 
     def set_config(self, config):
         """Set the configuration file

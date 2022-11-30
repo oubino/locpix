@@ -170,12 +170,14 @@ class InputWidget(QWidget):
         self.dim.setText(str(load_config["dim"]))
         self.output_folder.setText(load_config["output_folder"])
 
+        self.channel_choice.clearSelection()
         for chan in load_config["channel_choice"]:
             item = self.channel_choice.findItems(str(chan), Qt.MatchFlag.MatchExactly)
             item[0].setSelected(True)
 
         self.drop_pixel_col.setCheckState(load_config["drop_pixel_col"])
 
+        self.include_files.clearSelection()
         for file in load_config["include_files"]:
             item = self.include_files.findItems(file, Qt.MatchFlag.MatchExactly)
             if item:

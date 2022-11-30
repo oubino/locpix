@@ -17,8 +17,12 @@ from PyQt5.QtWidgets import (
     QFormLayout,
     QCheckBox,
     QListWidget,
+    QPushButton,
+    QFileDialog,
 )
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
+from PyQt5.QtCore import Qt
+import yaml
 
 default_config_keys = [
     "x_bins",
@@ -66,6 +70,11 @@ class InputWidget(QWidget):
 
         super().__init__()
         self.flo = QFormLayout()
+
+        # Load .yaml with button
+        self.load_button = QPushButton("Load yaml")
+        self.load_button.clicked.connect(self.load_yaml)
+        self.flo.addRow(self.load_button)
 
         self.x_bins = QLineEdit("500")
         self.x_bins.setValidator(QIntValidator())
@@ -234,6 +243,68 @@ class InputWidget(QWidget):
         self.setLayout(self.flo)
 
         self.config = config
+    
+    def load_yaml(self):
+        """Load the yaml"""
+
+        # Load yaml
+        fname = QFileDialog.getOpenFileName(self, 'Open file', 
+                "/home/some/folder","Yaml (*.yaml)")
+
+        fname = str(fname[0])
+        if fname != '':
+            with open(fname, "r") as ymlfile:
+                load_config = yaml.safe_load(ymlfile)
+                if sorted(load_config.keys()) == sorted(default_config_keys):
+                    self.load_config(load_config)
+                else:
+                    print("Can't load in as keys don't match!")
+    
+    def load_config(self, load_config):
+        """Load the config into the gui
+        
+        Args:
+            load_config (yaml file): Config file
+                to load into the gui"""
+
+        self.x_bins.setText(str(load_config["x_bins"]))
+        self.y_bins.setText(str(load_config["y_bins"]))
+        self.z_bins.setText(str(load_config["z_bins"]))
+        self.dim.setText(str(load_config["dim"]))
+        self.plot.setCheckState(load_config["plot"])
+        self.vis_interpolation.clearSelection()
+        item = self.vis_interpolation.findItems(load_config["vis_interpolation"], Qt.MatchFlag.MatchExactly)
+        item[0].setSelected(True)
+        self.input_folder.setText(load_config["input_folder"])
+        self.histo_folder.setText(load_config["histo_folder"])
+        self.output_folder.setText(load_config["output_folder"])
+        self.drop_zero_label.setCheckState(load_config["drop_zero_label"])
+        self.gt_label_map_zero.setText(str(load_config["gt_label_map"][0]))
+        self.gt_label_map_one.setText(str(load_config["gt_label_map"][1]))
+        self.save_img.setCheckState(load_config["save_img"])
+        self.save_threshold.setText(str(load_config["save_threshold"]))
+        self.save_interpolation.clearSelection()
+        item = self.save_interpolation.findItems(load_config["save_interpolate"], Qt.MatchFlag.MatchExactly)
+        item[0].setSelected(True)
+        self.background_one_colour.setCheckState(load_config["background_one_colour"])
+        self.four_colour.setCheckState(load_config["four_colour"])
+        alphas = load_config["alphas"]
+        self.alpha_zero.setText(str(alphas[0]))
+        self.alpha_one.setText(str(alphas[1]))
+        self.alpha_two.setText(str(alphas[2]))
+        self.alpha_three.setText(str(alphas[3]))
+        self.alpha_seg.setText(str(load_config["alpha_seg"]))
+        self.zero_cmap.setText(load_config["cmap_seg"][0])
+        self.one_cmap.setText(load_config["cmap_seg"][1])
+        self.fig_size_x.setText(str(load_config["fig_size"][0]))
+        self.fig_size_y.setText(str(load_config["fig_size"][1]))
+        self.output_seg_folder.setText(load_config["output_seg_folder"]))
+        self.vis_channels.clearSelection()
+        for chan in load_config["vis_channels"]:
+            item = self.vis_channels.findItems(str(chan), Qt.MatchFlag.MatchExactly)
+            item[0].setSelected(True)
+        self.save_loc_input.setText(load_config["yaml_save_loc"])
+
 
     def set_config(self, config):
         """Set the configuration file
@@ -241,10 +312,10 @@ class InputWidget(QWidget):
         Args:
             config (dictionary) : Configuration dict"""
 
-        config["x_bins"] = self.x_bins
-        config["y_bins"] = self.y_bins
-        config["z_bins"] = self.z_bins
-        config["dim"] = self.dim
+        config["x_bins"] = int(self.x_bins.text())
+        config["y_bins"] = int(self.y_bins.text())
+        config["z_bins"] = int(self.z_bins.text())
+        config["dim"] = int(self.dim.text())
         config["plot"] = self.plot.isChecked()
         config["vis_interpolation"] = self.vis_interpolation.selectedItems()[0].text()
         config["input_folder"] = self.input_folder.text()
@@ -253,20 +324,20 @@ class InputWidget(QWidget):
         config["drop_zero_label"] = self.drop_zero_label.isChecked()
         config["gt_label_map"] = {0: self.gt_label_map_zero, 1: self.gt_label_map_one}
         config["save_img"] = self.save_img.isChecked()
-        config["save_threshold"] = self.save_threshold
+        config["save_threshold"] = int(self.save_threshold.text())
         config["save_interpolate"] = self.save_interpolation.selectedItems()[0].text()
         config["background_one_colour"] = self.background_one_colour.isChecked()
         config["four_colour"] = self.four_colour.isChecked()
         config["alphas"] = [
-            self.alpha_zero,
-            self.alpha_one,
-            self.alpha_two,
-            self.alpha_three,
+            int(self.alpha_zero.text()),
+            int(self.alpha_one.text()),
+            int(self.alpha_two.text()),
+            int(self.alpha_three.text()),
         ]
-        config["alpha_seg"] = self.alpha_seg
-        config["cmap_seg"] = [self.zero_cmap, self.one_cmap]
-        config["fig_size"] = [self.fig_size_x, self.fig_size_y]
-        config["output_seg_folder"] = self.output_seg_folder
+        config["alpha_seg"] = int(self.alpha_seg.text())
+        config["cmap_seg"] = [self.zero_cmap.text(), self.one_cmap.text()]
+        config["fig_size"] = [int(self.fig_size_x.text()), int(self.fig_size_y.text())]
+        config["output_seg_folder"] = self.output_seg_folder.text()
         config["vis_channels"] = [
             item.text() for item in self.vis_channels.selectedItems()
         ]
