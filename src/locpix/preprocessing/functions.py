@@ -67,11 +67,11 @@ def csv_to_datastruc(
         )
 
     # Specify channels to consider
-    if channel_choice is None:
-        channels = df["channel"].unique()
-        channels = sorted(channels)
-    else:
-        channels = channel_choice
+    #if channel_choice is None:
+    #    channels = df["channel"].unique()
+    #    channels = sorted(channels)
+    #else:
+    channels = channel_choice
 
     # Get name of file - assumes last part of input file name
     name = os.path.basename(os.path.normpath(input_file)).strip(".csv")

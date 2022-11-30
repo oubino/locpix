@@ -15,8 +15,13 @@ from PyQt5.QtWidgets import (
     QFormLayout,
     QCheckBox,
     QListWidget,
+    QPushButton,
+    QFileDialog,
 )
 from PyQt5.QtGui import QIntValidator
+from PyQt5.QtCore import Qt
+
+import yaml
 
 default_config_keys = [
     "x_col",
@@ -28,7 +33,7 @@ default_config_keys = [
     "output_folder",
     "channel_choice",
     "drop_pixel_col",
-    "exclude_files",
+    "include_files",
     "yaml_save_loc",
 ]
 
@@ -52,6 +57,11 @@ class InputWidget(QWidget):
 
         super().__init__()
         self.flo = QFormLayout()
+
+        # Load .yaml with button
+        self.load_button = QPushButton("Load yaml")
+        self.load_button.clicked.connect(self.load_yaml)
+        self.flo.addRow(self.load_button)
 
         # The following are the names of the
         # x column, y column, z column if present, channel, frame,
@@ -124,11 +134,58 @@ class InputWidget(QWidget):
         self.flo.addRow("yaml save location", self.save_loc_input)
 
         self.setLayout(self.flo)
-        self.include_files.selectAll()
+        #self.include_files.selectAll()
 
         self.files = files
         self.config = config
 
+    def load_yaml(self):
+        """Load the yaml"""
+
+        # Load yaml
+        fname = QFileDialog.getOpenFileName(self, 'Open file', 
+                "/home/some/folder","Yaml (*.yaml)")
+
+        fname = str(fname[0])
+        if fname != '':
+            with open(fname, "r") as ymlfile:
+                load_config = yaml.safe_load(ymlfile)
+                if sorted(load_config.keys()) == sorted(default_config_keys):
+                    self.load_config(load_config)
+                else:
+                    print("Can't load in as keys don't match!")
+    
+    def load_config(self, load_config):
+        """Load the config into the gui
+        
+        Args:
+            load_config (yaml file): Config file
+                to load into the gui"""
+
+        self.x_col.setText(load_config["x_col"])
+        self.y_col.setText(load_config["y_col"])
+        self.z_col.setText(load_config["z_col"])
+        self.chan_col.setText(load_config["channel_col"])
+        self.frame_col.setText(load_config["frame_col"])
+        self.dim.setText(str(load_config["dim"]))
+        self.output_folder.setText(load_config["output_folder"])
+
+        self.channel_choice.clearSelection()
+        for chan in load_config["channel_choice"]:
+            item = self.channel_choice.findItems(str(chan), Qt.MatchFlag.MatchExactly)
+            item[0].setSelected(True)
+
+        self.drop_pixel_col.setCheckState(load_config["drop_pixel_col"])
+
+        self.include_files.clearSelection()
+        for file in load_config["include_files"]:
+            item = self.include_files.findItems(file, Qt.MatchFlag.MatchExactly)
+            if item:
+                item[0].setSelected(True)
+
+        self.save_loc_input.setText(load_config["yaml_save_loc"])
+
+    
     def set_config(self, config):
         """Set the configuration file
 
@@ -147,10 +204,7 @@ class InputWidget(QWidget):
         config["channel_choice"] = chan_list
         config["drop_pixel_col"] = self.drop_pixel_col.isChecked()
         include_files = self.include_files.selectedItems()
-        include_files = [item.text() for item in include_files]
-        config["exclude_files"] = [
-            file for file in self.files if file not in include_files
-        ]
+        config["include_files"] = [item.text() for item in include_files]
         config["yaml_save_loc"] = self.save_loc_input.text()
 
         # check config is correct

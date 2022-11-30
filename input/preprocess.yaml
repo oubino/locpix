@@ -15,24 +15,23 @@ dim: 2
 output_folder: 'output/preprocess/no_gt_label'
 
 # choice of which channels user wants to consider
-# if null considers all
-channel_choice: null
+channel_choice: [0,1,2,3]
 
 # whether to not drop the column containing
 # pixel
 drop_pixel_col: False
 
-# files to exclude
-exclude_files:
-  Fov1
-  Fov2
-  Fov3
-  Fov5
-  Fov6
-  Fov7
-  Fov8
-  Fov9
-  Fov10
+# files to include
+include_files:
+- Fov1_DC
+- Fov2_DC
+- Fov3_DC
+- Fov5_DC
+- Fov6_DC
+- Fov7_DC
+- Fov8_DC
+- Fov9_DC
+- Fov10_DC
 
 # yaml save location
 yaml_save_loc: output/preprocess/preprocess.yaml

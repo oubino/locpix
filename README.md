@@ -145,15 +145,24 @@ pytest -s
 Running the code
 ----------------
 
-Describe flags and gui for each
-
 ### Basics
+
+We provide an overview of the parts of the analysis
+
+- Preprocess: convert .csv files containing localisations to .parquet files and wrangle into our data format
+- Annotate: manually segment the localisations
+- Get markers: Label each localisation image with a marker representing the cell
+- Classic: Perform classic segmentation on our localisation dataset
+- Cellpose: Perform cellpose segmentation on our localisation dataset
+- Ilastik prep: Prepare data for Ilastik
+- Ilastik output: Convert output of Ilastik into our format
+- Membrane performance: Evaluate performance of membrane segmentation
 
 
 #### Beginner
 -------------------
 
-To run analysis we need to define the configuration for our analysis, when we do this we will save this configuration, in case we want to use this later.
+To run analysis we need to define the configuration for each part of our analysis, when we do this we will save this configuration, in case we want to use this later.
 
 This configuration will be saved to a .yaml file.
 
@@ -178,6 +187,10 @@ Each script has an associated .yaml file which defines the configuration for the
 
 ### Preprocess the data
 
+We need to preprocess the data for later use, therefore this script must be run first.
+
+This script will take in .csv files, and convert them to .parquet files, while also wrangling the data into our data format.
+
 #### Beginner
 -------------------
 
@@ -187,12 +200,30 @@ In the anaconda powershell write
 preprocess -g -cg
 ```
 
+This will open a GUI which will first ask for the directory containing the .csv files for preprocessing.
+
+Then a GUI to set the configuration for preprocessing
+
+The outputs of preprocessing including the configuration .yaml file will be saved in 
+
+```
+output/preprocess
+```
+
+We can also load back in a configuration file by clicking the "Load yaml" button in the GUI.
+
+
 #### Advanced
 -------------------
 
-For security reasons we use a .env file to store the path to the data, this is ignored by Git by default.
+We need to specify where the .csv files are, there are 3 ways of doing this and 3 associated flags to pass
 
-Therefore, you should add a file called .env to the top level (i.e. same level as License, Makefile, Readme.md,...).
+1. -f flag: path to folder with csvs OR
+2. -g flag: use file dialogue gui to get path OR
+3. -e flag: .csvs file are in .env file
+
+Note the ability to load in the csv path from a .env file is provided for convenience.
+For security reasons we choose by default for git to ignore the .env file therefore you should add a file called .env to the top level (i.e. same level as License, Makefile, Readme.md,...).
 In this file you need one line with this
 
 ```
@@ -201,17 +232,50 @@ RAW_DATA_PATH = path/to/data_folder
 
 Note that your directory CANNOT HAVE SPACES IN THE NAME i.e. if your directory is named "data/my data folder/" it will not work - you should rename your directory on your computer to something like "data/my_data_folder/"
 
-This will assume all your .csv files are in data_folder - note the paths are normally taken as relative to the .env file - so this may take some fiddling around to get it correct (alternatively copy your data_folder folder into /data then the path would be = data/data_folder)
-Describe the flags and .env file
+Note we assume our folder contains all your .csv files and note the paths are normally taken as relative to the .env file - so this may take some fiddling around to get it correct (alternatively copy your data_folder folder into /data then the path would be = data/data_folder)
+
+We also need to specify the configuration.
+To do this we use one of two flags
+
+1. -c flag: location of the .yaml configuration file, which we can edit using our text editor OR
+2. -cg flag: Get configuration using a GUI
+
+Therefore, to run preprocessing with data in a folder called input/data/ and configuration at input/preprocess.yaml, we would write
 
 ```
-preprocess
+preprocess -f input/data -c input/preprocess.yaml
 ```
 
 Manually segment data
 ---------------------
+
+If we want to manually segment our data and return the segmented localisations we need to run this script.
+
+
+#### Beginner
+--------------
+
+Run
+
 ```
-annotate
+annotate -cg
+```
+
+Use the gui to determine the configuration
+
+#### Advanced
+-------------------
+
+Run
+
+```
+annotate -c path/to/configuration/for/annotate/yaml/file
+```
+
+e.g. If our configuration .yaml is located at input/annotate.yaml we could edit it there then run
+
+```
+annotate -c input/annotate.yaml
 ```
 
 Get markers
