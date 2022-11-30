@@ -82,15 +82,12 @@ def main():
             config = yaml.safe_load(ymlfile)
             preprocess_config.parse_config(config)
     elif args.configgui:
-        load_yaml = config.load_yaml_gui()
-        if not load_yaml:
-            config = preprocess_config.config_gui(csvs)
-        # elif load_yaml:
-        # load yaml using file dialog
+        files = [csv.removesuffix(".csv") for csv in csvs]
+        config = preprocess_config.config_gui(files)
 
     # remove excluded files
     csvs = [
-        csv for csv in csvs if csv.removesuffix(".csv") not in config["exclude_files"]
+        csv for csv in csvs if csv.removesuffix(".csv") in config["include_files"]
     ]
 
     # check with user
