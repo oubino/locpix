@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Cellpose segmentation module
 
-Take in items and segment using Cellpose methods
+Take in items and train the Cellpose module
 """
 
 import yaml
@@ -13,8 +13,7 @@ import numpy as np
 import pickle as pkl
 from cellpose import models
 import argparse
-from locpix.scripts.img_seg import cellpose_config
-
+#from locpix.scripts.img_seg import cellpose_train_config
 
 def main():
 
@@ -41,9 +40,9 @@ def main():
         # load yaml
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
-            cellpose_config.parse_config(config)
+            cellpose_train_config.parse_config(config)
     elif args.configgui:
-        config = cellpose_config.config_gui()
+        config = cellpose_train_config.config_gui()
 
     # list items
     try:

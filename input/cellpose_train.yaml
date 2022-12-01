@@ -1,0 +1,38 @@
+# input folder
+input_folder: 'output/annotate/annotated'
+
+# input histo folder
+input_histo_folder: 'output/annotate/histos'
+
+# location of the markers
+markers_loc: 'output/markers'
+
+# threshold for visualisation
+vis_threshold: 5
+vis_interpolate: 'log2'
+
+# cellpose parameters
+model: 'LC1'
+diameter: 50
+# "Model is trained on two-channel images, where the first channel is the channel to segment, 
+# and the second channel is an optional nuclear channel."
+# Options for each:
+#   a. 0=grayscale, 1=red, 2=green, 3=blue
+#   b. 0=None (will set to zero), 1=red, 2=green, 3=blue
+# e.g. channels = [0,0] if you want to segment cells in grayscale
+channels: [0,0]
+
+# whether to sum channels (currently only channel 0 and 1)
+sum_chan: False
+
+# Output membrane probability mask
+output_membrane_prob: 'output/cellpose/membrane/prob_map'
+
+# output dataframe segmentation for cell
+output_cell_df: 'output/cellpose/cell/seg_dataframes'
+
+# output image of cell segmentation
+output_cell_img: 'output/cellpose/cell/seg_img'
+
+# yaml save location
+yaml_save_loc: output/cellpose/cellpose.yaml
