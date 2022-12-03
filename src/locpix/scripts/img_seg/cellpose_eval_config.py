@@ -33,7 +33,7 @@ default_config_keys = [
     "model",
     "diameter",
     "channels",
-    "sum_chan", 
+    "sum_chan",
     "output_membrane_prob",
     "output_cell_df",
     "output_cell_img",
@@ -152,21 +152,22 @@ class InputWidget(QWidget):
         """Load the yaml"""
 
         # Load yaml
-        fname = QFileDialog.getOpenFileName(self, 'Open file', 
-                "/home/some/folder","Yaml (*.yaml)")
+        fname = QFileDialog.getOpenFileName(
+            self, "Open file", "/home/some/folder", "Yaml (*.yaml)"
+        )
 
         fname = str(fname[0])
-        if fname != '':
+        if fname != "":
             with open(fname, "r") as ymlfile:
                 load_config = yaml.safe_load(ymlfile)
                 if sorted(load_config.keys()) == sorted(default_config_keys):
                     self.load_config(load_config)
                 else:
                     print("Can't load in as keys don't match!")
-    
+
     def load_config(self, load_config):
         """Load the config into the gui
-        
+
         Args:
             load_config (yaml file): Config file
                 to load into the gui"""
@@ -176,7 +177,9 @@ class InputWidget(QWidget):
         self.markers_folder.setText(load_config["markers_loc"])
         self.vis_threshold.setText(str(load_config["vis_threshold"]))
         self.vis_interpolation.clearSelection()
-        item = self.vis_interpolation.findItems(load_config["vis_interpolate"], Qt.MatchFlag.MatchExactly)
+        item = self.vis_interpolation.findItems(
+            load_config["vis_interpolate"], Qt.MatchFlag.MatchExactly
+        )
         item[0].setSelected(True)
         self.cellpose_model.setText(load_config["model"])
         self.cellpose_diameter.setText(str(load_config["diameter"]))
@@ -187,7 +190,6 @@ class InputWidget(QWidget):
         self.output_cell_df.setText(load_config["output_cell_df"])
         self.output_cell_img.setText(load_config["output_cell_img"])
         self.save_loc_input.setText(load_config["yaml_save_loc"])
-
 
     def set_config(self, config):
         """Set the configuration file
@@ -202,7 +204,10 @@ class InputWidget(QWidget):
         config["vis_interpolate"] = self.selectedItems()[0].text()
         config["model"] = self.cellpose_model.text()
         config["diameter"] = int(self.cellpose_diameter.text())
-        config["channels"] = [int(self.first_channel.text()), int(self.second_channel.text())]
+        config["channels"] = [
+            int(self.first_channel.text()),
+            int(self.second_channel.text()),
+        ]
         config["sum_chan"] = self.sum_chan.isChecked()
         config["output_membrane_prob"] = self.output_membrane_prob.text()
         config["output_cell_df"] = self.output_cell_df.text()

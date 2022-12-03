@@ -19,6 +19,8 @@ def visualise_seg_item(item, column):
         item (datastruc.item) : This contains the
             df and the labels to visualise.
             This must be true!
+        column (string) : Column containing the 
+            segmention labels
 
     """
 

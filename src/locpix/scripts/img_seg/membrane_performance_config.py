@@ -312,29 +312,30 @@ class InputWidget(QWidget):
         """Load the yaml"""
 
         # Load yaml
-        fname = QFileDialog.getOpenFileName(self, 'Open file', 
-                "/home/some/folder","Yaml (*.yaml)")
+        fname = QFileDialog.getOpenFileName(
+            self, "Open file", "/home/some/folder", "Yaml (*.yaml)"
+        )
 
         fname = str(fname[0])
-        if fname != '':
+        if fname != "":
             with open(fname, "r") as ymlfile:
                 load_config = yaml.safe_load(ymlfile)
                 if sorted(load_config.keys()) == sorted(default_config_keys):
                     self.load_config(load_config)
                 else:
                     print("Can't load in as keys don't match!")
-    
+
     def load_config(self, load_config):
         """Load the config into the gui
-        
+
         Args:
             load_config (yaml file): Config file
                 to load into the gui"""
 
-        # check all files specified 
+        # check all files specified
         loaded_files = sorted(load_config["train_files"] + load_config["test_files"])
         if sorted(self.files) != loaded_files:
-            print('Files need to match!')
+            print("Files need to match!")
         elif sorted(self.files) == loaded_files:
             self.train_files.clear()
             self.test_files.clear()
@@ -344,11 +345,13 @@ class InputWidget(QWidget):
                 self.test_files.insertItem(index, value)
 
             self.maximise_choice.clearSelection()
-            item = self.maximise_choice.findItems(load_config["maximise_choice"], Qt.MatchFlag.MatchExactly)
+            item = self.maximise_choice.findItems(
+                load_config["maximise_choice"], Qt.MatchFlag.MatchExactly
+            )
             item[0].setSelected(True)
 
             self.input_histo_folder.setText(load_config["input_histo_folder"])
-            self.gt_file_path= load_config["gt_file_path"]
+            self.gt_file_path = load_config["gt_file_path"]
 
             self.classic_seg_folder.setText(load_config["classic_seg_folder"])
             self.cellpose_seg_folder.setText(load_config["cellpose_seg_folder"])
@@ -359,11 +362,15 @@ class InputWidget(QWidget):
             self.ilastik_df_folder.setText(load_config["output_ilastik_df_folder"])
 
             self.output_classic_seg_imgs.setText(load_config["output_classic_seg_imgs"])
-            self.output_cellpose_seg_imgs.setText(load_config["output_cellpose_seg_imgs"])
+            self.output_cellpose_seg_imgs.setText(
+                load_config["output_cellpose_seg_imgs"]
+            )
             self.output_ilastik_seg_imgs.setText(load_config["output_ilastik_seg_imgs"])
 
             self.output_train_classic_pr.setText(load_config["output_train_classic_pr"])
-            self.output_train_cellpose_pr.setText(load_config["output_train_cellpose_pr"])
+            self.output_train_cellpose_pr.setText(
+                load_config["output_train_cellpose_pr"]
+            )
             self.output_train_ilastik_pr.setText(load_config["output_train_ilastik_pr"])
 
             self.output_test_classic_pr.setText(load_config["output_test_classic_pr"])
@@ -374,18 +381,27 @@ class InputWidget(QWidget):
             self.output_metrics_cellpose.setText(load_config["output_metrics_cellpose"])
             self.output_metrics_ilastik.setText(load_config["output_metrics_ilastik"])
 
-            self.output_conf_matrix_classic.setText( load_config["output_conf_matrix_classic"])
-            self.output_conf_matrix_cellpose.setText(load_config["output_conf_matrix_cellpose"])
-            self.output_conf_matrix_ilastik.setText(load_config["output_conf_matrix_ilastik"])
+            self.output_conf_matrix_classic.setText(
+                load_config["output_conf_matrix_classic"]
+            )
+            self.output_conf_matrix_cellpose.setText(
+                load_config["output_conf_matrix_cellpose"]
+            )
+            self.output_conf_matrix_ilastik.setText(
+                load_config["output_conf_matrix_ilastik"]
+            )
 
-            self.output_overlay_pr_curves.setText(load_config["output_overlay_pr_curves"])
-                
+            self.output_overlay_pr_curves.setText(
+                load_config["output_overlay_pr_curves"]
+            )
+
             self.vis_threshold.setText(str(load_config["vis_threshold"]))
             self.vis_interpolate.clearSelection()
-            item = self.vis_interpolate.findItems(load_config["vis_interpolate"], Qt.MatchFlag.MatchExactly)
+            item = self.vis_interpolate.findItems(
+                load_config["vis_interpolate"], Qt.MatchFlag.MatchExactly
+            )
             item[0].setSelected(True)
             self.yaml_save_loc.setText(load_config["yaml_save_loc"])
-
 
     def set_config(self, config):
         """Set the configuration file

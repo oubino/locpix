@@ -95,21 +95,22 @@ class InputWidget(QWidget):
         """Load the yaml"""
 
         # Load yaml
-        fname = QFileDialog.getOpenFileName(self, 'Open file', 
-                "/home/some/folder","Yaml (*.yaml)")
+        fname = QFileDialog.getOpenFileName(
+            self, "Open file", "/home/some/folder", "Yaml (*.yaml)"
+        )
 
         fname = str(fname[0])
-        if fname != '':
+        if fname != "":
             with open(fname, "r") as ymlfile:
                 load_config = yaml.safe_load(ymlfile)
                 if sorted(load_config.keys()) == sorted(default_config_keys):
                     self.load_config(load_config)
                 else:
                     print("Can't load in as keys don't match!")
-    
+
     def load_config(self, load_config):
         """Load the config into the gui
-        
+
         Args:
             load_config (yaml file): Config file
                 to load into the gui"""
@@ -119,7 +120,9 @@ class InputWidget(QWidget):
         self.markers_folder.setText(load_config["markers_folder"])
         self.vis_threshold = load_config["vis_threshold"]
         self.vis_interpolation.clearSelection()
-        item = self.vis_interpolation.findItems(load_config["vis_interpolate"], Qt.MatchFlag.MatchExactly)
+        item = self.vis_interpolation.findItems(
+            load_config["vis_interpolate"], Qt.MatchFlag.MatchExactly
+        )
         item[0].setSelected(True)
         self.save_loc_input.setText(load_config["yaml_save_loc"])
 

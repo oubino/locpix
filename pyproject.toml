@@ -29,6 +29,7 @@ dependencies = [
     "pyarrow",
     "scikit-learn",
     "python-dotenv",
+    
 ]
 
 [project.scripts]
@@ -40,6 +41,7 @@ cellpose = "locpix.scripts.img_seg.cellpose_eval:main"
 ilastik_prep = "locpix.scripts.img_seg.ilastik_prep:main"
 ilastik_output = "locpix.scripts.img_seg.ilastik_output:main"
 membrane_performance = "locpix.scripts.img_seg.membrane_performance:main"
+train_cellpose = "locpix.scripts.img_seg.cellpose_train:main"
 
 [project.urls]
 "Homepage" = "https://github.com/oubino/heptapods_img"

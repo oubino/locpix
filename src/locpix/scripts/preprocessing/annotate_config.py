@@ -243,26 +243,27 @@ class InputWidget(QWidget):
         self.setLayout(self.flo)
 
         self.config = config
-    
+
     def load_yaml(self):
         """Load the yaml"""
 
         # Load yaml
-        fname = QFileDialog.getOpenFileName(self, 'Open file', 
-                "/home/some/folder","Yaml (*.yaml)")
+        fname = QFileDialog.getOpenFileName(
+            self, "Open file", "/home/some/folder", "Yaml (*.yaml)"
+        )
 
         fname = str(fname[0])
-        if fname != '':
+        if fname != "":
             with open(fname, "r") as ymlfile:
                 load_config = yaml.safe_load(ymlfile)
                 if sorted(load_config.keys()) == sorted(default_config_keys):
                     self.load_config(load_config)
                 else:
                     print("Can't load in as keys don't match!")
-    
+
     def load_config(self, load_config):
         """Load the config into the gui
-        
+
         Args:
             load_config (yaml file): Config file
                 to load into the gui"""
@@ -273,7 +274,9 @@ class InputWidget(QWidget):
         self.dim.setText(str(load_config["dim"]))
         self.plot.setCheckState(load_config["plot"])
         self.vis_interpolation.clearSelection()
-        item = self.vis_interpolation.findItems(load_config["vis_interpolation"], Qt.MatchFlag.MatchExactly)
+        item = self.vis_interpolation.findItems(
+            load_config["vis_interpolation"], Qt.MatchFlag.MatchExactly
+        )
         item[0].setSelected(True)
         self.input_folder.setText(load_config["input_folder"])
         self.histo_folder.setText(load_config["histo_folder"])
@@ -284,7 +287,9 @@ class InputWidget(QWidget):
         self.save_img.setCheckState(load_config["save_img"])
         self.save_threshold.setText(str(load_config["save_threshold"]))
         self.save_interpolation.clearSelection()
-        item = self.save_interpolation.findItems(load_config["save_interpolate"], Qt.MatchFlag.MatchExactly)
+        item = self.save_interpolation.findItems(
+            load_config["save_interpolate"], Qt.MatchFlag.MatchExactly
+        )
         item[0].setSelected(True)
         self.background_one_colour.setCheckState(load_config["background_one_colour"])
         self.four_colour.setCheckState(load_config["four_colour"])
@@ -298,13 +303,12 @@ class InputWidget(QWidget):
         self.one_cmap.setText(load_config["cmap_seg"][1])
         self.fig_size_x.setText(str(load_config["fig_size"][0]))
         self.fig_size_y.setText(str(load_config["fig_size"][1]))
-        self.output_seg_folder.setText(load_config["output_seg_folder"]))
+        self.output_seg_folder.setText(load_config["output_seg_folder"])
         self.vis_channels.clearSelection()
         for chan in load_config["vis_channels"]:
             item = self.vis_channels.findItems(str(chan), Qt.MatchFlag.MatchExactly)
             item[0].setSelected(True)
         self.save_loc_input.setText(load_config["yaml_save_loc"])
-
 
     def set_config(self, config):
         """Set the configuration file
@@ -322,19 +326,19 @@ class InputWidget(QWidget):
         config["histo_folder"] = self.histo_folder.text()
         config["output_folder"] = self.output_folder.text()
         config["drop_zero_label"] = self.drop_zero_label.isChecked()
-        config["gt_label_map"] = {0: self.gt_label_map_zero, 1: self.gt_label_map_one}
+        config["gt_label_map"] = {0: self.gt_label_map_zero.text(), 1: self.gt_label_map_one.text()}
         config["save_img"] = self.save_img.isChecked()
         config["save_threshold"] = int(self.save_threshold.text())
         config["save_interpolate"] = self.save_interpolation.selectedItems()[0].text()
         config["background_one_colour"] = self.background_one_colour.isChecked()
         config["four_colour"] = self.four_colour.isChecked()
         config["alphas"] = [
-            int(self.alpha_zero.text()),
-            int(self.alpha_one.text()),
-            int(self.alpha_two.text()),
-            int(self.alpha_three.text()),
+            self.alpha_zero.text(),
+            self.alpha_one.text(),
+            self.alpha_two.text(),
+            self.alpha_three.text(),
         ]
-        config["alpha_seg"] = int(self.alpha_seg.text())
+        config["alpha_seg"] = self.alpha_seg.text()
         config["cmap_seg"] = [self.zero_cmap.text(), self.one_cmap.text()]
         config["fig_size"] = [int(self.fig_size_x.text()), int(self.fig_size_y.text())]
         config["output_seg_folder"] = self.output_seg_folder.text()
