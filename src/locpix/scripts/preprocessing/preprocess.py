@@ -86,9 +86,7 @@ def main():
         config = preprocess_config.config_gui(files)
 
     # remove excluded files
-    csvs = [
-        csv for csv in csvs if csv.removesuffix(".csv") in config["include_files"]
-    ]
+    csvs = [csv for csv in csvs if csv.removesuffix(".csv") in config["include_files"]]
 
     # check with user
     print("List of csvs wich will be processed")

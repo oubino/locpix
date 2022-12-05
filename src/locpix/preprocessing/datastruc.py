@@ -148,6 +148,9 @@ class item:
 
         # if instead want desired bin size e.g. 50nm, 50nm, 50nm
         # number of bins required for desired bin_size
+        # note need to check if do this that agrees with np.digitize
+        # and need to make sure that same issue we had before
+        # with the last localisation is dealt with
         # x_bins = int((self.max['x'] - self.min['x']) / bin_size[0])
         # y_bins = int((self.max['y'] - self.min['y']) / bin_size[1])
         # z_bins = int((self.max['z'] - self.min['z']) / bin_size[2])
@@ -156,12 +159,17 @@ class item:
         # very close to desired tests size)
         x_bin_size = (x_max - x_min) / x_bins
         y_bin_size = (y_max - y_min) / y_bins
+        # need to increase bin size very marginally to include last localisation
+        x_bin_size = x_bin_size * 1.001
+        y_bin_size = y_bin_size * 1.001
         # location of edges of histogram, based on actual tests size
         x_edges = [x_min + x_bin_size * i for i in range(x_bins + 1)]
         y_edges = [y_min + y_bin_size * i for i in range(y_bins + 1)]
         # treat z separately, as often only in 2D
         if self.dim == 3:
             z_bin_size = (z_max - z_min) / z_bins
+            # need to increase bin size very marginally to include last localisation
+            z_bin_size = z_bin_size * 1.001
             z_edges = [z_min + z_bin_size * i for i in range(z_bins + 1)]
 
         # size per tests in nm; location of histo edges in original space
@@ -200,6 +208,30 @@ class item:
         # work out pixel for each localisations
         self._coord_2_pixel()
 
+        # check digitize agree
+        #df_min = self.df.min()
+        #x_min = df_min["x_pixel"][0]
+        #y_min = df_min["y_pixel"][0]
+ 
+        #df_max = self.df.max()
+        #x_max = df_max["x_pixel"][0]
+        #y_max = df_max["y_pixel"][0]
+ 
+        #print('check')
+        #print(x_min, x_max)
+        #print(y_min, y_max)
+ 
+        #print('check')
+        #for chan in self.channels:
+        #    df = self.df.filter(pl.col("channel") == chan)
+        #    my_x = df["x_pixel"].to_numpy()
+        #    my_y = df["y_pixel"].to_numpy()
+        #    their_x = np.digitize(df['x'], bins=self.histo_edges[0])
+        #    their_y = np.digitize(df['y'], bins=self.histo_edges[1])
+        #    print('assert equal')
+        #    np.testing.assert_array_equal(my_x, their_x-1)
+        #    np.testing.assert_array_equal(my_y, their_y-1)
+
     def _coord_2_pixel(self):
         """Calculate the pixels corresponding to each localisation"""
 
@@ -227,18 +259,18 @@ class item:
 
         # localisations at the end get assigned to outside the histogram,
         # therefore need to be assigned to previous pixel
-        self.df = self.df.with_column(
-            pl.when(pl.col("x_pixel") == self.df.max()["x_pixel"][0])
-            .then(self.df.max()["x_pixel"][0] - 1)
-            .otherwise(pl.col("x_pixel"))
-            .alias("x_pixel")
-        )
-        self.df = self.df.with_column(
-            pl.when(pl.col("y_pixel") == self.df.max()["y_pixel"][0])
-            .then(self.df.max()["y_pixel"][0] - 1)
-            .otherwise(pl.col("y_pixel"))
-            .alias("y_pixel")
-        )
+        #self.df = self.df.with_column(
+        #    pl.when(pl.col("x_pixel") == self.df.max()["x_pixel"][0])
+        #    .then(self.df.max()["x_pixel"][0] - 1)
+        #    .otherwise(pl.col("x_pixel"))
+        #    .alias("x_pixel")
+        #)
+        #self.df = self.df.with_column(
+        #    pl.when(pl.col("y_pixel") == self.df.max()["y_pixel"][0])
+        #    .then(self.df.max()["y_pixel"][0] - 1)
+        #    .otherwise(pl.col("y_pixel"))
+        #    .alias("y_pixel")
+        #)
 
         if self.dim == 3:
             z_min = df_min["z"][0]
@@ -256,12 +288,12 @@ class item:
             # localisations at the end get assigned to outside the histogram,
             # therefore need to be assigned
             # to previous pixel
-            self.df = self.df.with_column(
-                pl.when(pl.col("z_pixel") == self.df.max()["z_pixel"][0])
-                .then(self.df.max()["z_pixel"][0] - 1)
-                .otherwise(pl.col("z_pixel"))
-                .alias("z_pixel")
-            )
+            #self.df = self.df.with_column(
+            #    pl.when(pl.col("z_pixel") == self.df.max()["z_pixel"][0])
+            #    .then(self.df.max()["z_pixel"][0] - 1)
+            #    .otherwise(pl.col("z_pixel"))
+            #    .alias("z_pixel")
+            #)
 
     def manual_segment(self, cmap=["green", "red", "blue", "bop purple"]):
         """Manually segment the image (histogram.T). Return the segmented
@@ -597,3 +629,58 @@ class item:
             img_dict[key] = value.T
 
         return img_dict
+
+    def render_histo(self):
+        """Render the histogram from the .parquet file - 
+        assumes localisations have associated x_pixel and
+        y_pixel already.
+        
+        Args:
+            None
+            
+        Returns:
+            histo (np.histogram) : Histogram of the localisation data
+            axis_2_chan (list) : List where the first value is the 
+                channel in the first axis of the histogram, second value
+                is the channel in the second axis of the histogram etc.
+            """
+
+        histos = []
+        axis_2_chan = []
+
+        df_max = self.df.max()
+        x_bins = df_max["x_pixel"][0] + 1
+        y_bins = df_max["y_pixel"][0] + 1
+
+        for chan in self.channels:
+            df = self.df.filter(pl.col("channel") == chan)
+
+            histo = np.empty((x_bins, y_bins))
+            df = df.groupby(by=['x_pixel','y_pixel']).count()
+            x_pixels = df['x_pixel'].to_numpy()
+            y_pixels = df['y_pixel'].to_numpy()
+            counts = df['count'].to_numpy()
+            histo[x_pixels, y_pixels] = counts
+           
+            histos.append(histo)
+            axis_2_chan.append(chan)
+
+        histo = np.stack(histos)
+
+        return histo, axis_2_chan
+
+    def render_seg(self):
+        """Render the segmentation of the histogram"""
+
+        labels = self.df.select(pl.col("gt_label")).to_numpy()
+        x_pixels = self.df.select(pl.col("x_pixel")).to_numpy()
+        y_pixels = self.df.select(pl.col("y_pixel")).to_numpy()
+
+        histo_width = np.max(x_pixels) + 1
+        histo_height = np.max(y_pixels) + 1
+
+        histo = np.empty((histo_width, histo_height))
+
+        histo[x_pixels, y_pixels] = labels
+
+        return histo

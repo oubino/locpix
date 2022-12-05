@@ -13,7 +13,7 @@ import numpy as np
 import pickle as pkl
 from cellpose import models
 import argparse
-from locpix.scripts.img_seg import cellpose_config
+from locpix.scripts.img_seg import cellpose_eval_config
 
 
 def main():
@@ -41,9 +41,9 @@ def main():
         # load yaml
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
-            cellpose_config.parse_config(config)
+            cellpose_eval_config.parse_config(config)
     elif args.configgui:
-        config = cellpose_config.config_gui()
+        config = cellpose_eval_config.config_gui()
 
     # list items
     try:

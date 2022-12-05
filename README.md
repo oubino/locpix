@@ -87,7 +87,7 @@ Then enter the following three commands in the Anaconda powershell
 
 ```
 conda create -n locpix-env python==3.10
-conda activate locpix
+conda activate locpix-env
 pip install locpix
 ```
 
@@ -305,7 +305,7 @@ If you:
 
 - have a GPU
   ```
-  conda install pytorch cudatoolkit=11.3 -c pytorch
+  pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
   pip install cellpose
   ```
 - don't have a GPU
