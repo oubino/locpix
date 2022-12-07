@@ -42,6 +42,7 @@ jobs:
         run: |
           cd docs
           make html
+          ls ./docs/build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
