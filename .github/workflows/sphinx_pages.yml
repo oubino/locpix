@@ -27,13 +27,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+      - uses: ammaraskar/sphinx-action@master
         with:
-          source: ./docs
-          destination: ./docs/_site
+          docs-folder: "docs/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
