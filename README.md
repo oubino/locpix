@@ -102,6 +102,8 @@ To do this we first need to change directory to the folder we want to be in (cd 
 Then clone the repository
 
 ```
+conda create -n locpix-env python==3.10
+conda activate locpix-env
 git clone https://github.com/oubino/locpix
 ```
 
