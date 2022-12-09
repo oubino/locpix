@@ -18,7 +18,7 @@ from tkinter import filedialog
 def main():
 
     parser = argparse.ArgumentParser(description="Get markers")
-    #config_group = parser.add_mutually_exclusive_group(required=True)
+    # config_group = parser.add_mutually_exclusive_group(required=True)
     parser.add_argument(
         "-i",
         "--project_directory",
@@ -54,14 +54,14 @@ def main():
         config = get_markers_config.config_gui()
 
     # list items
-    input_folder = os.path.join(project_folder, 'preprocess/no_gt_label')
+    input_folder = os.path.join(project_folder, "preprocess/no_gt_label")
     try:
         files = os.listdir(input_folder)
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
     # if output directory not present create it
-    markers_folder = os.path.join(project_folder, 'markers')
+    markers_folder = os.path.join(project_folder, "markers")
     if not os.path.exists(markers_folder):
         print("Making folder")
         os.makedirs(markers_folder)
@@ -76,7 +76,7 @@ def main():
         item.load_from_parquet(os.path.join(input_folder, file))
 
         # load in histograms
-        input_histo_folder = os.path.join(project_folder, 'annotate/histos')
+        input_histo_folder = os.path.join(project_folder, "annotate/histos")
         histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
         with open(histo_loc, "rb") as f:
             histo = pkl.load(f)

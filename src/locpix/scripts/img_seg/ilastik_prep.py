@@ -14,6 +14,7 @@ from locpix.scripts.img_seg import ilastik_prep_config
 import tkinter as tk
 from tkinter import filedialog
 
+
 def main():
 
     parser = argparse.ArgumentParser(description="Ilastik prep")
@@ -52,14 +53,14 @@ def main():
         config = ilastik_prep_config.config_gui()
 
     # list items
-    input_histo_folder = os.path.join(project_folder, 'annotate/histos')
+    input_histo_folder = os.path.join(project_folder, "annotate/histos")
     try:
         files = os.listdir(input_histo_folder)
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
     # if output directory not present create it
-    output_folder = os.path.join(project_folder, 'ilastik/prep')
+    output_folder = os.path.join(project_folder, "ilastik/prep")
     if not os.path.exists(output_folder):
         print("Making folder")
         os.makedirs(output_folder)

@@ -65,8 +65,8 @@ def main():
         # config = cellpose_train_config.config_gui(gt_file_path)
 
     # load in config
-    input_root = os.path.join(project_folder, 'annotate/histos')
-    label_root = os.path.join(project_folder, 'annotate/annotated')
+    input_root = os.path.join(project_folder, "annotate/histos")
+    label_root = os.path.join(project_folder, "annotate/annotated")
     batch_size = config["batch_size"]
     epochs = config["epochs"]
     gpu = config["gpu"]
@@ -85,13 +85,12 @@ def main():
         raise ValueError("There should be some files to open")
 
     # make necessary folders if not present
-    preprocessed_folder = os.path.join(project_folder, 'cellose_train')
+    preprocessed_folder = os.path.join(project_folder, "cellose_train")
     if not os.path.exists(preprocessed_folder):
         print("Making folder")
         os.makedirs(preprocessed_folder)
-    
-    print('files', files)
-    
+
+    print("files", files)
 
     # define gpu or cpu
     # if data is on gpu then don't need to pin memory
@@ -123,12 +122,16 @@ def main():
     val_transform = [transforms.ToTensor()]
 
     # Initialise train and val dataset
-    train_set = dataset.ImgDataset(input_root, label_root, train_files, '.pkl', '.parquet', train_transform)
-    val_set = dataset.ImgDataset(input_root, label_root, val_files, '.pkl', '.parquet', val_transform)
+    train_set = dataset.ImgDataset(
+        input_root, label_root, train_files, ".pkl", ".parquet", train_transform
+    )
+    val_set = dataset.ImgDataset(
+        input_root, label_root, val_files, ".pkl", ".parquet", val_transform
+    )
 
     # Pre-process train and val dataset
-    train_set.preprocess(os.path.join(preprocessed_folder, 'train'))
-    val_set.preprocess(os.path.join(preprocessed_folder, 'val'))
+    train_set.preprocess(os.path.join(preprocessed_folder, "train"))
+    val_set.preprocess(os.path.join(preprocessed_folder, "val"))
 
     # initialise dataloaders
     train_loader = DataLoader(

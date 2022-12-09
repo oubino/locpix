@@ -293,7 +293,10 @@ class InputWidget(QWidget):
         config["plot"] = self.plot.isChecked()
         config["vis_interpolation"] = self.vis_interpolation.selectedItems()[0].text()
         config["drop_zero_label"] = self.drop_zero_label.isChecked()
-        config["gt_label_map"] = {0: self.gt_label_map_zero.text(), 1: self.gt_label_map_one.text()}
+        config["gt_label_map"] = {
+            0: self.gt_label_map_zero.text(),
+            1: self.gt_label_map_one.text(),
+        }
         config["save_img"] = self.save_img.isChecked()
         config["save_threshold"] = int(self.save_threshold.text())
         config["save_interpolate"] = self.save_interpolation.selectedItems()[0].text()

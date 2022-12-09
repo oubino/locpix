@@ -15,6 +15,7 @@ from locpix.scripts.img_seg import ilastik_output_config
 import tkinter as tk
 from tkinter import filedialog
 
+
 def main():
 
     parser = argparse.ArgumentParser(description="Ilastik output")
@@ -53,14 +54,16 @@ def main():
         config = ilastik_output_config.config_gui()
 
     # list items
-    input_folder = os.path.join(project_folder, 'annotate/annotated')
+    input_folder = os.path.join(project_folder, "annotate/annotated")
     try:
         files = os.listdir(input_folder)
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
     # if output directory not present create it
-    output_membrane_prob = os.path.join(project_folder, "ilastik/output/membrane/prob_map")
+    output_membrane_prob = os.path.join(
+        project_folder, "ilastik/output/membrane/prob_map"
+    )
     if not os.path.exists(output_membrane_prob):
         print("Making folder")
         os.makedirs(output_membrane_prob)
@@ -90,10 +93,10 @@ def main():
         # ---- membrane segmentation ----
 
         # load in ilastik_seg
-        input_membrane_prob = os.path.join(project_folder, "ilastik/ilastik_output/membrane/prob_map_unprocessed")
-        membrane_prob_mask_loc = os.path.join(
-            input_membrane_prob, item.name + ".npy"
+        input_membrane_prob = os.path.join(
+            project_folder, "ilastik/ilastik_output/membrane/prob_map_unprocessed"
         )
+        membrane_prob_mask_loc = os.path.join(input_membrane_prob, item.name + ".npy")
         ilastik_seg = np.load(membrane_prob_mask_loc)
 
         # ilastik_seg is [y,x,c] where channel 0 is membranes, channel 1 is inside cells
@@ -108,7 +111,9 @@ def main():
         # ---- cell segmentation ----
 
         # load in ilastik_seg
-        input_cell_mask = os.path.join(project_folder, "ilastik/ilastik_output/cell/ilastik_output_mask")
+        input_cell_mask = os.path.join(
+            project_folder, "ilastik/ilastik_output/cell/ilastik_output_mask"
+        )
         cell_mask_loc = os.path.join(input_cell_mask, item.name + ".npy")
         ilastik_seg = np.load(cell_mask_loc)
 
@@ -120,9 +125,7 @@ def main():
         # save instance mask to dataframe
         df = item.mask_pixel_2_coord(ilastik_seg)
         item.df = df
-        item.save_to_parquet(
-            output_cell_df, drop_zero_label=False, drop_pixel_col=True
-        )
+        item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
         # save cell segmentation image - consider only zero channel
         imgs = {key: value.T for (key, value) in histo.items()}

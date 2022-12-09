@@ -56,7 +56,7 @@ def main():
 
     args = parser.parse_args()
 
-     # input project directory
+    # input project directory
     if args.project_directory is not None:
         project_folder = args.project_directory
     else:
@@ -76,7 +76,7 @@ def main():
         config = membrane_performance_config.config_gui(gt_file_path)
 
     # list items
-    gt_file_path = os.path.join(project_folder, 'annotate/annotated')
+    gt_file_path = os.path.join(project_folder, "annotate/annotated")
     try:
         files = os.listdir(gt_file_path)
     except FileNotFoundError:
@@ -94,16 +94,32 @@ def main():
 
         # get folder names
         if method == "ilastik":
-            seg_folder = os.path.join(project_folder, 'ilastik/output/membrane/prob_map')
+            seg_folder = os.path.join(
+                project_folder, "ilastik/output/membrane/prob_map"
+            )
         else:
-            seg_folder = os.path.join(project_folder, f'{method}/membrane/prob_map')
-        output_df_folder = os.path.join(project_folder, f"membrane_performance/{method}/membrane/seg_dataframes")
-        output_seg_imgs = os.path.join(project_folder, f"membrane_performance/{method}/membrane/seg_images")
-        output_train_pr = os.path.join(project_folder, f"membrane_performance/{method}/membrane/train_pr")
-        output_test_pr = os.path.join(project_folder, f"membrane_performance/{method}/membrane/test_pr")
-        output_metrics = os.path.join(project_folder, f"membrane_performance/{method}/membrane/metrics")
-        output_overlay_pr_curves = os.path.join(project_folder, f"membrane_performance/overlaid_pr_curves")
-        output_conf_matrix = os.path.join(project_folder, f"membrane_performance/{method}/membrane/conf_matrix")
+            seg_folder = os.path.join(project_folder, f"{method}/membrane/prob_map")
+        output_df_folder = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/seg_dataframes"
+        )
+        output_seg_imgs = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/seg_images"
+        )
+        output_train_pr = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/train_pr"
+        )
+        output_test_pr = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/test_pr"
+        )
+        output_metrics = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/metrics"
+        )
+        output_overlay_pr_curves = os.path.join(
+            project_folder, f"membrane_performance/overlaid_pr_curves"
+        )
+        output_conf_matrix = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/conf_matrix"
+        )
 
         # if output directory not present create it
         if not os.path.exists(output_df_folder):

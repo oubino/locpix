@@ -21,26 +21,22 @@ def main():
         description="Preprocess the data for\
         further processing"
     )
-    #data_group.add_argument(
+    # data_group.add_argument(
     #    "-e",
     #    "--env",
     #    action="store",
     #    type=str,
     #    help="location of .env file for data path",
-    #)
+    # )
     parser.add_argument(
-        "-i", 
-        "--input", 
-        action="store", 
-        type=str, 
-        help="path for the input data folder"
+        "-i", "--input", action="store", type=str, help="path for the input data folder"
     )
-    #parser.add_argument(
+    # parser.add_argument(
     #    "-s",
     #    "--sanitycheck",
     #    action="store_true",
     #    help="whether to check correct csvs loaded in",
-    #)
+    # )
     parser.add_argument(
         "-c",
         "--config",
@@ -59,7 +55,7 @@ def main():
 
     args = parser.parse_args()
 
-    #if args.env is not None:
+    # if args.env is not None:
     #    dotenv_path = ".env"
     #    dotenv.load_dotenv(dotenv_path)
     #    csv_path = os.getenv("RAW_DATA_PATH")
@@ -81,10 +77,12 @@ def main():
         project_folder = filedialog.askdirectory()
 
     # if output directory not present create it
-    output_folder = os.path.join(project_folder, 'preprocess/no_gt_labels')
+    output_folder = os.path.join(project_folder, "preprocess/no_gt_labels")
     if os.path.exists(output_folder):
-        raise ValueError("You cannot choose this project folder"
-                         " as it already contains prprocessed data")
+        raise ValueError(
+            "You cannot choose this project folder"
+            " as it already contains prprocessed data"
+        )
     else:
         os.makedirs(output_folder)
 
@@ -137,7 +135,7 @@ def main():
 
     # save yaml file
     config["input_data_folder"] = csv_path
-    yaml_save_loc = os.path.join(project_folder, 'preprocess.yaml')
+    yaml_save_loc = os.path.join(project_folder, "preprocess.yaml")
     with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config, outfile)
 
