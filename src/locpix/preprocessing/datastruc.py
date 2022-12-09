@@ -9,7 +9,6 @@ import numpy as np
 import napari
 import matplotlib.pyplot as plt
 import polars as pl
-from polars.testing import assert_frame_equal
 import pyarrow.parquet as pq
 import ast
 import os
@@ -374,6 +373,7 @@ class item:
             mask_list = []
             unique_labels = np.unique(self.histo_mask)
             # for each integer label return the coordinates
+            #TODO: #7 This is slow, look at mask_pixel_2_coord!
             for label in unique_labels:
                 x_pixels = np.where(self.histo_mask == label)[0]
                 y_pixels = np.where(self.histo_mask == label)[1]
@@ -431,7 +431,6 @@ class item:
         if self.dim == 2:
             # list of mask dataframes, each mask dataframe contains
             # (x,y,label) columns
-            mask_list = []
             # transpose the image mask to histogram space
             histo_mask = img_mask.T
 

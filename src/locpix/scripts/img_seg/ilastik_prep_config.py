@@ -8,19 +8,16 @@ Creating a GUI for user to choose configuration
 Parsing config file to check all specified"""
 
 from PyQt5.QtWidgets import (
-    QLabel,
     QApplication,
     QWidget,
-    QHBoxLayout,
     QMessageBox,
     QLineEdit,
     QFormLayout,
-    QCheckBox,
     QListWidget,
     QPushButton,
     QFileDialog,
 )
-from PyQt5.QtGui import QIntValidator, QDoubleValidator
+from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtCore import Qt
 import yaml
 

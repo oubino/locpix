@@ -1,6 +1,5 @@
 """Module for rendering point clouds of various forms"""
 
-from locpix.preprocessing import datastruc
 import numpy as np
 import polars as pl
 

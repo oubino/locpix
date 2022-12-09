@@ -202,7 +202,7 @@ def watershed_segment(img, file_name="Image", coords=None) -> np.ndarray:
         file_name (string): Name of the image
         coords (list): List of tuples where each tuple represents coordinate of a marker (x,y)
     Returns:
-        labels (np.ndarray) : Numpy array containing integer labels, each representing different segmented region of the input
+        labels (np.ndarray): Numpy array containing integer labels, each representing different segmented region of the input
     """
 
     markers = np.zeros(img.shape, dtype="int32")
@@ -217,7 +217,7 @@ def watershed_segment(img, file_name="Image", coords=None) -> np.ndarray:
     # markers [467:473,7:13] is populated i.e. height of 470 ish and width 10 ish is populated
     # this ensures img and marker coords are in same space
     for index, coord in enumerate(coords):
-        markers[coord[0] - 3 : coord[0] + 3, coord[1] - 3 : coord[1] + 3] = int(
+        markers[coord[0] - 3: coord[0] + 3, coord[1] - 3: coord[1] + 3] = int(
             index + 1
         )
     # perform watershed

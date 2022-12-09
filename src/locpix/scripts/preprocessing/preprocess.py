@@ -4,7 +4,6 @@
 Module takes in the .csv files and processes saving the datastructures
 """
 
-import dotenv
 import os
 import yaml
 from locpix.preprocessing import functions

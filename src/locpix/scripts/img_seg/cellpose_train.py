@@ -16,8 +16,6 @@ from torchvision import transforms
 from cellpose import models
 from torchsummary import summary
 import argparse
-import tkinter as tk
-from tkinter import filedialog
 
 # from locpix.scripts.img_seg import cellpose_train_config
 

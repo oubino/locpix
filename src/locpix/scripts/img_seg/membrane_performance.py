@@ -115,7 +115,7 @@ def main():
             project_folder, f"membrane_performance/{method}/membrane/metrics"
         )
         output_overlay_pr_curves = os.path.join(
-            project_folder, f"membrane_performance/overlaid_pr_curves"
+            project_folder, "membrane_performance/overlaid_pr_curves"
         )
         output_conf_matrix = os.path.join(
             project_folder, f"membrane_performance/{method}/membrane/conf_matrix"
