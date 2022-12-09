@@ -26,16 +26,8 @@ from PyQt5.QtCore import Qt
 import yaml
 
 default_config_keys = [
-    "input_folder",
-    "input_histo_folder",
-    "input_membrane_prob",
-    "input_cell_mask",
-    "output_membrane_prob",
-    "output_cell_df",
-    "output_cell_img",
     "vis_threshold",
     "vis_interpolate",
-    "yaml_save_loc",
 ]
 
 
@@ -64,38 +56,6 @@ class InputWidget(QWidget):
         self.load_button.clicked.connect(self.load_yaml)
         self.flo.addRow(self.load_button)
 
-        self.input_folder = QLineEdit("output/annotate/annotated")
-        self.input_folder.setToolTip("Input folder")
-        self.flo.addRow("Input folder", self.input_folder)
-
-        self.input_histo_folder = QLineEdit("output/annotate/histos")
-        self.input_histo_folder.setToolTip("Input folder for histograms")
-        self.flo.addRow("Histo folder", self.input_histo_folder)
-
-        self.input_membrane_prob = QLineEdit(
-            "output/ilastik/ilastik_output/membrane/prob_map_unprocessed"
-        )
-        self.input_membrane_prob.setToolTip("Membrane prob mask - this is from ilastik")
-        self.flo.addRow("Membrane prob map", self.input_membrane_prob)
-
-        self.input_cell_mask = QLineEdit(
-            "output/ilastik/ilastik_output/cell/ilastik_output_mask"
-        )
-        self.input_cell_mask.setToolTip("Input cell mask")
-        self.flo.addRow("Input cell mask", self.input_cell_mask)
-
-        self.output_membrane_prob = QLineEdit("output/ilastik/output/membrane/prob_map")
-        self.output_membrane_prob.setToolTip("Membrane prob mask output")
-        self.flo.addRow("Membrane probability mask output", self.output_membrane_prob)
-
-        self.output_cell_df = QLineEdit("output/ilastik/output/cell/dataframe")
-        self.output_cell_df.setToolTip("Output cell dataframe")
-        self.flo.addRow("Output cell dataframe", self.output_cell_df)
-
-        self.output_cell_img = QLineEdit("output/ilastik/output/cell/img")
-        self.output_cell_img.setToolTip("Output cell image")
-        self.flo.addRow("Output cell image", self.output_cell_img)
-
         self.vis_threshold = QLineEdit("0")
         self.vis_threshold.setValidator(QDoubleValidator())
         self.flo.addRow("Vis threshold", self.vis_threshold)
@@ -106,11 +66,6 @@ class InputWidget(QWidget):
         self.vis_interpolate.insertItem(2, "linear")
         self.vis_interpolate.item(0).setSelected(True)
         self.flo.addRow("Visible interpolation", self.vis_interpolate)
-
-        # yaml save loc
-        self.save_loc_input = QLineEdit("output/ilastik/output/ilastik_output.yaml")
-        self.save_loc_input.setToolTip("Yaml save location")
-        self.flo.addRow("yaml save location", self.save_loc_input)
 
         self.setLayout(self.flo)
 
@@ -140,20 +95,12 @@ class InputWidget(QWidget):
             load_config (yaml file): Config file
                 to load into the gui"""
 
-        self.input_folder.setText(load_config["input_folder"])
-        self.input_histo_folder.setText(load_config["input_histo_folder"])
-        self.input_membrane_prob.setText(load_config["input_membrane_prob"])
-        self.input_cell_mask.setText(load_config["input_cell_mask"])
-        self.output_membrane_prob.setText(load_config["output_membrane_prob"])
-        self.output_cell_df.setText(load_config["output_cell_df"])
-        self.output_cell_img.setText(load_config["output_cell_img"])
         self.vis_threshold.setText(str(load_config["vis_threshold"]))
         self.vis_interpolate.clearSelection()
         item = self.vis_interpolate.findItems(
             load_config["vis_interpolate"], Qt.MatchFlag.MatchExactly
         )
         item[0].setSelected(True)
-        self.save_loc_input.setText(load_config["yaml_save_loc"])
 
     def set_config(self, config):
         """Set the configuration file
@@ -161,16 +108,8 @@ class InputWidget(QWidget):
         Args:
             config (dictionary) : Configuration dict"""
 
-        config["input_folder"] = self.input_folder.text()
-        config["input_histo_folder"] = self.input_histo_folder.text()
-        config["input_membrane_prob"] = self.input_membrane_prob.text()
-        config["input_cell_mask"] = self.input_cell_mask.text()
-        config["output_membrane_prob"] = self.output_membrane_prob.text()
-        config["output_cell_df"] = self.output_cell_df.text()
-        config["output_cell_img"] = self.output_cell_img.text()
         config["vis_threshold"] = int(self.vis_threshold.text())
         config["vis_interpolate"] = self.vis_interpolate.selectedItems()[0].text()
-        config["yaml_save_loc"] = self.save_loc_input.text()
 
         # check config is correct
         parse_config(config)
