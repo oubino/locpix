@@ -44,8 +44,8 @@ membrane_performance = "locpix.scripts.img_seg.membrane_performance:main"
 train_cellpose = "locpix.scripts.img_seg.cellpose_train:main"
 
 [project.urls]
-"Homepage" = "https://github.com/oubino/heptapods_img"
-"Bug Tracker" = "https://github.com/oubino/heptapods_img/issues"
+"Homepage" = "https://github.com/oubino/locpix"
+"Bug Tracker" = "https://github.com/oubino/locpix/issues"
 
 [tool.tox]
 legacy_tox_ini = """

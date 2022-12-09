@@ -108,8 +108,7 @@ git clone https://github.com/oubino/locpix
 Then move into the directory and install it
 
 ```
-cd locpix
-pip install .
+pip install ./locpix
 ```
 
 We should then check the install was successful by running tests
@@ -130,9 +129,11 @@ git clone https://github.com/oubino/locpix
 
 Then move into the directory and install it using an editable version
 
+
 ```
-cd locpix
-pip install -e .
+conda create -n locpix-env python==3.10
+conda activate locpix-env
+pip install -e ./locpix
 ```
 
 We should then check the install was successful by running tests
@@ -563,4 +564,10 @@ Before running
 
 ```
 make html
+```
+
+Needed to install sphinx-autoapi
+
+```
+pip install sphinx-autoapi
 ```
