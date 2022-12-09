@@ -69,7 +69,7 @@ def main():
 
     # if output directory for seg imgs not present create it
     output_seg_folder = os.path.join(project_folder, 'annotate/seg_imgs')
-    if not os.path.exists(output_seg_folder]):
+    if not os.path.exists(output_seg_folder):
         print("Making folder")
         os.makedirs(output_seg_folder)
 
