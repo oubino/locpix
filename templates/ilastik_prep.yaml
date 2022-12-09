@@ -1,12 +1,4 @@
-# input histo folder
-input_histo_folder: 'output/annotate/histos'
-
-# output folder 
-output_folder: 'output/ilastik/prep'
-
+# vis settings
 threshold: 0
 
 interpolation: 'log2'
-
-# yaml save location
-yaml_save_loc: output/ilastik/prep/ilastik_prep.yaml
