@@ -137,7 +137,7 @@ def main():
 
     # save yaml file
     config["input_data_folder"] = csv_path
-    yaml_save_loc = os.path.join(project_folder, 'preprocess')
+    yaml_save_loc = os.path.join(project_folder, 'preprocess.yaml')
     with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config, outfile)
 
