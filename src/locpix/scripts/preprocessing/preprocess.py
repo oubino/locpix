@@ -21,28 +21,27 @@ def main():
         description="Preprocess the data for\
         further processing"
     )
-    data_group = parser.add_mutually_exclusive_group(required=True)
-    data_group.add_argument(
-        "-e",
-        "--env",
-        action="store",
-        type=str,
-        help="location of .env file for data path",
-    )
-    data_group.add_argument(
-        "-g", "--gui", action="store_true", help="whether to use gui to get data path"
-    )
-    data_group.add_argument(
-        "-f", "--folder", action="store", type=str, help="path for the data folder"
-    )
+    #data_group.add_argument(
+    #    "-e",
+    #    "--env",
+    #    action="store",
+    #    type=str,
+    #    help="location of .env file for data path",
+    #)
     parser.add_argument(
-        "-s",
-        "--sanitycheck",
-        action="store_true",
-        help="whether to check correct csvs loaded in",
+        "-i", 
+        "--input", 
+        action="store", 
+        type=str, 
+        help="path for the input data folder"
     )
-    config_group = parser.add_mutually_exclusive_group(required=True)
-    config_group.add_argument(
+    #parser.add_argument(
+    #    "-s",
+    #    "--sanitycheck",
+    #    action="store_true",
+    #    help="whether to check correct csvs loaded in",
+    #)
+    parser.add_argument(
         "-c",
         "--config",
         action="store",
@@ -50,38 +49,56 @@ def main():
         help="the location of the .yaml configuaration file\
                              for preprocessing",
     )
-    config_group.add_argument(
-        "-cg",
-        "--configgui",
-        action="store_true",
-        help="whether to use gui to get the configuration",
+    parser.add_argument(
+        "-o",
+        "--project_directory",
+        action="store",
+        type=str,
+        help="the location of the project directory",
     )
 
     args = parser.parse_args()
 
-    if args.env is not None:
-        dotenv_path = ".env"
-        dotenv.load_dotenv(dotenv_path)
-        csv_path = os.getenv("RAW_DATA_PATH")
+    #if args.env is not None:
+    #    dotenv_path = ".env"
+    #    dotenv.load_dotenv(dotenv_path)
+    #    csv_path = os.getenv("RAW_DATA_PATH")
 
-    elif args.gui:
+    # input data folder
+    if args.input is not None:
+        csv_path = args.folder
+    else:
         root = tk.Tk()
         root.withdraw()
         csv_path = filedialog.askdirectory()
 
-    elif args.folder is not None:
-        csv_path = args.folder
+    # project folder
+    if args.project_directory is not None:
+        project_folder = args.project_directory
+    else:
+        root = tk.Tk()
+        root.withdraw()
+        project_folder = filedialog.askdirectory()
 
-    # list all .csv in this location
+    # if output directory not present create it
+    output_folder = os.path.join(project_folder, 'preprocess/no_gt_labels')
+    if os.path.exists(output_folder):
+        raise ValueError("You cannot choose this project folder"
+                         " as it already contains prprocessed data")
+    else:
+        os.makedirs(output_folder)
+
+    # list all .csv at input
     csvs = os.listdir(csv_path)
     csvs = [csv for csv in csvs if csv.endswith(".csv")]
 
+    # load in configuration .yaml
     if args.config is not None:
         # load yaml
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             preprocess_config.parse_config(config)
-    elif args.configgui:
+    else:
         files = [csv.removesuffix(".csv") for csv in csvs]
         config = preprocess_config.config_gui(files)
 
@@ -95,10 +112,6 @@ def main():
         check = input("If you are happy with these csvs type YES: ")
         if check != "YES":
             exit()
-
-    # if output directory not present create it
-    if not os.path.exists(config["output_folder"]):
-        os.makedirs(config["output_folder"])
 
     # go through .csv -> convert to datastructure -> save
     for csv in csvs:
@@ -117,14 +130,15 @@ def main():
         # have to not drop zero label
         # as no gt_label yet
         item.save_to_parquet(
-            config["output_folder"],
+            output_folder,
             drop_zero_label=False,
             drop_pixel_col=config["drop_pixel_col"],
         )
 
     # save yaml file
-    config["input_csv_path"] = csv_path
-    with open(config["yaml_save_loc"], "w") as outfile:
+    config["input_data_folder"] = csv_path
+    yaml_save_loc = os.path.join(project_folder, 'preprocess')
+    with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config, outfile)
 
 

@@ -12,7 +12,7 @@ frame_col: 'Frame'
 # If 3 will read in and deal with z as well (currently not fully supported)
 dim: 2
 
-output_folder: 'output/preprocess/no_gt_label'
+# output_folder: 'output/preprocess/no_gt_label'
 
 # choice of which channels user wants to consider
 channel_choice: [0,1,2,3]
@@ -34,4 +34,4 @@ include_files:
 - Fov10_DC
 
 # yaml save location
-yaml_save_loc: output/preprocess/preprocess.yaml
+# yaml_save_loc: output/preprocess/preprocess.yaml
