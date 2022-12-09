@@ -26,16 +26,9 @@ from PyQt5.QtCore import Qt
 import yaml
 
 default_config_keys = [
-    "input_folder",
-    "input_histo_folder",
-    "markers_loc",
     "vis_threshold",
     "vis_interpolate",
     "sum_chan",
-    "output_membrane_prob",
-    "output_cell_df",
-    "output_cell_img",
-    "yaml_save_loc",
 ]
 
 
@@ -64,18 +57,6 @@ class InputWidget(QWidget):
         self.load_button.clicked.connect(self.load_yaml)
         self.flo.addRow(self.load_button)
 
-        self.input_folder = QLineEdit("output/preprocess/annotated")
-        self.input_folder.setToolTip("Input folder")
-        self.flo.addRow("Input folder", self.input_folder)
-
-        self.input_histo_folder = QLineEdit("output/annotate/histos")
-        self.input_histo_folder.setToolTip("Input folder for histograms")
-        self.flo.addRow("Histo folder", self.input_histo_folder)
-
-        self.markers_folder = QLineEdit("output/markers")
-        self.markers_folder.setToolTip("Folder which has markers in it")
-        self.flo.addRow("Markers folder", self.markers_folder)
-
         self.vis_threshold = QLineEdit("0")
         self.vis_threshold.setValidator(QDoubleValidator())
         self.flo.addRow("Vis threshold", self.vis_threshold)
@@ -92,23 +73,6 @@ class InputWidget(QWidget):
             "Whether to sum channels (currently only channel 0 and 1)"
         )
         self.flo.addRow("Sum channels", self.sum_chan)
-
-        self.output_membrane_prob = QLineEdit("output/classic/membrane/prob_map")
-        self.output_membrane_prob.setToolTip("Output membrane probability mask")
-        self.flo.addRow("Output membrane probability mask", self.output_membrane_prob)
-
-        self.output_cell_df = QLineEdit("output/classic/cell/seg_dataframes")
-        self.output_cell_df.setToolTip("Output dataframe segmentation for cell")
-        self.flo.addRow("Output dataframe segmentation for cell", self.output_cell_df)
-
-        self.output_cell_img = QLineEdit("output/classic/cell/seg_img")
-        self.output_cell_img.setToolTip("Output image of cell segmentation")
-        self.flo.addRow("Output image of cell segmentation", self.output_cell_img)
-
-        # yaml save loc
-        self.save_loc_input = QLineEdit("output/classic/classic.yaml")
-        self.save_loc_input.setToolTip("Yaml save location")
-        self.flo.addRow("yaml save location", self.save_loc_input)
 
         self.setLayout(self.flo)
 
@@ -138,9 +102,6 @@ class InputWidget(QWidget):
             load_config (yaml file): Config file
                 to load into the gui"""
 
-        self.input_folder.setText(load_config["input_folder"])
-        self.input_histo_folder.setText(load_config["input_histo_folder"])
-        self.markers_folder.setText(load_config["markers_loc"])
         self.vis_threshold.setText(str(load_config["vis_threshold"]))
         self.vis_interpolation.clearSelection()
         item = self.vis_interpolation.findItems(
@@ -148,10 +109,6 @@ class InputWidget(QWidget):
         )
         item[0].setSelected(True)
         self.sum_chan.setCheckState(load_config["sum_chan"])
-        self.output_membrane_prob.setText(load_config["output_membrane_prob"])
-        self.output_cell_df.setText(load_config["output_cell_df"])
-        self.output_cell_img.setText(load_config["output_cell_img"])
-        self.save_loc_input.setText(load_config["yaml_save_loc"])
 
     def set_config(self, config):
         """Set the configuration file
@@ -159,16 +116,9 @@ class InputWidget(QWidget):
         Args:
             config (dictionary) : Configuration dict"""
 
-        config["input_folder"] = self.input_folder.text()
-        config["input_histo_folder"] = self.input_histo_folder.text()
-        config["markers_loc"] = self.markers_folder.text()
         config["vis_threshold"] = int(self.vis_threshold.text())
         config["vis_interpolate"] = self.vis_interpolation.selectedItems()[0].text()
         config["sum_chan"] = self.sum_chan.isChecked()
-        config["output_membrane_prob"] = self.output_membrane_prob.text()
-        config["output_cell_df"] = self.output_cell_df.text()
-        config["output_cell_img"] = self.output_cell_img.text()
-        config["yaml_save_loc"] = self.save_loc_input.text()
 
         # check config is correct
         parse_config(config)

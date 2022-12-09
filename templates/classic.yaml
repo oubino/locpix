@@ -1,29 +1,6 @@
-# input folder
-input_folder: 'output/annotate/annotated'
-
-# input histo folder
-input_histo_folder: 'output/annotate/histos'
-
-# whether to get markers
-# if false the markers loc should point to where markers are saved
-# if true the markers loc should point to where to save markers
-markers_loc: 'output/markers'
-
 # threshold for visualisation
 vis_threshold: 0
 vis_interpolate: 'log2'
 
 # whether to sum channels
 sum_chan: False
-
-# Output membrane probability mask
-output_membrane_prob: 'output/classic/membrane/prob_map'
-
-# output dataframe segmentation for cell
-output_cell_df: 'output/classic/cell/seg_dataframes'
-
-# output image of cell segmentation
-output_cell_img: 'output/classic/cell/seg_img'
-
-# yaml save location
-yaml_save_loc: output/classic/classic.yaml
