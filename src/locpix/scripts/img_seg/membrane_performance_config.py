@@ -30,36 +30,9 @@ import yaml
 import os
 
 default_config_keys = [
-    "train_files",
-    "test_files",
     "maximise_choice",
-    "input_histo_folder",
-    "gt_file_path",
-    "classic_seg_folder",
-    "cellpose_seg_folder",
-    "ilastik_seg_folder",
-    "output_classic_df_folder",
-    "output_cellpose_df_folder",
-    "output_ilastik_df_folder",
-    "output_classic_seg_imgs",
-    "output_cellpose_seg_imgs",
-    "output_ilastik_seg_imgs",
-    "output_train_classic_pr",
-    "output_train_cellpose_pr",
-    "output_train_ilastik_pr",
-    "output_test_classic_pr",
-    "output_test_cellpose_pr",
-    "output_test_ilastik_pr",
-    "output_metrics_classic",
-    "output_metrics_cellpose",
-    "output_metrics_ilastik",
-    "output_conf_matrix_classic",
-    "output_conf_matrix_cellpose",
-    "output_conf_matrix_ilastik",
-    "output_overlay_pr_curves",
     "vis_threshold",
     "vis_interpolate",
-    "yaml_save_loc",
 ]
 
 
@@ -124,168 +97,6 @@ class InputWidget(QWidget):
         self.maximise_choice.setToolTip("Which metric to maximise")
         self.flo.addRow("Maximise choice", self.maximise_choice)
 
-        self.input_histo_folder = QLineEdit("output/annotate/histos")
-        self.input_histo_folder.setToolTip("Input histogram folder")
-        self.flo.addRow("Input histogram folder", self.input_histo_folder)
-
-        self.classic_seg_folder = QLineEdit("output/classic/membrane/prob_map")
-        self.classic_seg_folder.setToolTip("Location of classic segmentation")
-        self.flo.addRow("Classic segmentation", self.classic_seg_folder)
-
-        self.cellpose_seg_folder = QLineEdit("output/cellpose/membrane/prob_map")
-        self.cellpose_seg_folder.setToolTip("Location of cellpose segmentation")
-        self.flo.addRow("cellpose segmentation", self.cellpose_seg_folder)
-
-        self.ilastik_seg_folder = QLineEdit("output/ilastik/output/membrane/prob_map")
-        self.ilastik_seg_folder.setToolTip("Location of ilastik segmentation")
-        self.flo.addRow("ilastik segmentation", self.ilastik_seg_folder)
-
-        self.classic_df_folder = QLineEdit(
-            "output/membrane_performance/classic/membrane/seg_dataframes"
-        )
-        self.classic_df_folder.setToolTip("Where to save output parquet files")
-        self.flo.addRow("Classic segmented dataframe", self.classic_df_folder)
-
-        self.cellpose_df_folder = QLineEdit(
-            "output/membrane_performance/cellpose/membrane/seg_dataframes"
-        )
-        self.cellpose_df_folder.setToolTip("Where to save output parquet files")
-        self.flo.addRow("cellpose segmented dataframe", self.cellpose_df_folder)
-
-        self.ilastik_df_folder = QLineEdit(
-            "output/membrane_performance/ilastik/membrane/seg_dataframes"
-        )
-        self.ilastik_df_folder.setToolTip("Where to save output parquet files")
-        self.flo.addRow("ilastik segmented dataframe", self.ilastik_df_folder)
-
-        self.output_classic_seg_imgs = QLineEdit(
-            "output/membrane_performance/classic/membrane/seg_images"
-        )
-        self.output_classic_seg_imgs.setToolTip(
-            "Where to save output images of segmentation"
-        )
-        self.flo.addRow("Output classic segmented images", self.output_classic_seg_imgs)
-
-        self.output_cellpose_seg_imgs = QLineEdit(
-            "output/membrane_performance/cellpose/membrane/seg_images"
-        )
-        self.output_cellpose_seg_imgs.setToolTip(
-            "Where to save output images of segmentation"
-        )
-        self.flo.addRow(
-            "Output cellpose segmented images", self.output_cellpose_seg_imgs
-        )
-
-        self.output_ilastik_seg_imgs = QLineEdit(
-            "output/membrane_performance/ilastik/membrane/seg_images"
-        )
-        self.output_ilastik_seg_imgs.setToolTip(
-            "Where to save output images of segmentation"
-        )
-        self.flo.addRow("Output ilastik segmented images", self.output_ilastik_seg_imgs)
-
-        self.output_train_classic_pr = QLineEdit(
-            "output/membrane_performance/classic/membrane/train_pr"
-        )
-        self.output_train_classic_pr.setToolTip("Where to save output train pr curves")
-        self.flo.addRow("Output classic pr curves", self.output_train_classic_pr)
-
-        self.output_train_cellpose_pr = QLineEdit(
-            "output/membrane_performance/cellpose/membrane/train_pr"
-        )
-        self.output_train_cellpose_pr.setToolTip("Where to save output train pr curves")
-        self.flo.addRow("Output cellpose pr curves", self.output_train_cellpose_pr)
-
-        self.output_train_ilastik_pr = QLineEdit(
-            "output/membrane_performance/ilastik/membrane/train_pr"
-        )
-        self.output_train_ilastik_pr.setToolTip("Where to save output train pr curves")
-        self.flo.addRow("Output ilastik pr curves", self.output_train_ilastik_pr)
-
-        self.output_test_classic_pr = QLineEdit(
-            "output/membrane_performance/classic/membrane/test_pr"
-        )
-        self.output_test_classic_pr.setToolTip("Where to save output test pr curves")
-        self.flo.addRow("Output classic pr curves", self.output_test_classic_pr)
-
-        self.output_test_cellpose_pr = QLineEdit(
-            "output/membrane_performance/cellpose/membrane/test_pr"
-        )
-        self.output_test_cellpose_pr.setToolTip("Where to save output test pr curves")
-        self.flo.addRow("Output cellpose pr curves", self.output_test_cellpose_pr)
-
-        self.output_test_ilastik_pr = QLineEdit(
-            "output/membrane_performance/ilastik/membrane/test_pr"
-        )
-        self.output_test_ilastik_pr.setToolTip("Where to save output test pr curves")
-        self.flo.addRow("Output ilastik pr curves", self.output_test_ilastik_pr)
-
-        self.output_metrics_classic = QLineEdit(
-            "output/membrane_performance/classic/membrane/metrics"
-        )
-        self.output_metrics_classic.setToolTip(
-            "Where to save output performance metrics"
-        )
-        self.flo.addRow(
-            "Output classic performance metrics", self.output_metrics_classic
-        )
-
-        self.output_metrics_cellpose = QLineEdit(
-            "output/membrane_performance/cellpose/membrane/metrics"
-        )
-        self.output_metrics_cellpose.setToolTip(
-            "Where to save output performance metrics"
-        )
-        self.flo.addRow(
-            "Output cellpose performance metrics", self.output_metrics_cellpose
-        )
-
-        self.output_metrics_ilastik = QLineEdit(
-            "output/membrane_performance/ilastik/membrane/metrics"
-        )
-        self.output_metrics_ilastik.setToolTip(
-            "Where to save output performance metrics"
-        )
-        self.flo.addRow(
-            "Output ilastik performance metrics", self.output_metrics_ilastik
-        )
-
-        self.output_conf_matrix_classic = QLineEdit(
-            "output/membrane_performance/classic/membrane/conf_matrix"
-        )
-        self.output_conf_matrix_classic.setToolTip(
-            "where to save output confusion matrix"
-        )
-        self.flo.addRow(
-            "Output classic confusion matrix", self.output_conf_matrix_classic
-        )
-
-        self.output_conf_matrix_cellpose = QLineEdit(
-            "output/membrane_performance/cellpose/membrane/conf_matrix"
-        )
-        self.output_conf_matrix_cellpose.setToolTip(
-            "where to save output confusion matrix"
-        )
-        self.flo.addRow(
-            "Output cellpose confusion matrix", self.output_conf_matrix_cellpose
-        )
-
-        self.output_conf_matrix_ilastik = QLineEdit(
-            "output/membrane_performance/ilastik/membrane/conf_matrix"
-        )
-        self.output_conf_matrix_ilastik.setToolTip(
-            "where to save output confusion matrix"
-        )
-        self.flo.addRow(
-            "Output ilastik confusion matrix", self.output_conf_matrix_ilastik
-        )
-
-        self.output_overlay_pr_curves = QLineEdit(
-            "output/membrane_performance/overlaid_pr_curves"
-        )
-        self.output_overlay_pr_curves.setToolTip("Where to save overlaid pr curves")
-        self.flo.addRow("Output overlaid pr curves", self.output_overlay_pr_curves)
-
         self.vis_threshold = QLineEdit("0")
         self.vis_threshold.setValidator(QDoubleValidator())
         self.flo.addRow("Vis threshold", self.vis_threshold)
@@ -296,13 +107,6 @@ class InputWidget(QWidget):
         self.vis_interpolate.insertItem(2, "linear")
         self.vis_interpolate.item(0).setSelected(True)
         self.flo.addRow("vis interpolate", self.vis_interpolate)
-
-        # yaml save loc
-        self.yaml_save_loc = QLineEdit(
-            "output/membrane_performance/membrane_performance.yaml"
-        )
-        self.yaml_save_loc.setToolTip("Yaml save location")
-        self.flo.addRow("yaml save location", self.yaml_save_loc)
 
         self.setLayout(self.flo)
 
@@ -350,58 +154,12 @@ class InputWidget(QWidget):
             )
             item[0].setSelected(True)
 
-            self.input_histo_folder.setText(load_config["input_histo_folder"])
-            self.gt_file_path = load_config["gt_file_path"]
-
-            self.classic_seg_folder.setText(load_config["classic_seg_folder"])
-            self.cellpose_seg_folder.setText(load_config["cellpose_seg_folder"])
-            self.ilastik_seg_folder.setText(load_config["ilastik_seg_folder"])
-
-            self.classic_df_folder.setText(load_config["output_classic_df_folder"])
-            self.cellpose_df_folder.setText(load_config["output_cellpose_df_folder"])
-            self.ilastik_df_folder.setText(load_config["output_ilastik_df_folder"])
-
-            self.output_classic_seg_imgs.setText(load_config["output_classic_seg_imgs"])
-            self.output_cellpose_seg_imgs.setText(
-                load_config["output_cellpose_seg_imgs"]
-            )
-            self.output_ilastik_seg_imgs.setText(load_config["output_ilastik_seg_imgs"])
-
-            self.output_train_classic_pr.setText(load_config["output_train_classic_pr"])
-            self.output_train_cellpose_pr.setText(
-                load_config["output_train_cellpose_pr"]
-            )
-            self.output_train_ilastik_pr.setText(load_config["output_train_ilastik_pr"])
-
-            self.output_test_classic_pr.setText(load_config["output_test_classic_pr"])
-            self.output_test_cellpose_pr.setText(load_config["output_test_cellpose_pr"])
-            self.output_test_ilastik_pr.setText(load_config["output_test_ilastik_pr"])
-
-            self.output_metrics_classic.setText(load_config["output_metrics_classic"])
-            self.output_metrics_cellpose.setText(load_config["output_metrics_cellpose"])
-            self.output_metrics_ilastik.setText(load_config["output_metrics_ilastik"])
-
-            self.output_conf_matrix_classic.setText(
-                load_config["output_conf_matrix_classic"]
-            )
-            self.output_conf_matrix_cellpose.setText(
-                load_config["output_conf_matrix_cellpose"]
-            )
-            self.output_conf_matrix_ilastik.setText(
-                load_config["output_conf_matrix_ilastik"]
-            )
-
-            self.output_overlay_pr_curves.setText(
-                load_config["output_overlay_pr_curves"]
-            )
-
             self.vis_threshold.setText(str(load_config["vis_threshold"]))
             self.vis_interpolate.clearSelection()
             item = self.vis_interpolate.findItems(
                 load_config["vis_interpolate"], Qt.MatchFlag.MatchExactly
             )
             item[0].setSelected(True)
-            self.yaml_save_loc.setText(load_config["yaml_save_loc"])
 
     def set_config(self, config):
         """Set the configuration file
@@ -416,42 +174,8 @@ class InputWidget(QWidget):
             self.test_files.item(x).text() for x in range(self.test_files.count())
         ]
         config["maximise_choice"] = self.maximise_choice.selectedItems()[0].text()
-        config["input_histo_folder"] = self.input_histo_folder.text()
-        config["gt_file_path"] = self.gt_file_path
-
-        config["classic_seg_folder"] = self.classic_seg_folder.text()
-        config["cellpose_seg_folder"] = self.cellpose_seg_folder.text()
-        config["ilastik_seg_folder"] = self.ilastik_seg_folder.text()
-
-        config["output_classic_df_folder"] = self.classic_df_folder.text()
-        config["output_cellpose_df_folder"] = self.cellpose_df_folder.text()
-        config["output_ilastik_df_folder"] = self.ilastik_df_folder.text()
-
-        config["output_classic_seg_imgs"] = self.output_classic_seg_imgs.text()
-        config["output_cellpose_seg_imgs"] = self.output_cellpose_seg_imgs.text()
-        config["output_ilastik_seg_imgs"] = self.output_ilastik_seg_imgs.text()
-
-        config["output_train_classic_pr"] = self.output_train_classic_pr.text()
-        config["output_train_cellpose_pr"] = self.output_train_cellpose_pr.text()
-        config["output_train_ilastik_pr"] = self.output_train_ilastik_pr.text()
-
-        config["output_test_classic_pr"] = self.output_test_classic_pr.text()
-        config["output_test_cellpose_pr"] = self.output_test_cellpose_pr.text()
-        config["output_test_ilastik_pr"] = self.output_test_ilastik_pr.text()
-
-        config["output_metrics_classic"] = self.output_metrics_classic.text()
-        config["output_metrics_cellpose"] = self.output_metrics_cellpose.text()
-        config["output_metrics_ilastik"] = self.output_metrics_ilastik.text()
-
-        config["output_conf_matrix_classic"] = self.output_conf_matrix_classic.text()
-        config["output_conf_matrix_cellpose"] = self.output_conf_matrix_cellpose.text()
-        config["output_conf_matrix_ilastik"] = self.output_conf_matrix_ilastik.text()
-
-        config["output_overlay_pr_curves"] = self.output_overlay_pr_curves.text()
         config["vis_threshold"] = int(self.vis_threshold.text())
         config["vis_interpolate"] = self.vis_interpolate.selectedItems()[0].text()
-
-        config["yaml_save_loc"] = self.yaml_save_loc.text()
 
         # check config is correct
         parse_config(config)
