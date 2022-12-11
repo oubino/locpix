@@ -31,9 +31,6 @@ default_config_keys = [
     "dim",
     "plot",
     "vis_interpolation",
-    "input_folder",
-    "histo_folder",
-    "output_folder",
     "drop_zero_label",
     "gt_label_map",
     "save_img",
@@ -45,9 +42,7 @@ default_config_keys = [
     "alpha_seg",
     "cmap_seg",
     "fig_size",
-    "output_seg_folder",
     "vis_channels",
-    "yaml_save_loc",
 ]
 
 
@@ -110,18 +105,6 @@ class InputWidget(QWidget):
             "Interpolation applied to the histogram when visualising the image of the histogram"
         )
         self.flo.addRow("Vis interpolation", self.vis_interpolation)
-
-        self.input_folder = QLineEdit("output/preprocess/no_gt_label")
-        self.input_folder.setToolTip("Input folder")
-        self.flo.addRow("Input folder", self.input_folder)
-
-        self.histo_folder = QLineEdit("output/annotate/histos")
-        self.histo_folder.setToolTip("Output folder for histograms")
-        self.flo.addRow("Histo folder", self.histo_folder)
-
-        self.output_folder = QLineEdit("output/annotate/annotated")
-        self.output_folder.setToolTip("Output folder for annotated")
-        self.flo.addRow("Output folder", self.output_folder)
 
         self.drop_zero_label = QCheckBox()
         help = (
@@ -220,9 +203,6 @@ class InputWidget(QWidget):
         h_box.addWidget(self.fig_size_y)
         self.flo.addRow("Fig size", h_box)
 
-        self.output_seg_folder = QLineEdit("output/annotate/seg_imgs")
-        self.flo.addRow("Output seg folder", self.output_seg_folder)
-
         self.vis_channels = QListWidget()
         self.vis_channels.insertItem(0, "0")
         self.vis_channels.insertItem(1, "1")
@@ -234,11 +214,6 @@ class InputWidget(QWidget):
         )
         self.vis_channels.item(0).setSelected(True)
         self.flo.addRow("Channels", self.vis_channels)
-
-        # yaml save loc
-        self.save_loc_input = QLineEdit("output/annotate/annotate.yaml")
-        self.save_loc_input.setToolTip("Yaml save location")
-        self.flo.addRow("yaml save location", self.save_loc_input)
 
         self.setLayout(self.flo)
 
@@ -278,9 +253,6 @@ class InputWidget(QWidget):
             load_config["vis_interpolation"], Qt.MatchFlag.MatchExactly
         )
         item[0].setSelected(True)
-        self.input_folder.setText(load_config["input_folder"])
-        self.histo_folder.setText(load_config["histo_folder"])
-        self.output_folder.setText(load_config["output_folder"])
         self.drop_zero_label.setCheckState(load_config["drop_zero_label"])
         self.gt_label_map_zero.setText(str(load_config["gt_label_map"][0]))
         self.gt_label_map_one.setText(str(load_config["gt_label_map"][1]))
@@ -303,12 +275,10 @@ class InputWidget(QWidget):
         self.one_cmap.setText(load_config["cmap_seg"][1])
         self.fig_size_x.setText(str(load_config["fig_size"][0]))
         self.fig_size_y.setText(str(load_config["fig_size"][1]))
-        self.output_seg_folder.setText(load_config["output_seg_folder"])
         self.vis_channels.clearSelection()
         for chan in load_config["vis_channels"]:
             item = self.vis_channels.findItems(str(chan), Qt.MatchFlag.MatchExactly)
             item[0].setSelected(True)
-        self.save_loc_input.setText(load_config["yaml_save_loc"])
 
     def set_config(self, config):
         """Set the configuration file
@@ -322,11 +292,11 @@ class InputWidget(QWidget):
         config["dim"] = int(self.dim.text())
         config["plot"] = self.plot.isChecked()
         config["vis_interpolation"] = self.vis_interpolation.selectedItems()[0].text()
-        config["input_folder"] = self.input_folder.text()
-        config["histo_folder"] = self.histo_folder.text()
-        config["output_folder"] = self.output_folder.text()
         config["drop_zero_label"] = self.drop_zero_label.isChecked()
-        config["gt_label_map"] = {0: self.gt_label_map_zero.text(), 1: self.gt_label_map_one.text()}
+        config["gt_label_map"] = {
+            0: self.gt_label_map_zero.text(),
+            1: self.gt_label_map_one.text(),
+        }
         config["save_img"] = self.save_img.isChecked()
         config["save_threshold"] = int(self.save_threshold.text())
         config["save_interpolate"] = self.save_interpolation.selectedItems()[0].text()
@@ -341,11 +311,9 @@ class InputWidget(QWidget):
         config["alpha_seg"] = self.alpha_seg.text()
         config["cmap_seg"] = [self.zero_cmap.text(), self.one_cmap.text()]
         config["fig_size"] = [int(self.fig_size_x.text()), int(self.fig_size_y.text())]
-        config["output_seg_folder"] = self.output_seg_folder.text()
         config["vis_channels"] = [
             item.text() for item in self.vis_channels.selectedItems()
         ]
-        config["yaml_save_loc"] = self.save_loc_input.text()
 
         # check config is correct
         parse_config(config)
@@ -378,9 +346,7 @@ def config_gui():
     List of files files can then be unchecked if users want to ignore
 
     Attributes:
-        save_loc(string): Where to save the output
-            .yaml file for the configuration
-        files (list): List of files to be preprocessed"""
+        None"""
 
     app = QApplication([])  # sys.argv if need command line inputs
     # create widget

@@ -9,7 +9,6 @@ from matplotlib.colors import LinearSegmentedColormap, ListedColormap
 import networkx as nx
 from skimage.future.graph import RAG
 from skimage.transform import resize
-import matplotlib.patches as mpatches
 
 _interpolate = {
     "log2": lambda d: np.log2(d),
@@ -157,7 +156,7 @@ def visualise_seg(
     fig, ax = plt.subplots(figsize=figsize)
     cmap_seg = ListedColormap(cmap_seg)
 
-    patches = []  # legend creation
+    # patches = []  # legend creation
     # plot for each channel in sequence
     for index, chan in enumerate(channels):
         img = manual_threshold(image_dict[chan], threshold=threshold, how=how)

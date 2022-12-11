@@ -38,38 +38,47 @@ from tkinter import filedialog
 def main():
 
     parser = argparse.ArgumentParser(description="Membrane performance metrics on data")
-    config_group = parser.add_mutually_exclusive_group(required=True)
-    config_group.add_argument(
+    parser.add_argument(
+        "-i",
+        "--project_directory",
+        action="store",
+        type=str,
+        help="the location of the project directory",
+    )
+    parser.add_argument(
         "-c",
         "--config",
         action="store",
         type=str,
         help="the location of the .yaml configuaration file\
-                             for membrane performance",
-    )
-    config_group.add_argument(
-        "-cg",
-        "--configgui",
-        action="store_true",
-        help="whether to use gui to get the configuration",
+                             for preprocessing",
     )
 
     args = parser.parse_args()
+
+    # input project directory
+    if args.project_directory is not None:
+        project_folder = args.project_directory
+    else:
+        root = tk.Tk()
+        root.withdraw()
+        project_folder = filedialog.askdirectory()
 
     if args.config is not None:
         # load yaml
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             membrane_performance_config.parse_config(config)
-    elif args.configgui:
+    else:
         root = tk.Tk()
         root.withdraw()
         gt_file_path = filedialog.askdirectory()
         config = membrane_performance_config.config_gui(gt_file_path)
 
     # list items
+    gt_file_path = os.path.join(project_folder, "annotate/annotated")
     try:
-        files = os.listdir(config["gt_file_path"])
+        files = os.listdir(gt_file_path)
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
@@ -84,14 +93,33 @@ def main():
         print(f"{method} ...")
 
         # get folder names
-        seg_folder = config[method + "_seg_folder"]
-        output_df_folder = config["output_" + method + "_df_folder"]
-        output_seg_imgs = config["output_" + method + "_seg_imgs"]
-        output_train_pr = config["output_train_" + method + "_pr"]
-        output_test_pr = config["output_test_" + method + "_pr"]
-        output_metrics = config["output_metrics_" + method]
-        output_overlay_pr_curves = config["output_overlay_pr_curves"]
-        output_conf_matrix = config["output_conf_matrix_" + method]
+        if method == "ilastik":
+            seg_folder = os.path.join(
+                project_folder, "ilastik/output/membrane/prob_map"
+            )
+        else:
+            seg_folder = os.path.join(project_folder, f"{method}/membrane/prob_map")
+        output_df_folder = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/seg_dataframes"
+        )
+        output_seg_imgs = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/seg_images"
+        )
+        output_train_pr = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/train_pr"
+        )
+        output_test_pr = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/test_pr"
+        )
+        output_metrics = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/metrics"
+        )
+        output_overlay_pr_curves = os.path.join(
+            project_folder, "membrane_performance/overlaid_pr_curves"
+        )
+        output_conf_matrix = os.path.join(
+            project_folder, f"membrane_performance/{method}/membrane/conf_matrix"
+        )
 
         # if output directory not present create it
         if not os.path.exists(output_df_folder):
@@ -142,7 +170,7 @@ def main():
 
             # load df
             item = datastruc.item(None, None, None, None)
-            item.load_from_parquet(os.path.join(config["gt_file_path"], file))
+            item.load_from_parquet(os.path.join(gt_file_path, file))
 
             # load prob map
             img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
@@ -224,10 +252,11 @@ def main():
             print("File ", file)
 
             item = datastruc.item(None, None, None, None)
-            item.load_from_parquet(os.path.join(config["gt_file_path"], file))
+            item.load_from_parquet(os.path.join(gt_file_path, file))
 
             # load in histograms
-            histo_loc = os.path.join(config["input_histo_folder"], item.name + ".pkl")
+            input_histo_folder = os.path.join(project_folder, "annotate/histos")
+            histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
             with open(histo_loc, "rb") as f:
                 histo = pkl.load(f)
 

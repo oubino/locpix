@@ -1,12 +1,3 @@
-# Input root
-input_root: 'output/annotate/histos'
-
-# Label root
-label_root: 'output/annotate/annotated'
-
-# Location of files preprocessed
-preprocessed_folder: 'output/cellose_train'
-
 # device to train on (gpu or cpu)
 gpu: True
 

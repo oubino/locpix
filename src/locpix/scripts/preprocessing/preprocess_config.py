@@ -30,11 +30,11 @@ default_config_keys = [
     "channel_col",
     "frame_col",
     "dim",
-    "output_folder",
+    # "output_folder",
     "channel_choice",
     "drop_pixel_col",
     "include_files",
-    "yaml_save_loc",
+    # "yaml_save_loc",
 ]
 
 
@@ -95,9 +95,9 @@ class InputWidget(QWidget):
         self.flo.addRow("Dimensions", self.dim)
 
         # output folder
-        self.output_folder = QLineEdit("output/preprocessed/no_gt_label")
-        self.output_folder.setToolTip("Name of output folder")
-        self.flo.addRow("Output folder", self.output_folder)
+        # self.output_folder = QLineEdit("output/preprocessed/no_gt_label")
+        # self.output_folder.setToolTip("Name of output folder")
+        # self.flo.addRow("Output folder", self.output_folder)
 
         # choice of which channels user wants to consider
         # if null considers all
@@ -129,9 +129,9 @@ class InputWidget(QWidget):
         self.flo.addRow("Files to include", self.include_files)
 
         # yaml save loc
-        self.save_loc_input = QLineEdit("output/preprocess/preprocess.yaml")
-        self.save_loc_input.setToolTip("Yaml save location")
-        self.flo.addRow("yaml save location", self.save_loc_input)
+        # self.save_loc_input = QLineEdit("output/preprocess/preprocess.yaml")
+        # self.save_loc_input.setToolTip("Yaml save location")
+        # self.flo.addRow("yaml save location", self.save_loc_input)
 
         self.setLayout(self.flo)
         # self.include_files.selectAll()
@@ -169,7 +169,7 @@ class InputWidget(QWidget):
         self.chan_col.setText(load_config["channel_col"])
         self.frame_col.setText(load_config["frame_col"])
         self.dim.setText(str(load_config["dim"]))
-        self.output_folder.setText(load_config["output_folder"])
+        # self.output_folder.setText(load_config["output_folder"])
 
         self.channel_choice.clearSelection()
         for chan in load_config["channel_choice"]:
@@ -184,7 +184,7 @@ class InputWidget(QWidget):
             if item:
                 item[0].setSelected(True)
 
-        self.save_loc_input.setText(load_config["yaml_save_loc"])
+        # self.save_loc_input.setText(load_config["yaml_save_loc"])
 
     def set_config(self, config):
         """Set the configuration file
@@ -198,14 +198,14 @@ class InputWidget(QWidget):
         config["channel_col"] = self.chan_col.text()
         config["frame_col"] = self.frame_col.text()
         config["dim"] = int(self.dim.text())
-        config["output_folder"] = self.output_folder.text()
+        # config["output_folder"] = self.output_folder.text()
         chan_list = self.channel_choice.selectedItems()
         chan_list = [int(item.text()) for item in chan_list]
         config["channel_choice"] = chan_list
         config["drop_pixel_col"] = self.drop_pixel_col.isChecked()
         include_files = self.include_files.selectedItems()
         config["include_files"] = [item.text() for item in include_files]
-        config["yaml_save_loc"] = self.save_loc_input.text()
+        # config["yaml_save_loc"] = self.save_loc_input.text()
 
         # check config is correct
         parse_config(config)
@@ -238,8 +238,6 @@ def config_gui(files):
     List of files files can then be unchecked if users want to ignore
 
     Attributes:
-        save_loc(string): Where to save the output
-            .yaml file for the configuration
         files (list): List of files to be preprocessed"""
 
     app = QApplication([])  # sys.argv if need command line inputs

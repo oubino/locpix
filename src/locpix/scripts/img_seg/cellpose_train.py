@@ -25,38 +25,46 @@ def main():
     # Load in config
 
     parser = argparse.ArgumentParser(description="Cellpose")
-    config_group = parser.add_mutually_exclusive_group(required=True)
-    config_group.add_argument(
+    parser.add_argument(
+        "-i",
+        "--project_directory",
+        action="store",
+        type=str,
+        help="the location of the project directory",
+    )
+    parser.add_argument(
         "-c",
         "--config",
         action="store",
         type=str,
         help="the location of the .yaml configuaration file\
-                             for cellpose",
-    )
-    config_group.add_argument(
-        "-cg",
-        "--configgui",
-        action="store_true",
-        help="whether to use gui to get the configuration",
+                             for preprocessing",
     )
 
     args = parser.parse_args()
+
+    # input project directory
+    if args.project_directory is not None:
+        project_folder = args.project_directory
+    else:
+        root = tk.Tk()
+        root.withdraw()
+        project_folder = filedialog.askdirectory()
 
     if args.config is not None:
         # load yaml
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             # cellpose_train_config.parse_config(config)
-    elif args.configgui:
+    else:
         root = tk.Tk()
         root.withdraw()
         gt_file_path = filedialog.askdirectory()
         # config = cellpose_train_config.config_gui(gt_file_path)
 
     # load in config
-    input_root = config["input_root"]
-    label_root = config["label_root"]
+    input_root = os.path.join(project_folder, "annotate/histos")
+    label_root = os.path.join(project_folder, "annotate/annotated")
     batch_size = config["batch_size"]
     epochs = config["epochs"]
     gpu = config["gpu"]
@@ -75,12 +83,12 @@ def main():
         raise ValueError("There should be some files to open")
 
     # make necessary folders if not present
-    if not os.path.exists(config["preprocessed_folder"]):
+    preprocessed_folder = os.path.join(project_folder, "cellose_train")
+    if not os.path.exists(preprocessed_folder):
         print("Making folder")
-        os.makedirs(config["preprocessed_folder"])
-    
-    print('files', files)
-    
+        os.makedirs(preprocessed_folder)
+
+    print("files", files)
 
     # define gpu or cpu
     # if data is on gpu then don't need to pin memory
@@ -112,12 +120,16 @@ def main():
     val_transform = [transforms.ToTensor()]
 
     # Initialise train and val dataset
-    train_set = dataset.ImgDataset(input_root, label_root, train_files, '.pkl', '.parquet', train_transform)
-    val_set = dataset.ImgDataset(input_root, label_root, val_files, '.pkl', '.parquet', val_transform)
+    train_set = dataset.ImgDataset(
+        input_root, label_root, train_files, ".pkl", ".parquet", train_transform
+    )
+    val_set = dataset.ImgDataset(
+        input_root, label_root, val_files, ".pkl", ".parquet", val_transform
+    )
 
     # Pre-process train and val dataset
-    train_set.preprocess(os.path.join(config['preprocessed_folder'], 'train'))
-    val_set.preprocess(os.path.join(config['preprocessed_folder'], 'val'))
+    train_set.preprocess(os.path.join(preprocessed_folder, "train"))
+    val_set.preprocess(os.path.join(preprocessed_folder, "val"))
 
     # initialise dataloaders
     train_loader = DataLoader(

@@ -11,13 +11,22 @@ import numpy as np
 import pickle as pkl
 import argparse
 from locpix.scripts.img_seg import get_markers_config
+import tkinter as tk
+from tkinter import filedialog
 
 
 def main():
 
     parser = argparse.ArgumentParser(description="Get markers")
-    config_group = parser.add_mutually_exclusive_group(required=True)
-    config_group.add_argument(
+    # config_group = parser.add_mutually_exclusive_group(required=True)
+    parser.add_argument(
+        "-i",
+        "--project_directory",
+        action="store",
+        type=str,
+        help="the location of the project directory",
+    )
+    parser.add_argument(
         "-c",
         "--config",
         action="store",
@@ -25,33 +34,37 @@ def main():
         help="the location of the .yaml configuaration file\
                              for get markers",
     )
-    config_group.add_argument(
-        "-cg",
-        "--configgui",
-        action="store_true",
-        help="whether to use gui to get the configuration",
-    )
 
     args = parser.parse_args()
+
+    # input project directory
+    if args.project_directory is not None:
+        project_folder = args.project_directory
+    else:
+        root = tk.Tk()
+        root.withdraw()
+        project_folder = filedialog.askdirectory()
 
     if args.config is not None:
         # load yaml
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             get_markers_config.parse_config(config)
-    elif args.configgui:
+    else:
         config = get_markers_config.config_gui()
 
     # list items
+    input_folder = os.path.join(project_folder, "preprocess/no_gt_label")
     try:
-        files = os.listdir(config["input_folder"])
+        files = os.listdir(input_folder)
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
     # if output directory not present create it
-    if not os.path.exists(config["markers_folder"]):
+    markers_folder = os.path.join(project_folder, "markers")
+    if not os.path.exists(markers_folder):
         print("Making folder")
-        os.makedirs(config["markers_folder"])
+        os.makedirs(markers_folder)
     else:
         raise ValueError(
             "Will not get markers\
@@ -60,10 +73,11 @@ def main():
 
     for file in files:
         item = datastruc.item(None, None, None, None)
-        item.load_from_parquet(os.path.join(config["input_folder"], file))
+        item.load_from_parquet(os.path.join(input_folder, file))
 
         # load in histograms
-        histo_loc = os.path.join(config["input_histo_folder"], item.name + ".pkl")
+        input_histo_folder = os.path.join(project_folder, "annotate/histos")
+        histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
         with open(histo_loc, "rb") as f:
             histo = pkl.load(f)
 
@@ -76,7 +90,7 @@ def main():
 
         markers = watershed.get_markers(grey_log_img)
 
-        markers_loc = os.path.join(config["markers_folder"], item.name + ".npy")
+        markers_loc = os.path.join(markers_folder, item.name + ".npy")
 
         # save
         np.save(markers_loc, markers)

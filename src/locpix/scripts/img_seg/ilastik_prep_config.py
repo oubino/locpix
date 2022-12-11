@@ -8,28 +8,22 @@ Creating a GUI for user to choose configuration
 Parsing config file to check all specified"""
 
 from PyQt5.QtWidgets import (
-    QLabel,
     QApplication,
     QWidget,
-    QHBoxLayout,
     QMessageBox,
     QLineEdit,
     QFormLayout,
-    QCheckBox,
     QListWidget,
     QPushButton,
     QFileDialog,
 )
-from PyQt5.QtGui import QIntValidator, QDoubleValidator
+from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtCore import Qt
 import yaml
 
 default_config_keys = [
-    "input_histo_folder",
-    "output_folder",
     "threshold",
     "interpolation",
-    "yaml_save_loc",
 ]
 
 
@@ -58,14 +52,6 @@ class InputWidget(QWidget):
         self.load_button.clicked.connect(self.load_yaml)
         self.flo.addRow(self.load_button)
 
-        self.input_histo_folder = QLineEdit("output/annotate/histos")
-        self.input_histo_folder.setToolTip("Input folder for histograms")
-        self.flo.addRow("Histo folder", self.input_histo_folder)
-
-        self.output_folder = QLineEdit("output/ilastik/prep")
-        self.output_folder.setToolTip("Folder to save Ilastik prep to")
-        self.flo.addRow("Output folder", self.output_folder)
-
         self.threshold = QLineEdit("0")
         self.threshold.setValidator(QDoubleValidator())
         self.flo.addRow("Vis threshold", self.threshold)
@@ -76,11 +62,6 @@ class InputWidget(QWidget):
         self.interpolation.insertItem(2, "linear")
         self.interpolation.item(0).setSelected(True)
         self.flo.addRow("Interpolation", self.interpolation)
-
-        # yaml save loc
-        self.save_loc_input = QLineEdit("output/ilastik/prep/ilastik_prep.yaml")
-        self.save_loc_input.setToolTip("Yaml save location")
-        self.flo.addRow("yaml save location", self.save_loc_input)
 
         self.setLayout(self.flo)
 
@@ -110,15 +91,12 @@ class InputWidget(QWidget):
             load_config (yaml file): Config file
                 to load into the gui"""
 
-        self.input_histo_folder.setText(load_config["input_histo_folder"])
-        self.output_folder.setText(load_config["output_folder"])
         self.threshold.setText(str(load_config["threshold"]))
         self.interpolation.clearSelection()
         item = self.interpolation.findItems(
             load_config["interpolation"], Qt.MatchFlag.MatchExactly
         )
         item[0].setSelected(True)
-        self.save_loc_input.setText(load_config["yaml_save_loc"])
 
     def set_config(self, config):
         """Set the configuration file
@@ -126,11 +104,8 @@ class InputWidget(QWidget):
         Args:
             config (dictionary) : Configuration dict"""
 
-        config["input_histo_folder"] = self.input_histo_folder.text()
-        config["output_folder"] = self.output_folder.text()
         config["threshold"] = int(self.threshold.text())
         config["interpolation"] = self.interpolation.selectedItems()[0].text()
-        config["yaml_save_loc"] = self.save_loc_input.text()
 
         # check config is correct
         parse_config(config)

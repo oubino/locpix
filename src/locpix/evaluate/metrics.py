@@ -4,7 +4,6 @@ from locpix.preprocessing import datastruc
 import os
 import polars as pl
 import numpy as np
-import sklearn
 
 
 def metric_calculation(item: datastruc.item, labels):

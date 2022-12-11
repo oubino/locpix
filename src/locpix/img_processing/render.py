@@ -1,6 +1,5 @@
 """Module for rendering point clouds of various forms"""
 
-from locpix.preprocessing import datastruc
 import numpy as np
 import polars as pl
 
@@ -19,7 +18,7 @@ def visualise_seg_item(item, column):
         item (datastruc.item) : This contains the
             df and the labels to visualise.
             This must be true!
-        column (string) : Column containing the 
+        column (string) : Column containing the
             segmention labels
 
     """

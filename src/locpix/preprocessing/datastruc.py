@@ -9,7 +9,6 @@ import numpy as np
 import napari
 import matplotlib.pyplot as plt
 import polars as pl
-from polars.testing import assert_frame_equal
 import pyarrow.parquet as pq
 import ast
 import os
@@ -209,20 +208,20 @@ class item:
         self._coord_2_pixel()
 
         # check digitize agree
-        #df_min = self.df.min()
-        #x_min = df_min["x_pixel"][0]
-        #y_min = df_min["y_pixel"][0]
- 
-        #df_max = self.df.max()
-        #x_max = df_max["x_pixel"][0]
-        #y_max = df_max["y_pixel"][0]
- 
-        #print('check')
-        #print(x_min, x_max)
-        #print(y_min, y_max)
- 
-        #print('check')
-        #for chan in self.channels:
+        # df_min = self.df.min()
+        # x_min = df_min["x_pixel"][0]
+        # y_min = df_min["y_pixel"][0]
+
+        # df_max = self.df.max()
+        # x_max = df_max["x_pixel"][0]
+        # y_max = df_max["y_pixel"][0]
+
+        # print('check')
+        # print(x_min, x_max)
+        # print(y_min, y_max)
+
+        # print('check')
+        # for chan in self.channels:
         #    df = self.df.filter(pl.col("channel") == chan)
         #    my_x = df["x_pixel"].to_numpy()
         #    my_y = df["y_pixel"].to_numpy()
@@ -259,18 +258,18 @@ class item:
 
         # localisations at the end get assigned to outside the histogram,
         # therefore need to be assigned to previous pixel
-        #self.df = self.df.with_column(
+        # self.df = self.df.with_column(
         #    pl.when(pl.col("x_pixel") == self.df.max()["x_pixel"][0])
         #    .then(self.df.max()["x_pixel"][0] - 1)
         #    .otherwise(pl.col("x_pixel"))
         #    .alias("x_pixel")
-        #)
-        #self.df = self.df.with_column(
+        # )
+        # self.df = self.df.with_column(
         #    pl.when(pl.col("y_pixel") == self.df.max()["y_pixel"][0])
         #    .then(self.df.max()["y_pixel"][0] - 1)
         #    .otherwise(pl.col("y_pixel"))
         #    .alias("y_pixel")
-        #)
+        # )
 
         if self.dim == 3:
             z_min = df_min["z"][0]
@@ -288,12 +287,12 @@ class item:
             # localisations at the end get assigned to outside the histogram,
             # therefore need to be assigned
             # to previous pixel
-            #self.df = self.df.with_column(
+            # self.df = self.df.with_column(
             #    pl.when(pl.col("z_pixel") == self.df.max()["z_pixel"][0])
             #    .then(self.df.max()["z_pixel"][0] - 1)
             #    .otherwise(pl.col("z_pixel"))
             #    .alias("z_pixel")
-            #)
+            # )
 
     def manual_segment(self, cmap=["green", "red", "blue", "bop purple"]):
         """Manually segment the image (histogram.T). Return the segmented
@@ -374,6 +373,7 @@ class item:
             mask_list = []
             unique_labels = np.unique(self.histo_mask)
             # for each integer label return the coordinates
+            #TODO: #7 This is slow, look at mask_pixel_2_coord!
             for label in unique_labels:
                 x_pixels = np.where(self.histo_mask == label)[0]
                 y_pixels = np.where(self.histo_mask == label)[1]
@@ -431,7 +431,6 @@ class item:
         if self.dim == 2:
             # list of mask dataframes, each mask dataframe contains
             # (x,y,label) columns
-            mask_list = []
             # transpose the image mask to histogram space
             histo_mask = img_mask.T
 
@@ -631,19 +630,19 @@ class item:
         return img_dict
 
     def render_histo(self):
-        """Render the histogram from the .parquet file - 
+        """Render the histogram from the .parquet file -
         assumes localisations have associated x_pixel and
         y_pixel already.
-        
+
         Args:
             None
-            
+
         Returns:
             histo (np.histogram) : Histogram of the localisation data
-            axis_2_chan (list) : List where the first value is the 
+            axis_2_chan (list) : List where the first value is the
                 channel in the first axis of the histogram, second value
                 is the channel in the second axis of the histogram etc.
-            """
+        """
 
         histos = []
         axis_2_chan = []
@@ -656,12 +655,12 @@ class item:
             df = self.df.filter(pl.col("channel") == chan)
 
             histo = np.empty((x_bins, y_bins))
-            df = df.groupby(by=['x_pixel','y_pixel']).count()
-            x_pixels = df['x_pixel'].to_numpy()
-            y_pixels = df['y_pixel'].to_numpy()
-            counts = df['count'].to_numpy()
+            df = df.groupby(by=["x_pixel", "y_pixel"]).count()
+            x_pixels = df["x_pixel"].to_numpy()
+            y_pixels = df["y_pixel"].to_numpy()
+            counts = df["count"].to_numpy()
             histo[x_pixels, y_pixels] = counts
-           
+
             histos.append(histo)
             axis_2_chan.append(chan)
 
