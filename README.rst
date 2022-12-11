@@ -9,13 +9,10 @@ This includes the following functionality:
 #. Utilising Classic method, Cellpose and Ilastik to segment the histograms to extract relevant localisations
 #. Performance metrics calculation based on the localisations (not the histograms!)
 
-.. note::
-
-   This project is under active development.
-
 This is a short ReadMe just containing a QuickStart guide.
-
 For more comprehensive documentation please see https://oubino.github.io/locpix/ 
+
+> This project is under active development
 
 Quickstart
 ==========
@@ -83,9 +80,6 @@ To run the script without a GUI -i -c and -o flags should be specified
 
    (locpix-env) $ preprocess -i path/to/input/data -c path/to/config/file -o path/to/project/directory
 
-**API**
-:py:mod:`locpix.scripts.preprocessing.preprocess`
-
 Annotate
 ^^^^^^^^
 
@@ -102,9 +96,6 @@ To run the script without a GUI -i and -c flags should be specified
 .. code-block:: console
 
    (locpix-env) $ annotate -i path/to/project/directory -c path/to/config/file
-
-**API**
-:py:mod:`locpix.scripts.preprocessing.annotate`
 
 Image segmentation
 ------------------
@@ -126,9 +117,6 @@ To run the script without a GUI -i and -c flags should be specified
 
    (locpix-env) $ get_markers -i path/to/project/directory -c path/to/config/file
 
-**API**
-:py:mod:`locpix.scripts.img_seg.get_markers`
-
 Classic segmentation
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -145,9 +133,6 @@ To run the script without a GUI -i and -c flags should be specified
 .. code-block:: console
 
    (locpix-env) $ classic -i path/to/project/directory -c path/to/config/file
-
-**API**
-:py:mod:`locpix.scripts.img_seg.classic`
 
 Cellpose segmentation
 ^^^^^^^^^^^^^^^^^^^^^
@@ -185,9 +170,6 @@ To run the script without a GUI -i and -c flags should be specified
 
    (locpix-env) $ cellpose -i path/to/project/directory -c path/to/config/file
 
-**API**
-:py:mod:`locpix.scripts.img_seg.cellpose`
-
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -207,11 +189,6 @@ Then convert the output of the Ilastik GUI back into our format
 
    (locpix-env) $ ilastik_output -i path/to/project/directory -c path/to/config/file
 
-**API**
-:py:mod:`locpix.scripts.img_seg.ilastik_prep`
-:py:mod:`locpix.scripts.img_seg.ilastik_output`
-
-
 Membrane performance
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -220,7 +197,3 @@ Need to evaluate the performance of the membrane segmentation
 .. code-block:: console
 
    (locpix-env) $ membrane_performance -i path/to/project/directory -c path/to/config/file
-
-**API**
-:py:mod:`locpix.scripts.img_seg.membrane_performance`
-
