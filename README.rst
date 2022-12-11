@@ -137,23 +137,22 @@ To run the script without a GUI -i and -c flags should be specified
 Cellpose segmentation
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. warning::
-    Need to activate extra requirements - these are big and not included in initial install.
+   Need to activate extra requirements - these are big and not included in initial install.
 
-    Note that if you have a GPU this will speed this up.
+   Note that if you have a GPU this will speed this up.
 
-    If you:
+   If you:
 
-    * have a GPU
-    .. code-block:: console
+   * have a GPU
+   .. code-block:: console
 
-        (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
-        (locpix-env) $ pip install cellpose
-    
-    * don't have a GPU
-    .. code-block:: console
+      (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+      (locpix-env) $ pip install cellpose
+   
+   * don't have a GPU
+   .. code-block:: console
 
-        (locpix-env) $ pip install pytorch cellpose
+      (locpix-env) $ pip install pytorch cellpose
 
 
 Perform Cellpose segmentation on our localisation dataset.
