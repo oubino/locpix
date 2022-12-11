@@ -13,8 +13,6 @@ This includes the following functionality:
 
    This project is under active development.
 
-Check out the :doc:`usage` section for further information.
-
 .. toctree::
    :maxdepth: 3
    
@@ -27,6 +25,10 @@ Check out the :doc:`usage` section for further information.
    usage
 
    library
+
+   performance
+
+   development
    
    autoapi/index
 

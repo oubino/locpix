@@ -1,3 +1,22 @@
+Overview
+========
+
+**locpix** is a Python library for analysing point cloud data from SMLM.
+This includes the following functionality:
+
+#. Converting .csv files representing SMLM data (point cloud) into histograms
+#. Manually annotating these histograms to extract relevant localisations
+#. Utilising Classic method, Cellpose and Ilastik to segment the histograms to extract relevant localisations
+#. Performance metrics calculation based on the localisations (not the histograms!)
+
+.. note::
+
+   This project is under active development.
+
+This is a short ReadMe just containing a QuickStart guide.
+
+For more comprehensive documentation please see https://oubino.github.io/locpix/ 
+
 Quickstart
 ==========
 
@@ -141,14 +160,12 @@ Cellpose segmentation
     If you:
 
     * have a GPU
-
     .. code-block:: console
 
         (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
         (locpix-env) $ pip install cellpose
     
     * don't have a GPU
-
     .. code-block:: console
 
         (locpix-env) $ pip install pytorch cellpose
@@ -181,7 +198,8 @@ Need to prepare the data for Ilastik segmentation
    (locpix-env) $ ilastik_prep -i path/to/project/directory -c path/to/config/file
 
 Then run the data through the Ilastik GUI, which needs to be installed from
-`Ilastik <https://www.ilastik.org/download.html>`_  and to run it please see :ref:`ilastik-gui`.
+`Ilastik <https://www.ilastik.org/download.html>`_  and to run it 
+please see `usage:Ilastik GUI`_
 
 Then convert the output of the Ilastik GUI back into our format
 
@@ -205,3 +223,4 @@ Need to evaluate the performance of the membrane segmentation
 
 **API**
 :py:mod:`locpix.scripts.img_seg.membrane_performance`
+
