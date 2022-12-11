@@ -12,7 +12,7 @@ This includes the following functionality:
 This is a short ReadMe just containing a QuickStart guide.
 For more comprehensive documentation please see https://oubino.github.io/locpix/ 
 
-> This project is under active development
+   This project is under active development
 
 Quickstart
 ==========
