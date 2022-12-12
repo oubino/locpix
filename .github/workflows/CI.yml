@@ -22,12 +22,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install tox tox-gh-actions
+          python -m pip install flake8
       - name: Test with tox
         run: tox
-      - name: Add .env file to allow subsequent steps
-        run: |
-          touch .env
-          echo 'RAW_DATA_PATH = tests/test_data' >> .env
       - name: Install tox dependencies
         run: |
           python -m pip install tox-gh-actions
