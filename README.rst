@@ -36,7 +36,7 @@ specified using the -c flag.
 
 Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
 
-The templates for the configuration files can be found in the `templates folder <https://github.com/oubino/locpix/tree/master/templates>`_.
+The templates for the configuration files can be found in the `templates folder <https://github.com/oubino/locpix/tree/master/src/locpix/templates>`_.
 
 Quickstart
 ==========
