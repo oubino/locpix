@@ -116,3 +116,29 @@ GitHub
 Master branch is protected therefore have to checkout new branch and then merge this instead.
 
 When push can choose not to run actions by including string
+
+.. code-block:: git
+   [skip actions]
+
+To publish to pypi needs a tag therefore do in sequence
+
+.. code-block:: git
+
+      git checkout -b <branch-name>
+
+Make changes then run (if don't want to push to pypi)
+
+.. code-block:: git
+
+      git add -A 
+      git commit 
+      git push origin <branch-name>
+
+Make changes then run (if want to push to pypi)
+
+.. code-block:: git
+
+      git add -A 
+      git commit 
+      git tag <tag-name>
+      git push --atomic origin <branch-name> <tag-name>

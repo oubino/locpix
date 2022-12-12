@@ -33,6 +33,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=16 --max-line-length=127 --statistics
   
   build:
+    needs: test
 
     runs-on: ubuntu-latest
     strategy:
