@@ -134,7 +134,8 @@ class WatershedWidget(QWidget):
             if item.type() == 4:
                 # note not sure if lines up correct position - not issue here
                 # i.e. if click at 100,240 is marker placed at 100,240?
-                # and if its the centre of the marker? shouldn't we return centre of marker
+                # and if its the centre of the marker? shouldn't we return
+                # centre of marker
                 # as the location
                 # flag as issue!!!
                 # but would be for accurate segmentation
@@ -177,7 +178,8 @@ def get_markers(img, file_name="Image") -> list:
         file_name (string): Name of the file
 
     Returns:
-        marker_coords (list): List of tuples containing coordinates of markers (h,w) relative to top left of image"""
+        marker_coords (list): List of tuples containing coordinates of markers (h,w)
+            relative to top left of image"""
 
     app = QApplication([])  # sys.argv if need command line inputs
     # scale img to [0 255] and convert to int8
@@ -189,20 +191,24 @@ def get_markers(img, file_name="Image") -> list:
     widget = WatershedWidget(img, coords=marker_coords, file_name=file_name)
     widget.show()
     app.exec()
-    # note marker coords are (h,w) relative to top left of image i.e. if click bottom left of image
+    # note marker coords are (h,w) relative to top left of image i.e.
+    # if click bottom left of image
     # marker_coords = [470,10]
     return marker_coords
 
 
 def watershed_segment(img, file_name="Image", coords=None) -> np.ndarray:
-    """Perform watershed segmentation on image - with option either to provide coordinates of markers (coords)
+    """Perform watershed segmentation on image - with option either to provide
+    coordinates of markers (coords)
     or obtain annotation using a widget.
     Args:
         img (np.ndarray): Image which performing watershed on
         file_name (string): Name of the image
-        coords (list): List of tuples where each tuple represents coordinate of a marker (x,y)
+        coords (list): List of tuples where each tuple represents coordinate
+            of a marker (x,y)
     Returns:
-        labels (np.ndarray): Numpy array containing integer labels, each representing different segmented region of the input
+        labels (np.ndarray): Numpy array containing integer labels, each
+        representing different segmented region of the input
     """
 
     markers = np.zeros(img.shape, dtype="int32")
@@ -214,10 +220,11 @@ def watershed_segment(img, file_name="Image", coords=None) -> np.ndarray:
     # i.e. imagine if select marker in bottom left of image
     # in image space [h,w] with origin at top this would be e.g. (470,10)
     # return coordinate (470,10) from get_coords
-    # markers [467:473,7:13] is populated i.e. height of 470 ish and width 10 ish is populated
+    # markers [467:473,7:13] is populated i.e. height of 470 ish
+    # and width 10 ish is populated
     # this ensures img and marker coords are in same space
     for index, coord in enumerate(coords):
-        markers[coord[0] - 3: coord[0] + 3, coord[1] - 3: coord[1] + 3] = int(
+        markers[coord[0] - 3 : coord[0] + 3, coord[1] - 3 : coord[1] + 3] = int(
             index + 1
         )
     # perform watershed

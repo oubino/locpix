@@ -100,7 +100,8 @@ def main():
         ilastik_seg = np.load(membrane_prob_mask_loc)
 
         # ilastik_seg is [y,x,c] where channel 0 is membranes, channel 1 is inside cells
-        # given we only have labels for membranes and not inside cells will currently ignore
+        # given we only have labels for membranes and not inside cells
+        # will currently ignore
         # chanel 1
         ilastik_seg = ilastik_seg[:, :, 0]
 

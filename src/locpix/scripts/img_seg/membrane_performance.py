@@ -378,8 +378,10 @@ def main():
     # order = [1,0,2]
 
     # add legend to plot
-    # ax_train.legend([handles_train[idx] for idx in order],[methods[idx] for idx in order])
-    # ax_test.legend([handles_test[idx] for idx in order],[methods[idx] for idx in order])
+    # ax_train.legend([handles_train[idx] for idx in order],
+    #                   [methods[idx] for idx in order])
+    # ax_test.legend([handles_test[idx] for idx in order],
+    #                   [methods[idx] for idx in order])
 
     fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
     fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)

@@ -102,7 +102,8 @@ class InputWidget(QWidget):
         self.vis_interpolation.insertItem(2, "linear")
         self.vis_interpolation.item(0).setSelected(True)
         self.vis_interpolation.setToolTip(
-            "Interpolation applied to the histogram when visualising the image of the histogram"
+            "Interpolation applied to the histogram when visualising"
+            "the image of the histogram"
         )
         self.flo.addRow("Vis interpolation", self.vis_interpolation)
 
