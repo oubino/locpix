@@ -4,15 +4,41 @@ Overview
 **locpix** is a Python library for analysing point cloud data from SMLM.
 This includes the following functionality:
 
-#. Converting .csv files representing SMLM data (point cloud) into histograms
-#. Manually annotating these histograms to extract relevant localisations
-#. Utilising Classic method, Cellpose and Ilastik to segment the histograms to extract relevant localisations
-#. Performance metrics calculation based on the localisations (not the histograms!)
+#. Converting .csv files representing SMLM data (point cloud) into histograms `Preprocess`_
+#. Manually annotating these histograms to extract relevant localisations `Annotate`_
+#. Labelling histogram with seeds for watershed algorithm `Get markers`_
+#. Utilising Classic method, Cellpose and Ilastik to segment the histograms to extract relevant localisations 
+`Classic segmentation`_ , `Cellpose segmentation`_ and `Ilastik segmentation`_
+#. Performance metrics calculation based on the localisations (not the histograms!) `Membrane performance`_
 
 This is a short ReadMe just containing a QuickStart guide.
 For more comprehensive documentation please see https://oubino.github.io/locpix/ 
 
    This project is under active development
+
+Project Structure
+-----------------
+
+We assume your input SMLM data is in .csv files.
+
+This input data must first be preprocessed into a user chosen project directory, using the  `Preprocess`_ script. 
+We strongly suggest this project directory is located outside the locpix folder.
+
+The input and output of all further scripts will remain located inside the project directory, the input data folder
+will not be accessed again!
+
+Usage configuration
+-------------------
+
+Each script can be run with a GUI, but can also be run in headless mode.
+
+In headless mode each script needs a configuration file (.yaml file), which should be 
+specified using the -c flag.
+
+Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
+
+The templates for the configuration files can be found in the 
+`templates folder <https://github.com/oubino/locpix/tree/master/templates>`.
 
 Quickstart
 ==========
@@ -38,24 +64,6 @@ Create an environment and install via pypi
    (base) $ conda activate locpix-env
    (locpix-env) $ pip install locpix
 
-Structure
----------
-
-We follow a project structure.
-
-This means the input data is first preprocessed `Preprocess`_ into a user chosen project directory
-(strongly suggest outside of locpix).
-All further scripts take in this preprocessed data in this project directory and the output of this
-analysis will remain in the project directory.
-
-Each script can be run with a GUI, but can also be run in headless mode.
-
-In headless mode each script needs a configuration file (.yaml file), which should be 
-specified using the -c flag.
-
-Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
-
-The templates for the configuration files can be found in the `templates` folder.
 
 Preprocessing
 -------------
