@@ -7,8 +7,7 @@ This includes the following functionality:
 #. Converting .csv files representing SMLM data (point cloud) into histograms `Preprocess`_
 #. Manually annotating these histograms to extract relevant localisations `Annotate`_
 #. Labelling histogram with seeds for watershed algorithm `Get markers`_
-#. Utilising Classic method, Cellpose and Ilastik to segment the histograms to extract relevant localisations 
-`Classic segmentation`_ , `Cellpose segmentation`_ and `Ilastik segmentation`_
+#. Utilising Classic method, Cellpose and Ilastik to segment the histograms to extract relevant localisations `Classic segmentation`_ , `Cellpose segmentation`_ and `Ilastik segmentation`_
 #. Performance metrics calculation based on the localisations (not the histograms!) `Membrane performance`_
 
 This is a short ReadMe just containing a QuickStart guide.
@@ -37,8 +36,7 @@ specified using the -c flag.
 
 Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
 
-The templates for the configuration files can be found in the 
-`templates folder <https://github.com/oubino/locpix/tree/master/templates>`.
+The templates for the configuration files can be found in the `templates folder <https://github.com/oubino/locpix/tree/master/templates>`_.
 
 Quickstart
 ==========

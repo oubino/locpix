@@ -1,5 +1,6 @@
+######
 locpix
-======
+######
 
 **locpix** is a Python library for analysing point cloud data from SMLM.
 This includes the following functionality:
@@ -15,24 +16,13 @@ This includes the following functionality:
    This project is under active development.
 
 .. toctree::
-   :maxdepth: 3
-   
-   organisation
+   :maxdepth: 1
+   :hidden:
 
-   installation
+   User guide <user_guide/index>
 
-   quickstart
-
-   usage
-
-   library
-
-   performance
-
-   development
-
-   templates
-   
    autoapi/index
 
-   
+   development/index
+
+   release_notes

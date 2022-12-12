@@ -1,7 +1,5 @@
 ilastik_prep
 ============
-
-
 vis settings
 ::
 

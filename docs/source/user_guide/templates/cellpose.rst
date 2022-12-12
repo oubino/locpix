@@ -1,3 +1,5 @@
+cellpose
+========
 threshold for visualisation
 ::
 

@@ -22,11 +22,7 @@ specified using the -c flag.
 
 Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
 
-The templates for the configuration files can be found in `Templates`_
-
-Templates
-^^^^^^^^^
-
+The templates for the configuration files can be found in :ref:`templates`
 
 Installation
 ------------

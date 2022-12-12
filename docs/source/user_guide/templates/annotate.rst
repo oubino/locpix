@@ -1,3 +1,5 @@
+annotate
+========
 The number of bins in each dimension i.e. x_bins = 500, y_bins = 500 will create a
 500x500 pixel image - where the bin size in metric space will vary depending on the
 input data

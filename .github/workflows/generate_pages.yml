@@ -42,8 +42,8 @@ jobs:
       - name: Make html
         run: |
           cd docs
+          make templates
           make html
-          ls build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:

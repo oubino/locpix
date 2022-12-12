@@ -43,12 +43,46 @@ Then for all the template files convert to .rst , add heading and put in docs/so
 
    (locpix-env) $ yaml2rst src/locpix/templates/*.yaml docs/source/*.rst
 
-To support CI, we add this to the makefile for make htmls
+To support CI, we add this to the makefile for sphinx
 
-Need to make this CI by:
+To generates templates run
 
-#. Modify yaml2rst so that it formats the yaml files in way i want (including add heading)
-#. When run make html - pip runs this and adds all to templates .rst
+.. code-block:: console
+
+   (locpix-env) $ make clean_templates
+   (locpix-env) $ make templates
+
+Then can run
+
+.. code-block:: console
+
+   (locpix-env) $ make clean
+   (locpix-env) $ make html
+
+.. warning:: 
+
+   You get an error when running 
+
+   .. code-block:: console
+
+      (locpix-env) $ make templates
+
+   This is because the makefile contains a catch all, so it will run make templates then trys to run
+   templates into Sphinx but this doesn't work!
+
+.. warning::
+
+   Note that to get the templates.rst in the correct format we had to edit yaml2rst.
+   The additions are on lines 46-48
+
+   .. code-block:: python
+
+      title = os.path.basename(infilename).removesuffix('.yaml')
+      print(title, file=outfh)
+      print('='*len(title), file=outfh)
+
+   Note this will fail on github actions - so need to include these functions as part of this package - not rely on yaml2rst!
+
 
 PyPI
 ----

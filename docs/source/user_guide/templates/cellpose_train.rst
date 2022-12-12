@@ -1,3 +1,5 @@
+cellpose_train
+==============
 device to train on (gpu or cpu)
 ::
 

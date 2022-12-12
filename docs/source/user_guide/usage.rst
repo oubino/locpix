@@ -1,12 +1,19 @@
 Usage
 =====
 
-We follow a project structure.
+Project Structure
+-----------------
 
-This means the input data is first preprocessed `Preprocess`_ into a user chosen project directory
-(strongly suggest outside of locpix).
-All further scripts take in this preprocessed data in this project directory and the output of this
-analysis will remain in the project directory.
+We assume your input SMLM data are .csv files.
+
+This input data must first be preprocessed into a user chosen project directory, using the `Preprocess`_ script. 
+We strongly suggest this project directory is located outside the locpix folder.
+
+The input and output of all further scripts will remain located inside the project directory, the input data folder
+will not be accessed again!
+
+Usage configuration
+-------------------
 
 Each script can be run with a GUI, but can also be run in headless mode.
 
@@ -15,7 +22,7 @@ specified using the -c flag.
 
 Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
 
-The templates for the configuration files can be found in the `templates` folder.
+The templates for the configuration files can be found in :ref:`templates`
 
 Preprocessing
 -------------
