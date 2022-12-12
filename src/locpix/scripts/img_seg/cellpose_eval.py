@@ -129,7 +129,8 @@ def main():
                 "Couldn't open the file/No markers were found in relevant location"
             )
 
-        # tested very small amount annd line below is better than doing watershed on grey_log_img
+        # tested very small amount annd line below is better than doing
+        # watershed on grey_log_img
         instance_mask = watershed.watershed_segment(
             semantic_mask, coords=markers
         )  # watershed on the grey image

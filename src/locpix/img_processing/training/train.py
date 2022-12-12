@@ -33,7 +33,7 @@ def train_loop(epochs, model, optimiser, train_loader, val_loader, loss_fn, devi
     for epoch in range(epochs):
         print("Epoch: ", epoch)
 
-        # TODO : autocast - look at gradient accumulation and take care with multiple gpus
+        # TODO : autocast look at gradient accumulation and take care with multiple gpus
 
         # training data
         for index, data in enumerate(train_loader):

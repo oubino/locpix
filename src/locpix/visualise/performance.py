@@ -6,7 +6,13 @@ from sklearn.metrics import confusion_matrix
 
 
 def plot_pr_curve(
-    ax, label, linestyle, colour, precision, recall, baseline,
+    ax,
+    label,
+    linestyle,
+    colour,
+    precision,
+    recall,
+    baseline,
 ):
     """Plots the precision recall curve and saves
 
@@ -97,8 +103,8 @@ def generate_conf_matrix(gtlist, predlist, classes, saveloc):
     # Loop over data dimensions and create text annotations
     for i in range(len(classes)):
         for j in range(len(classes)):
-            print('error')
-            #text = ax.text(
+            print("error")
+            # text = ax.text(
             #    j,
             #    i,
             #    "{:.2e}".format(conf_mat[i, j]),
@@ -106,7 +112,7 @@ def generate_conf_matrix(gtlist, predlist, classes, saveloc):
             #    va="center",
             #    color="r",
             #    size=16,
-            #)
+            # )
 
     # ax.set_title("Confusion matrix")
     fig.tight_layout()
