@@ -23,6 +23,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install tox tox-gh-actions
           python -m pip install flake8
+          python -m pip install --upgrade setuptools
+          python -m pip install --upgrade build
       - name: Test with tox
         run: tox
       - name: Lint with flake8
