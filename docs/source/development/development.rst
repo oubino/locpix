@@ -126,7 +126,15 @@ To publish to pypi needs a tag therefore do in sequence
 
       git checkout -b <branch-name>
 
-Make changes then 
+Make changes then run (if don't want to push to pypi)
+
+.. code-block:: git
+
+      git add -A 
+      git commit 
+      git push origin <branch-name>
+
+Make changes then run (if want to push to pypi)
 
 .. code-block:: git
 
