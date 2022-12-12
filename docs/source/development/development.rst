@@ -87,5 +87,25 @@ Then can run
 PyPI
 ----
 
+See this documentation for how to integrate publishing to PyPI using GitHub actions.
+
 `PyPI <https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/>`_
+
+Linting
+-------
+
+In line with GitHub actions run the following, note the GitHub editor is 127 chars wide
+
+Python syntax errors or undefined names
+
+.. code-block:: console
+
+      (locpix-env) $ flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+
+Note that exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+
+.. code-block:: console
+
+      (locpix-env) $ flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 

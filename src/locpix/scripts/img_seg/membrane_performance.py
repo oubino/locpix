@@ -121,40 +121,22 @@ def main():
             project_folder, f"membrane_performance/{method}/membrane/conf_matrix"
         )
 
-        # if output directory not present create it
-        if not os.path.exists(output_df_folder):
-            print("Making folder")
-            os.makedirs(output_df_folder)
+        # create output folders
+        folders = [
+            output_df_folder,
+            output_seg_imgs,
+            output_train_pr,
+            output_test_pr,
+            output_metrics,
+            output_overlay_pr_curves,
+            output_conf_matrix,
+        ]
 
-        # if output directory not present create it
-        if not os.path.exists(output_seg_imgs):
-            print("Making folder")
-            os.makedirs(output_seg_imgs)
-
-        # if output directory not present create it
-        if not os.path.exists(output_train_pr):
-            print("Making folder")
-            os.makedirs(output_train_pr)
-
-        # if output directory not present create it
-        if not os.path.exists(output_test_pr):
-            print("Making folder")
-            os.makedirs(output_test_pr)
-
-        # if output directory not present create it
-        if not os.path.exists(output_metrics):
-            print("Making folder")
-            os.makedirs(output_metrics)
-
-        # if output directory not present create it
-        if not os.path.exists(output_overlay_pr_curves):
-            print("Making folder")
-            os.makedirs(output_overlay_pr_curves)
-
-        # if output directory not present create it
-        if not os.path.exists(output_conf_matrix):
-            print("Making folder")
-            os.makedirs(output_conf_matrix)
+        for folder in folders:
+            # if output directory not present create it
+            if not os.path.exists(folder):
+                print("Making folder")
+                os.makedirs(folder)
 
         print("Train set...")
 
@@ -359,7 +341,7 @@ def main():
 
         # metric calculations based on final prediction
         save_loc = os.path.join(output_metrics, f"{date}.txt")
-        metrics.aggregated_metric_calculation(
+        metrics.aggregated_metrics(
             output_df_folder,
             save_loc,
             gt_label_map,

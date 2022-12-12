@@ -62,23 +62,17 @@ def main():
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
-    # if output directory not present create it
+    # output directories
     output_membrane_prob = os.path.join(project_folder, "cellpose/membrane/prob_map")
-    if not os.path.exists(output_membrane_prob):
-        print("Making folder")
-        os.makedirs(output_membrane_prob)
-
-    # if output directory not present create it
     output_cell_df = os.path.join(project_folder, "cellpose/cell/seg_dataframes")
-    if not os.path.exists(output_cell_df):
-        print("Making folder")
-        os.makedirs(output_cell_df)
+    output_cell_img = os.path.join(project_folder, "cellpose/cell/seg_img")
 
     # if output directory not present create it
-    output_cell_img = os.path.join(project_folder, "cellpose/cell/seg_img")
-    if not os.path.exists(output_cell_img):
-        print("Making folder")
-        os.makedirs(output_cell_img)
+    output_directories = [output_membrane_prob, output_cell_df, output_cell_img]
+    for directory in output_directories:
+        if not os.path.exists(directory):
+            print("Making folder")
+            os.makedirs(directory)
 
     for file in files:
         item = datastruc.item(None, None, None, None)
@@ -103,6 +97,7 @@ def main():
             img, config["vis_threshold"], how=config["vis_interpolate"]
         )
         imgs = [img]
+
         model = models.CellposeModel(model_type=config["model"])
         channels = config["channels"]
         # note diameter is set here may want to make user choice
