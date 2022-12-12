@@ -7,7 +7,7 @@ where = ["src"]
 
 [project]
 name = "locpix"
-version = "0.0.12"
+version = "0.0.13"
 authors = [
   { name="Oliver Umney", email="scou@leeds.ac.uk" },
 ]
