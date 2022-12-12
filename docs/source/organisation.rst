@@ -2,7 +2,7 @@ Project organisation
 ====================
 
 Directory layout 
---------------
+----------------
 
 The python scripts to run analysis can be found in :py:mod:`locpix.scripts`
 

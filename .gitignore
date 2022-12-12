@@ -77,3 +77,6 @@ models/
 
 # Figures for paper
 paper_figures/
+
+# makefile
+Makefile

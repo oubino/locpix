@@ -19,7 +19,7 @@ For more comprehensive documentation please see https://oubino.github.io/locpix/
 Project Structure
 -----------------
 
-We assume your input SMLM data is in .csv files.
+We assume your input SMLM data are .csv files.
 
 This input data must first be preprocessed into a user chosen project directory, using the  `Preprocess`_ script. 
 We strongly suggest this project directory is located outside the locpix folder.

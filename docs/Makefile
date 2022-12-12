@@ -7,6 +7,20 @@ SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = build
+YAML2RST      = yaml2rst
+
+../docs/source/%.rst:
+	$(YAML2RST) ../src/locpix/templates/$*.yaml $@
+
+ITEMS := $(wildcard ../src/locpix/templates/*.yaml)
+TEMPLATES = $(patsubst ../src/locpix/templates/%.yaml, ../docs/source/%.rst, $(ITEMS))
+
+templates: $(TEMPLATES)
+
+clean_templates:
+ifneq($(TEMPLATES),)
+	rm -f $(TEMPLATES)
+endif
 
 # Put it first so that "make" without argument is like "make help".
 help:

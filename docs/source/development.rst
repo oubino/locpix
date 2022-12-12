@@ -27,6 +27,28 @@ Needed to install sphinx-autoapi
 
    (locpix-env) $ pip install sphinx-autoapi
 
+YAML files
+^^^^^^^^^^
+
+Have yaml files with configuration - need to convert these to .rst 
+
+.. code-block:: console
+
+   (locpix-env) $ pip install yaml2rst
+
+
+Then for all the template files convert to .rst , add heading and put in docs/source
+
+.. code-block:: console
+
+   (locpix-env) $ yaml2rst src/locpix/templates/*.yaml docs/source/*.rst
+
+To support CI, we add this to the makefile for make htmls
+
+Need to make this CI by:
+
+#. Modify yaml2rst so that it formats the yaml files in way i want (including add heading)
+#. When run make html - pip runs this and adds all to templates .rst
 
 PyPI
 ----

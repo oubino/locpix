@@ -28,6 +28,8 @@ There are two preprocessing scripts
 **API**
 :py:mod:`locpix.scripts.preprocessing`
 
+.. _preprocess:
+
 Preprocess
 ^^^^^^^^^^
 
@@ -50,6 +52,8 @@ To run the script without a GUI -i -c and -o flags should be specified
 
 **API**
 :py:mod:`locpix.scripts.preprocessing.preprocess`
+
+.. _annotate:
 
 Annotate
 ^^^^^^^^
@@ -74,6 +78,8 @@ To run the script without a GUI -i and -c flags should be specified
 Image segmentation
 ------------------
 
+.. _get-markers:
+
 Get markers
 ^^^^^^^^^^^
 
@@ -94,6 +100,8 @@ To run the script without a GUI -i and -c flags should be specified
 **API**
 :py:mod:`locpix.scripts.img_seg.get_markers`
 
+.. _classic-segmentation:
+
 Classic segmentation
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -113,6 +121,8 @@ To run the script without a GUI -i and -c flags should be specified
 
 **API**
 :py:mod:`locpix.scripts.img_seg.classic`
+
+.. _cellpose-segmentation:
 
 Cellpose segmentation
 ^^^^^^^^^^^^^^^^^^^^^
@@ -155,6 +165,8 @@ To run the script without a GUI -i and -c flags should be specified
 **API**
 :py:mod:`locpix.scripts.img_seg.cellpose`
 
+.. _ilastik-segmentation:
+
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -176,6 +188,7 @@ Then convert the output of the Ilastik GUI back into our format
 :py:mod:`locpix.scripts.img_seg.ilastik_prep`
 :py:mod:`locpix.scripts.img_seg.ilastik_output`
 
+.. _membrane-performance:
 
 Membrane performance
 ^^^^^^^^^^^^^^^^^^^^
