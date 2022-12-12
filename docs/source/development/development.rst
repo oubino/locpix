@@ -109,3 +109,10 @@ Note that exit-zero treats all errors as warnings. The GitHub editor is 127 char
 
       (locpix-env) $ flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
+
+GitHub
+------
+
+Master branch is protected therefore have to checkout new branch and then merge this instead.
+
+When push can choose not to run actions by including string
