@@ -55,7 +55,34 @@ def metric_calculation(item: datastruc.item, labels):
     return results
 
 
-def aggregated_metric_calculation(
+def mean_metrics(results, labels):
+    """Calculate the mean metrics
+
+    Args:
+        results (dict) : Nested dictionary where each key
+            is a label representing another dictionary
+            containing the number of TP, TN, FP and FN
+            e.g. results[2]["TP"] is number of true
+            positives for label 2
+        labels (list) : List of labels"""
+
+    acc_list = []  # empty list will have length = number of labels
+    iou_list = []
+    recall_list = []
+    for label in labels:
+        TP = results[label]["TP"]
+        FP = results[label]["FP"]
+        TN = results[label]["TN"]
+        FN = results[label]["FN"]
+        acc_list.append((TP + TN) / (TP + TN + FP + FN))
+        iou_list.append((TP) / (TP + FP + FN))
+        recall_list.append(TP / (TP + FN))
+    macc = np.mean(acc_list)
+    miou = np.mean(iou_list)
+    return iou_list, acc_list, recall_list, miou, macc
+
+
+def aggregated_metrics(
     files_folder, save_loc, gt_label_map, add_metrics={}, metadata={}
 ):
     """Calculate metrics over files, where each
@@ -106,22 +133,7 @@ def aggregated_metric_calculation(
     results = {}
 
     # calculate macc/miou/oacc
-    acc_list = []  # empty list will have length = number of labels
-    iou_list = []
-    recall_list = []
-    for label in labels:
-        TP = agg_results[label]["TP"]
-        FP = agg_results[label]["FP"]
-        TN = agg_results[label]["TN"]
-        FN = agg_results[label]["FN"]
-        acc = (TP + TN) / (TP + TN + FP + FN)
-        iou = (TP) / (TP + FP + FN)
-        recall = TP / (TP + FN)
-        acc_list.append(acc)
-        iou_list.append(iou)
-        recall_list.append(recall)
-    macc = np.mean(acc_list)
-    miou = np.mean(iou_list)
+    iou_list, acc_list, recall_list, miou, macc = mean_metrics(agg_results, labels)
     results["iou_list"] = iou_list
     results["acc_list"] = acc_list
     results["recall_list"] = recall_list
@@ -174,12 +186,10 @@ def aggregated_metric_calculation(
 
     # Create text file and save overall results/configuration to this
     lines = ["Overall results", "-----------"]
-    for key, value in results.items():
-        lines.append(f"{key} : {value}")
-    for key, value in add_metrics.items():
-        lines.append(f"{key} : {value}")
-    for key, value in metadata.items():
-        lines.append(f"{key} : {value}")
+    sections = [results, add_metrics, metadata]
+    for section in sections:
+        for key, value in section.items():
+            lines.append(f"{key} : {value}")
     lines.append(f"gt label map:  {gt_label_map}")
 
     with open(save_loc, "w") as f:
