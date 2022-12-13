@@ -41,6 +41,9 @@ jobs:
           python -m pip install sphinx
           python -m pip install sphinx-autoapi
           python -m pip install pydata-sphinx-theme
+      - name: Install locpix
+        run: |
+          pip install .
       - name: Make html
         run: |
           cd docs
