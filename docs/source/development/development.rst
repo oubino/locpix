@@ -15,6 +15,15 @@ If have accidentally commited to wrong branch need these series of commands
    git checkout newbranch # Go to the new branch that still has the desired commits
 
 
+Docstring coverage
+------------------
+
+.. code-block:: console
+
+   (locpix-env) $ pip install docstr-coverage
+   (locpix-env) $ docstr-coverage src/locpix
+
+
 Sphinx documentation
 --------------------
 
@@ -135,17 +144,26 @@ Note that exit-zero treats all errors as warnings. The GitHub editor is 127 char
 GitHub
 ------
 
+CI
+^^
+
 Master branch is protected therefore have to checkout new branch and then merge this instead.
+
+Steps for CI
+
+#. Commit changes to working_branch and push this up to GitHub, no actions will run
+#. When happy create pull request - this will trigger tests to run - if tests successful then merge to master
+#. When merges, will generate documentation for master branch also runs CI again (maybe remove the latter). Could do this by removing on push from CI (but need to check that when the tests run on a pull request are they running on the new branch or the merged branch?)
+#. When happy can create release on master and will only run publish workflow
+
+Skip actions
+^^^^^^^^^^^^
 
 When push can choose not to run actions by including string
 
 .. code-block:: console
+   
    [skip actions]
-
-CI
-^^
-
-
 
 To publish to pypi needs a tag therefore do in sequence
 
@@ -168,3 +186,13 @@ Then to push to pypi have to just push tagged master branch, where tag must star
       git checkout master
       git tag <tag-name>
       git push origin <tag-name>
+
+
+Code coverage
+-------------
+
+.. code-block:: console
+
+      (locpix-env) $ pip install pytest 
+      (locpix-env) $ pip install pytest-cov
+      (locpix-env) $ pytest --cov=src tests/
