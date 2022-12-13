@@ -111,6 +111,7 @@ However, as I protected master branch this was causing issues therefore moved to
 
 #. Removed version from pyproject.toml as setuptools_scm finds this - however Sphinx needs this - therefore follow `version <https://pypi.org/project/setuptools-scm/>`_
 under usage from sphinx - requires adding to the docs/conf.py file
+#. Went up to "You could stop here" - could later implement automatic version increasing
 
 Linting
 -------
@@ -138,18 +139,23 @@ Master branch is protected therefore have to checkout new branch and then merge 
 
 When push can choose not to run actions by including string
 
-.. code-block:: git
+.. code-block:: console
    [skip actions]
+
+CI
+^^
+
+
 
 To publish to pypi needs a tag therefore do in sequence
 
-.. code-block:: git
+.. code-block:: console
 
       git checkout -b <branch-name>
 
 Make changes then run (if don't want to push to pypi)
 
-.. code-block:: git
+.. code-block:: console
 
       git add -A 
       git commit 
@@ -157,7 +163,7 @@ Make changes then run (if don't want to push to pypi)
 
 Then to push to pypi have to just push tagged master branch, where tag must start with v
 
-.. code-block:: git
+.. code-block:: console
 
       git checkout master
       git tag <tag-name>
