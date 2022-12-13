@@ -1,13 +1,16 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
 
 [tool.setuptools.packages.find]
 where = ["src"]  
 
 [project]
 name = "locpix"
-version = "0.0.13"
+dynamic = ["version"]
+# version = "0.0.1"
 authors = [
   { name="Oliver Umney", email="scou@leeds.ac.uk" },
 ]
