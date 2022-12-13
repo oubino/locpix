@@ -22,8 +22,11 @@ project = "locpix"
 copyright = "2022, Oliver Umney"
 author = "Oliver Umney"
 
-# The full version, including alpha/beta/rc tags
-release = "0.0.1"
+# version (unsure what this means: including alpha/beta/rc tags)
+from importlib.metadata import version
+release = version('locpix')
+# for example take major/minor
+version = '.'.join(release.split('.')[:2])
 
 
 # -- General configuration ---------------------------------------------------

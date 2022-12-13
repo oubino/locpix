@@ -91,6 +91,13 @@ See this documentation for how to integrate publishing to PyPI using GitHub acti
 
 `PyPI <https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/>`_
 
+However, as I protected master branch this was causing issues therefore moved towards this instead
+
+`GitHub PyPI <https://www.seanh.cc/2022/05/21/publishing-python-packages-from-github-actions/>`_
+
+#. Removed version from pyproject.toml as setuptools_scm finds this - however Sphinx needs this - therefore follow `version <https://pypi.org/project/setuptools-scm/>`_
+under usage from sphinx - requires adding to the docs/conf.py file
+
 Linting
 -------
 
@@ -134,11 +141,10 @@ Make changes then run (if don't want to push to pypi)
       git commit 
       git push origin <branch-name>
 
-Make changes then run (if want to push to pypi)
+Then to push to pypi have to just push tagged master branch, where tag must start with v
 
 .. code-block:: git
 
-      git add -A 
-      git commit 
+      git checkout master
       git tag <tag-name>
-      git push --atomic origin <branch-name> <tag-name>
+      git push origin <tag-name>
