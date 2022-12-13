@@ -142,6 +142,11 @@ When push can choose not to run actions by including string
 .. code-block:: console
    [skip actions]
 
+CI
+^^
+
+
+
 To publish to pypi needs a tag therefore do in sequence
 
 .. code-block:: console
