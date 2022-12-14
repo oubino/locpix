@@ -80,7 +80,7 @@ def main():
     if os.path.exists(output_folder):
         raise ValueError(
             "You cannot choose this project folder"
-            " as it already contains prprocessed data"
+            " as it already contains preprocessed data"
         )
     else:
         os.makedirs(output_folder)

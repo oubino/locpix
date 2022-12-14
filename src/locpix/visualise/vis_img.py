@@ -158,6 +158,8 @@ def visualise_seg(
 
     # patches = []  # legend creation
     # plot for each channel in sequence
+    print('channels', channels)
+    print("image dict keys", image_dict.keys)
     for index, chan in enumerate(channels):
         img = manual_threshold(image_dict[chan], threshold=threshold, how=how)
         img = img_2_grey(img)
