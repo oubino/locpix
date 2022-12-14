@@ -30,12 +30,12 @@ def main():
     parser.add_argument(
         "-i", "--input", action="store", type=str, help="path for the input data folder"
     )
-    # parser.add_argument(
-    #    "-s",
-    #    "--sanitycheck",
-    #    action="store_true",
-    #    help="whether to check correct csvs loaded in",
-    # )
+    parser.add_argument(
+       "-s",
+       "--sanitycheck",
+       action="store_true",
+       help="whether to check correct csvs loaded in",
+    )
     parser.add_argument(
         "-c",
         "--config",
@@ -61,7 +61,7 @@ def main():
 
     # input data folder
     if args.input is not None:
-        csv_path = args.folder
+        csv_path = args.input
     else:
         root = tk.Tk()
         root.withdraw()
@@ -123,7 +123,6 @@ def main():
             config["z_col"],
             config["channel_choice"],
         )
-
         # have to not drop zero label
         # as no gt_label yet
         item.save_to_parquet(
