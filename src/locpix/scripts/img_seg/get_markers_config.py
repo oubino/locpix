@@ -104,7 +104,7 @@ class InputWidget(QWidget):
         Args:
             config (dictionary) : Configuration dict"""
 
-        config["vis_threshold"] = self.vis_threshold
+        config["vis_threshold"] = float(self.vis_threshold)
         config["vis_interpolate"] = self.vis_interpolation.selectedItems()[0].text()
 
         # check config is correct
