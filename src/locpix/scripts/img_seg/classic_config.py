@@ -95,7 +95,7 @@ class InputWidget(QWidget):
 
     def load_config(self, load_config):
         """Load the config into the gui
-
+        
         Args:
             load_config (yaml file): Config file
                 to load into the gui"""

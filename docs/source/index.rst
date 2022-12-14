@@ -21,8 +21,8 @@ This includes the following functionality:
 
    User guide <user_guide/index>
 
-   autoapi/index
-
    development/index
+
+   API <_autosummary/locpix>
 
    release_notes

@@ -15,7 +15,8 @@ def metric_calculation(item: datastruc.item, labels):
         labels (list) : List of labels to calculate results for
 
     Returns:
-        results (dictionary) : The key of results is the label and at each index
+        dict : Results
+            The key is the label and at each index
             is a dictionary containing TP, TN, FP, FN
             e.g. {0:{'TP': 0.6, 'FP':.3, ...}, 1:{'TP': 0.4, 'FP':.2, ...}]
             means we have two labels 0 and 1"""

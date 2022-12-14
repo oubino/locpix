@@ -4,7 +4,7 @@ Development
 Git
 ---
 
-If have accidentally commited to wrong branch need these series of commands 
+If have accidentally committed to wrong branch need these series of commands 
 
 .. code-block:: console
 
@@ -13,6 +13,15 @@ If have accidentally commited to wrong branch need these series of commands
    git checkout master # checkout master, this is the place you want to go back
    git reset --hard HEAD~3 # Move master back by 3 commits (Make sure you know how many commits you need to go back)
    git checkout newbranch # Go to the new branch that still has the desired commits
+
+
+Docstring coverage
+------------------
+
+.. code-block:: console
+
+   (locpix-env) $ pip install docstr-coverage
+   (locpix-env) $ docstr-coverage src/locpix
 
 
 Sphinx documentation
@@ -26,7 +35,7 @@ Ran
 
 Choose yes for separate docs and src directories.
 
-Then followed: `sphinx auto doc <https://www.sphinx-doc.org/en/master/tutorial/automatic-doc-generation.html>`_
+Then followed: `sphinx auto summary <https://stackoverflow.com/questions/2701998/sphinx-autodoc-is-not-automatic-enough/62613202#62613202>`_
 
 Before running
 
@@ -35,11 +44,6 @@ Before running
    (locpix-env) $ make clean
    (locpix-env) $ make html
 
-Needed to install sphinx-autoapi
-
-.. code-block:: console
-
-   (locpix-env) $ pip install sphinx-autoapi
 
 YAML files
 ^^^^^^^^^^
@@ -135,17 +139,26 @@ Note that exit-zero treats all errors as warnings. The GitHub editor is 127 char
 GitHub
 ------
 
+CI
+^^
+
 Master branch is protected therefore have to checkout new branch and then merge this instead.
+
+Steps for CI
+
+#. Commit changes to working_branch and push this up to GitHub, no actions will run
+#. When happy create pull request - this will trigger tests to run - if tests successful then merge to master
+#. When merges, will generate documentation for master branch also runs CI again (maybe remove the latter). Could do this by removing on push from CI (but need to check that when the tests run on a pull request are they running on the new branch or the merged branch?)
+#. When happy can create release on master and will only run publish workflow
+
+Skip actions
+^^^^^^^^^^^^
 
 When push can choose not to run actions by including string
 
 .. code-block:: console
+
    [skip actions]
-
-CI
-^^
-
-
 
 To publish to pypi needs a tag therefore do in sequence
 
@@ -168,3 +181,13 @@ Then to push to pypi have to just push tagged master branch, where tag must star
       git checkout master
       git tag <tag-name>
       git push origin <tag-name>
+
+
+Code coverage
+-------------
+
+.. code-block:: console
+
+      (locpix-env) $ pip install pytest 
+      (locpix-env) $ pip install pytest-cov
+      (locpix-env) $ pytest --cov=src tests/
