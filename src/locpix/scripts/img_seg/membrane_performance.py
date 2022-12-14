@@ -62,7 +62,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        project_folder = filedialog.askdirectory()
+        project_folder = filedialog.askdirectory(title="Project directory")
 
     if args.config is not None:
         # load yaml
@@ -72,7 +72,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        gt_file_path = filedialog.askdirectory()
+        gt_file_path = filedialog.askdirectory(title="GT file path")
         config = membrane_performance_config.config_gui(gt_file_path)
 
     # list items

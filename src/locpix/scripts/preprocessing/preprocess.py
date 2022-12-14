@@ -65,7 +65,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        csv_path = filedialog.askdirectory()
+        csv_path = filedialog.askdirectory(title="Data folder")
 
     # project folder
     if args.project_directory is not None:
@@ -73,7 +73,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        project_folder = filedialog.askdirectory()
+        project_folder = filedialog.askdirectory(title="Project folder")
 
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "preprocess/no_gt_labels")
