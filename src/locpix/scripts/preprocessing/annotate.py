@@ -56,6 +56,7 @@ def main():
 
     # list items
     input_folder = os.path.join(project_folder, "preprocess/no_gt_label")
+    print(input_folder)
     try:
         files = os.listdir(input_folder)
     except FileNotFoundError:

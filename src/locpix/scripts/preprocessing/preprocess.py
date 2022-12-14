@@ -76,7 +76,7 @@ def main():
         project_folder = filedialog.askdirectory(title="Project folder")
 
     # if output directory not present create it
-    output_folder = os.path.join(project_folder, "preprocess/no_gt_labels")
+    output_folder = os.path.join(project_folder, "preprocess/no_gt_label")
     if os.path.exists(output_folder):
         raise ValueError(
             "You cannot choose this project folder"
