@@ -84,8 +84,9 @@ def main():
 
     # make necessary folders if not present
     preprocessed_folder = os.path.join(project_folder, "cellose_train")
-    if not os.path.exists(preprocessed_folder):
-        print("Making folder")
+    if os.path.exists(preprocessed_folder):
+        raise ValueError(f"Cannot proceed as {preprocessed_folder} already exists")
+    else:
         os.makedirs(preprocessed_folder)
 
     print("files", files)

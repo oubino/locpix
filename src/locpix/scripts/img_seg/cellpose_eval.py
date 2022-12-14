@@ -70,8 +70,9 @@ def main():
     # if output directory not present create it
     output_directories = [output_membrane_prob, output_cell_df, output_cell_img]
     for directory in output_directories:
-        if not os.path.exists(directory):
-            print("Making folder")
+        if os.path.exists(directory):
+            raise ValueError(f"Cannot proceed as {directory} already exists")
+        else:
             os.makedirs(directory)
 
     for file in files:

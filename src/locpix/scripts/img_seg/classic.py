@@ -64,20 +64,23 @@ def main():
 
     # if output directory not present create it
     output_membrane_prob = os.path.join(project_folder, "classic/membrane/prob_map")
-    if not os.path.exists(output_membrane_prob):
-        print("Making folder")
+    if os.path.exists(output_membrane_prob):
+            raise ValueError(f"Cannot proceed as {output_membrane_prob} already exists")
+    else:
         os.makedirs(output_membrane_prob)
 
     # if output directory not present create it
     output_cell_df = os.path.join(project_folder, "classic/cell/seg_dataframes")
-    if not os.path.exists(output_cell_df):
-        print("Making folder")
+    if os.path.exists(output_cell_df):
+            raise ValueError(f"Cannot proceed as {output_cell_df} already exists")
+    else:
         os.makedirs(output_cell_df)
 
     # if output directory not present create it
     output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
-    if not os.path.exists(output_cell_img):
-        print("Making folder")
+    if os.path.exists(output_cell_img):
+            raise ValueError(f"Cannot proceed as {output_cell_img} already exists")
+    else:
         os.makedirs(output_cell_img)
 
     for file in files:

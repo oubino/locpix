@@ -134,8 +134,9 @@ def main():
 
         for folder in folders:
             # if output directory not present create it
-            if not os.path.exists(folder):
-                print("Making folder")
+            if os.path.exists(folder):
+                raise ValueError(f"Cannot proceed as {folder} already exists")
+            else:
                 os.makedirs(folder)
 
         print("Train set...")
