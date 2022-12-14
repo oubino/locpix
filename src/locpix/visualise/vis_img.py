@@ -149,7 +149,7 @@ def visualise_seg(
             # and add white to cmap_seg --> ensures
             # background comes up as untouched
             segmentation = np.where(segmentation != 0, four_colour_seg + 1, 0)
-            cmap_seg.insert(0, "w")
+            cmap_seg = cmap_seg.insert(0, "w")
         else:
             segmentation = label_2_4_colours(segmentation)
 
@@ -158,8 +158,6 @@ def visualise_seg(
 
     # patches = []  # legend creation
     # plot for each channel in sequence
-    print('channels', channels)
-    print("image dict keys", image_dict.keys())
     for index, chan in enumerate(channels):
         img = manual_threshold(image_dict[chan], threshold=threshold, how=how)
         img = img_2_grey(img)
