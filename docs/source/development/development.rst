@@ -4,7 +4,7 @@ Development
 Git
 ---
 
-If have accidentally commited to wrong branch need these series of commands 
+If have accidentally committed to wrong branch need these series of commands 
 
 .. code-block:: console
 
@@ -35,7 +35,7 @@ Ran
 
 Choose yes for separate docs and src directories.
 
-Then followed: `sphinx auto doc <https://www.sphinx-doc.org/en/master/tutorial/automatic-doc-generation.html>`_
+Then followed: `sphinx auto summary <https://stackoverflow.com/questions/2701998/sphinx-autodoc-is-not-automatic-enough/62613202#62613202>`_
 
 Before running
 
@@ -44,11 +44,6 @@ Before running
    (locpix-env) $ make clean
    (locpix-env) $ make html
 
-Needed to install sphinx-autoapi
-
-.. code-block:: console
-
-   (locpix-env) $ pip install sphinx-autoapi
 
 YAML files
 ^^^^^^^^^^
@@ -162,7 +157,7 @@ Skip actions
 When push can choose not to run actions by including string
 
 .. code-block:: console
-   
+
    [skip actions]
 
 To publish to pypi needs a tag therefore do in sequence

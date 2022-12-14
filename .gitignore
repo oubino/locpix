@@ -41,7 +41,9 @@ eggs/
 #cover/
 
 # Sphinx documentation
-#docs/_build/
+docs/build/
+docs/source/_autosummary
+# let github make this live
 
 # Environments
 *.env
