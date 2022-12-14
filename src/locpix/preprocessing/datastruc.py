@@ -369,34 +369,24 @@ class item:
         """
 
         if self.dim == 2:
-            # list of mask dataframes, each mask dataframe
-            # contains (x,y,label) columns
-            mask_list = []
-            unique_labels = np.unique(self.histo_mask)
-            # for each integer label return the coordinates
-            # TODO: #7 This is slow, look at mask_pixel_2_coord!
-            for label in unique_labels:
-                x_pixels = np.where(self.histo_mask == label)[0]
-                y_pixels = np.where(self.histo_mask == label)[1]
 
-                # make label longer list of all same value
-                label = np.full(len(x_pixels), label)
-
-                # get localisations which overlap in pixel location
-                # with mask pixels
-                mask_list.append(
-                    pl.DataFrame(
-                        {"x_pixel": x_pixels, "y_pixel": y_pixels, "gt_label": label}
-                    )
-                )
-
-            # create mask dataframe
-            mask_df = pl.concat(mask_list)
-
-            # sanity check
-            # print(len(self.df))
-            # print(self.df.columns)
-            # print(self.df.head(10))
+            # create dataframe
+            flatten_mask = np.ravel(self.histo_mask)
+            mesh_grid = np.meshgrid(
+                range(self.histo_mask.shape[0]), range(self.histo_mask.shape[1])
+            )
+            x_pixel = np.ravel(mesh_grid[1])
+            y_pixel = np.ravel(mesh_grid[0])
+            label = flatten_mask
+            data = {"x_pixel": x_pixel, "y_pixel": y_pixel, "gt_label": label}
+            mask_df = pl.DataFrame(
+                data,
+                columns=[
+                    ("x_pixel", pl.Int64),
+                    ("y_pixel", pl.Int64),
+                    ("gt_label", pl.Float64),
+                ],
+            ).sort(["x_pixel", "y_pixel"])
 
             # join mask dataframe
             self.df = self.df.join(mask_df, how="inner", on=["x_pixel", "y_pixel"])
