@@ -30,12 +30,12 @@ def main():
     parser.add_argument(
         "-i", "--input", action="store", type=str, help="path for the input data folder"
     )
-    # parser.add_argument(
-    #    "-s",
-    #    "--sanitycheck",
-    #    action="store_true",
-    #    help="whether to check correct csvs loaded in",
-    # )
+    parser.add_argument(
+       "-s",
+       "--sanitycheck",
+       action="store_true",
+       help="whether to check correct csvs loaded in",
+    )
     parser.add_argument(
         "-c",
         "--config",
@@ -61,11 +61,11 @@ def main():
 
     # input data folder
     if args.input is not None:
-        csv_path = args.folder
+        csv_path = args.input
     else:
         root = tk.Tk()
         root.withdraw()
-        csv_path = filedialog.askdirectory()
+        csv_path = filedialog.askdirectory(title="Data folder")
 
     # project folder
     if args.project_directory is not None:
@@ -73,14 +73,14 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        project_folder = filedialog.askdirectory()
+        project_folder = filedialog.askdirectory(title="Project folder")
 
     # if output directory not present create it
-    output_folder = os.path.join(project_folder, "preprocess/no_gt_labels")
+    output_folder = os.path.join(project_folder, "preprocess/no_gt_label")
     if os.path.exists(output_folder):
         raise ValueError(
             "You cannot choose this project folder"
-            " as it already contains prprocessed data"
+            " as it already contains preprocessed data"
         )
     else:
         os.makedirs(output_folder)
@@ -123,7 +123,6 @@ def main():
             config["z_col"],
             config["channel_choice"],
         )
-
         # have to not drop zero label
         # as no gt_label yet
         item.save_to_parquet(

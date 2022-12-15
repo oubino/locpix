@@ -171,7 +171,7 @@ class InputWidget(QWidget):
             self.test_files.item(x).text() for x in range(self.test_files.count())
         ]
         config["maximise_choice"] = self.maximise_choice.selectedItems()[0].text()
-        config["vis_threshold"] = int(self.vis_threshold.text())
+        config["vis_threshold"] = float(self.vis_threshold.text())
         config["vis_interpolate"] = self.vis_interpolate.selectedItems()[0].text()
 
         # check config is correct

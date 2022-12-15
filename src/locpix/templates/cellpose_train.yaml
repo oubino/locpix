@@ -2,7 +2,7 @@
 gpu: True
 
 # model parameters
-model: pointnet
+model: LC1
 
 # optimiser parameters
 optimiser: adam

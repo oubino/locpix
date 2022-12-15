@@ -42,7 +42,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        project_folder = filedialog.askdirectory()
+        project_folder = filedialog.askdirectory(title="Project directory")
 
     if args.config is not None:
         # load yaml
@@ -61,8 +61,9 @@ def main():
 
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "ilastik/prep")
-    if not os.path.exists(output_folder):
-        print("Making folder")
+    if os.path.exists(output_folder):
+            raise ValueError(f"Cannot proceed as {output_folder} already exists")
+    else:
         os.makedirs(output_folder)
 
     for file in files:
@@ -86,6 +87,11 @@ def main():
         file_name = file.removesuffix(".pkl")
         save_loc = os.path.join(output_folder, file_name + ".npy")
         np.save(save_loc, img)
+
+    # save yaml file
+    yaml_save_loc = os.path.join(project_folder, "ilastik_prep.yaml")
+    with open(yaml_save_loc, "w") as outfile:
+        yaml.dump(config, outfile)
 
 
 if __name__ == "__main__":

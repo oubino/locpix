@@ -633,6 +633,7 @@ class item:
             axis_2_chan (list) : List where the first value is the
                 channel in the first axis of the histogram, second value
                 is the channel in the second axis of the histogram etc.
+                e.g. [1,3] : 1st channel is in 1st axis, 3rd channel in 2nd axis
         """
 
         histos = []

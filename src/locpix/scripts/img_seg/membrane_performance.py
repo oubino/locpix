@@ -62,7 +62,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        project_folder = filedialog.askdirectory()
+        project_folder = filedialog.askdirectory(title="Project directory")
 
     if args.config is not None:
         # load yaml
@@ -72,7 +72,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        gt_file_path = filedialog.askdirectory()
+        gt_file_path = filedialog.askdirectory(title="GT file path")
         config = membrane_performance_config.config_gui(gt_file_path)
 
     # list items
@@ -134,8 +134,9 @@ def main():
 
         for folder in folders:
             # if output directory not present create it
-            if not os.path.exists(folder):
-                print("Making folder")
+            if os.path.exists(folder):
+                raise ValueError(f"Cannot proceed as {folder} already exists")
+            else:
                 os.makedirs(folder)
 
         print("Train set...")
@@ -367,6 +368,11 @@ def main():
 
     fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
     fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)
+
+    # save yaml file
+    yaml_save_loc = os.path.join(project_folder, "membrane_performance.yaml")
+    with open(yaml_save_loc, "w") as outfile:
+        yaml.dump(config, outfile)
 
 
 if __name__ == "__main__":

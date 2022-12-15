@@ -43,7 +43,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        project_folder = filedialog.askdirectory()
+        project_folder = filedialog.askdirectory(title="Project directory")
 
     # configuration folder
     if args.config is not None:
@@ -56,6 +56,7 @@ def main():
 
     # list items
     input_folder = os.path.join(project_folder, "preprocess/no_gt_label")
+    print(input_folder)
     try:
         files = os.listdir(input_folder)
     except FileNotFoundError:
@@ -63,20 +64,23 @@ def main():
 
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "annotate/annotated")
-    if not os.path.exists(output_folder):
-        print("Making folder")
+    if os.path.exists(output_folder):
+        raise ValueError(f"Cannot proceed as {output_folder} already exists")
+    else:
         os.makedirs(output_folder)
 
     # if output directory for seg imgs not present create it
     output_seg_folder = os.path.join(project_folder, "annotate/seg_imgs")
-    if not os.path.exists(output_seg_folder):
-        print("Making folder")
+    if os.path.exists(output_seg_folder):
+        raise ValueError(f"Cannot proceed as {output_seg_folder} already exists")
+    else:
         os.makedirs(output_seg_folder)
 
     # if output directory for seg imgs not present create it
     histo_folder = os.path.join(project_folder, "annotate/histos")
-    if not os.path.exists(histo_folder):
-        print("Making folder")
+    if os.path.exists(histo_folder):
+        raise ValueError(f"Cannot proceed as {histo_folder} already exists")
+    else:
         os.makedirs(histo_folder)
 
     if config["dim"] == 2:
@@ -134,7 +138,7 @@ def main():
             )
 
     # save yaml file
-    yaml_save_loc = os.path.join(project_folder, "annotate/annotate.yaml")
+    yaml_save_loc = os.path.join(project_folder, "annotate.yaml")
     with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config, outfile)
 

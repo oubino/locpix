@@ -44,7 +44,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        project_folder = filedialog.askdirectory()
+        project_folder = filedialog.askdirectory(title="Project directory")
 
     # configuration
     if args.config is not None:
@@ -70,8 +70,9 @@ def main():
     # if output directory not present create it
     output_directories = [output_membrane_prob, output_cell_df, output_cell_img]
     for directory in output_directories:
-        if not os.path.exists(directory):
-            print("Making folder")
+        if os.path.exists(directory):
+            raise ValueError(f"Cannot proceed as {directory} already exists")
+        else:
             os.makedirs(directory)
 
     for file in files:
@@ -166,6 +167,11 @@ def main():
             save_loc=save_loc,
             four_colour=True,
         )
+
+        # save yaml file
+        yaml_save_loc = os.path.join(project_folder, "cellpose_eval.yaml")
+        with open(yaml_save_loc, "w") as outfile:
+            yaml.dump(config, outfile)
 
 
 if __name__ == "__main__":

@@ -43,7 +43,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        project_folder = filedialog.askdirectory()
+        project_folder = filedialog.askdirectory(title="Project directory")
 
     if args.config is not None:
         # load yaml
@@ -94,6 +94,11 @@ def main():
 
         # save
         np.save(markers_loc, markers)
+
+    # save yaml file
+    yaml_save_loc = os.path.join(project_folder, "get_markers.yaml")
+    with open(yaml_save_loc, "w") as outfile:
+        yaml.dump(config, outfile)
 
 
 if __name__ == "__main__":

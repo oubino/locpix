@@ -299,21 +299,21 @@ class InputWidget(QWidget):
             1: self.gt_label_map_one.text(),
         }
         config["save_img"] = self.save_img.isChecked()
-        config["save_threshold"] = int(self.save_threshold.text())
+        config["save_threshold"] = float(self.save_threshold.text())
         config["save_interpolate"] = self.save_interpolation.selectedItems()[0].text()
         config["background_one_colour"] = self.background_one_colour.isChecked()
         config["four_colour"] = self.four_colour.isChecked()
         config["alphas"] = [
-            self.alpha_zero.text(),
-            self.alpha_one.text(),
-            self.alpha_two.text(),
-            self.alpha_three.text(),
+            float(self.alpha_zero.text()),
+            float(self.alpha_one.text()),
+            float(self.alpha_two.text()),
+            float(self.alpha_three.text()),
         ]
-        config["alpha_seg"] = self.alpha_seg.text()
+        config["alpha_seg"] = float(self.alpha_seg.text())
         config["cmap_seg"] = [self.zero_cmap.text(), self.one_cmap.text()]
         config["fig_size"] = [int(self.fig_size_x.text()), int(self.fig_size_y.text())]
         config["vis_channels"] = [
-            item.text() for item in self.vis_channels.selectedItems()
+            int(item.text()) for item in self.vis_channels.selectedItems()
         ]
 
         # check config is correct

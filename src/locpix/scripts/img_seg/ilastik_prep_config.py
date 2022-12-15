@@ -104,7 +104,7 @@ class InputWidget(QWidget):
         Args:
             config (dictionary) : Configuration dict"""
 
-        config["threshold"] = int(self.threshold.text())
+        config["threshold"] = float(self.threshold.text())
         config["interpolation"] = self.interpolation.selectedItems()[0].text()
 
         # check config is correct

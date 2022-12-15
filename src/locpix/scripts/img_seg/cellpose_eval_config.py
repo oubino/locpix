@@ -154,10 +154,10 @@ class InputWidget(QWidget):
         Args:
             config (dictionary) : Configuration dict"""
 
-        config["vis_threshold"] = int(self.vis_threshold.text())
+        config["vis_threshold"] = float(self.vis_threshold.text())
         config["vis_interpolate"] = self.selectedItems()[0].text()
         config["model"] = self.cellpose_model.text()
-        config["diameter"] = int(self.cellpose_diameter.text())
+        config["diameter"] = float(self.cellpose_diameter.text())
         config["channels"] = [
             int(self.first_channel.text()),
             int(self.second_channel.text()),

@@ -149,7 +149,7 @@ def visualise_seg(
             # and add white to cmap_seg --> ensures
             # background comes up as untouched
             segmentation = np.where(segmentation != 0, four_colour_seg + 1, 0)
-            cmap_seg.insert(0, "w")
+            cmap_seg = ["w"] + cmap_seg
         else:
             segmentation = label_2_4_colours(segmentation)
 

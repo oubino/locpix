@@ -49,7 +49,7 @@ def main():
     else:
         root = tk.Tk()
         root.withdraw()
-        project_folder = filedialog.askdirectory()
+        project_folder = filedialog.askdirectory(title="Project directory")
 
     if args.config is not None:
         # load yaml
@@ -63,8 +63,8 @@ def main():
         # config = cellpose_train_config.config_gui(gt_file_path)
 
     # load in config
-    input_root = os.path.join(project_folder, "annotate/histos")
-    label_root = os.path.join(project_folder, "annotate/annotated")
+    input_root = os.path.join(project_folder, "annotate/annotated")
+    #label_root = os.path.join(project_folder, "annotate/annotated")
     batch_size = config["batch_size"]
     epochs = config["epochs"]
     gpu = config["gpu"]
@@ -83,9 +83,10 @@ def main():
         raise ValueError("There should be some files to open")
 
     # make necessary folders if not present
-    preprocessed_folder = os.path.join(project_folder, "cellose_train")
-    if not os.path.exists(preprocessed_folder):
-        print("Making folder")
+    preprocessed_folder = os.path.join(project_folder, "cellpose_train")
+    if os.path.exists(preprocessed_folder):
+        raise ValueError(f"Cannot proceed as {preprocessed_folder} already exists")
+    else:
         os.makedirs(preprocessed_folder)
 
     print("files", files)
@@ -121,11 +122,13 @@ def main():
 
     # Initialise train and val dataset
     train_set = dataset.ImgDataset(
-        input_root, label_root, train_files, ".pkl", ".parquet", train_transform
+        input_root, train_files, ".parquet", train_transform
     )
     val_set = dataset.ImgDataset(
-        input_root, label_root, val_files, ".pkl", ".parquet", val_transform
+        input_root, val_files, ".parquet", val_transform
     )
+
+    print('Preprocessing datasets')
 
     # Pre-process train and val dataset
     train_set.preprocess(os.path.join(preprocessed_folder, "train"))
@@ -292,6 +295,11 @@ def main():
             save_loc=save_loc,
             four_colour=True,
         )
+
+        # save yaml file
+        yaml_save_loc = os.path.join(project_folder, "cellpose_train.yaml")
+        with open(yaml_save_loc, "w") as outfile:
+            yaml.dump(config, outfile)
 """
 
 if __name__ == "__main__":
