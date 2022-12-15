@@ -31,10 +31,10 @@ def main():
         "-i", "--input", action="store", type=str, help="path for the input data folder"
     )
     parser.add_argument(
-       "-s",
-       "--sanitycheck",
-       action="store_true",
-       help="whether to check correct csvs loaded in",
+        "-s",
+        "--sanitycheck",
+        action="store_true",
+        help="whether to check correct csvs loaded in",
     )
     parser.add_argument(
         "-c",

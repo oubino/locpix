@@ -16,9 +16,7 @@ class ImgDataset(Dataset):
     Attributes:
     """
 
-    def __init__(
-        self, input_root, files, input_type, transform
-    ):
+    def __init__(self, input_root, files, input_type, transform):
         """
         Args:
 
@@ -34,16 +32,16 @@ class ImgDataset(Dataset):
         self.input_data = [
             os.path.join(input_root, file + input_type) for file in files
         ]
-        #self.label_data = [
+        # self.label_data = [
         #    os.path.join(label_root, file + label_type) for file in files
-        #]
+        # ]
         print("input root", input_root)
-        #self.input_data, self.label_data = zip(
+        # self.input_data, self.label_data = zip(
         #    *sorted(zip(self.input_data, self.label_data))
-        #)
-        #print("input and label data")
+        # )
+        # print("input and label data")
         print(self.input_data)
-        #print(self.label_data)
+        # print(self.label_data)
         self.transform = transform
 
     def preprocess(self, folder):
@@ -54,17 +52,16 @@ class ImgDataset(Dataset):
         """
 
         # join data
-        #join_data = zip(self.input_data, self.label_data)
+        # join_data = zip(self.input_data, self.label_data)
 
         # make folders to save data at if not already present
-        img_folder = os.path.join(folder, 'imgs')
-        label_folder = os.path.join(folder, 'labels')
+        img_folder = os.path.join(folder, "imgs")
+        label_folder = os.path.join(folder, "labels")
         for folder in [img_folder, label_folder]:
             if os.path.exists(folder):
                 raise ValueError(f"Cannot proceed as {folder} already exists")
             else:
                 os.makedirs(folder)
-
 
         self.img_data = []
         self.label_data = []
@@ -73,44 +70,44 @@ class ImgDataset(Dataset):
         for datum in self.input_data:
 
             # load img and label
-            #with open(img, "rb") as f:
+            # with open(img, "rb") as f:
             #    histo_bad = pkl.load(f)
-            
-            # check img and label and check img the same
-            #histos = []
-            #print(type(histo_bad))
-            #for key, value in histo_bad.items():
-            #    histos.append(value)
-            #histo_bad = np.stack(histos)
-            #print("histo")
-            #print(axis_2_chan)
-            #print(histo.shape)
-            #print(histo_bad.shape)
 
-            #np.testing.assert_array_equal(histo, histo_bad)
+            # check img and label and check img the same
+            # histos = []
+            # print(type(histo_bad))
+            # for key, value in histo_bad.items():
+            #    histos.append(value)
+            # histo_bad = np.stack(histos)
+            # print("histo")
+            # print(axis_2_chan)
+            # print(histo.shape)
+            # print(histo_bad.shape)
+
+            # np.testing.assert_array_equal(histo, histo_bad)
 
             item = datastruc.item(None, None, None, None)
             item.load_from_parquet(os.path.join(datum))
-            #print(item.df)
+            # print(item.df)
 
             # convert
             histo, axis_2_chan = item.render_histo()
             label = item.render_seg()
 
             # transpose to img space
-            img = np.transpose(histo, (0,2,1))
+            img = np.transpose(histo, (0, 2, 1))
             label = label.T
 
-            #import matplotlib.pyplot as plt
-            #plt.imshow(np.log2(img[0,:,:]), origin = 'upper', cmap = 'Greys', alpha=1)
-            #plt.imshow(label, origin='upper', cmap='Reds', alpha=.4)
-            #plt.show()
-            #print("label", label.shape)
-            #print('img', img.shape)
+            # import matplotlib.pyplot as plt
+            # plt.imshow(np.log2(img[0,:,:]), origin = 'upper', cmap = 'Greys', alpha=1)
+            # plt.imshow(label, origin='upper', cmap='Reds', alpha=.4)
+            # plt.show()
+            # print("label", label.shape)
+            # print('img', img.shape)
 
             # img & label path
-            img_path = os.path.join(img_folder, item.name + '.npy')
-            label_path = os.path.join(label_folder, item.name + '.npy')
+            img_path = os.path.join(img_folder, item.name + ".npy")
+            label_path = os.path.join(label_folder, item.name + ".npy")
 
             # add img and label path to lists
             self.img_data.append(img_path)

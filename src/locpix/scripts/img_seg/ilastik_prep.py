@@ -62,7 +62,7 @@ def main():
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "ilastik/prep")
     if os.path.exists(output_folder):
-            raise ValueError(f"Cannot proceed as {output_folder} already exists")
+        raise ValueError(f"Cannot proceed as {output_folder} already exists")
     else:
         os.makedirs(output_folder)
 

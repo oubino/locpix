@@ -98,7 +98,7 @@ class WatershedWidget(QWidget):
 
     def label_cell(self, event):
         """On mouse click this definition will be called
-        
+
         Left click: add seed
         Right click: remove seed
 
@@ -155,10 +155,10 @@ class WatershedWidget(QWidget):
 
     def closeEvent(self, event):
         """When closing the widget this function will be overloaded.
-        
+
         It will ask the user if they are sure, on closing the coords of the markers
         will be extracted
-        
+
         Args:
             event (QEvent): Event triggered by click"""
 
@@ -210,13 +210,13 @@ def watershed_segment(img, file_name="Image", coords=None) -> np.ndarray:
     """Perform watershed segmentation on image - with option either to provide
     coordinates of markers (coords)
     or obtain annotation using a widget.
-    
+
     Args:
         img (np.ndarray): Image which performing watershed on
         file_name (string): Name of the image
         coords (list): List of tuples where each tuple represents coordinate
             of a marker (x,y)
-    
+
     Returns:
         labels (np.ndarray): Numpy array containing integer labels, each
         representing different segmented region of the input

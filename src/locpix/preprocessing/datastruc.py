@@ -23,7 +23,7 @@ _interpolate = {
 
 class item:
     """smlm datastructure.
-    
+
     This is the basic datastructure which will contain all the information
     from a point set that is needed
 
@@ -622,7 +622,7 @@ class item:
 
     def render_histo(self):
         """Render the histogram from the .parquet file
-        
+
         Assumes localisations have associated x_pixel and y_pixel already.
 
         Args:
