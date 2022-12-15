@@ -14,7 +14,7 @@ def csv_to_datastruc(
     input_file, dim, channel_col, frame_col, x_col, y_col, z_col, channel_choice=None
 ):
     """Loads in .csv and converts to the required datastructure.
-    
+
     Currently considers the following columns: channel frame x y z
     Also user can specify the channels they want to consider, these
     should be present in the channels column

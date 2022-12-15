@@ -64,7 +64,7 @@ def main():
 
     # load in config
     input_root = os.path.join(project_folder, "annotate/annotated")
-    #label_root = os.path.join(project_folder, "annotate/annotated")
+    # label_root = os.path.join(project_folder, "annotate/annotated")
     batch_size = config["batch_size"]
     epochs = config["epochs"]
     gpu = config["gpu"]
@@ -121,14 +121,10 @@ def main():
     val_transform = [transforms.ToTensor()]
 
     # Initialise train and val dataset
-    train_set = dataset.ImgDataset(
-        input_root, train_files, ".parquet", train_transform
-    )
-    val_set = dataset.ImgDataset(
-        input_root, val_files, ".parquet", val_transform
-    )
+    train_set = dataset.ImgDataset(input_root, train_files, ".parquet", train_transform)
+    val_set = dataset.ImgDataset(input_root, val_files, ".parquet", val_transform)
 
-    print('Preprocessing datasets')
+    print("Preprocessing datasets")
 
     # Pre-process train and val dataset
     train_set.preprocess(os.path.join(preprocessed_folder, "train"))

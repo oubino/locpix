@@ -65,21 +65,21 @@ def main():
         project_folder, "ilastik/output/membrane/prob_map"
     )
     if os.path.exists(output_membrane_prob):
-            raise ValueError(f"Cannot proceed as {output_membrane_prob} already exists")
+        raise ValueError(f"Cannot proceed as {output_membrane_prob} already exists")
     else:
         os.makedirs(output_membrane_prob)
 
     # if output directory not present create it
     output_cell_df = os.path.join(project_folder, "ilastik/output/cell/dataframe")
     if os.path.exists(output_cell_df):
-            raise ValueError(f"Cannot proceed as {output_cell_df} already exists")
+        raise ValueError(f"Cannot proceed as {output_cell_df} already exists")
     else:
         os.makedirs(output_cell_df)
 
     # if output directory not present create it
     output_cell_img = os.path.join(project_folder, "ilastik/output/cell/img")
     if os.path.exists(output_cell_img):
-            raise ValueError(f"Cannot proceed as {output_cell_img} already exists")
+        raise ValueError(f"Cannot proceed as {output_cell_img} already exists")
     else:
         os.makedirs(output_cell_img)
 
