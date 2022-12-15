@@ -138,7 +138,7 @@ def main():
             )
 
     # save yaml file
-    yaml_save_loc = os.path.join(project_folder, "annotate/annotate.yaml")
+    yaml_save_loc = os.path.join(project_folder, "annotate.yaml")
     with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config, outfile)
 

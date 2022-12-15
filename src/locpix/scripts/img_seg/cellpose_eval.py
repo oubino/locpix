@@ -168,6 +168,11 @@ def main():
             four_colour=True,
         )
 
+        # save yaml file
+        yaml_save_loc = os.path.join(project_folder, "cellpose_eval.yaml")
+        with open(yaml_save_loc, "w") as outfile:
+            yaml.dump(config, outfile)
+
 
 if __name__ == "__main__":
     main()

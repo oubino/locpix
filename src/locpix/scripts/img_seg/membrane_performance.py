@@ -369,6 +369,11 @@ def main():
     fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
     fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)
 
+    # save yaml file
+    yaml_save_loc = os.path.join(project_folder, "membrane_performance.yaml")
+    with open(yaml_save_loc, "w") as outfile:
+        yaml.dump(config, outfile)
+
 
 if __name__ == "__main__":
     main()

@@ -88,6 +88,11 @@ def main():
         save_loc = os.path.join(output_folder, file_name + ".npy")
         np.save(save_loc, img)
 
+    # save yaml file
+    yaml_save_loc = os.path.join(project_folder, "ilastik_prep.yaml")
+    with open(yaml_save_loc, "w") as outfile:
+        yaml.dump(config, outfile)
+
 
 if __name__ == "__main__":
     main()
