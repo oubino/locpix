@@ -21,13 +21,7 @@ def main():
         further processing."\
         "If no args are supplied will be run in GUI mode"
     )
-    # data_group.add_argument(
-    #    "-e",
-    #    "--env",
-    #    action="store",
-    #    type=str,
-    #    help="location of .env file for data path",
-    # )
+
     parser.add_argument(
         "-i", "--input", action="store", type=str, help="path for the input data folder"
     )
@@ -55,26 +49,22 @@ def main():
 
     args = parser.parse_args()
 
-    # if args.env is not None:
-    #    dotenv_path = ".env"
-    #    dotenv.load_dotenv(dotenv_path)
-    #    csv_path = os.getenv("RAW_DATA_PATH")
+    # if want to run in headless mode specify all arguments
+    if args.input is None and args.project_directory is None and args.config is None:
+        config, csv_path, project_folder = preprocess_config.config_gui()
+        print('csv path', csv_path)
 
-    # input data folder
-    if args.input is not None:
-        csv_path = args.input
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        csv_path = filedialog.askdirectory(title="Data folder")
+    if args.input is not None and (args.project_directory is None or args.config is None):
+        parser.error("If want to run in headless mode please supply arguments to project"\
+                     "directory and config as well")
 
-    # project folder
-    if args.project_directory is not None:
-        project_folder = args.project_directory
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        project_folder = filedialog.askdirectory(title="Project folder")
+    if args.project_directory is not None and (args.input is None or args.config is None):
+        parser.error("If want to run in headless mode please supply arguments to input"\
+                     "directory and config as well")
+
+    if args.config is not None and (args.input is None or args.config is None):
+        parser.error("If want to run in headless mode please supply arguments to project"\
+                     "directory and input directory as well")
 
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "preprocess/no_gt_label")
@@ -86,26 +76,10 @@ def main():
     else:
         os.makedirs(output_folder)
 
-    # list all .csv at input
-    csvs = os.listdir(csv_path)
-    csvs = [csv for csv in csvs if csv.endswith(".csv")]
-
-    # load in configuration .yaml
-    if args.config is not None:
-        # load yaml
-        with open(args.config, "r") as ymlfile:
-            config = yaml.safe_load(ymlfile)
-            preprocess_config.parse_config(config)
-    else:
-        files = [csv.removesuffix(".csv") for csv in csvs]
-        config = preprocess_config.config_gui(files)
-
-    # remove excluded files
-    csvs = [csv for csv in csvs if csv.removesuffix(".csv") in config["include_files"]]
-
     # check with user
     print("List of csvs wich will be processed")
-    print(csvs)
+    csvs = [os.path.join(csv_path, f'{file}.csv') for file in config['include_files']]
+    print(csvs) 
     if args.sanitycheck:
         check = input("If you are happy with these csvs type YES: ")
         if check != "YES":
@@ -113,9 +87,8 @@ def main():
 
     # go through .csv -> convert to datastructure -> save
     for csv in csvs:
-        input_file = os.path.join(csv_path, csv)
         item = functions.csv_to_datastruc(
-            input_file,
+            csv,
             config["dim"],
             config["channel_col"],
             config["frame_col"],
