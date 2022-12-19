@@ -1,17 +1,21 @@
-Overview
-========
+locpix
+======
 
 **locpix** is a Python library for analysing point cloud data from SMLM.
-This includes the following functionality:
-
-#. Converting .csv files representing SMLM data (point cloud) into histograms `Preprocess`_
-#. Manually annotating these histograms to extract relevant localisations `Annotate`_
-#. Labelling histogram with seeds for watershed algorithm `Get markers`_
-#. Utilising Classic method, Cellpose and Ilastik to segment the histograms to extract relevant localisations `Classic segmentation`_ , `Cellpose segmentation`_ and `Ilastik segmentation`_
-#. Performance metrics calculation based on the localisations (not the histograms!) `Membrane performance`_
 
 This is a short ReadMe just containing a QuickStart guide.
 For more comprehensive documentation please see https://oubino.github.io/locpix/ 
+
+**locpix** includes the following functionality in order they are used in a normal workflow:
+
+#. `Preprocess`_ : Converting .csv files representing SMLM data (point cloud) into .parquet files, necessary for this software
+#. `Annotate`_ : Generating histograms from the SMLM data and manually annotating these histograms to extract relevant localisations
+#. `Get markers`_ : Labelling histogram with seeds for watershed algorithm
+#. Segmentation:
+   #. `Classic segmentation`_ : Use classic method to segment histograms to extract relevant localisations 
+   #. `Cellpose segmentation`_ : Use Cellpose method to segment histograms to extract relevant localisations 
+   #. `Ilastik segmentation`_ : Use Ilastik method to segment histograms to extract relevant localisations 
+#. `Membrane performance`_ : Performance metrics calculation based on the localisations (not the histograms!)
 
    This project is under active development
 
