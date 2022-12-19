@@ -55,7 +55,7 @@ class InputWidget(QWidget):
         self.flo = QFormLayout()
 
         # Load .yaml with button
-        self.load_button = QPushButton("Load yaml")
+        self.load_button = QPushButton("Load configuration")
         self.load_button.clicked.connect(self.load_yaml)
         self.flo.addRow(self.load_button)
 
