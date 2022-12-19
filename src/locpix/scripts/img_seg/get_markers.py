@@ -17,7 +17,9 @@ from tkinter import filedialog
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Get markers")
+    parser = argparse.ArgumentParser(description="Get markers."\
+        "If no args are supplied will be run in GUI mode"
+    )
     # config_group = parser.add_mutually_exclusive_group(required=True)
     parser.add_argument(
         "-i",

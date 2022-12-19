@@ -17,7 +17,9 @@ from tkinter import filedialog
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Ilastik prep")
+    parser = argparse.ArgumentParser(description="Ilastik prep."\
+        "If no args are supplied will be run in GUI mode"
+    )
     parser.add_argument(
         "-i",
         "--project_directory",

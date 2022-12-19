@@ -18,7 +18,8 @@ def main():
     # load path of .csv
     parser = argparse.ArgumentParser(
         description="Preprocess the data for\
-        further processing"
+        further processing."\
+        "If no args are supplied will be run in GUI mode"
     )
     # data_group.add_argument(
     #    "-e",

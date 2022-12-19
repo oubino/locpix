@@ -18,7 +18,9 @@ from tkinter import filedialog
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Annotate the data")
+    parser = argparse.ArgumentParser(description="Annotate the data."\
+        "If no args are supplied will be run in GUI mode"
+    )
     parser.add_argument(
         "-i",
         "--project_directory",

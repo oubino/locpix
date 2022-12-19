@@ -24,7 +24,8 @@ def main():
 
     # Load in config
 
-    parser = argparse.ArgumentParser(description="Cellpose")
+    parser = argparse.ArgumentParser(description="Train cellpose."\
+        "If no args are supplied will be run in GUI mode")
     parser.add_argument(
         "-i",
         "--project_directory",

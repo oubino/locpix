@@ -20,7 +20,8 @@ from tkinter import filedialog
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Cellpose")
+    parser = argparse.ArgumentParser(description="Cellpose."\
+        "If no args are supplied will be run in GUI mode"
     parser.add_argument(
         "-i",
         "--project_directory",
