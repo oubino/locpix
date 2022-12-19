@@ -64,6 +64,11 @@ class InputWidget(QWidget):
         self.vis_interpolate.item(0).setSelected(True)
         self.flo.addRow("Visible interpolation", self.vis_interpolate)
 
+        # Finished button
+        self.finished_button = QPushButton("Finished!")
+        self.finished_button.clicked.connect(self.close)
+        self.flo.addRow(self.finished_button)
+
         self.setLayout(self.flo)
 
         self.config = config

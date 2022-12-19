@@ -133,6 +133,11 @@ class InputWidget(QWidget):
         # self.save_loc_input.setToolTip("Yaml save location")
         # self.flo.addRow("yaml save location", self.save_loc_input)
 
+        # Finished button
+        self.finished_button = QPushButton("Finished!")
+        self.finished_button.clicked.connect(self.close)
+        self.flo.addRow(self.finished_button)
+
         self.setLayout(self.flo)
         # self.include_files.selectAll()
 

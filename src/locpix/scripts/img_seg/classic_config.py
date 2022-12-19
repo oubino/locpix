@@ -72,6 +72,11 @@ class InputWidget(QWidget):
         )
         self.flo.addRow("Sum channels", self.sum_chan)
 
+        # Finished button
+        self.finished_button = QPushButton("Finished!")
+        self.finished_button.clicked.connect(self.close)
+        self.flo.addRow(self.finished_button)
+
         self.setLayout(self.flo)
 
         self.config = config

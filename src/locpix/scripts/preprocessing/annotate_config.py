@@ -216,6 +216,11 @@ class InputWidget(QWidget):
         self.vis_channels.item(0).setSelected(True)
         self.flo.addRow("Channels", self.vis_channels)
 
+        # Finished button
+        self.finished_button = QPushButton("Finished!")
+        self.finished_button.clicked.connect(self.close)
+        self.flo.addRow(self.finished_button)
+
         self.setLayout(self.flo)
 
         self.config = config
