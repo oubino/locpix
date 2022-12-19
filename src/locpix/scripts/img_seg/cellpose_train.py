@@ -5,8 +5,6 @@ Take in items and train the Cellpose module
 """
 
 import yaml
-import tkinter as tk
-from tkinter import filedialog
 import torch
 from torch.utils.data import DataLoader
 from locpix.img_processing.data_loading import dataset
@@ -44,24 +42,25 @@ def main():
 
     args = parser.parse_args()
 
-    # input project directory
-    if args.project_directory is not None:
-        project_folder = args.project_directory
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        project_folder = filedialog.askdirectory(title="Project directory")
+    # if want to run in headless mode specify all arguments
+    if args.project_directory is None and args.config is None:
+        config, project_folder = ilastik_output_config.config_gui()
 
-    if args.config is not None:
-        # load yaml
+    if args.project_directory is not None and args.config is None:
+        parser.error("If want to run in headless mode please supply arguments to"\
+                     "config as well")
+
+    if args.config is not None and args.project_directory is None:
+        parser.error("If want to run in headless mode please supply arguments to project"\
+                     "directory as well")
+
+    # headless mode
+    if args.project_directory is not None and args.config is not None:
+        project_folder = args.project_directory
+        # load config
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
-            # cellpose_train_config.parse_config(config)
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        # gt_file_path = filedialog.askdirectory()
-        # config = cellpose_train_config.config_gui(gt_file_path)
+            ilastik_output_config.parse_config(config)
 
     # load in config
     input_root = os.path.join(project_folder, "annotate/annotated")

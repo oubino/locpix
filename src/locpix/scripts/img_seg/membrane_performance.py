@@ -31,8 +31,6 @@ import pickle as pkl
 from locpix.visualise import vis_img
 import argparse
 from locpix.scripts.img_seg import membrane_performance_config
-import tkinter as tk
-from tkinter import filedialog
 
 
 def main():
@@ -58,24 +56,25 @@ def main():
 
     args = parser.parse_args()
 
-    # input project directory
-    if args.project_directory is not None:
-        project_folder = args.project_directory
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        project_folder = filedialog.askdirectory(title="Project directory")
+    # if want to run in headless mode specify all arguments
+    if args.project_directory is None and args.config is None:
+        config, project_folder = membrane_performance_config.config_gui()
 
-    if args.config is not None:
-        # load yaml
+    if args.project_directory is not None and args.config is None:
+        parser.error("If want to run in headless mode please supply arguments to"\
+                     "config as well")
+
+    if args.config is not None and args.project_directory is None:
+        parser.error("If want to run in headless mode please supply arguments to project"\
+                     "directory as well")
+
+    # headless mode
+    if args.project_directory is not None and args.config is not None:
+        project_folder = args.project_directory
+        # load config
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             membrane_performance_config.parse_config(config)
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        gt_file_path = filedialog.askdirectory(title="GT file path")
-        config = membrane_performance_config.config_gui(gt_file_path)
 
     # list items
     gt_file_path = os.path.join(project_folder, "annotate/annotated")

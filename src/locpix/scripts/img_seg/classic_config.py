@@ -40,15 +40,21 @@ class InputWidget(QWidget):
 
     """
 
-    def __init__(self, config):
+    def __init__(self, config, proj_path):
         """Constructor
         Args:
             files (list) : List of files that will be preprocessed
             config (dict) : Dictionary containing the configuration
+            proj_path (list) : List containing the path to the project folder
         """
 
         super().__init__()
         self.flo = QFormLayout()
+
+        # Set project directory
+        self.project_directory = QPushButton("Set project directory")
+        self.project_directory.clicked.connect(self.load_project_directory)
+        self.flo.addRow(self.project_directory)
 
         # Load .yaml with button
         self.load_button = QPushButton("Load configuration")
@@ -80,6 +86,20 @@ class InputWidget(QWidget):
         self.setLayout(self.flo)
 
         self.config = config
+        self.proj_path = proj_path
+
+    def load_project_directory(self):
+        """Load project directory from button"""
+
+        # Load folder
+        project_dir = QFileDialog.getExistingDirectory(
+            self, 'window', "/home/some/folder"
+        )
+
+        if project_dir == "":
+            print('Empty project directory')
+
+        self.proj_path.append(project_dir)
 
     def load_yaml(self):
         """Load the yaml"""
@@ -154,17 +174,21 @@ def config_gui():
     List of files files can then be unchecked if users want to ignore
 
     Attributes:
-        save_loc(string): Where to save the output
-            .yaml file for the configuration
-        files (list): List of files to be preprocessed"""
+        None"""
 
     app = QApplication([])  # sys.argv if need command line inputs
     # create widget
     config = {}
-    widget = InputWidget(config)
+    proj_path = []
+    widget = InputWidget(config, proj_path)
     widget.show()
     app.exec()
-    return config
+
+    if not proj_path:
+        raise ValueError('Project directory was not specified')
+
+    return config, proj_path[0]
+
 
 
 def parse_config(config):

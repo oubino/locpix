@@ -14,14 +14,11 @@ import pickle as pkl
 from cellpose import models
 import argparse
 from locpix.scripts.img_seg import cellpose_eval_config
-import tkinter as tk
-from tkinter import filedialog
-
 
 def main():
 
     parser = argparse.ArgumentParser(description="Cellpose."\
-        "If no args are supplied will be run in GUI mode"
+        "If no args are supplied will be run in GUI mode")
     parser.add_argument(
         "-i",
         "--project_directory",
@@ -39,22 +36,25 @@ def main():
     )
     args = parser.parse_args()
 
-    # input project directory
-    if args.project_directory is not None:
-        project_folder = args.project_directory
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        project_folder = filedialog.askdirectory(title="Project directory")
+    # if want to run in headless mode specify all arguments
+    if args.project_directory is None and args.config is None:
+        config, project_folder = cellpose_eval_config.config_gui()
 
-    # configuration
-    if args.config is not None:
-        # load yaml
+    if args.project_directory is not None and args.config is None:
+        parser.error("If want to run in headless mode please supply arguments to"\
+                     "config as well")
+
+    if args.config is not None and args.project_directory is None:
+        parser.error("If want to run in headless mode please supply arguments to project"\
+                     "directory as well")
+
+    # headless mode
+    if args.project_directory is not None and args.config is not None:
+        project_folder = args.project_directory
+        # load config
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             cellpose_eval_config.parse_config(config)
-    else:
-        config = cellpose_eval_config.config_gui()
 
     # list items
     input_folder = os.path.join(project_folder, "annotate/annotated")

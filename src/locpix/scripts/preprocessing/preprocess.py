@@ -8,8 +8,6 @@ import os
 import yaml
 from locpix.preprocessing import functions
 import argparse
-import tkinter as tk
-from tkinter import filedialog
 from locpix.scripts.preprocessing import preprocess_config
 
 
@@ -65,6 +63,16 @@ def main():
     if args.config is not None and (args.input is None or args.config is None):
         parser.error("If want to run in headless mode please supply arguments to project"\
                      "directory and input directory as well")
+
+    # headless mode
+    if args.input is not None and args.project_directory is not None and args.config is not None:
+        csv_path = args.input
+        project_folder = args.project_directory
+        # load config
+        with open(args.config, "r") as ymlfile:
+            config = yaml.safe_load(ymlfile)
+            preprocess_config.parse_config(config)
+
 
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "preprocess/no_gt_label")
