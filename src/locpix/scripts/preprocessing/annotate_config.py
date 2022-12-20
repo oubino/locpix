@@ -23,6 +23,8 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from PyQt5.QtCore import Qt
 import yaml
+import json
+import os
 
 default_config_keys = [
     "x_bins",
@@ -67,10 +69,15 @@ class InputWidget(QWidget):
         super().__init__()
         self.flo = QFormLayout()
 
-        # Set project directory
+        # Set project directory and parse the metadata
+        h_box = QHBoxLayout()
         self.project_directory = QPushButton("Set project directory")
         self.project_directory.clicked.connect(self.load_project_directory)
-        self.flo.addRow(self.project_directory)
+        h_box.addWidget(self.project_directory)
+        self.check_metadata = QPushButton("Check project metadata")
+        self.check_metadata.clicked.connect(self.parse_metadata)
+        h_box.addWidget(self.check_metadata)
+        self.flo.addRow(h_box)
 
         # Load .yaml with button
         self.load_button = QPushButton("Load configuration")
@@ -242,8 +249,25 @@ class InputWidget(QWidget):
 
         if project_dir == "":
             print('Empty project directory')
+        else:
+            self.proj_path.append(project_dir)
 
-        self.proj_path.append(project_dir)
+    def parse_metadata(self):
+        """Check metadata for loaded in project directory"""
+
+        # check project directory is populated
+        if self.proj_path:
+            # load in metadata
+            with open(os.path.join(self.proj_path[0],'metadata.json'),) as file:
+                metadata = json.load(file)
+                #metadata = json.dumps(metadata)
+            # display metadata
+            msg = QMessageBox()
+            msg.setWindowTitle("Project metadata")
+            meta_text = "".join([f"{key} : {value} \n" for key, value in metadata.items()])
+            msg.setText(meta_text)
+            msg.exec_()
+
 
     def load_yaml(self):
         """Load the yaml"""

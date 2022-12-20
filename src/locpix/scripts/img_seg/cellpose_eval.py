@@ -14,6 +14,9 @@ import pickle as pkl
 from cellpose import models
 import argparse
 from locpix.scripts.img_seg import cellpose_eval_config
+import json
+import time
+
 
 def main():
 
@@ -34,6 +37,15 @@ def main():
         help="the location of the .yaml configuaration file\
                              for preprocessing",
     )
+    parser.add_argument(
+        "-m",
+        "--project_metadata",
+        action="store_true",
+        type=str,
+        help="check the metadata for the specified project and"\
+             "seek confirmation!"
+    )
+
     args = parser.parse_args()
 
     # if want to run in headless mode specify all arguments
@@ -55,6 +67,25 @@ def main():
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             cellpose_eval_config.parse_config(config)
+
+    metadata_path = os.path.join(project_folder,'metadata.json')
+    with open(metadata_path,) as file:
+        metadata = json.load(file)
+        # check metadata
+        if args.project_metadata:
+            print("".join([f"{key} : {value} \n" for key, value in metadata.items()]))
+            check = input('Are you happy with this? (YES)')
+            if check != "YES":
+                exit()
+        # add time ran this script to metadata
+        file = os.path.basename(__file__)
+        if file not in metadata:
+            metadata[file] = time.asctime(time.gmtime(time.time()))
+        else:
+            print('Overwriting...')
+            metadata[file] = time.asctime(time.gmtime(time.time()))
+        with open(metadata_path, "w") as outfile:
+            json.dump(metadata, outfile)
 
     # list items
     input_folder = os.path.join(project_folder, "annotate/annotated")
