@@ -3,6 +3,8 @@ locpix
 
 **locpix** is a Python library for analysing point cloud data from SMLM.
 
+   This project is under active development
+
 This is a short ReadMe just containing a QuickStart guide.
 For more comprehensive documentation please see https://oubino.github.io/locpix/ 
 
@@ -18,9 +20,6 @@ For more comprehensive documentation please see https://oubino.github.io/locpix/
    #. `Ilastik segmentation`_ : Use Ilastik method to segment histograms to extract relevant localisations 
 
 #. `Membrane performance`_ : Performance metrics calculation based on the localisations (not the histograms!)
-
-
-   This project is under active development
 
 Project Structure
 -----------------
