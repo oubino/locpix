@@ -5,7 +5,7 @@ locpix
 **locpix** is a Python library for analysing point cloud data from SMLM.
 This includes the following functionality:
 
-#. :ref:`preprocess` : Converting .csv files representing SMLM data (point cloud) into .parquet files, **necessary for this software**
+#. :ref:`preprocess` : Initialises project and converts .csv files representing SMLM data (point cloud) into .parquet files, **necessary for this software**
 #. :ref:`annotate` : Generating histograms from the SMLM data and manually annotating these histograms to extract relevant localisations
 #. :ref:`get-markers` : Labelling histogram with seeds for watershed algorithm
 #. Segmentation:

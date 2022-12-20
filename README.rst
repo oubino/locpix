@@ -8,7 +8,7 @@ For more comprehensive documentation please see https://oubino.github.io/locpix/
 
 **locpix** includes the following functionality in order they are used in a normal workflow:
 
-#. `Preprocess`_ : Converting .csv files representing SMLM data (point cloud) into .parquet files, **necessary for this software**
+#. `Preprocess`_ : Initialises project and converts .csv files representing SMLM data (point cloud) into .parquet files, **necessary for this software**
 #. `Annotate`_ : Generating histograms from the SMLM data and manually annotating these histograms to extract relevant localisations
 #. `Get markers`_ : Labelling histogram with seeds for watershed algorithm
 #. Segmentation:

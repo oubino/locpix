@@ -9,6 +9,49 @@ import yaml
 from locpix.preprocessing import functions
 import argparse
 from locpix.scripts.preprocessing import preprocess_config
+import time
+import json
+import socket
+
+class project_info:
+    """Project information metadata
+    
+    Attributes:
+        metadata (dictionary) : Python dictionary containing
+            the metadata"""
+
+    def __init__(self, time, name):
+        """Initialises metadata with args
+        
+        Args:
+            time (string) : Time of project initialisation
+            name (string) : Name of the project"""
+
+        # dictionary
+        self.metadata = {
+            'machine': socket.gethostname(),
+            'name': name,
+            'init_time': time,
+        }
+    
+    def save(self, path):
+        """Save the dataframe as a .csv to
+        the path
+        
+        Args:
+            path (string) : Path to save to"""
+
+        with open(path, "w") as outfile:
+            json.dump(self.metadata, outfile)
+    
+    def load(self, path):
+        """Load the dataframe from
+        the path
+        
+        Args:
+            path (string) : Path to load from"""
+        
+        self.metadata = json.load(path)
 
 
 def main():
@@ -76,13 +119,17 @@ def main():
 
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "preprocess/no_gt_label")
-    if os.path.exists(output_folder):
+    if os.path.exists(os.path.join(project_folder, "preprocess")):
         raise ValueError(
             "You cannot choose this project folder"
             " as it already contains preprocessed data"
         )
     else:
         os.makedirs(output_folder)
+
+        # initialise metadata and save
+        metadata = project_info(time.asctime(time.gmtime(time.time())), project_folder)
+        metadata.save(os.path.join(project_folder, 'metadata.json'))
 
     # check with user
     print("List of csvs wich will be processed")
