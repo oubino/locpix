@@ -191,3 +191,27 @@ Code coverage
       (locpix-env) $ pip install pytest 
       (locpix-env) $ pip install pytest-cov
       (locpix-env) $ pytest --cov=src tests/
+
+
+Cellpose train
+--------------
+
+To train cellpose first need .npy files of imgs and labels
+
+Therefore use src/locpix/scripts/img_seg/cellpose_train.py to convert all images to .npy
+
+Then move images to folder with Fov1->6 in train and move masks into this folder as well
+Fov 7,8,9,10 in test and move masks into this folder as well
+
+Had to append name _masks to each of the masks
+
+Then run
+
+.. code-block:: console
+
+      (locpix-env) $ python -m cellpose --train --dir ~/imgs/train/ --test_dir ~/imgs/test/ --pretrained_model LC1 --chan 0 --chan2 0 --learning_rate 0.1 --weight_decay 0.0001 --n_epochs 3
+      (locpix-env) $ python -m cellpose --dir ~/imgs/test/ --pretrained_model model --chan 0 --chan2 0 --save_png
+
+
+python -m cellpose --train --dir "C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_train\train" --test_dir "C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_train\test" --pretrained_model LC1 --chan 0 --chan2 0 --learning_rate 0.1 --weight_decay 0.0001 --n_epochs 10 --min_train_masks 1 --verbose
+python -m cellpose --dir  "C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_train\test" --pretrained_model  "C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_train\train\models\cellpose_residual_on_style_on_concatenation_off_train_2022_12_20_14_56_59.377919" --chan 0 --chan2 0 --save_png

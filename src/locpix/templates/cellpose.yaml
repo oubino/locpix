@@ -3,6 +3,7 @@ vis_threshold: 5
 vis_interpolate: 'log2'
 
 # cellpose parameters
+user_model_path: "C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_model\model_1.pt"
 model: 'LC1'
 diameter: 50
 # "Model is trained on two-channel images, where the first channel is the channel to segment, 
@@ -15,3 +16,10 @@ channels: [0,0]
 
 # whether to sum channels (currently only channel 0 and 1)
 sum_chan: False
+
+# files to evaluate on
+test_files:
+- Fov7_DC
+- Fov8_DC
+- Fov9_DC
+- Fov10_DC

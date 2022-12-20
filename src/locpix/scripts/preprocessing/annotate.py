@@ -41,7 +41,6 @@ def main():
         "-m",
         "--project_metadata",
         action="store_true",
-        type=str,
         help="check the metadata for the specified project and" "seek confirmation!",
     )
 

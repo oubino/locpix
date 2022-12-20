@@ -42,9 +42,15 @@ def main():
         "-m",
         "--project_metadata",
         action="store_true",
-        type=str,
         help="check the metadata for the specified project and" "seek confirmation!",
     )
+    parser.add_argument(
+        "-u",
+        "--user_model",
+        action="store_true",
+        help="use the user model",
+    )
+    
 
     args = parser.parse_args()
 
@@ -114,15 +120,13 @@ def main():
             os.makedirs(directory)
 
     for file in files:
+
         item = datastruc.item(None, None, None, None)
         input_folder = os.path.join(project_folder, "annotate/annotated")
         item.load_from_parquet(os.path.join(input_folder, file))
 
-        # load in histograms
-        input_histo_folder = os.path.join(project_folder, "annotate/histos")
-        histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
-        with open(histo_loc, "rb") as f:
-            histo = pkl.load(f)
+        # conver to histo
+        histo, axis_2_chan = item.render_histo()
 
         # ---- segment membranes ----
 
@@ -137,11 +141,18 @@ def main():
         )
         imgs = [img]
 
-        model = models.CellposeModel(model_type=config["model"])
-        channels = config["channels"]
-        # note diameter is set here may want to make user choice
-        # doing one at a time (rather than in batch) like this might be very slow
-        _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
+        if args.user_model:
+            model = models.CellposeModel(pretrained_model=config["user_model_path"])
+            channels = config["channels"]
+            # note diameter is set here may want to make user choice
+            # doing one at a time (rather than in batch) like this might be very slow
+            _, flows, _ = model.eval(imgs, channels=channels)
+        else:
+            model = models.CellposeModel(model_type=config["model"])
+            channels = config["channels"]
+            # note diameter is set here may want to make user choice
+            # doing one at a time (rather than in batch) like this might be very slow
+            _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
         # flows[0] as we have only one image so get first flow
         # flows[0][2] as this is the probability see
         # (https://cellpose.readthedocs.io/en/latest/api.html)
