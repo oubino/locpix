@@ -244,11 +244,11 @@ class InputWidget(QWidget):
 
         # Load folder
         project_dir = QFileDialog.getExistingDirectory(
-            self, 'window', "/home/some/folder"
+            self, "window", "/home/some/folder"
         )
 
         if project_dir == "":
-            print('Empty project directory')
+            print("Empty project directory")
         else:
             self.proj_path.append(project_dir)
 
@@ -258,16 +258,19 @@ class InputWidget(QWidget):
         # check project directory is populated
         if self.proj_path:
             # load in metadata
-            with open(os.path.join(self.proj_path[0],'metadata.json'),) as file:
+            with open(
+                os.path.join(self.proj_path[0], "metadata.json"),
+            ) as file:
                 metadata = json.load(file)
-                #metadata = json.dumps(metadata)
+                # metadata = json.dumps(metadata)
             # display metadata
             msg = QMessageBox()
             msg.setWindowTitle("Project metadata")
-            meta_text = "".join([f"{key} : {value} \n" for key, value in metadata.items()])
+            meta_text = "".join(
+                [f"{key} : {value} \n" for key, value in metadata.items()]
+            )
             msg.setText(meta_text)
             msg.exec_()
-
 
     def load_yaml(self):
         """Load the yaml"""
@@ -407,7 +410,7 @@ def config_gui():
     app.exec()
 
     if not proj_path:
-        raise ValueError('Project directory was not specified')
+        raise ValueError("Project directory was not specified")
 
     return config, proj_path[0]
 

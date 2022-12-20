@@ -6,7 +6,6 @@ import torch
 from torch.utils.data import Dataset
 import numpy as np
 import os
-import pickle as pkl
 from locpix.preprocessing import datastruc
 
 

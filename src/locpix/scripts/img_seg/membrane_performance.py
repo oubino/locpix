@@ -37,7 +37,8 @@ import time
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Membrane performance metrics on data."\
+    parser = argparse.ArgumentParser(
+        description="Membrane performance metrics on data."
         "If no args are supplied will be run in GUI mode"
     )
     parser.add_argument(
@@ -60,8 +61,7 @@ def main():
         "--project_metadata",
         action="store_true",
         type=str,
-        help="check the metadata for the specified project and"\
-             "seek confirmation!"
+        help="check the metadata for the specified project and" "seek confirmation!",
     )
 
     args = parser.parse_args()
@@ -71,12 +71,16 @@ def main():
         config, project_folder = membrane_performance_config.config_gui()
 
     if args.project_directory is not None and args.config is None:
-        parser.error("If want to run in headless mode please supply arguments to"\
-                     "config as well")
+        parser.error(
+            "If want to run in headless mode please supply arguments to"
+            "config as well"
+        )
 
     if args.config is not None and args.project_directory is None:
-        parser.error("If want to run in headless mode please supply arguments to project"\
-                     "directory as well")
+        parser.error(
+            "If want to run in headless mode please supply arguments to project"
+            "directory as well"
+        )
 
     # headless mode
     if args.project_directory is not None and args.config is not None:
@@ -86,13 +90,15 @@ def main():
             config = yaml.safe_load(ymlfile)
             membrane_performance_config.parse_config(config)
 
-    metadata_path = os.path.join(project_folder,'metadata.json')
-    with open(metadata_path,) as file:
+    metadata_path = os.path.join(project_folder, "metadata.json")
+    with open(
+        metadata_path,
+    ) as file:
         metadata = json.load(file)
         # check metadata
         if args.project_metadata:
             print("".join([f"{key} : {value} \n" for key, value in metadata.items()]))
-            check = input('Are you happy with this? (YES)')
+            check = input("Are you happy with this? (YES)")
             if check != "YES":
                 exit()
         # add time ran this script to metadata
@@ -100,7 +106,7 @@ def main():
         if file not in metadata:
             metadata[file] = time.asctime(time.gmtime(time.time()))
         else:
-            print('Overwriting...')
+            print("Overwriting...")
             metadata[file] = time.asctime(time.gmtime(time.time()))
         with open(metadata_path, "w") as outfile:
             json.dump(metadata, outfile)

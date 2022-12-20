@@ -151,7 +151,7 @@ class InputWidget(QWidget):
         self.setLayout(self.flo)
         # self.include_files.selectAll()
 
-        #self.files = files
+        # self.files = files
         self.config = config
         self.csv_path = csv_path
         self.proj_path = proj_path
@@ -161,7 +161,7 @@ class InputWidget(QWidget):
 
         # Load folder
         input_dir = QFileDialog.getExistingDirectory(
-            self, 'window', "/home/some/folder"
+            self, "window", "/home/some/folder"
         )
 
         self.csv_path.append(input_dir)
@@ -178,20 +178,18 @@ class InputWidget(QWidget):
                 self.include_files.insertItem(index, value)
                 self.include_files.setSelectionMode(2)
 
-
     def load_project_directory(self):
         """Load project directory from button"""
 
         # Load folder
         project_dir = QFileDialog.getExistingDirectory(
-            self, 'window', "/home/some/folder"
+            self, "window", "/home/some/folder"
         )
 
         if project_dir == "":
-            print('Empty project directory')
+            print("Empty project directory")
 
         self.proj_path.append(project_dir)
-
 
     def load_yaml(self):
         """Load the yaml"""
@@ -305,10 +303,10 @@ def config_gui():
     app.exec()
 
     if not csv_path:
-        raise ValueError('Input data was not specified')
+        raise ValueError("Input data was not specified")
 
     if not proj_path:
-        raise ValueError('Project directory was not specified')
+        raise ValueError("Project directory was not specified")
 
     return config, csv_path[0], proj_path[0]
 
