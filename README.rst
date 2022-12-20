@@ -12,9 +12,11 @@ For more comprehensive documentation please see https://oubino.github.io/locpix/
 #. `Annotate`_ : Generating histograms from the SMLM data and manually annotating these histograms to extract relevant localisations
 #. `Get markers`_ : Labelling histogram with seeds for watershed algorithm
 #. Segmentation:
+
    #. `Classic segmentation`_ : Use classic method to segment histograms to extract relevant localisations 
    #. `Cellpose segmentation`_ : Use Cellpose method to segment histograms to extract relevant localisations 
    #. `Ilastik segmentation`_ : Use Ilastik method to segment histograms to extract relevant localisations 
+   
 #. `Membrane performance`_ : Performance metrics calculation based on the localisations (not the histograms!)
 
    This project is under active development
