@@ -100,11 +100,7 @@ def main():
             json.dump(metadata, outfile)
 
     # list items
-    input_folder = os.path.join(project_folder, "annotate/annotated")
-    try:
-        files = os.listdir(input_folder)
-    except FileNotFoundError:
-        raise ValueError("There should be some files to open")
+    files = [os.path.join(project_folder, "annotate/annotated", file) for file in config["test_files"]]
 
     # output directories
     output_membrane_prob = os.path.join(project_folder, "cellpose/membrane/prob_map")
@@ -122,8 +118,7 @@ def main():
     for file in files:
 
         item = datastruc.item(None, None, None, None)
-        input_folder = os.path.join(project_folder, "annotate/annotated")
-        item.load_from_parquet(os.path.join(input_folder, file))
+        item.load_from_parquet(file + '.parquet')
 
         # conver to histo
         histo, axis_2_chan = item.render_histo()

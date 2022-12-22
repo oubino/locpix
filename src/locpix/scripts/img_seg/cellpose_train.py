@@ -126,9 +126,15 @@ def main():
     # train cellpose model
     model = models.CellposeModel(model_type=config["model"])
     imgs, labels = parquet_2_img(train_files)
+    test_imgs, test_labels = parquet_2_img(test_files)
+    # threshold imgs
+    # ?
     model.train(imgs, 
                 labels, 
                 train_files=train_files, 
+                test_data = test_imgs,
+                test_labels = test_labels,
+                test_files = test_files,
                 channels=config['channels'], 
                 save_path=model_folder, 
                 save_every=config['save_every'], 
@@ -168,6 +174,8 @@ def parquet_2_img(files, folder=None, save=False):
 
         labels.append(label)
         imgs.append(img)
+
+    return imgs, labels
 
 
 if __name__ == "__main__":
