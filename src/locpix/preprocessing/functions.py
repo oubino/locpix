@@ -73,7 +73,7 @@ def csv_to_datastruc(
     channels = channel_choice
 
     # Get name of file - assumes last part of input file name
-    name = os.path.basename(os.path.normpath(input_file)).strip(".csv")
+    name = os.path.basename(os.path.normpath(input_file)).removesuffix(".csv")
 
     return datastruc.item(name, df, dim, channels)
 
@@ -139,6 +139,6 @@ def parquet_to_datastruc(
     channels = channel_choice
 
     # Get name of file - assumes last part of input file name
-    name = os.path.basename(os.path.normpath(input_file)).strip(".csv")
+    name = os.path.basename(os.path.normpath(input_file)).removesuffix(".parquet")
 
     return datastruc.item(name, df, dim, channels)

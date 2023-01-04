@@ -165,7 +165,9 @@ def main():
         files = [os.path.join(input_path, f"{file}.csv") for file in include_files]
         # check file not already present
         for file in files:
-            output_path = os.path.join(output_folder, f"{file.replace('.csv', '.parquet')}")
+            file_name = os.path.basename(file)
+            output_path = os.path.join(output_folder, f"{file_name.replace('.csv', '.parquet')}")
+            input('check this makes sense and if it doesnt then stop')
             if os.path.exists(output_path):
                 raise ValueError("Can't preprocess as output file already exists")
         print(files)
@@ -177,9 +179,8 @@ def main():
         files = [os.path.join(input_path, f"{file}.parquet") for file in include_files]
         # check file not already present
         for file in files:
-            output_path = os.path.join(output_folder, f"{file.replace('.csv', '.parquet')}")
-            print(output_path)
-            input('check this makes sense and if it doesnt then stop')
+            file_name = os.path.basename(file)
+            output_path = os.path.join(output_folder, f"{file_name}")
             if os.path.exists(output_path):
                 raise ValueError("Can't preprocess as output file already exists")
         print(files)
@@ -223,7 +224,7 @@ def main():
 
     # save yaml file
     config["input_data_folder"] = input_path
-    yaml_save_loc = os.path.join(project_folder, "preprocess.yaml")
+    yaml_save_loc = os.path.join(project_folder, f"preprocess_{os.path.basename(input_path)}.yaml")
     with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config, outfile)
 
