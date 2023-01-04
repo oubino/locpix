@@ -198,7 +198,7 @@ Cellpose train
 
 To train cellpose first need .npy files of imgs and labels
 
-Therefore use src/locpix/scripts/img_seg/cellpose_train.py to convert all images to .npy
+Therefore use src/locpix/scripts/img_seg/custom_train.py to convert all images to .npy
 
 Then move images to folder with Fov1->6 in train and move masks into this folder as well
 Fov 7,8,9,10 in test and move masks into this folder as well

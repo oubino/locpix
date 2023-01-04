@@ -82,3 +82,6 @@ models/
 
 # Figures for paper
 paper_figures/
+
+# labnotes
+labnotes.rst
