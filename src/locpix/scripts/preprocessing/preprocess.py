@@ -145,12 +145,7 @@ def main():
 
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "preprocess/no_gt_label")
-    if os.path.exists(os.path.join(project_folder, "preprocess")):
-        raise ValueError(
-            "You cannot choose this project folder"
-            " as it already contains preprocessed data"
-        )
-    else:
+    if not os.path.exists(os.path.join(project_folder, "preprocess")):
         os.makedirs(output_folder)
 
         # initialise metadata and save
@@ -161,6 +156,11 @@ def main():
     print("List of files which will be processed")
     if args.parquet_files is False:
         files = [os.path.join(input_path, f"{file}.csv") for file in config["include_files"]]
+        # check file not already present
+        for file in files:
+            output_path = os.path.join(output_folder, f"{file.replace('.csv', '.parquet')}")
+            if os.path.exists(output_path):
+                raise ValueError("Can't preprocess as output file already exists")
         print(files)
         if args.sanitycheck:
             check = input("If you are happy with these csvs type YES: ")
@@ -168,6 +168,13 @@ def main():
                 exit()
     elif args.parquet_files is True:
         files = [os.path.join(input_path, f"{file}.parquet") for file in config["include_files"]]
+        # check file not already present
+        for file in files:
+            output_path = os.path.join(output_folder, f"{file.replace('.csv', '.parquet')}")
+            print(output_path)
+            input('check this makes sense and if it doesnt then stop')
+            if os.path.exists(output_path):
+                raise ValueError("Can't preprocess as output file already exists")
         print(files)
         if args.sanitycheck:
             check = input("If you are happy with these parquets type YES: ")
