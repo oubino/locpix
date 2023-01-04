@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Preprocessing module
 
-Module takes in the .csv files and processes saving the datastructures
+Module takes in the .csv or .parquet files and processes saving the datastructures
 """
 
 import os
@@ -57,7 +57,7 @@ class project_info:
 
 def main():
 
-    # load path of .csv
+    # load path of .csv or .parquet
     parser = argparse.ArgumentParser(
         description="Preprocess the data for\
         further processing."
@@ -71,7 +71,7 @@ def main():
         "-s",
         "--sanitycheck",
         action="store_true",
-        help="whether to check correct csvs loaded in",
+        help="whether to check correct files loaded in",
     )
     parser.add_argument(
         "-c",
@@ -88,13 +88,19 @@ def main():
         type=str,
         help="the location of the project directory",
     )
+    parser.add_argument(
+        "-p",
+        "--parquet_files",
+        action="store_true",
+        help="if true will process as parquet files"
+    )
 
     args = parser.parse_args()
 
     # if want to run in headless mode specify all arguments
-    if args.input is None and args.project_directory is None and args.config is None:
-        config, csv_path, project_folder = preprocess_config.config_gui()
-        print("csv path", csv_path)
+    if args.input is None and args.project_directory is None and args.config is None and args.parquet_files is False:
+        config, input_path, project_folder = preprocess_config.config_gui()
+        print("data path", input_path)
 
     if args.input is not None and (
         args.project_directory is None or args.config is None
@@ -118,13 +124,19 @@ def main():
             "directory and input directory as well"
         )
 
+    if args.input is None and args.project_directory is None and args.config is None and args.parquet_files is True:
+        parser.error(
+            "You didn't specify any arguments therefore tried to run in GUI, however you cannot process"
+            "as parquet files in the GUI"
+        )
+
     # headless mode
     if (
         args.input is not None
         and args.project_directory is not None
         and args.config is not None
     ):
-        csv_path = args.input
+        input_path = args.input
         project_folder = args.project_directory
         # load config
         with open(args.config, "r") as ymlfile:
@@ -146,26 +158,47 @@ def main():
         metadata.save(os.path.join(project_folder, "metadata.json"))
 
     # check with user
-    print("List of csvs wich will be processed")
-    csvs = [os.path.join(csv_path, f"{file}.csv") for file in config["include_files"]]
-    print(csvs)
-    if args.sanitycheck:
-        check = input("If you are happy with these csvs type YES: ")
-        if check != "YES":
-            exit()
+    print("List of files which will be processed")
+    if args.parquet_files is False:
+        files = [os.path.join(input_path, f"{file}.csv") for file in config["include_files"]]
+        print(files)
+        if args.sanitycheck:
+            check = input("If you are happy with these csvs type YES: ")
+            if check != "YES":
+                exit()
+    elif args.parquet_files is True:
+        files = [os.path.join(input_path, f"{file}.parquet") for file in config["include_files"]]
+        print(files)
+        if args.sanitycheck:
+            check = input("If you are happy with these parquets type YES: ")
+            if check != "YES":
+                exit()
 
-    # go through .csv -> convert to datastructure -> save
-    for csv in csvs:
-        item = functions.csv_to_datastruc(
-            csv,
-            config["dim"],
-            config["channel_col"],
-            config["frame_col"],
-            config["x_col"],
-            config["y_col"],
-            config["z_col"],
-            config["channel_choice"],
-        )
+    # go through files -> convert to datastructure -> save
+    for file in files:
+        if args.parquet_files is False:
+            item = functions.csv_to_datastruc(
+                file,
+                config["dim"],
+                config["channel_col"],
+                config["frame_col"],
+                config["x_col"],
+                config["y_col"],
+                config["z_col"],
+                config["channel_choice"],
+            )
+        elif args.parquet_files is True:
+            # load in .parquet to datastruc and save
+            item = functions.parquet_to_datastruc(
+                file,
+                config["dim"],
+                config["channel_col"],
+                config["frame_col"],
+                config["x_col"],
+                config["y_col"],
+                config["z_col"],
+                config["channel_choice"],
+            )
         # have to not drop zero label
         # as no gt_label yet
         item.save_to_parquet(
@@ -175,7 +208,7 @@ def main():
         )
 
     # save yaml file
-    config["input_data_folder"] = csv_path
+    config["input_data_folder"] = input_path
     yaml_save_loc = os.path.join(project_folder, "preprocess.yaml")
     with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config, outfile)
