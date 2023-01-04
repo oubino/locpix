@@ -20,13 +20,14 @@ channel_choice: [0,1,2,3]
 drop_pixel_col: False
 
 # files to include
-include_files:
-- Fov1_DC
-- Fov2_DC
-- Fov3_DC
-- Fov5_DC
-- Fov6_DC
-- Fov7_DC
-- Fov8_DC
-- Fov9_DC
-- Fov10_DC
+include_files: all
+#include_files:
+#- Fov1_DC
+#- Fov2_DC
+#- Fov3_DC
+#- Fov5_DC
+#- Fov6_DC
+#- Fov7_DC
+#- Fov8_DC
+#- Fov9_DC
+#- Fov10_DC

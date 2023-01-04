@@ -152,10 +152,17 @@ def main():
         metadata = project_info(time.asctime(time.gmtime(time.time())), project_folder)
         metadata.save(os.path.join(project_folder, "metadata.json"))
 
+    # if all is specified then consider all files otherwise consider specified files
+    if config["include_files"] == 'all':
+        include_files = os.listdir(args.input)
+        include_files = [os.path.splitext(item)[0] for item in include_files]
+    else:
+        include_files = config["include_files"]
+
     # check with user
     print("List of files which will be processed")
     if args.parquet_files is False:
-        files = [os.path.join(input_path, f"{file}.csv") for file in config["include_files"]]
+        files = [os.path.join(input_path, f"{file}.csv") for file in include_files]
         # check file not already present
         for file in files:
             output_path = os.path.join(output_folder, f"{file.replace('.csv', '.parquet')}")
@@ -167,7 +174,7 @@ def main():
             if check != "YES":
                 exit()
     elif args.parquet_files is True:
-        files = [os.path.join(input_path, f"{file}.parquet") for file in config["include_files"]]
+        files = [os.path.join(input_path, f"{file}.parquet") for file in include_files]
         # check file not already present
         for file in files:
             output_path = os.path.join(output_folder, f"{file.replace('.csv', '.parquet')}")
