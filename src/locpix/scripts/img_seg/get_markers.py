@@ -119,7 +119,8 @@ def main():
             histo = pkl.load(f)
 
         # convert image to more visible form
-        img = histo[0].T  
+        chan = item.label_2_chan(config['channel'])
+        img = histo[chan].T  
         log_img = vis_img.manual_threshold(
             img, config["vis_threshold"], how=config["vis_interpolate"]
         )
