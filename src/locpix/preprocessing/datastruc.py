@@ -602,6 +602,7 @@ class item:
             "name": self.name,
             "dim": str(self.dim),
             "channels": str(self.channels),
+            "channel_label": str(self.channel_label),
             "gt_label_map": gt_label_map,
             "bin_sizes": str(self.bin_sizes),
         }
@@ -643,9 +644,11 @@ class item:
             gt_label_map = {int(key): value for key, value in gt_label_map.items()}
         # convert string keys to int keys for the mapping
         dim = arrow_table.schema.metadata[b"dim"]
-        channels = arrow_table.schema.metadata[b"channels"]
         dim = int(dim)
+        channels = arrow_table.schema.metadata[b"channels"]
         channels = ast.literal_eval(channels.decode("utf-8"))
+        channel_label = arrow_table.schema.metadata[b"channel_label"]
+        channel_label = ast.literal_eval(channel_label.decode("utf-8"))
         bin_sizes = arrow_table.schema.metadata[b"bin_sizes"]
         bin_sizes = ast.literal_eval(bin_sizes.decode("utf-8"))
         df = pl.from_arrow(arrow_table)
@@ -655,6 +658,7 @@ class item:
             df=df,
             dim=dim,
             channels=channels,
+            channel_label=channel_label,
             gt_label_map=gt_label_map,
             bin_sizes=bin_sizes,
         )
