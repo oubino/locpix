@@ -7,6 +7,7 @@ Take in items and prepare for Ilastik
 import yaml
 import os
 from locpix.visualise import vis_img
+from locpix.preprocessing import datastruc
 import numpy as np
 import pickle as pkl
 import argparse
@@ -90,9 +91,9 @@ def main():
             json.dump(metadata, outfile)
 
     # list items
-    input_histo_folder = os.path.join(project_folder, "annotate/histos")
+    input_folder = os.path.join(project_folder, "annotate/annotated")
     try:
-        files = os.listdir(input_histo_folder)
+        files = os.listdir(input_folder)
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
@@ -105,20 +106,20 @@ def main():
 
     for file in files:
 
-        histo_loc = os.path.join(input_histo_folder, file)
+        item = datastruc.item(None, None, None, None, None)
+        item.load_from_parquet(file + '.parquet')
 
-        # load in histograms
-        with open(histo_loc, "rb") as f:
-            histo = pkl.load(f)
+        # conver to histo
+        histo, axis_2_chan = item.render_histo(config["channels"])
 
-        img_list = []
-        for histo in histo.values():
-            img = histo.T
-            log_img = vis_img.manual_threshold(
-                img, config["threshold"], how=config["interpolation"]
-            )
-            img_list.append(vis_img.img_2_grey(log_img))
-        img = np.stack(img_list, axis=2)
+        # ilastik needs channel last and need to tranpose histogram 
+        # for image space 
+        img = np.transpose(histo, (2, 1, 0))
+
+        img = vis_img.manual_threshold(
+            img, config["threshold"], how=config["interpolation"]
+        )
+        img = vis_img.img_2_grey(img)
 
         # all images are saved in yxc
         file_name = file.removesuffix(".pkl")

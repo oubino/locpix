@@ -2,3 +2,6 @@
 threshold: 0
 
 interpolation: 'log2'
+
+# channels to consider
+channels: ['egfr','ereg']

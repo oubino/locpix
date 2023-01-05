@@ -27,6 +27,7 @@ import json
 default_config_keys = [
     "threshold",
     "interpolation",
+    "channels",
 ]
 
 

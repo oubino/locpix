@@ -168,7 +168,7 @@ def main():
         item.df = df
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
-        # save cell segmentation image - consider only zero channel
+        # save cell segmentation image - consider only one channel
         imgs = {key: value.T for (key, value) in histo.items()}
         save_loc = os.path.join(output_cell_img, item.name + ".png")
         vis_img.visualise_seg(
