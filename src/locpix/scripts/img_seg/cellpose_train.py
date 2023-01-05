@@ -125,8 +125,8 @@ def main():
 
     # train cellpose model
     model = models.CellposeModel(model_type=config["model"])
-    imgs, labels = parquet_2_img(train_files)
-    test_imgs, test_labels = parquet_2_img(test_files)
+    imgs, labels = parquet_2_img(train_files, config["labels"])
+    test_imgs, test_labels = parquet_2_img(test_files, config["labels"])
     # threshold imgs
     # ?
     model.train(imgs, 
@@ -145,12 +145,14 @@ def main():
                 model_name=config['model_name']
     )
 
-def parquet_2_img(files, folder=None, save=False):
+def parquet_2_img(files, labels, folder=None, save=False):
     """Convert data from .parquet files to .png files
     for cellpose
     
     Args:
         files (list) : List of files (.parquet) 
+        labels (list) : List of channels id by label
+            to render in img
         folder (string) : Path to save data to
         save (bool) : Whether to save"""
 
@@ -164,8 +166,10 @@ def parquet_2_img(files, folder=None, save=False):
         item.load_from_parquet(os.path.join(datum))
 
         # convert
-        histo, axis_2_chan = item.render_histo()
+        histo, axis_2_chan = item.render_histo(labels)
         label = item.render_seg()
+
+        input('stop as need to make sure that all images have same proteins in same channel!')
 
         # transpose to img space
         img = np.transpose(histo, (0, 2, 1))

@@ -14,6 +14,12 @@ diameter: 50
 # e.g. channels = [0,0] if you want to segment cells in grayscale
 channels: [0,0]
 
+# which channel to consider
+channel: 'egfr'
+
+# alt channel which will be summed
+alt_channel: 'ereg'
+
 # whether to sum channels (currently only channel 0 and 1)
 sum_chan: False
 

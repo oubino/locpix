@@ -22,3 +22,5 @@ min_train_masks: 1
 model_name: model.pt
 
 save_every: 1
+
+labels: ["egfr", "ereg"]

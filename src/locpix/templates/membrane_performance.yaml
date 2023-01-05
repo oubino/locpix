@@ -18,3 +18,6 @@ maximise_choice: 'f'
 # membrane images
 vis_threshold: 0
 vis_interpolate: 'log2'
+
+# which channel to save image of
+channel: 'egfr'

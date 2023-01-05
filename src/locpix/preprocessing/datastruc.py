@@ -673,13 +673,20 @@ class item:
 
         return img_dict
 
-    def render_histo(self):
+    def render_histo(self, labels=None):
         """Render the histogram from the .parquet file
 
+        If labels are specified then the histogram is rendered in the order
+        of these lables
+        If not specified defaults to rendering in the channels specified 
+        in order by user e.g. [0,3,1,2]
         Assumes localisations have associated x_pixel and y_pixel already.
 
         Args:
-            None
+            labels (list) : Order of labels to stack histograms in 
+                e.g. labels=['egfr','ereg'] means all images will
+                be returned with egfr in channel 0 and ereg in 
+                channel 1
 
         Returns:
             histo (np.histogram) : Histogram of the localisation data
@@ -696,7 +703,12 @@ class item:
         x_bins = df_max["x_pixel"][0] + 1
         y_bins = df_max["y_pixel"][0] + 1
 
-        for chan in self.channels:
+        if labels is None:
+            channels = self.channels
+        else:
+            channels = [self.label_2_chan(label) for label in labels]
+
+        for chan in channels:
             df = self.df.filter(pl.col("channel") == chan)
 
             histo = np.empty((x_bins, y_bins))

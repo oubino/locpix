@@ -162,7 +162,7 @@ def aggregated_metrics(
 
     for file in files:
 
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(files_folder, file))
 
         gt = item.df.select(pl.col("gt_label")).to_numpy()

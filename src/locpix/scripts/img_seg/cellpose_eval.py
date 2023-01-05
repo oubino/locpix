@@ -121,12 +121,11 @@ def main():
         item.load_from_parquet(file + '.parquet')
 
         # conver to histo
-        histo, axis_2_chan = item.render_histo()
+        histo, axis_2_chan = item.render_histo([config['channel'], config['alt_channel']])
 
         # ---- segment membranes ----
-
         if config["sum_chan"] is False:
-            img = histo[0].T  # consider only the zero channel
+            img = histo[0].T
         elif config["sum_chan"] is True:
             img = histo[0].T + histo[1].T
         else:
@@ -193,7 +192,7 @@ def main():
         output_cell_df = os.path.join(project_folder, "cellpose/cell/seg_dataframes")
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
-        # save cell segmentation image - consider only zero channel
+        # save cell segmentation image
         imgs = {key: value.T for (key, value) in histo.items()}
         output_cell_img = os.path.join(project_folder, "cellpose/cell/seg_img")
         save_loc = os.path.join(output_cell_img, item.name + ".png")
@@ -201,7 +200,7 @@ def main():
             imgs,
             instance_mask,
             item.bin_sizes,
-            channels=[0],
+            channels=[chan],
             threshold=config["vis_threshold"],
             how=config["vis_interpolate"],
             blend_overlays=True,

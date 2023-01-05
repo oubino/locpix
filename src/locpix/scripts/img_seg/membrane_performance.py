@@ -317,13 +317,14 @@ def main():
             output_img = np.where(img_prob > threshold, 1, 0)
             imgs = {key: value.T for key, value in histo.items()}
 
-            # consider only zero channel
+            # consider the correct channel
+            chan = item.label_2_chan(config['channel'])
             save_loc = os.path.join(output_seg_imgs, item.name + ".png")
             vis_img.visualise_seg(
                 imgs,
                 output_img,
                 item.bin_sizes,
-                channels=[0],
+                channels=[chan],
                 threshold=config["vis_threshold"],
                 how=config["vis_interpolate"],
                 origin="upper",

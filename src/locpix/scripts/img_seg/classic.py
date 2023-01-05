@@ -132,10 +132,13 @@ def main():
             histo = pkl.load(f)
 
         # ---- segment membranes ----
+        chan = item.label_2_chan(config['channel'])
         if config["sum_chan"] is False:
-            img = histo[0].T  # consider only the zero channel
+            img = histo[chan].T
         elif config["sum_chan"] is True:
-            img = histo[0].T + histo[1].T
+            chan_one = item.label_2_chan(config["channel_sum_one"])
+            chan_two = item.label_2_chan(config["channel_sum_two"])
+            img = histo[chan_one].T + histo[chan_two].T
         else:
             raise ValueError("sum_chan should be true or false")
         log_img = vis_img.manual_threshold(
@@ -184,14 +187,14 @@ def main():
 
         imgs = {key: value.T for key, value in histo.items()}
 
-        # save cell segmentation image - consider only zero channel
+        # save cell segmentation image - consider only one channel
         output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
         save_loc = os.path.join(output_cell_img, item.name + ".png")
         vis_img.visualise_seg(
             imgs,
             instance_mask,
             item.bin_sizes,
-            channels=[0],
+            channels=[chan],
             threshold=config["vis_threshold"],
             how=config["vis_interpolate"],
             origin="upper",

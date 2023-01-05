@@ -164,8 +164,8 @@ def main():
     print("Preprocessing datasets")
 
     # Pre-process train and val dataset
-    train_set.preprocess(os.path.join(preprocessed_folder, "train"))
-    val_set.preprocess(os.path.join(preprocessed_folder, "val"))
+    train_set.preprocess(os.path.join(preprocessed_folder, "train"), labels=config['labels'])
+    val_set.preprocess(os.path.join(preprocessed_folder, "val"), labels=config['labels'])
 
     # initialise dataloaders
     train_loader = DataLoader(
