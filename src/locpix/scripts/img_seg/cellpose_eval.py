@@ -193,7 +193,7 @@ def main():
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
         # save cell segmentation image
-        imgs = {key: value.T for (key, value) in histo.items()}
+        imgs = {key: value.T for (key, value) in histo.items()} #TODO #45
         output_cell_img = os.path.join(project_folder, "cellpose/cell/seg_img")
         save_loc = os.path.join(output_cell_img, item.name + ".png")
         vis_img.visualise_seg(
