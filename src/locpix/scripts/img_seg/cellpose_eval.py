@@ -117,7 +117,7 @@ def main():
 
     for file in files:
 
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(file + '.parquet')
 
         # conver to histo

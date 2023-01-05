@@ -160,7 +160,7 @@ def parquet_2_img(files, folder=None, save=False):
     # for file in input
     for datum in files:
 
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(datum))
 
         # convert

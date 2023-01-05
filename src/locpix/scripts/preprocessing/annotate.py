@@ -128,7 +128,7 @@ def main():
         raise ValueError("Dim should be 2 or 3")
 
     for file in files:
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(input_folder, file))
 
         # coord2histo

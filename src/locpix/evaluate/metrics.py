@@ -118,7 +118,7 @@ def aggregated_metrics(
     # for each file want to aggregate TP, TN, FP, FN for each class
     for file in files:
 
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(files_folder, file))
 
         file_results = metric_calculation(item, labels)

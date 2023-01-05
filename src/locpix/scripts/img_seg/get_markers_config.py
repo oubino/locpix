@@ -27,6 +27,7 @@ import json
 default_config_keys = [
     "vis_threshold",
     "vis_interpolate",
+    "channel",
 ]
 
 

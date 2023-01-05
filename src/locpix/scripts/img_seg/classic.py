@@ -120,7 +120,7 @@ def main():
         os.makedirs(output_cell_img)
 
     for file in files:
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(input_folder, file))
 
         print("bin sizes", item.bin_sizes)

@@ -85,7 +85,7 @@ class ImgDataset(Dataset):
 
             # np.testing.assert_array_equal(histo, histo_bad)
 
-            item = datastruc.item(None, None, None, None)
+            item = datastruc.item(None, None, None, None, None)
             item.load_from_parquet(os.path.join(datum))
             # print(item.df)
 

@@ -244,7 +244,7 @@ def main():
     # ---------------------#
 
     for file in files:
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(config["input_folder"], file))
 
         # load in histograms

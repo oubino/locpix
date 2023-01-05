@@ -187,7 +187,7 @@ def main():
             print("File ", file)
 
             # load df
-            item = datastruc.item(None, None, None, None)
+            item = datastruc.item(None, None, None, None, None)
             item.load_from_parquet(os.path.join(gt_file_path, file))
 
             # load prob map
@@ -269,7 +269,7 @@ def main():
 
             print("File ", file)
 
-            item = datastruc.item(None, None, None, None)
+            item = datastruc.item(None, None, None, None, None)
             item.load_from_parquet(os.path.join(gt_file_path, file))
 
             # load in histograms

@@ -189,34 +189,24 @@ def main():
             if check != "YES":
                 exit()
 
-    print(config['channel_label'][0])
-    input('stop')
-
     # go through files -> convert to datastructure -> save
     for file in files:
         if args.parquet_files is False:
-            item = functions.csv_to_datastruc(
-                file,
-                config["dim"],
-                config["channel_col"],
-                config["frame_col"],
-                config["x_col"],
-                config["y_col"],
-                config["z_col"],
-                config["channel_choice"],
-            )
+            file_type = 'csv'
         elif args.parquet_files is True:
-            # load in .parquet to datastruc and save
-            item = functions.parquet_to_datastruc(
-                file,
-                config["dim"],
-                config["channel_col"],
-                config["frame_col"],
-                config["x_col"],
-                config["y_col"],
-                config["z_col"],
-                config["channel_choice"],
-            )
+            file_type = 'parquet'
+        item = functions.file_to_datastruc(
+            file,
+            file_type,
+            config["dim"],
+            config["channel_col"],
+            config["frame_col"],
+            config["x_col"],
+            config["y_col"],
+            config["z_col"],
+            channel_choice=config["channel_choice"],
+            channel_label=config["channel_label"],
+        )
         # have to not drop zero label
         # as no gt_label yet
         item.save_to_parquet(

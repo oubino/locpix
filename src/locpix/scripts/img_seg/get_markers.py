@@ -109,7 +109,7 @@ def main():
         )
 
     for file in files:
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(input_folder, file))
 
         # load in histograms
@@ -119,7 +119,7 @@ def main():
             histo = pkl.load(f)
 
         # convert image to more visible form
-        img = histo[0].T  # consider only the zero channel
+        img = histo[0].T  
         log_img = vis_img.manual_threshold(
             img, config["vis_threshold"], how=config["vis_interpolate"]
         )
