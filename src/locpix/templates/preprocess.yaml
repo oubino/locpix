@@ -15,6 +15,10 @@ dim: 2
 # choice of which channels user wants to consider
 channel_choice: [0,1,2,3]
 
+# label for what each channel represents
+# where unk is unknown
+channel_label: ['egfr','ereg','unk','unk']
+
 # whether to not drop the column containing
 # pixel
 drop_pixel_col: False

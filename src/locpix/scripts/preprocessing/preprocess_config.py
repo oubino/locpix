@@ -33,6 +33,7 @@ default_config_keys = [
     "dim",
     # "output_folder",
     "channel_choice",
+    "channel_label",
     "drop_pixel_col",
     "include_files",
     # "yaml_save_loc",

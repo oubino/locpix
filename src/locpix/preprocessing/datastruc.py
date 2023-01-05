@@ -36,6 +36,10 @@ class item:
         dim (int): Dimensions of data
         channels (list): list of ints, representing channels user wants
             to consider in the original data
+        channel_label (list of strings) : The label for each channel 
+            i.e. ['egfr', 'ereg','unk'] means 
+            channel 0 is egfr protein, channel 1 is ereg proteins and 
+            channel 2 is unknown 
         histo (dict): Dictionary of 2D or 3D arrays. Each key corresponds
             to the channel for which the histogram
             contains the relevant binned data, in form [X,Y,Z]
@@ -64,6 +68,7 @@ class item:
         df,
         dim,
         channels,
+        channel_label,
         histo={},
         histo_edges=None,
         histo_mask={},
@@ -80,7 +85,14 @@ class item:
         self.dim = dim
         self.bin_sizes = bin_sizes
         self.channels = channels
+        self.channel_label = channel_label,
         self.gt_label_map = gt_label_map
+
+        # channel labels and channel choice need to be same in length
+        if len(channels) != len(channel_label):
+            raise ValueError("The labels for each channel must be"
+                             "same length as the number of user"
+                             "chosen channels")
 
     # def save(self, save_loc):
     #     """Save the item
@@ -110,6 +122,28 @@ class item:
     #                   histo_edges=dict['histo_edges'],
     #                   histo_mask=dict['histo_mask'],
     #                   bin_sizes=dict['bin_sizes'])
+
+    def chan_2_label(self, chan):
+        """Returns the label associated with the channel specified
+        
+        Args:
+            chan (int) : Integer representing the channel"""
+        
+        return self.channel_label[chan]
+
+    def label_2_chan(self, label):
+        """Returns the channel associated with the channel label
+        specified
+        
+        Args:
+            label (string) : String representing the label you want
+                to find the channel for"""
+        
+        if label not in self.channel_label:
+            raise ValueError("The label specified is not present in"
+                             "the channel labels")
+        
+        return self.channel_label.index(label)
 
     def coord_2_histo(
         self,
@@ -321,7 +355,7 @@ class item:
                 # note image shape when plotted: [x, y]
                 viewer = napari.view_image(
                     self.histo[self.channels[0]].T,
-                    name=f"Channel {self.channels[0]}",
+                    name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
                     rgb=False,
                     blending="additive",
                     colormap=colormap_list[0],
@@ -331,7 +365,7 @@ class item:
                 for index, chan in enumerate(self.channels[1:]):
                     viewer.add_image(
                         self.histo[chan].T,
-                        name=f"Channel {chan}",
+                        name=f"Channel {chan}/{self.chan_2_label(chan)}",
                         rgb=False,
                         blending="additive",
                         colormap=colormap_list[index + 1],
@@ -346,7 +380,7 @@ class item:
                 # create the viewer and add the image
                 viewer = napari.view_image(
                     img,
-                    name=f"Channel {self.channels[0]}",
+                    name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
                     rgb=False,
                     gamma=2,
                     contrast_limits=[0, 30],
@@ -461,10 +495,16 @@ class item:
         elif self.dim == 3:
             print("segment the 3d coords")
 
-    def save_df_to_csv(self, csv_loc, drop_zero_label=False, drop_pixel_col=True):
-        """Save the dataframe to a .csv with option to drop positions which
-           are background and can drop the column containing pixel
-           information
+    def save_df_to_csv(self, 
+                       csv_loc,
+                       drop_zero_label=False,
+                       drop_pixel_col=True,
+                       save_chan_label=True):
+        """Save the dataframe to a .csv with option to: 
+                drop positions which are background 
+                drop the column containing pixel information
+                save additional column with labels for each
+                    localisation
 
         Args:
             csv_loc (String): Save the csv to this location
@@ -472,6 +512,9 @@ class item:
                 label positions are saved to csv
             drop_pixel_col (bool): If True then don't save
                 the column with x,y,z pixel
+            save_chan_label (bool) : If True then save an
+                additional column for each localisation
+                containing the label for each channel
 
         Returns:
             None"""
@@ -498,6 +541,12 @@ class item:
         # drop rows with zero label
         if drop_zero_label:
             save_df = save_df.filter(pl.col("gt_label") != 0)
+
+        # save channel label as well
+        if save_chan_label:
+            label_df = pl.DataFrame({'chan_label': self.channel_label}).with_row_count('channel')
+            label_df = label_df.with_column(pl.col("channel").cast(pl.Int64))
+            save_df = save_df.join(label_df, on="channel", how="inner")        
 
         # save to location
         save_df.write_csv(csv_loc, sep=",")

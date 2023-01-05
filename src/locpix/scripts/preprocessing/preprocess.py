@@ -189,6 +189,9 @@ def main():
             if check != "YES":
                 exit()
 
+    print(config['channel_label'][0])
+    input('stop')
+
     # go through files -> convert to datastructure -> save
     for file in files:
         if args.parquet_files is False:
