@@ -106,11 +106,18 @@ def main():
         raise ValueError("There should be some files to open")
 
     # make necessary folders if not present
-    model_folder = os.path.join(project_folder, "cellpose_model")
-    if os.path.exists(model_folder):
-        raise ValueError(f"Cannot proceed as {model_folder} already exists")
-    else:
-        os.makedirs(model_folder)
+    preprocessed_folder = os.path.join(project_folder, "cellpose_train")
+    train_folder = os.path.join(preprocessed_folder, "train")
+    test_folder = os.path.join(preprocessed_folder, "test")
+    folders = [preprocessed_folder,
+               train_folder,
+               test_folder,
+               ]
+    for folder in folders:
+        if os.path.exists(folder):
+            raise ValueError(f"Cannot proceed as {folder} already exists")
+        else:
+            os.makedirs(folder)
 
     # check train and test files
     print("Train files")
@@ -118,49 +125,42 @@ def main():
     print("Test files")
     print(test_files)
 
-    print("Converting data to  datasets")
-
-    # convert train files into imgs and masks
+    # convert files into imgs and masks
     train_files = [os.path.join(input_root, file + ".parquet") for file in train_files]
     test_files = [os.path.join(input_root, file + ".parquet") for file in test_files]
-
-    # train cellpose model
-    model = models.CellposeModel(model_type=config["model"])
-    imgs, labels = parquet_2_img(train_files, config["labels"])
-    test_imgs, test_labels = parquet_2_img(test_files, config["labels"])
+    parquet_2_img(train_files, config["labels"], train_folder)
+    parquet_2_img(test_files, config["labels"], test_folder)
+    
     # threshold imgs
     # ?
-    model.train(
-        imgs,
-        labels,
-        train_files=train_files,
-        test_data=test_imgs,
-        test_labels=test_labels,
-        test_files=test_files,
-        channels=config["channels"],
-        save_path=model_folder,
-        save_every=config["save_every"],
-        learning_rate=0.001,
-        n_epochs=config["epochs"],
-        nimg_per_epoch=config["nimg_per_epoch"],
-        min_train_masks=config["min_train_masks"],
-        model_name=config["model_name"],
-    )
+    #model.train(
+    #    imgs,
+    #    labels,
+    #    train_files=train_files,
+    #    test_data=test_imgs,
+    #    test_labels=test_labels,
+    #    test_files=test_files,
+    #    channels=config["channels"],
+    #    save_path=model_folder,
+    #    save_every=config["save_every"],
+    #    learning_rate=0.001,
+    #    n_epochs=config["epochs"],
+    #    nimg_per_epoch=config["nimg_per_epoch"],
+    #    min_train_masks=config["min_train_masks"],
+    #    model_name=config["model_name"],
+    #)
 
 
-def parquet_2_img(files, labels, folder=None, save=False):
+def parquet_2_img(files, labels, folder):
     """Convert data from .parquet files to .png files
-    for cellpose
+    for cellpose and save
 
     Args:
         files (list) : List of files (.parquet)
         labels (list) : List of channels id by label
             to render in img
-        folder (string) : Path to save data to
-        save (bool) : Whether to save"""
-
-    imgs = []
-    labels = []
+        folder (string) : Folder to save data to
+        """
 
     # for file in input
     for datum in files:
@@ -172,21 +172,28 @@ def parquet_2_img(files, labels, folder=None, save=False):
         histo, channel_map, label_map = item.render_histo(labels)
         label = item.render_seg()
 
-        print(label_map)
-        input(
-            "stop as need to make sure that all images have same proteins in same channel!"
-        )
-        input("need to save label map somewhere")
+        img_info_path = os.path.join(folder, 'img_info.json')
+        with open(img_info_path, "w") as outfile:
+            json.dump(label_map, outfile)
 
         # transpose to img space
         img = np.transpose(histo, (0, 2, 1))
         label = label.T
         label = label.astype("int32")
 
-        labels.append(label)
-        imgs.append(img)
-
-    return imgs, labels
+        # save
+        img_folder = os.path.join(folder, 'imgs')
+        label_folder = os.path.join(folder, 'labels')
+        folders = [img_folder, label_folder]
+        for folder in folders:
+            if os.path.exists(folder):
+                raise ValueError(f"Cannot proceed as {folder} already exists")
+            else:
+                os.makedirs(folder)
+        img_path = os.path.join(img_folder, item.name + ".npy")
+        label_path = os.path.join(label_folder, item.name + ".npy")
+        np.save(img_path, img)
+        np.save(label_path, label)
 
 
 if __name__ == "__main__":

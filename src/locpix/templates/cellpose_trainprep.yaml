@@ -1,11 +1,8 @@
 train_files:
-- Fov1_DC
-- Fov2_DC
-- Fov3_DC
-- Fov5_DC
+- egfr_568_ereg_647_fov1
 
 test_files:
-- Fov6_DC
+- egfr_568_ereg_647_fov2
 
 model: LC1
 
