@@ -49,8 +49,8 @@ class ImgDataset(Dataset):
         Args:
             folder (string): Path containing folder to save data at
             labels (list): List of channel labels defining the order
-                to render the channels in 
-                i.e. ['egfr', 'ereg'] means the histogram will be 
+                to render the channels in
+                i.e. ['egfr', 'ereg'] means the histogram will be
                 channel 0: egfr, channel 1: ereg
         """
 
@@ -94,10 +94,12 @@ class ImgDataset(Dataset):
             # print(item.df)
 
             # convert
-            histo, axis_2_chan = item.render_histo(labels)
+            histo, channel_map, label_map = item.render_histo(labels)
             label = item.render_seg()
 
-            input('stop need to make sure all images of same format')
+            print(label_map)
+            input("stop need to make sure all images of same format")
+            input("need to save label map as metadata somewhere")
 
             # transpose to img space
             img = np.transpose(histo, (0, 2, 1))

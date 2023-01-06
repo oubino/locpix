@@ -10,7 +10,6 @@ from locpix.preprocessing import datastruc
 from locpix.visualise import vis_img
 from locpix.img_processing import watershed
 import numpy as np
-import pickle as pkl
 import argparse
 from locpix.scripts.img_seg import classic_config
 import json
@@ -125,20 +124,16 @@ def main():
 
         print("bin sizes", item.bin_sizes)
 
-        # load in histograms
-        input_histo_folder = os.path.join(project_folder, "annotate/histos")
-        histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
-        with open(histo_loc, "rb") as f:
-            histo = pkl.load(f)
+        # convert to histo
+        histo, channel_map, label_map = item.render_histo(
+            [config["channel"], config["alt_channel"]]
+        )
 
         # ---- segment membranes ----
-        chan = item.label_2_chan(config['channel'])
         if config["sum_chan"] is False:
-            img = histo[chan].T
+            img = histo[0].T
         elif config["sum_chan"] is True:
-            chan_one = item.label_2_chan(config["channel_sum_one"])
-            chan_two = item.label_2_chan(config["channel_sum_two"])
-            img = histo[chan_one].T + histo[chan_two].T
+            img = histo[0].T + histo[1].T
         else:
             raise ValueError("sum_chan should be true or false")
         log_img = vis_img.manual_threshold(
@@ -185,16 +180,16 @@ def main():
         output_cell_df = os.path.join(project_folder, "classic/cell/seg_dataframes")
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
-        imgs = {key: value.T for key, value in histo.items()}
-
         # save cell segmentation image - consider only one channel
         output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
         save_loc = os.path.join(output_cell_img, item.name + ".png")
+        # only plot the one channel specified
         vis_img.visualise_seg(
-            imgs,
+            img,
             instance_mask,
             item.bin_sizes,
-            channels=[chan],
+            axes=[0],
+            label_map=label_map,
             threshold=config["vis_threshold"],
             how=config["vis_interpolate"],
             origin="upper",

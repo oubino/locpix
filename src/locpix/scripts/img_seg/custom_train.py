@@ -52,7 +52,7 @@ def main():
     args = parser.parse_args()
 
     # if want to run in headless mode specify all arguments
-    #if args.project_directory is None and args.config is None:
+    # if args.project_directory is None and args.config is None:
     #    config, project_folder = ilastik_output_config.config_gui()
 
     if args.project_directory is not None and args.config is None:
@@ -73,7 +73,7 @@ def main():
         # load config
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
-            #ilastik_output_config.parse_config(config)
+            # ilastik_output_config.parse_config(config)
 
     metadata_path = os.path.join(project_folder, "metadata.json")
     with open(
@@ -144,14 +144,14 @@ def main():
         raise ValueError("Specify cpu or gpu !")
 
     # split files into train and validation
-    #train_files = files[0:5]
-    #val_files = files[5:-1]
+    # train_files = files[0:5]
+    # val_files = files[5:-1]
 
     # check train and test files
     print("Train files")
     print(train_files)
-    #print("Val files")
-    #print(val_files)
+    # print("Val files")
+    # print(val_files)
 
     # define transformations for train, test
     train_transform = [transforms.ToTensor()]
@@ -159,13 +159,17 @@ def main():
 
     # Initialise train and val dataset
     train_set = dataset.ImgDataset(input_root, train_files, ".parquet", train_transform)
-    #val_set = dataset.ImgDataset(input_root, val_files, ".parquet", val_transform)
+    # val_set = dataset.ImgDataset(input_root, val_files, ".parquet", val_transform)
 
     print("Preprocessing datasets")
 
     # Pre-process train and val dataset
-    train_set.preprocess(os.path.join(preprocessed_folder, "train"), labels=config['labels'])
-    val_set.preprocess(os.path.join(preprocessed_folder, "val"), labels=config['labels'])
+    train_set.preprocess(
+        os.path.join(preprocessed_folder, "train"), labels=config["labels"]
+    )
+    val_set.preprocess(
+        os.path.join(preprocessed_folder, "val"), labels=config["labels"]
+    )
 
     # initialise dataloaders
     train_loader = DataLoader(
@@ -247,10 +251,8 @@ def main():
         item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(config["input_folder"], file))
 
-        # load in histograms
-        histo_loc = os.path.join(config["input_histo_folder"], item.name + ".pkl")
-        with open(histo_loc, "rb") as f:
-            histo = pkl.load(f)
+        # convert to histo
+        histo, axis_2_chan = item.render_histo([config['channel'], config['alt_channel']])
 
         # ---- segment membranes ----
 
@@ -312,10 +314,9 @@ def main():
         )
 
         # save cell segmentation image - consider only zero channel
-        imgs = {key: value.T for (key, value) in histo.items()}
         save_loc = os.path.join(config["output_cell_img"], item.name + ".png")
         vis_img.visualise_seg(
-            imgs,
+            img,
             instance_mask,
             item.bin_sizes,
             channels=[0],

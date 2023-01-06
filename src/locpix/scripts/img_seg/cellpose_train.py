@@ -12,9 +12,10 @@ import time
 
 from locpix.preprocessing import datastruc
 import numpy as np
-import skimage
-from locpix.visualise import vis_img
+#import skimage
+#from locpix.visualise import vis_img
 from cellpose import models
+
 
 def main():
 
@@ -48,7 +49,7 @@ def main():
     args = parser.parse_args()
 
     # if want to run in headless mode specify all arguments
-    #if args.project_directory is None and args.config is None:
+    # if args.project_directory is None and args.config is None:
     #    config, project_folder = ilastik_output_config.config_gui()
 
     if args.project_directory is not None and args.config is None:
@@ -69,7 +70,7 @@ def main():
         # load config
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
-            #ilastik_output_config.parse_config(config)
+            # ilastik_output_config.parse_config(config)
 
     metadata_path = os.path.join(project_folder, "metadata.json")
     with open(
@@ -120,8 +121,8 @@ def main():
     print("Converting data to  datasets")
 
     # convert train files into imgs and masks
-    train_files = [os.path.join(input_root, file + '.parquet') for file in train_files]
-    test_files = [os.path.join(input_root, file + '.parquet') for file in test_files]
+    train_files = [os.path.join(input_root, file + ".parquet") for file in train_files]
+    test_files = [os.path.join(input_root, file + ".parquet") for file in test_files]
 
     # train cellpose model
     model = models.CellposeModel(model_type=config["model"])
@@ -129,28 +130,30 @@ def main():
     test_imgs, test_labels = parquet_2_img(test_files, config["labels"])
     # threshold imgs
     # ?
-    model.train(imgs, 
-                labels, 
-                train_files=train_files, 
-                test_data = test_imgs,
-                test_labels = test_labels,
-                test_files = test_files,
-                channels=config['channels'], 
-                save_path=model_folder, 
-                save_every=config['save_every'], 
-                learning_rate=0.001, 
-                n_epochs=config['epochs'],
-                nimg_per_epoch=config['nimg_per_epoch'],
-                min_train_masks=config['min_train_masks'],
-                model_name=config['model_name']
+    model.train(
+        imgs,
+        labels,
+        train_files=train_files,
+        test_data=test_imgs,
+        test_labels=test_labels,
+        test_files=test_files,
+        channels=config["channels"],
+        save_path=model_folder,
+        save_every=config["save_every"],
+        learning_rate=0.001,
+        n_epochs=config["epochs"],
+        nimg_per_epoch=config["nimg_per_epoch"],
+        min_train_masks=config["min_train_masks"],
+        model_name=config["model_name"],
     )
+
 
 def parquet_2_img(files, labels, folder=None, save=False):
     """Convert data from .parquet files to .png files
     for cellpose
-    
+
     Args:
-        files (list) : List of files (.parquet) 
+        files (list) : List of files (.parquet)
         labels (list) : List of channels id by label
             to render in img
         folder (string) : Path to save data to
@@ -166,15 +169,19 @@ def parquet_2_img(files, labels, folder=None, save=False):
         item.load_from_parquet(os.path.join(datum))
 
         # convert
-        histo, axis_2_chan = item.render_histo(labels)
+        histo, channel_map, label_map = item.render_histo(labels)
         label = item.render_seg()
 
-        input('stop as need to make sure that all images have same proteins in same channel!')
+        print(label_map)
+        input(
+            "stop as need to make sure that all images have same proteins in same channel!"
+        )
+        input("need to save label map somewhere")
 
         # transpose to img space
         img = np.transpose(histo, (0, 2, 1))
         label = label.T
-        label = label.astype('int32')
+        label = label.astype("int32")
 
         labels.append(label)
         imgs.append(img)

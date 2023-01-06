@@ -10,7 +10,6 @@ from locpix.preprocessing import datastruc
 from locpix.visualise import vis_img
 from locpix.img_processing import watershed
 import numpy as np
-import pickle as pkl
 from cellpose import models
 import argparse
 from locpix.scripts.img_seg import cellpose_eval_config
@@ -50,7 +49,6 @@ def main():
         action="store_true",
         help="use the user model",
     )
-    
 
     args = parser.parse_args()
 
@@ -100,7 +98,10 @@ def main():
             json.dump(metadata, outfile)
 
     # list items
-    files = [os.path.join(project_folder, "annotate/annotated", file) for file in config["test_files"]]
+    files = [
+        os.path.join(project_folder, "annotate/annotated", file)
+        for file in config["test_files"]
+    ]
 
     # output directories
     output_membrane_prob = os.path.join(project_folder, "cellpose/membrane/prob_map")
@@ -118,10 +119,12 @@ def main():
     for file in files:
 
         item = datastruc.item(None, None, None, None, None)
-        item.load_from_parquet(file + '.parquet')
+        item.load_from_parquet(file + ".parquet")
 
-        # conver to histo
-        histo, axis_2_chan = item.render_histo([config['channel'], config['alt_channel']])
+        # convert to histo
+        histo, channel_map, label_map = item.render_histo(
+            [config["channel"], config["alt_channel"]]
+        )
 
         # ---- segment membranes ----
         if config["sum_chan"] is False:
@@ -146,7 +149,9 @@ def main():
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow
-            _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
+            _, flows, _ = model.eval(
+                imgs, diameter=config["diameter"], channels=channels
+            )
         # flows[0] as we have only one image so get first flow
         # flows[0][2] as this is the probability see
         # (https://cellpose.readthedocs.io/en/latest/api.html)
@@ -193,14 +198,15 @@ def main():
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
         # save cell segmentation image
-        imgs = {key: value.T for (key, value) in histo.items()} #TODO #45
         output_cell_img = os.path.join(project_folder, "cellpose/cell/seg_img")
         save_loc = os.path.join(output_cell_img, item.name + ".png")
+        # only plot the one channel specified
         vis_img.visualise_seg(
-            imgs,
+            img,
             instance_mask,
             item.bin_sizes,
-            channels=[chan],
+            axes=[0],
+            label_map=label_map,
             threshold=config["vis_threshold"],
             how=config["vis_interpolate"],
             blend_overlays=True,

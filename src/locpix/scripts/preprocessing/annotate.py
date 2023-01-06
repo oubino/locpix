@@ -9,11 +9,11 @@ import yaml
 import os
 from locpix.preprocessing import datastruc
 from locpix.visualise import vis_img
-import pickle as pkl
 import argparse
 from locpix.scripts.preprocessing import annotate_config
 import json
 import time
+import numpy as np
 
 
 def main():
@@ -144,21 +144,23 @@ def main():
             gt_label_map=config["gt_label_map"],
         )
 
-        # save histogram
-        save_loc = os.path.join(histo_folder, item.name + ".pkl")
-        with open(save_loc, "wb") as f:
-            pkl.dump(item.histo, f)
+        # convert to histo
+        histo, channel_map, label_map = item.render_histo(
+            [config["channel"], config["alt_channel"]]
+        )
+
+        img = np.transpose(histo, (0, 2, 1))
 
         # save images
         if config["save_img"] is True:
             save_loc = output_seg_folder
-            img_dict = item.get_img_dict()
             save_loc = os.path.join(output_seg_folder, item.name + ".png")
             vis_img.visualise_seg(
-                img_dict,
+                img,
                 item.histo_mask.T,
                 item.bin_sizes,
-                channels=config["vis_channels"],
+                axes=config["vis_channels"],
+                label_map=label_map,
                 threshold=config["save_threshold"],
                 how=config["save_interpolate"],
                 alphas=config["alphas"],

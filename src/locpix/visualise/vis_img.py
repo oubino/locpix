@@ -6,6 +6,7 @@ Contains functions for visualising histograms
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap
+import matplotlib.patches as mpatches
 import networkx as nx
 from skimage.future.graph import RAG
 from skimage.transform import resize
@@ -74,10 +75,11 @@ def img_2_grey(img: np.ndarray) -> np.ndarray:
 
 
 def visualise_seg(
-    image_dict,
+    image,
     segmentation,
     bin_sizes,
-    channels,
+    axes,
+    label_map,
     threshold=0,
     how="linear",
     alphas=[1, 0.5, 0.2, 0.1],
@@ -91,6 +93,7 @@ def visualise_seg(
     save_loc=None,
     four_colour=True,
     background_one_colour=False,
+    legend=True,
 ):
     """Take in image and the associated segmentation and plot it,
     with option to convert to 4 colours and also option to choose to
@@ -98,15 +101,17 @@ def visualise_seg(
     (only relevant if four colour is true)
 
     Args:
-        image_dict (dict) : Dictionary where each key is
-            the channel for the respective image (which is
-            the transpose of the histogram) i.e. img_dict[0]
-            should be a img (histogram.T) for the 0th channel
+        image (array) : Shape C x H x W
+            Therefore to plot the first axis of the image
+            we would just want to consider
+            image[0]
         segmentation (np.ndarray) : Array of integers where
             each represents unique label in the segmentation
         bin_sizes (list) : List of sizes of the bins of the
             histogram
-        channels (list): List of channels to plot
+        axes (list): List of axes to plot
+        label_map (list) : List of labels associated with each
+            axis
         threshold (int) : Threshold applied to images
             when plotting
         how (string) : Interpolation applied to image
@@ -126,6 +131,7 @@ def visualise_seg(
             to 4 colour
         background_one_colour (bool) : Whether to keep background
             as all same colour when doing 4 colour conversion
+        legend (bool) : Whether to include a legend
 
     """
 
@@ -156,10 +162,10 @@ def visualise_seg(
     fig, ax = plt.subplots(figsize=figsize)
     cmap_seg = ListedColormap(cmap_seg)
 
-    # patches = []  # legend creation
+    patches = []  # legend creation
     # plot for each channel in sequence
-    for index, chan in enumerate(channels):
-        img = manual_threshold(image_dict[chan], threshold=threshold, how=how)
+    for index, axis in enumerate(axes):
+        img = manual_threshold(image[axis], threshold=threshold, how=how)
         img = img_2_grey(img)
         img = np.where(img > 100, 255, 0)
 
@@ -191,15 +197,25 @@ def visualise_seg(
         # cmap = plt.cm.get_cmap(cmap_list[index]) # legend creation
 
         # legend creation
-        # cmap = plt.cm.get_cmap(cmap_img[index])
-        # patches.append(mpatches.Patch(color=cmap(255), label=f"Chan {chan}"))
-        # plt.legend(
-        #    handles=patches,
-        #    bbox_to_anchor=(0.8, 1),
-        #    loc=2,
-        #    borderaxespad=0.0,
-        #    prop={"size": 15},
-        # )
+        if legend:
+            cmap = plt.cm.get_cmap(cmap_img[index])
+            patches.append(mpatches.Patch(color=cmap(255), label=f"{label_map[index]}"))
+            plt.legend(
+                handles=patches,
+                bbox_to_anchor=(0.8, 1),
+                loc=2,
+                borderaxespad=0.0,
+                prop={"size": 15},
+            )
+
+    if legend:
+        plt.legend(
+            handles=patches,
+            bbox_to_anchor=(0.8, 1),
+            loc=2,
+            borderaxespad=0.0,
+            prop={"size": 15},
+        )
 
     if blend_overlays:
         alphas = alpha_seg

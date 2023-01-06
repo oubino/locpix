@@ -36,10 +36,10 @@ class item:
         dim (int): Dimensions of data
         channels (list): list of ints, representing channels user wants
             to consider in the original data
-        channel_label (list of strings) : The label for each channel 
-            i.e. ['egfr', 'ereg','unk'] means 
-            channel 0 is egfr protein, channel 1 is ereg proteins and 
-            channel 2 is unknown 
+        channel_label (list of strings) : The label for each channel
+            i.e. ['egfr', 'ereg','unk'] means
+            channel 0 is egfr protein, channel 1 is ereg proteins and
+            channel 2 is unknown
         histo (dict): Dictionary of 2D or 3D arrays. Each key corresponds
             to the channel for which the histogram
             contains the relevant binned data, in form [X,Y,Z]
@@ -85,14 +85,16 @@ class item:
         self.dim = dim
         self.bin_sizes = bin_sizes
         self.channels = channels
-        self.channel_label = channel_label,
+        self.channel_label = (channel_label,)
         self.gt_label_map = gt_label_map
 
         # channel labels and channel choice need to be same in length
         if len(channels) != len(channel_label):
-            raise ValueError("The labels for each channel must be"
-                             "same length as the number of user"
-                             "chosen channels")
+            raise ValueError(
+                "The labels for each channel must be"
+                "same length as the number of user"
+                "chosen channels"
+            )
 
     # def save(self, save_loc):
     #     """Save the item
@@ -125,24 +127,25 @@ class item:
 
     def chan_2_label(self, chan):
         """Returns the label associated with the channel specified
-        
+
         Args:
             chan (int) : Integer representing the channel"""
-        
+
         return self.channel_label[chan]
 
     def label_2_chan(self, label):
         """Returns the channel associated with the channel label
         specified
-        
+
         Args:
             label (string) : String representing the label you want
                 to find the channel for"""
-        
+
         if label not in self.channel_label:
-            raise ValueError("The label specified is not present in"
-                             "the channel labels")
-        
+            raise ValueError(
+                "The label specified is not present in" "the channel labels"
+            )
+
         return self.channel_label.index(label)
 
     def coord_2_histo(
@@ -495,13 +498,11 @@ class item:
         elif self.dim == 3:
             print("segment the 3d coords")
 
-    def save_df_to_csv(self, 
-                       csv_loc,
-                       drop_zero_label=False,
-                       drop_pixel_col=True,
-                       save_chan_label=True):
-        """Save the dataframe to a .csv with option to: 
-                drop positions which are background 
+    def save_df_to_csv(
+        self, csv_loc, drop_zero_label=False, drop_pixel_col=True, save_chan_label=True
+    ):
+        """Save the dataframe to a .csv with option to:
+                drop positions which are background
                 drop the column containing pixel information
                 save additional column with labels for each
                     localisation
@@ -544,9 +545,11 @@ class item:
 
         # save channel label as well
         if save_chan_label:
-            label_df = pl.DataFrame({'chan_label': self.channel_label}).with_row_count('channel')
+            label_df = pl.DataFrame({"chan_label": self.channel_label}).with_row_count(
+                "channel"
+            )
             label_df = label_df.with_column(pl.col("channel").cast(pl.Int64))
-            save_df = save_df.join(label_df, on="channel", how="inner")        
+            save_df = save_df.join(label_df, on="channel", how="inner")
 
         # save to location
         save_df.write_csv(csv_loc, sep=",")
@@ -663,41 +666,44 @@ class item:
             bin_sizes=bin_sizes,
         )
 
-    def get_img_dict(self):
-        """Return dictionary of images,
-        where each key represents a channel"""
+    # def get_img_dict(self):
+    #    """Return dictionary of images,
+    #    where each key represents a channel"""
 
-        img_dict = {}
-        for key, value in self.histo.items():
-            img_dict[key] = value.T
-
-        return img_dict
+    #    img_dict = {}
+    #    for key, value in self.histo.items():
+    #        img_dict[key] = value.T
+    #
+    #    return img_dict
 
     def render_histo(self, labels=None):
         """Render the histogram from the .parquet file
 
         If labels are specified then the histogram is rendered in the order
         of these lables
-        If not specified defaults to rendering in the channels specified 
+        If not specified defaults to rendering in the channels specified
         in order by user e.g. [0,3,1,2]
         Assumes localisations have associated x_pixel and y_pixel already.
 
         Args:
-            labels (list) : Order of labels to stack histograms in 
+            labels (list) : Order of labels to stack histograms in
                 e.g. labels=['egfr','ereg'] means all images will
-                be returned with egfr in channel 0 and ereg in 
+                be returned with egfr in channel 0 and ereg in
                 channel 1
 
         Returns:
             histo (np.histogram) : Histogram of the localisation data
-            axis_2_chan (list) : List where the first value is the
+            channel_map (list) : List where the first value is the
                 channel in the first axis of the histogram, second value
                 is the channel in the second axis of the histogram etc.
                 e.g. [1,3] : 1st channel is in 1st axis, 3rd channel in 2nd axis
+            label_map (list) : List where the first value is the
+                label in the first axis of the histogram, second value
+                is the channel in the second axis of the histogram etc.
+                e.g. ['egfr','ereg'] : egfr is in 1st axis, ereg in 2nd axis
         """
 
         histos = []
-        axis_2_chan = []
 
         df_max = self.df.max()
         x_bins = df_max["x_pixel"][0] + 1
@@ -705,8 +711,11 @@ class item:
 
         if labels is None:
             channels = self.channels
+            label_map = [self.chan_2_label(chan) for chan in channels]
+
         else:
             channels = [self.label_2_chan(label) for label in labels]
+            label_map = labels
 
         for chan in channels:
             df = self.df.filter(pl.col("channel") == chan)
@@ -719,11 +728,11 @@ class item:
             histo[x_pixels, y_pixels] = counts
 
             histos.append(histo)
-            axis_2_chan.append(chan)
 
         histo = np.stack(histos)
+        channel_map = channels
 
-        return histo, axis_2_chan
+        return histo, channel_map, label_map
 
     def render_seg(self):
         """Render the segmentation of the histogram"""

@@ -8,6 +8,5 @@ sum_chan: False
 # which channel to consider
 channel: 'egfr'
 
-# channels to sum
-channel_sum_one: 'egfr'
-channel_sum_two: 'ereg'
+# alt channel which will be summed
+alt_channel: 'ereg'

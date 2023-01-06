@@ -33,8 +33,8 @@ default_config_keys = [
     "diameter",
     "channels",
     "sum_chan",
-    "user_model_path", # new
-    "test_files", # new
+    "user_model_path",  # new
+    "test_files",  # new
 ]
 
 

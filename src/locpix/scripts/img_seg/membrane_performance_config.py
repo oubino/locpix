@@ -28,12 +28,7 @@ import yaml
 import os
 import json
 
-default_config_keys = [
-    "maximise_choice",
-    "vis_threshold",
-    "vis_interpolate",
-    "channel"
-]
+default_config_keys = ["maximise_choice", "vis_threshold", "vis_interpolate", "channel"]
 
 
 class QListDragAndDrop(QListWidget):

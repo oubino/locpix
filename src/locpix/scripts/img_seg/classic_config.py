@@ -32,7 +32,7 @@ default_config_keys = [
     "sum_chan",
     "channel",
     "chan_sum_one",
-    "chan_sum_two"
+    "chan_sum_two",
 ]
 
 

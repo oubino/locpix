@@ -9,7 +9,6 @@ import os
 from locpix.preprocessing import datastruc
 from locpix.visualise import vis_img
 import numpy as np
-import pickle as pkl
 import argparse
 from locpix.scripts.img_seg import ilastik_output_config
 import json
@@ -124,11 +123,10 @@ def main():
         item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(input_folder, file))
 
-        # load in histograms
-        input_histo_folder = os.path.join(project_folder, "annotate/histos")
-        histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
-        with open(histo_loc, "rb") as f:
-            histo = pkl.load(f)
+        # convert to histo
+        histo, channel_map, label_map = item.render_histo(
+            [config["channel"], config["alt_channel"]]
+        )
 
         # ---- membrane segmentation ----
 
@@ -169,13 +167,14 @@ def main():
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
         # save cell segmentation image - consider only one channel
-        imgs = {key: value.T for (key, value) in histo.items()}
+        img = np.transpose(histo, (0, 2, 1))
         save_loc = os.path.join(output_cell_img, item.name + ".png")
         vis_img.visualise_seg(
-            imgs,
+            img,
             ilastik_seg,
             item.bin_sizes,
-            channels=[0],
+            axes=[0],
+            label_map=label_map,
             threshold=config["vis_threshold"],
             how=config["vis_interpolate"],
             blend_overlays=True,

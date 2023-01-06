@@ -27,7 +27,6 @@ from sklearn.metrics import precision_recall_curve, auc
 import polars as pl
 from datetime import datetime
 import matplotlib.pyplot as plt
-import pickle as pkl
 from locpix.visualise import vis_img
 import argparse
 from locpix.scripts.img_seg import membrane_performance_config
@@ -272,11 +271,10 @@ def main():
             item = datastruc.item(None, None, None, None, None)
             item.load_from_parquet(os.path.join(gt_file_path, file))
 
-            # load in histograms
-            input_histo_folder = os.path.join(project_folder, "annotate/histos")
-            histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
-            with open(histo_loc, "rb") as f:
-                histo = pkl.load(f)
+            # convert to histo
+            histo, channel_map, label_map = item.render_histo(
+                [config["channel"], config["alt_channel"]]
+            )
 
             # load prob map
             img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
@@ -315,16 +313,18 @@ def main():
 
             # also save image of predicted membrane
             output_img = np.where(img_prob > threshold, 1, 0)
-            imgs = {key: value.T for key, value in histo.items()}
+
+            img = np.transpose(histo, (0, 2, 1))
 
             # consider the correct channel
-            chan = item.label_2_chan(config['channel'])
+            chan = item.label_2_chan(config["channel"])
             save_loc = os.path.join(output_seg_imgs, item.name + ".png")
             vis_img.visualise_seg(
-                imgs,
+                img,
                 output_img,
                 item.bin_sizes,
-                channels=[chan],
+                axes=[0],
+                label_map=label_map,
                 threshold=config["vis_threshold"],
                 how=config["vis_interpolate"],
                 origin="upper",

@@ -92,13 +92,18 @@ def main():
         "-p",
         "--parquet_files",
         action="store_true",
-        help="if true will process as parquet files"
+        help="if true will process as parquet files",
     )
 
     args = parser.parse_args()
 
     # if want to run in headless mode specify all arguments
-    if args.input is None and args.project_directory is None and args.config is None and args.parquet_files is False:
+    if (
+        args.input is None
+        and args.project_directory is None
+        and args.config is None
+        and args.parquet_files is False
+    ):
         config, input_path, project_folder = preprocess_config.config_gui()
         print("data path", input_path)
 
@@ -124,7 +129,12 @@ def main():
             "directory and input directory as well"
         )
 
-    if args.input is None and args.project_directory is None and args.config is None and args.parquet_files is True:
+    if (
+        args.input is None
+        and args.project_directory is None
+        and args.config is None
+        and args.parquet_files is True
+    ):
         parser.error(
             "You didn't specify any arguments therefore tried to run in GUI, however you cannot process"
             "as parquet files in the GUI"
@@ -153,7 +163,7 @@ def main():
         metadata.save(os.path.join(project_folder, "metadata.json"))
 
     # if all is specified then consider all files otherwise consider specified files
-    if config["include_files"] == 'all':
+    if config["include_files"] == "all":
         include_files = os.listdir(args.input)
         include_files = [os.path.splitext(item)[0] for item in include_files]
     else:
@@ -166,8 +176,10 @@ def main():
         # check file not already present
         for file in files:
             file_name = os.path.basename(file)
-            output_path = os.path.join(output_folder, f"{file_name.replace('.csv', '.parquet')}")
-            input('check this makes sense and if it doesnt then stop')
+            output_path = os.path.join(
+                output_folder, f"{file_name.replace('.csv', '.parquet')}"
+            )
+            input("check this makes sense and if it doesnt then stop")
             if os.path.exists(output_path):
                 raise ValueError("Can't preprocess as output file already exists")
         print(files)
@@ -192,9 +204,9 @@ def main():
     # go through files -> convert to datastructure -> save
     for file in files:
         if args.parquet_files is False:
-            file_type = 'csv'
+            file_type = "csv"
         elif args.parquet_files is True:
-            file_type = 'parquet'
+            file_type = "parquet"
         item = functions.file_to_datastruc(
             file,
             file_type,
@@ -217,7 +229,9 @@ def main():
 
     # save yaml file
     config["input_data_folder"] = input_path
-    yaml_save_loc = os.path.join(project_folder, f"preprocess_{os.path.basename(input_path)}.yaml")
+    yaml_save_loc = os.path.join(
+        project_folder, f"preprocess_{os.path.basename(input_path)}.yaml"
+    )
     with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config, outfile)
 

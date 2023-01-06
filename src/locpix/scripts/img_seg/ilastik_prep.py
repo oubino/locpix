@@ -9,7 +9,6 @@ import os
 from locpix.visualise import vis_img
 from locpix.preprocessing import datastruc
 import numpy as np
-import pickle as pkl
 import argparse
 from locpix.scripts.img_seg import ilastik_prep_config
 import json
@@ -107,13 +106,13 @@ def main():
     for file in files:
 
         item = datastruc.item(None, None, None, None, None)
-        item.load_from_parquet(file + '.parquet')
+        item.load_from_parquet(file + ".parquet")
 
         # conver to histo
-        histo, axis_2_chan = item.render_histo(config["channels"])
+        histo, channel_map, label_map = item.render_histo(config["channels"])
 
-        # ilastik needs channel last and need to tranpose histogram 
-        # for image space 
+        # ilastik needs channel last and need to tranpose histogram
+        # for image space
         img = np.transpose(histo, (2, 1, 0))
 
         img = vis_img.manual_threshold(

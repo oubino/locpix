@@ -8,7 +8,6 @@ from locpix.preprocessing import datastruc
 from locpix.visualise import vis_img
 from locpix.img_processing import watershed
 import numpy as np
-import pickle as pkl
 import argparse
 from locpix.scripts.img_seg import get_markers_config
 import json
@@ -112,15 +111,11 @@ def main():
         item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(input_folder, file))
 
-        # load in histograms
-        input_histo_folder = os.path.join(project_folder, "annotate/histos")
-        histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
-        with open(histo_loc, "rb") as f:
-            histo = pkl.load(f)
+        # convert to histo
+        histo, channel_map, label_map = item.render_histo([config["channel"]])
 
         # convert image to more visible form
-        chan = item.label_2_chan(config['channel'])
-        img = histo[chan].T  
+        img = histo[0].T
         log_img = vis_img.manual_threshold(
             img, config["vis_threshold"], how=config["vis_interpolate"]
         )
