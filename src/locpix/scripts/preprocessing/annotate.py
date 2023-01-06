@@ -43,6 +43,12 @@ def main():
         action="store_true",
         help="check the metadata for the specified project and" "seek confirmation!",
     )
+    parser.add_argument(
+        "f",
+        "--force",
+        action="store_true",
+        help="if true then will overwrite files"
+    )
 
     args = parser.parse_args()
 
@@ -113,13 +119,6 @@ def main():
     else:
         os.makedirs(output_seg_folder)
 
-    # if output directory for seg imgs not present create it
-    histo_folder = os.path.join(project_folder, "annotate/histos")
-    if os.path.exists(histo_folder):
-        raise ValueError(f"Cannot proceed as {histo_folder} already exists")
-    else:
-        os.makedirs(histo_folder)
-
     if config["dim"] == 2:
         histo_size = (config["x_bins"], config["y_bins"])
     elif config["dim"] == 3:
@@ -130,6 +129,13 @@ def main():
     for file in files:
         item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(input_folder, file))
+
+        # check if file already present and annotated
+        # note assumptions
+        # 1. assumes name convention of save_to_parquet is
+        # os.path.join(save_folder, self.name + '.parquet')
+        if os.path.exists(os.path.join(output_folder, item.name + '.parquet')) and not args.force:
+            continue
 
         # coord2histo
         item.coord_2_histo(histo_size, vis_interpolation=config["vis_interpolation"])

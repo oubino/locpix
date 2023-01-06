@@ -89,6 +89,8 @@ class item:
         self.gt_label_map = gt_label_map
 
         # channel labels and channel choice need to be same in length
+        print(channels)
+        print(channel_label)
         if len(channels) != len(channel_label):
             raise ValueError(
                 "The labels for each channel must be"
@@ -560,6 +562,7 @@ class item:
         drop_zero_label=False,
         drop_pixel_col=False,
         gt_label_map=None,
+        overwrite=False,
     ):
         """Save the dataframe to a parquet with option to drop positions which
            are background and can drop the column containing pixel
@@ -575,6 +578,7 @@ class item:
                 representing the gt labels for each localisation
                 with value being a string, representing the
                 real concept e.g. 0:'dog', 1:'cat'
+            overwrite (bool): Whether to overwrite
 
         Returns:
             None
@@ -615,7 +619,9 @@ class item:
         # merge existing with new meta data
         merged_metadata = {**meta_data, **(old_metadata or {})}
         arrow_table = arrow_table.replace_schema_metadata(merged_metadata)
-        save_loc = os.path.join(save_folder, self.name + ".parquet")
+        save_loc = os.path.join(save_folder, self.name + ".parquet") # note if change this need to adjust annotate.py
+        if os.path.exists(save_loc) and not overwrite:
+            raise ValueError("Cannot overwite. If you want to overwrite please set overwrite==True")
         pq.write_table(arrow_table, save_loc)
 
         # To access metadata write
