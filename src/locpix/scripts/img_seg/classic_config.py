@@ -31,8 +31,7 @@ default_config_keys = [
     "vis_interpolate",
     "sum_chan",
     "channel",
-    "chan_sum_one",
-    "chan_sum_two",
+    "alt_channel",
 ]
 
 

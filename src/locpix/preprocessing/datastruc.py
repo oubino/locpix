@@ -85,18 +85,17 @@ class item:
         self.dim = dim
         self.bin_sizes = bin_sizes
         self.channels = channels
-        self.channel_label = (channel_label,)
+        self.channel_label = channel_label
         self.gt_label_map = gt_label_map
 
         # channel labels and channel choice need to be same in length
-        print(channels)
-        print(channel_label)
-        if len(channels) != len(channel_label):
-            raise ValueError(
-                "The labels for each channel must be"
-                "same length as the number of user"
-                "chosen channels"
-            )
+        if (channels is not None) or (channel_label is not None):
+            if len(channels) != len(channel_label):
+                raise ValueError(
+                    f"Labels for each channel is length {len(channel_label)}\n"
+                    f"Channels is length {len(channels)}\n"
+                    f"These must be the same length!"
+                )
 
     # def save(self, save_loc):
     #     """Save the item
@@ -661,6 +660,8 @@ class item:
         bin_sizes = arrow_table.schema.metadata[b"bin_sizes"]
         bin_sizes = ast.literal_eval(bin_sizes.decode("utf-8"))
         df = pl.from_arrow(arrow_table)
+
+        print('channel label', channel_label)
 
         self.__init__(
             name=name,

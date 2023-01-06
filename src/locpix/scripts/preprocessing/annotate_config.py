@@ -44,7 +44,7 @@ default_config_keys = [
     "alpha_seg",
     "cmap_seg",
     "fig_size",
-    "vis_channels",
+    "channel",
 ]
 
 

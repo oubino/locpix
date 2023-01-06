@@ -34,4 +34,5 @@ alphas: [1,.5,.2,.1]
 alpha_seg: .8
 cmap_seg: ["k", "y"]
 fig_size: [10,10]
-vis_channels: [0]
+# which channel to visualise
+channel: 'egfr'

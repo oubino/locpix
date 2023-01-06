@@ -3,6 +3,12 @@
 
 Take in items, convert to histograms, annotate,
 visualise histo mask, save the exported annotation .parquet
+
+N.B. Preprocess just converts to datastructure
+It is annotate that converts to image etc.
+i.e. preprocess doesn't assume histogram
+Therefore, for scripts which use image info such as x pixel they need to
+take in the annotate parquets
 """
 
 import yaml
@@ -44,7 +50,7 @@ def main():
         help="check the metadata for the specified project and" "seek confirmation!",
     )
     parser.add_argument(
-        "f",
+        "-f",
         "--force",
         action="store_true",
         help="if true then will overwrite files"
@@ -130,7 +136,13 @@ def main():
         # note assumptions
         # 1. assumes name convention of save_to_parquet is
         # os.path.join(save_folder, self.name + '.parquet')
-        if os.path.exists(os.path.join(output_folder, item.name + '.parquet')) and not args.force:
+        parquet_save_loc = os.path.join(output_folder, item.name + '.parquet')
+        seg_save_loc = os.path.join(output_seg_folder, item.name + ".png")
+        if os.path.exists(parquet_save_loc) and not args.force:
+            print(f"Skipping file as already present: {parquet_save_loc}")
+            continue
+        if os.path.exists(seg_save_loc) and not args.force:
+            print(f"Skipping file as already present: {seg_save_loc}")
             continue
 
         # coord2histo
@@ -148,20 +160,19 @@ def main():
 
         # convert to histo
         histo, channel_map, label_map = item.render_histo(
-            [config["channel"], config["alt_channel"]]
+            [config["channel"]]
         )
 
         img = np.transpose(histo, (0, 2, 1))
 
         # save images
         if config["save_img"] is True:
-            save_loc = output_seg_folder
-            save_loc = os.path.join(output_seg_folder, item.name + ".png")
+            # only visualise one channel
             vis_img.visualise_seg(
                 img,
                 item.histo_mask.T,
                 item.bin_sizes,
-                axes=config["vis_channels"],
+                axes=[0],
                 label_map=label_map,
                 threshold=config["save_threshold"],
                 how=config["save_interpolate"],
@@ -173,7 +184,7 @@ def main():
                 figsize=config["fig_size"],
                 origin="upper",
                 save=True,
-                save_loc=save_loc,
+                save_loc=seg_save_loc,
                 four_colour=config["four_colour"],
                 background_one_colour=config["background_one_colour"],
             )

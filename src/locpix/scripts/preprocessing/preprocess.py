@@ -223,8 +223,6 @@ def main():
         # as no gt_label yet
         item.save_to_parquet(
             output_folder,
-            drop_zero_label=False,
-            drop_pixel_col=config["drop_pixel_col"],
         )
 
     # save yaml file

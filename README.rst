@@ -173,13 +173,13 @@ To run the script using the GUI, run
 
 .. code-block:: console
 
-   (locpix-env) $ cellpose
+   (locpix-env) $ cellpose_eval
 
 To run the script without a GUI -i and -c flags should be specified
 
 .. code-block:: console
 
-   (locpix-env) $ cellpose -i path/to/project/directory -c path/to/config/file
+   (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file
 
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^

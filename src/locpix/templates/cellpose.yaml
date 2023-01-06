@@ -25,11 +25,7 @@ sum_chan: False
 
 # files to evaluate on
 test_files:
-- Fov1_DC
-- Fov2_DC
-- Fov3_DC
-- Fov5_DC
-- Fov6_DC
+- egfr_568_ereg_647_fov2
 
 #- Fov7_DC
 #- Fov8_DC

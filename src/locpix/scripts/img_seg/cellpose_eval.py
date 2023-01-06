@@ -202,7 +202,7 @@ def main():
         save_loc = os.path.join(output_cell_img, item.name + ".png")
         # only plot the one channel specified
         vis_img.visualise_seg(
-            img,
+            np.expand_dims(img,axis=0),
             instance_mask,
             item.bin_sizes,
             axes=[0],

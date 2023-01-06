@@ -41,6 +41,12 @@ def main():
         action="store_true",
         help="check the metadata for the specified project and" "seek confirmation!",
     )
+    parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="if true then will overwrite files"
+    )
 
     args = parser.parse_args()
 
@@ -90,7 +96,7 @@ def main():
             json.dump(metadata, outfile)
 
     # list items
-    input_folder = os.path.join(project_folder, "preprocess/no_gt_label")
+    input_folder = os.path.join(project_folder, "annotate/annotated")
     try:
         files = os.listdir(input_folder)
     except FileNotFoundError:
@@ -99,17 +105,16 @@ def main():
     # if output directory not present create it
     markers_folder = os.path.join(project_folder, "markers")
     if not os.path.exists(markers_folder):
-        print("Making folder")
         os.makedirs(markers_folder)
-    else:
-        raise ValueError(
-            "Will not get markers\
-                         as there is already files in folder"
-        )
 
     for file in files:
         item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(input_folder, file))
+
+        # save location
+        markers_loc = os.path.join(markers_folder, item.name + ".npy")
+        if os.path.exists(markers_loc) and not args.force:
+            continue
 
         # convert to histo
         histo, channel_map, label_map = item.render_histo([config["channel"]])
@@ -122,8 +127,6 @@ def main():
         grey_log_img = vis_img.img_2_grey(log_img)  # convert img to grey
 
         markers = watershed.get_markers(grey_log_img)
-
-        markers_loc = os.path.join(markers_folder, item.name + ".npy")
 
         # save
         np.save(markers_loc, markers)

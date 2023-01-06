@@ -214,4 +214,5 @@ Then run
 
 
 python -m cellpose --train --dir "C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_train\train" --test_dir "C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_train\test" --pretrained_model LC1 --chan 0 --chan2 0 --learning_rate 0.1 --weight_decay 0.0001 --n_epochs 10 --min_train_masks 1 --verbose
+
 python -m cellpose --dir  "C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_train\test" --pretrained_model  "C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_train\train\models\cellpose_residual_on_style_on_concatenation_off_train_2022_12_20_14_56_59.377919" --chan 0 --chan2 0 --save_png
