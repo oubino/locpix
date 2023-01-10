@@ -25,12 +25,7 @@ import yaml
 import os
 import json
 
-default_config_keys = [
-    "vis_threshold",
-    "vis_interpolate",
-    "channel",
-    "alt_channel"
-]
+default_config_keys = ["vis_threshold", "vis_interpolate", "channel", "alt_channel"]
 
 
 class InputWidget(QWidget):

@@ -117,8 +117,12 @@ def main():
         output_folder = args.output_folder
 
     # output directories
-    output_membrane_prob = os.path.join(project_folder, f"{output_folder}/membrane/prob_map")
-    output_cell_df = os.path.join(project_folder, f"{output_folder}/cell/seg_dataframes")
+    output_membrane_prob = os.path.join(
+        project_folder, f"{output_folder}/membrane/prob_map"
+    )
+    output_cell_df = os.path.join(
+        project_folder, f"{output_folder}/cell/seg_dataframes"
+    )
     output_cell_img = os.path.join(project_folder, f"{output_folder}/cell/seg_img")
 
     # if output directory not present create it
@@ -207,7 +211,9 @@ def main():
         # save instance mask to dataframe
         df = item.mask_pixel_2_coord(instance_mask)
         item.df = df
-        output_cell_df = os.path.join(project_folder, f"{output_folder}/cell/seg_dataframes")
+        output_cell_df = os.path.join(
+            project_folder, f"{output_folder}/cell/seg_dataframes"
+        )
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
         # save cell segmentation image
@@ -215,7 +221,7 @@ def main():
         save_loc = os.path.join(output_cell_img, item.name + ".png")
         # only plot the one channel specified
         vis_img.visualise_seg(
-            np.expand_dims(img,axis=0),
+            np.expand_dims(img, axis=0),
             instance_mask,
             item.bin_sizes,
             axes=[0],

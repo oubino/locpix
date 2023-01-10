@@ -50,10 +50,7 @@ def main():
         help="check the metadata for the specified project and" "seek confirmation!",
     )
     parser.add_argument(
-        "-f",
-        "--force",
-        action="store_true",
-        help="if true then will overwrite files"
+        "-f", "--force", action="store_true", help="if true then will overwrite files"
     )
 
     args = parser.parse_args()
@@ -136,7 +133,7 @@ def main():
         # note assumptions
         # 1. assumes name convention of save_to_parquet is
         # os.path.join(save_folder, self.name + '.parquet')
-        parquet_save_loc = os.path.join(output_folder, item.name + '.parquet')
+        parquet_save_loc = os.path.join(output_folder, item.name + ".parquet")
         seg_save_loc = os.path.join(output_seg_folder, item.name + ".png")
         if os.path.exists(parquet_save_loc) and not args.force:
             print(f"Skipping file as already present: {parquet_save_loc}")
@@ -159,9 +156,7 @@ def main():
         )
 
         # convert to histo
-        histo, channel_map, label_map = item.render_histo(
-            [config["channel"]]
-        )
+        histo, channel_map, label_map = item.render_histo([config["channel"]])
 
         img = np.transpose(histo, (0, 2, 1))
 

@@ -42,10 +42,7 @@ def main():
         help="check the metadata for the specified project and" "seek confirmation!",
     )
     parser.add_argument(
-        "-f",
-        "--force",
-        action="store_true",
-        help="if true then will overwrite files"
+        "-f", "--force", action="store_true", help="if true then will overwrite files"
     )
 
     args = parser.parse_args()

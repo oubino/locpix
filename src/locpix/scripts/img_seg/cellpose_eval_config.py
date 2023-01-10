@@ -36,7 +36,7 @@ default_config_keys = [
     "user_model_path",  # new
     "test_files",  # new
     "channel",
-    "alt_channel"
+    "alt_channel",
 ]
 
 

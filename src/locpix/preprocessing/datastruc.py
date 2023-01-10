@@ -618,9 +618,13 @@ class item:
         # merge existing with new meta data
         merged_metadata = {**meta_data, **(old_metadata or {})}
         arrow_table = arrow_table.replace_schema_metadata(merged_metadata)
-        save_loc = os.path.join(save_folder, self.name + ".parquet") # note if change this need to adjust annotate.py
+        save_loc = os.path.join(
+            save_folder, self.name + ".parquet"
+        )  # note if change this need to adjust annotate.py
         if os.path.exists(save_loc) and not overwrite:
-            raise ValueError("Cannot overwite. If you want to overwrite please set overwrite==True")
+            raise ValueError(
+                "Cannot overwite. If you want to overwrite please set overwrite==True"
+            )
         pq.write_table(arrow_table, save_loc)
 
         # To access metadata write
@@ -661,7 +665,7 @@ class item:
         bin_sizes = ast.literal_eval(bin_sizes.decode("utf-8"))
         df = pl.from_arrow(arrow_table)
 
-        print('channel label', channel_label)
+        print("channel label", channel_label)
 
         self.__init__(
             name=name,

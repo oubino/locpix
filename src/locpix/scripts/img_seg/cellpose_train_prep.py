@@ -12,11 +12,11 @@ import time
 
 from locpix.preprocessing import datastruc
 import numpy as np
-import matplotlib.pyplot as plt
-#import skimage
+
+# import skimage
 from locpix.visualise import vis_img
-from cellpose import models
 import tifffile
+
 
 def main():
 
@@ -110,10 +110,11 @@ def main():
     preprocessed_folder = os.path.join(project_folder, "cellpose_train")
     train_folder = os.path.join(preprocessed_folder, "train")
     test_folder = os.path.join(preprocessed_folder, "test")
-    folders = [preprocessed_folder,
-               train_folder,
-               test_folder,
-               ]
+    folders = [
+        preprocessed_folder,
+        train_folder,
+        test_folder,
+    ]
     for folder in folders:
         if os.path.exists(folder):
             raise ValueError(f"Cannot proceed as {folder} already exists")
@@ -129,12 +130,26 @@ def main():
     # convert files into imgs and masks
     train_files = [os.path.join(input_root, file + ".parquet") for file in train_files]
     test_files = [os.path.join(input_root, file + ".parquet") for file in test_files]
-    parquet_2_img(train_files, config["labels"], config["sum_chan"], config['img_threshold'], config['img_interpolate'], train_folder)
-    parquet_2_img(test_files, config["labels"], config["sum_chan"], config['img_threshold'], config['img_interpolate'], test_folder)
-    
+    parquet_2_img(
+        train_files,
+        config["labels"],
+        config["sum_chan"],
+        config["img_threshold"],
+        config["img_interpolate"],
+        train_folder,
+    )
+    parquet_2_img(
+        test_files,
+        config["labels"],
+        config["sum_chan"],
+        config["img_threshold"],
+        config["img_interpolate"],
+        test_folder,
+    )
+
     # threshold imgs
     # ?
-    #model.train(
+    # model.train(
     #    imgs,
     #    labels,
     #    train_files=train_files,
@@ -149,7 +164,7 @@ def main():
     #    nimg_per_epoch=config["nimg_per_epoch"],
     #    min_train_masks=config["min_train_masks"],
     #    model_name=config["model_name"],
-    #)
+    # )
 
 
 def parquet_2_img(files, labels, sum_chan, img_threshold, img_interpolate, folder):
@@ -165,8 +180,8 @@ def parquet_2_img(files, labels, sum_chan, img_threshold, img_interpolate, folde
         img_threshold (float) : The threshold for the image
         img_interpolate (string) : How to interpolate the image
         folder (string) : Folder to save data to
-        """
-    
+    """
+
     # for file in input
     for datum in files:
 
@@ -177,7 +192,7 @@ def parquet_2_img(files, labels, sum_chan, img_threshold, img_interpolate, folde
         histo, channel_map, label_map = item.render_histo(labels)
         label = item.render_seg()
 
-        img_info_path = os.path.join(folder, 'img_info.json')
+        img_info_path = os.path.join(folder, "img_info.json")
         with open(img_info_path, "w") as outfile:
             json.dump(label_map, outfile)
 
@@ -190,25 +205,23 @@ def parquet_2_img(files, labels, sum_chan, img_threshold, img_interpolate, folde
             img = histo[0].T + histo[1].T
         else:
             raise ValueError("sum_chan should be true or false")
-        img = vis_img.manual_threshold(
-            img, img_threshold, how=img_interpolate
-        )
+        img = vis_img.manual_threshold(img, img_threshold, how=img_interpolate)
 
         # save
-        #img_folder = os.path.join(folder, 'imgs')
-        #label_folder = os.path.join(folder, 'labels')
-        #folders = [img_folder, label_folder]
-        #for folder in folders:
+        # img_folder = os.path.join(folder, 'imgs')
+        # label_folder = os.path.join(folder, 'labels')
+        # folders = [img_folder, label_folder]
+        # for folder in folders:
         img_path = os.path.join(folder, item.name + ".tif")
         label_path = os.path.join(folder, item.name + "_masks.tif")
 
-        # save 
+        # save
         old_img = img
         old_label = label
         tifffile.imwrite(img_path, img)
         tifffile.imwrite(label_path, label)
-        #plt.imsave(img_path, img)
-        #plt.imsave(label_path, label)
+        # plt.imsave(img_path, img)
+        # plt.imsave(label_path, label)
         # load and check
         img = tifffile.imread(img_path)
         label = tifffile.imread(label_path)

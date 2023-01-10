@@ -123,14 +123,13 @@ def main():
     methods = ["classic", "cellpose", "cellpose_trained_eval", "ilastik"]
 
     output_overlay_pr_curves = os.path.join(
-            project_folder, "membrane_performance/overlaid_pr_curves"
-        )
+        project_folder, "membrane_performance/overlaid_pr_curves"
+    )
 
     if os.path.exists(output_overlay_pr_curves):
         raise ValueError(f"Cannot proceed as {output_overlay_pr_curves} already exists")
     else:
         os.makedirs(output_overlay_pr_curves)
-    
 
     for index, method in enumerate(methods):
 
@@ -231,8 +230,8 @@ def main():
             pr,
             rec,
             baseline,
-            #save_loc,
-            #pickle=True,
+            # save_loc,
+            # pickle=True,
         )
 
         # calculate optimal threshold
@@ -323,7 +322,6 @@ def main():
             img = np.transpose(histo, (0, 2, 1))
 
             # consider the correct channel
-            chan = item.label_2_chan(config["channel"])
             save_loc = os.path.join(output_seg_imgs, item.name + ".png")
             vis_img.visualise_seg(
                 img,
@@ -376,8 +374,8 @@ def main():
             pr,
             rec,
             baseline,
-            #save_loc,
-            #pickle=True,
+            # save_loc,
+            # pickle=True,
         )
         pr_auc = auc(rec, pr)
         add_metrics = {"pr_auc": pr_auc}

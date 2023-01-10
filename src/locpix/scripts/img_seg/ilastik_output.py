@@ -131,9 +131,7 @@ def main():
         # ---- membrane segmentation ----
 
         # load in ilastik_seg
-        input_membrane_prob = os.path.join(
-            project_folder, "ilastik/ilastik_pixel/npy"
-        )
+        input_membrane_prob = os.path.join(project_folder, "ilastik/ilastik_pixel/npy")
         membrane_prob_mask_loc = os.path.join(input_membrane_prob, item.name + ".npy")
         ilastik_seg = np.load(membrane_prob_mask_loc)
 
@@ -150,9 +148,7 @@ def main():
         # ---- cell segmentation ----
 
         # load in ilastik_seg
-        input_cell_mask = os.path.join(
-            project_folder, "ilastik/ilastik_boundary/npy"
-        )
+        input_cell_mask = os.path.join(project_folder, "ilastik/ilastik_boundary/npy")
         cell_mask_loc = os.path.join(input_cell_mask, item.name + ".npy")
         ilastik_seg = np.load(cell_mask_loc)
 
