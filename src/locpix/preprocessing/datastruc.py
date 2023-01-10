@@ -665,7 +665,7 @@ class item:
         bin_sizes = ast.literal_eval(bin_sizes.decode("utf-8"))
         df = pl.from_arrow(arrow_table)
 
-        print("channel label", channel_label)
+        # print("channel label", channel_label)
 
         self.__init__(
             name=name,
