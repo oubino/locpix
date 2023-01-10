@@ -163,6 +163,8 @@ To train a Cellpose model we have had to include/modify the following.
 
 Prepare the data for Cellpose training
 
+Crucially this is also where the train/val/test split is defined and saved to the project metadata.
+
 .. code-block:: console
 
    (locpix-env) $ cellpose_train_prep -i path/to/project/directory -c path/to/config/file
