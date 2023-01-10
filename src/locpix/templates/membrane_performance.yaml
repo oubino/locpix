@@ -1,10 +1,3 @@
-# Files included for training
-train_files:
-- egfr_568_ereg_647_fov2
-
-test_files:
-- egfr_568_ereg_647_fov2
-
 # which to maximise (recall or f)
 maximise_choice: 'f'
 

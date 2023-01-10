@@ -109,6 +109,14 @@ def main():
         file_path = os.path.join(project_folder, "annotate/annotated")
         files = os.listdir(file_path)
         files = [os.path.join(file_path, file) for file in files]
+    elif config["test_files"] == "metadata":
+        with open(metadata_path, ) as file:
+            metadata = json.load(file)
+            test_files = metadata["test_files"]
+            files = [
+                os.path.join(project_folder, "annotate/annotated", file + '.parquet')
+                for file in test_files
+            ]
     else:
         files = [
             os.path.join(project_folder, "annotate/annotated", file + '.parquet')
