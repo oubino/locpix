@@ -2,7 +2,6 @@ train_files:
 - egfr_568_ereg_647_fov3
 - egfr_568_ereg_647_fov4
 - egfr_568_ereg_647_fov5
-- egfr_647_ereg_568_fov3
 - egfr_647_ereg_568_fov4
 - egfr_647_ereg_568_fov5
 - egfr_647_ereg_568_fov6
@@ -11,7 +10,6 @@ train_files:
 - ereg_568_egfr_647_fov4
 - ereg_568_egfr_647_fov5
 - ereg_647_egfr_568_fov10_dc
-- ereg_647_egfr_568_fov3_dc
 - ereg_647_egfr_568_fov5_dc
 - ereg_647_egfr_568_fov6_dc
 - ereg_647_egfr_568_fov7_dc
@@ -19,14 +17,9 @@ train_files:
 - ereg_647_egfr_568_fov9_dc
 
 test_files:
-- egfr_568_ereg_647_fov1
-- egfr_568_ereg_647_fov2
-- egfr_647_ereg_568_fov1
-- egfr_647_ereg_568_fov2
-- ereg_568_egfr_647_fov1
-- ereg_568_egfr_647_fov2
-- ereg_647_egfr_568_fov1_dc
-- ereg_647_egfr_568_fov2_dc
+- egfr_568_ereg_647_fov3
+- egfr_647_ereg_568_fov3
+- ereg_647_egfr_568_fov3_dc
 
 labels: ["egfr", "ereg"]
 

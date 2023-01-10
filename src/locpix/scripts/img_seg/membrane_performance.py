@@ -104,7 +104,7 @@ def main():
         if file not in metadata:
             metadata[file] = time.asctime(time.gmtime(time.time()))
         else:
-            print("Overwriting...")
+            print("Overwriting metadata...")
             metadata[file] = time.asctime(time.gmtime(time.time()))
         with open(metadata_path, "w") as outfile:
             json.dump(metadata, outfile)
