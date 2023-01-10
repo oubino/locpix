@@ -32,6 +32,7 @@ dependencies = [
     "pyarrow",
     "scikit-learn",
     "python-dotenv",
+    "tifffile",
     
 ]
 
@@ -44,7 +45,7 @@ cellpose_eval = "locpix.scripts.img_seg.cellpose_eval:main"
 ilastik_prep = "locpix.scripts.img_seg.ilastik_prep:main"
 ilastik_output = "locpix.scripts.img_seg.ilastik_output:main"
 membrane_performance = "locpix.scripts.img_seg.membrane_performance:main"
-cellpose_trainprep = "locpix.scripts.img_seg.cellpose_trainprep:main"
+cellpose_train_prep = "locpix.scripts.img_seg.cellpose_train_prep:main"
 
 [project.urls]
 "Homepage" = "https://github.com/oubino/locpix"

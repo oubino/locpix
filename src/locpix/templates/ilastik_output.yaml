@@ -5,3 +5,5 @@ vis_interpolate: 'log2'
 
 # channel to visualise
 channel: 'egfr'
+
+alt_channel: 'ereg'

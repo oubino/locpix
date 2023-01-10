@@ -106,7 +106,7 @@ def main():
     for file in files:
 
         item = datastruc.item(None, None, None, None, None)
-        item.load_from_parquet(file + ".parquet")
+        item.load_from_parquet(os.path.join(input_folder, file))
 
         # conver to histo
         histo, channel_map, label_map = item.render_histo(config["channels"])
@@ -121,7 +121,7 @@ def main():
         img = vis_img.img_2_grey(img)
 
         # all images are saved in yxc
-        file_name = file.removesuffix(".pkl")
+        file_name = file.removesuffix(".parquet")
         save_loc = os.path.join(output_folder, file_name + ".npy")
         np.save(save_loc, img)
 

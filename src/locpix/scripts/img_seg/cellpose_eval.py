@@ -44,6 +44,13 @@ def main():
         help="check the metadata for the specified project and" "seek confirmation!",
     )
     parser.add_argument(
+        "-o",
+        "--output_folder",
+        action="store",
+        type=str,
+        help="folder in project directory to save output",
+    )
+    parser.add_argument(
         "-u",
         "--user_model",
         action="store_true",
@@ -103,10 +110,16 @@ def main():
         for file in config["test_files"]
     ]
 
+    # output folder
+    if args.output_folder is None:
+        output_folder = "cellpose_eval"
+    else:
+        output_folder = args.output_folder
+
     # output directories
-    output_membrane_prob = os.path.join(project_folder, "cellpose/membrane/prob_map")
-    output_cell_df = os.path.join(project_folder, "cellpose/cell/seg_dataframes")
-    output_cell_img = os.path.join(project_folder, "cellpose/cell/seg_img")
+    output_membrane_prob = os.path.join(project_folder, f"{output_folder}/membrane/prob_map")
+    output_cell_df = os.path.join(project_folder, f"{output_folder}/cell/seg_dataframes")
+    output_cell_img = os.path.join(project_folder, f"{output_folder}/cell/seg_img")
 
     # if output directory not present create it
     output_directories = [output_membrane_prob, output_cell_df, output_cell_img]
@@ -183,7 +196,7 @@ def main():
 
         # save membrane mask
         output_membrane_prob = os.path.join(
-            project_folder, "cellpose/membrane/prob_map"
+            project_folder, f"{output_folder}/membrane/prob_map"
         )
         save_loc = os.path.join(output_membrane_prob, item.name + ".npy")
         np.save(save_loc, semantic_mask)
@@ -194,11 +207,11 @@ def main():
         # save instance mask to dataframe
         df = item.mask_pixel_2_coord(instance_mask)
         item.df = df
-        output_cell_df = os.path.join(project_folder, "cellpose/cell/seg_dataframes")
+        output_cell_df = os.path.join(project_folder, f"{output_folder}/cell/seg_dataframes")
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
         # save cell segmentation image
-        output_cell_img = os.path.join(project_folder, "cellpose/cell/seg_img")
+        output_cell_img = os.path.join(project_folder, f"{output_folder}/cell/seg_img")
         save_loc = os.path.join(output_cell_img, item.name + ".png")
         # only plot the one channel specified
         vis_img.visualise_seg(

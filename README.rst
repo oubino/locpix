@@ -146,8 +146,8 @@ To run the script without a GUI -i and -c flags should be specified
 
    (locpix-env) $ classic -i path/to/project/directory -c path/to/config/file
 
-Cellpose segmentation
-^^^^^^^^^^^^^^^^^^^^^
+Cellpose segmentation (no training)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
    Need to activate extra requirements - these are big and not included in initial install.
 
@@ -180,6 +180,47 @@ To run the script without a GUI -i and -c flags should be specified
 .. code-block:: console
 
    (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file
+
+
+Cellpose segmentation (training)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Need to activate extra requirements - these are big and not included in initial install.
+
+   Note that if you have a GPU this will speed this up.
+
+   If you:
+
+   * have a GPU
+   .. code-block:: console
+
+      (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+      (locpix-env) $ pip install cellpose
+
+   * don't have a GPU
+   .. code-block:: console
+
+      (locpix-env) $ pip install pytorch cellpose
+   
+
+Prepare data for training 
+
+.. code-block:: console
+
+   (locpix-env) $ cellpose_train_prep -i path/to/project/directory -c path/to/config/file
+
+Train cellpose (using their scripts)
+
+.. code-block:: console
+
+   (locpix-env) $ python -m cellpose --train --dir path/to/project/directory/cellpose_train/train --test_dir path/to/project/directory/cellpose_train/test --pretrained_model LC1 --chan 0 --chan2 0 --learning_rate 0.1 --weight_decay 0.0001 --n_epochs 10 --min_train_masks 1 --verbose
+
+Evaluate cellpose
+
+.. code-block:: console
+
+   (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file -u -o cellpose_train_eval
+
 
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^

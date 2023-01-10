@@ -119,8 +119,18 @@ def main():
     fig_train, ax_train = plt.subplots()
     fig_test, ax_test = plt.subplots()
 
-    linestyles = ["dashdot", "-", "--"]
-    methods = ["classic", "cellpose", "ilastik"]
+    linestyles = ["dashdot", "-", "--", "dotted"]
+    methods = ["classic", "cellpose", "cellpose_trained_eval", "ilastik"]
+
+    output_overlay_pr_curves = os.path.join(
+            project_folder, "membrane_performance/overlaid_pr_curves"
+        )
+
+    if os.path.exists(output_overlay_pr_curves):
+        raise ValueError(f"Cannot proceed as {output_overlay_pr_curves} already exists")
+    else:
+        os.makedirs(output_overlay_pr_curves)
+    
 
     for index, method in enumerate(methods):
 
@@ -148,9 +158,6 @@ def main():
         output_metrics = os.path.join(
             project_folder, f"membrane_performance/{method}/membrane/metrics"
         )
-        output_overlay_pr_curves = os.path.join(
-            project_folder, "membrane_performance/overlaid_pr_curves"
-        )
         output_conf_matrix = os.path.join(
             project_folder, f"membrane_performance/{method}/membrane/conf_matrix"
         )
@@ -162,7 +169,6 @@ def main():
             output_train_pr,
             output_test_pr,
             output_metrics,
-            output_overlay_pr_curves,
             output_conf_matrix,
         ]
 
@@ -225,8 +231,8 @@ def main():
             pr,
             rec,
             baseline,
-            save_loc,
-            pickle=True,
+            #save_loc,
+            #pickle=True,
         )
 
         # calculate optimal threshold
@@ -370,8 +376,8 @@ def main():
             pr,
             rec,
             baseline,
-            save_loc,
-            pickle=True,
+            #save_loc,
+            #pickle=True,
         )
         pr_auc = auc(rec, pr)
         add_metrics = {"pr_auc": pr_auc}
