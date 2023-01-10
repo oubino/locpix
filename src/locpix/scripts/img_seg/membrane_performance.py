@@ -109,6 +109,10 @@ def main():
         with open(metadata_path, "w") as outfile:
             json.dump(metadata, outfile)
 
+    # check train and test files
+    if not set(config["train_files"]).isdisjoint(config["test_files"]):
+        raise ValueError("Train files and test files shared files!!")
+
     # list items
     gt_file_path = os.path.join(project_folder, "annotate/annotated")
     try:

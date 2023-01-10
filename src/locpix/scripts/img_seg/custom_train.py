@@ -110,6 +110,10 @@ def main():
     train_files = config["train_files"]
     val_files = config["val_files"]
 
+    # check train and test files
+    if not set(train_files).isdisjoint(val_files):
+        raise ValueError("Train files and val files shared files!!")
+
     # list items
     try:
         files = os.listdir(input_root)

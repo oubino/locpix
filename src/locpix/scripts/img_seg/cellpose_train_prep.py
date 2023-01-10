@@ -122,6 +122,8 @@ def main():
             os.makedirs(folder)
 
     # check train and test files
+    if not set(train_files).isdisjoint(test_files):
+        raise ValueError("Train files and test files shared files!!")
     print("Train files")
     print(train_files)
     print("Test files")
