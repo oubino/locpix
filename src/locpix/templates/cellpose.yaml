@@ -20,7 +20,7 @@ channel: 'egfr'
 alt_channel: 'ereg'
 
 # whether to sum channels (currently only channel 0 and 1)
-sum_chan: False
+sum_chan: True
 
 # files to evaluate on
 test_files:

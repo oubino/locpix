@@ -114,10 +114,12 @@ def main():
             continue
 
         # convert to histo
-        histo, channel_map, label_map = item.render_histo([config["channel"]])
+        histo, channel_map, label_map = item.render_histo([config["channel"], config["alt_channel"]])
+
+        # sum the histos
+        img = histo[0].T + histo[1].T
 
         # convert image to more visible form
-        img = histo[0].T
         log_img = vis_img.manual_threshold(
             img, config["vis_threshold"], how=config["vis_interpolate"]
         )
