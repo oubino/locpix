@@ -1,3 +1,6 @@
+# Note this is the place that the train/val/test split
+# is defined
+
 train_files:
 - egfr_568_ereg_647_fov3
 - egfr_568_ereg_647_fov4
@@ -16,10 +19,12 @@ train_files:
 - ereg_647_egfr_568_fov8_dc
 - ereg_647_egfr_568_fov9_dc
 
-test_files:
-- egfr_568_ereg_647_fov3
+val_files:
 - egfr_647_ereg_568_fov3
 - ereg_647_egfr_568_fov3_dc
+
+test_files:
+
 
 labels: ["egfr", "ereg"]
 
