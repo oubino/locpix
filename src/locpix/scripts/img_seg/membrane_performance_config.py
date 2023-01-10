@@ -29,8 +29,6 @@ import os
 import json
 
 default_config_keys = [
-    "train_files",
-    "test_files",
     "maximise_choice",
     "vis_threshold",
     "vis_interpolate",

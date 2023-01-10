@@ -106,11 +106,14 @@ def main():
         else:
             print("Overwriting metadata...")
             metadata[file] = time.asctime(time.gmtime(time.time()))
+        # load in train and test files
+        train_files = metadata["train_files"] + metadata["val_files"]
+        test_files = metadata["test_files"]
         with open(metadata_path, "w") as outfile:
             json.dump(metadata, outfile)
 
     # check train and test files
-    if not set(config["train_files"]).isdisjoint(config["test_files"]):
+    if not set(train_files).isdisjoint(test_files):
         raise ValueError("Train files and test files shared files!!")
 
     # list items
@@ -189,7 +192,7 @@ def main():
 
         for file in files:
 
-            if file.removesuffix(".parquet") not in config["train_files"]:
+            if file.removesuffix(".parquet") not in train_files:
                 continue
 
             print("File ", file)
@@ -257,8 +260,8 @@ def main():
         print("Test set...")
 
         metadata = {
-            "train_set": config["train_files"],
-            "test_set": config["test_files"],
+            "train_set": train_files,
+            "test_set": test_files,
             "threshold": threshold,
         }
 
@@ -272,7 +275,7 @@ def main():
         # threshold dataframe and save to parquet file with pred label
         for file in files:
 
-            if file.removesuffix(".parquet") not in config["test_files"]:
+            if file.removesuffix(".parquet") not in test_files:
                 continue
 
             print("File ", file)
