@@ -105,10 +105,15 @@ def main():
             json.dump(metadata, outfile)
 
     # list items
-    files = [
-        os.path.join(project_folder, "annotate/annotated", file)
-        for file in config["test_files"]
-    ]
+    if config["test_files"] == "all":
+        file_path = os.path.join(project_folder, "annotate/annotated")
+        files = os.listdir(file_path)
+        files = [os.path.join(file_path, file) for file in files]
+    else:
+        files = [
+            os.path.join(project_folder, "annotate/annotated", file + '.parquet')
+            for file in config["test_files"]
+        ]
 
     # output folder
     if args.output_folder is None:
@@ -136,7 +141,7 @@ def main():
     for file in files:
 
         item = datastruc.item(None, None, None, None, None)
-        item.load_from_parquet(file + ".parquet")
+        item.load_from_parquet(file)
 
         # convert to histo
         histo, channel_map, label_map = item.render_histo(
