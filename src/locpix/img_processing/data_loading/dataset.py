@@ -6,7 +6,6 @@ import torch
 from torch.utils.data import Dataset
 import numpy as np
 import os
-import pickle as pkl
 from locpix.preprocessing import datastruc
 
 
@@ -44,11 +43,15 @@ class ImgDataset(Dataset):
         # print(self.label_data)
         self.transform = transform
 
-    def preprocess(self, folder):
+    def preprocess(self, folder, labels):
         """Convert the raw data into data ready for network
 
         Args:
             folder (string): Path containing folder to save data at
+            labels (list): List of channel labels defining the order
+                to render the channels in
+                i.e. ['egfr', 'ereg'] means the histogram will be
+                channel 0: egfr, channel 1: ereg
         """
 
         # join data
@@ -86,13 +89,17 @@ class ImgDataset(Dataset):
 
             # np.testing.assert_array_equal(histo, histo_bad)
 
-            item = datastruc.item(None, None, None, None)
+            item = datastruc.item(None, None, None, None, None)
             item.load_from_parquet(os.path.join(datum))
             # print(item.df)
 
             # convert
-            histo, axis_2_chan = item.render_histo()
+            histo, channel_map, label_map = item.render_histo(labels)
             label = item.render_seg()
+
+            print(label_map)
+            input("stop need to make sure all images of same format")
+            input("need to save label map as metadata somewhere")
 
             # transpose to img space
             img = np.transpose(histo, (0, 2, 1))

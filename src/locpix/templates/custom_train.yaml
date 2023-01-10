@@ -20,6 +20,8 @@ train_files:
 - Fov2_DC
 - Fov3_DC
 - Fov5_DC
+
+val_files:
 - Fov6_DC
 
 test_files:
@@ -27,3 +29,7 @@ test_files:
 - Fov8_DC
 - Fov9_DC
 - Fov10_DC
+
+# labels - this is the channel labels to consider and will render
+# in this order
+labels: ['egfr', 'ereg']

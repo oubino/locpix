@@ -27,17 +27,19 @@ from sklearn.metrics import precision_recall_curve, auc
 import polars as pl
 from datetime import datetime
 import matplotlib.pyplot as plt
-import pickle as pkl
 from locpix.visualise import vis_img
 import argparse
 from locpix.scripts.img_seg import membrane_performance_config
-import tkinter as tk
-from tkinter import filedialog
+import json
+import time
 
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Membrane performance metrics on data")
+    parser = argparse.ArgumentParser(
+        description="Membrane performance metrics on data."
+        "If no args are supplied will be run in GUI mode"
+    )
     parser.add_argument(
         "-i",
         "--project_directory",
@@ -53,27 +55,59 @@ def main():
         help="the location of the .yaml configuaration file\
                              for preprocessing",
     )
+    parser.add_argument(
+        "-m",
+        "--project_metadata",
+        action="store_true",
+        help="check the metadata for the specified project and" "seek confirmation!",
+    )
 
     args = parser.parse_args()
 
-    # input project directory
-    if args.project_directory is not None:
-        project_folder = args.project_directory
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        project_folder = filedialog.askdirectory(title="Project directory")
+    # if want to run in headless mode specify all arguments
+    if args.project_directory is None and args.config is None:
+        config, project_folder = membrane_performance_config.config_gui()
 
-    if args.config is not None:
-        # load yaml
+    if args.project_directory is not None and args.config is None:
+        parser.error(
+            "If want to run in headless mode please supply arguments to"
+            "config as well"
+        )
+
+    if args.config is not None and args.project_directory is None:
+        parser.error(
+            "If want to run in headless mode please supply arguments to project"
+            "directory as well"
+        )
+
+    # headless mode
+    if args.project_directory is not None and args.config is not None:
+        project_folder = args.project_directory
+        # load config
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             membrane_performance_config.parse_config(config)
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        gt_file_path = filedialog.askdirectory(title="GT file path")
-        config = membrane_performance_config.config_gui(gt_file_path)
+
+    metadata_path = os.path.join(project_folder, "metadata.json")
+    with open(
+        metadata_path,
+    ) as file:
+        metadata = json.load(file)
+        # check metadata
+        if args.project_metadata:
+            print("".join([f"{key} : {value} \n" for key, value in metadata.items()]))
+            check = input("Are you happy with this? (YES)")
+            if check != "YES":
+                exit()
+        # add time ran this script to metadata
+        file = os.path.basename(__file__)
+        if file not in metadata:
+            metadata[file] = time.asctime(time.gmtime(time.time()))
+        else:
+            print("Overwriting...")
+            metadata[file] = time.asctime(time.gmtime(time.time()))
+        with open(metadata_path, "w") as outfile:
+            json.dump(metadata, outfile)
 
     # list items
     gt_file_path = os.path.join(project_folder, "annotate/annotated")
@@ -85,8 +119,17 @@ def main():
     fig_train, ax_train = plt.subplots()
     fig_test, ax_test = plt.subplots()
 
-    linestyles = ["dashdot", "-", "--"]
-    methods = ["classic", "cellpose", "ilastik"]
+    linestyles = ["dashdot", "-", "--", "dotted"]
+    methods = ["classic", "cellpose", "cellpose_trained_eval", "ilastik"]
+
+    output_overlay_pr_curves = os.path.join(
+        project_folder, "membrane_performance/overlaid_pr_curves"
+    )
+
+    if os.path.exists(output_overlay_pr_curves):
+        raise ValueError(f"Cannot proceed as {output_overlay_pr_curves} already exists")
+    else:
+        os.makedirs(output_overlay_pr_curves)
 
     for index, method in enumerate(methods):
 
@@ -114,9 +157,6 @@ def main():
         output_metrics = os.path.join(
             project_folder, f"membrane_performance/{method}/membrane/metrics"
         )
-        output_overlay_pr_curves = os.path.join(
-            project_folder, "membrane_performance/overlaid_pr_curves"
-        )
         output_conf_matrix = os.path.join(
             project_folder, f"membrane_performance/{method}/membrane/conf_matrix"
         )
@@ -128,7 +168,6 @@ def main():
             output_train_pr,
             output_test_pr,
             output_metrics,
-            output_overlay_pr_curves,
             output_conf_matrix,
         ]
 
@@ -152,7 +191,7 @@ def main():
             print("File ", file)
 
             # load df
-            item = datastruc.item(None, None, None, None)
+            item = datastruc.item(None, None, None, None, None)
             item.load_from_parquet(os.path.join(gt_file_path, file))
 
             # load prob map
@@ -191,8 +230,8 @@ def main():
             pr,
             rec,
             baseline,
-            save_loc,
-            pickle=True,
+            # save_loc,
+            # pickle=True,
         )
 
         # calculate optimal threshold
@@ -234,14 +273,13 @@ def main():
 
             print("File ", file)
 
-            item = datastruc.item(None, None, None, None)
+            item = datastruc.item(None, None, None, None, None)
             item.load_from_parquet(os.path.join(gt_file_path, file))
 
-            # load in histograms
-            input_histo_folder = os.path.join(project_folder, "annotate/histos")
-            histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
-            with open(histo_loc, "rb") as f:
-                histo = pkl.load(f)
+            # convert to histo
+            histo, channel_map, label_map = item.render_histo(
+                [config["channel"], config["alt_channel"]]
+            )
 
             # load prob map
             img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
@@ -280,15 +318,17 @@ def main():
 
             # also save image of predicted membrane
             output_img = np.where(img_prob > threshold, 1, 0)
-            imgs = {key: value.T for key, value in histo.items()}
 
-            # consider only zero channel
+            img = np.transpose(histo, (0, 2, 1))
+
+            # consider the correct channel
             save_loc = os.path.join(output_seg_imgs, item.name + ".png")
             vis_img.visualise_seg(
-                imgs,
+                img,
                 output_img,
                 item.bin_sizes,
-                channels=[0],
+                axes=[0],
+                label_map=label_map,
                 threshold=config["vis_threshold"],
                 how=config["vis_interpolate"],
                 origin="upper",
@@ -334,8 +374,8 @@ def main():
             pr,
             rec,
             baseline,
-            save_loc,
-            pickle=True,
+            # save_loc,
+            # pickle=True,
         )
         pr_auc = auc(rec, pr)
         add_metrics = {"pr_auc": pr_auc}

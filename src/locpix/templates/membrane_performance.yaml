@@ -1,16 +1,9 @@
 # Files included for training
 train_files:
-- Fov1_DC
-- Fov2_DC
-- Fov3_DC
-- Fov5_DC
-- Fov6_DC
+- egfr_568_ereg_647_fov2
 
 test_files:
-- Fov7_DC
-- Fov8_DC
-- Fov9_DC
-- Fov10_DC
+- egfr_568_ereg_647_fov2
 
 # which to maximise (recall or f)
 maximise_choice: 'f'
@@ -18,3 +11,8 @@ maximise_choice: 'f'
 # membrane images
 vis_threshold: 0
 vis_interpolate: 'log2'
+
+# which channel to save image of
+channel: 'egfr'
+
+alt_channel: 'ereg'

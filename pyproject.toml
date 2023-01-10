@@ -15,7 +15,7 @@ authors = [
   { name="Oliver Umney", email="scou@leeds.ac.uk" },
 ]
 description = "Package for analysing SMLM data"
-readme = "README.md"
+readme = "README.rst"
 requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -32,6 +32,7 @@ dependencies = [
     "pyarrow",
     "scikit-learn",
     "python-dotenv",
+    "tifffile",
     
 ]
 
@@ -40,11 +41,11 @@ preprocess = "locpix.scripts.preprocessing.preprocess:main"
 annotate = "locpix.scripts.preprocessing.annotate:main"
 get_markers = "locpix.scripts.img_seg.get_markers:main"
 classic = "locpix.scripts.img_seg.classic:main"
-cellpose = "locpix.scripts.img_seg.cellpose_eval:main"
+cellpose_eval = "locpix.scripts.img_seg.cellpose_eval:main"
 ilastik_prep = "locpix.scripts.img_seg.ilastik_prep:main"
 ilastik_output = "locpix.scripts.img_seg.ilastik_output:main"
 membrane_performance = "locpix.scripts.img_seg.membrane_performance:main"
-train_cellpose = "locpix.scripts.img_seg.cellpose_train:main"
+cellpose_train_prep = "locpix.scripts.img_seg.cellpose_train_prep:main"
 
 [project.urls]
 "Homepage" = "https://github.com/oubino/locpix"

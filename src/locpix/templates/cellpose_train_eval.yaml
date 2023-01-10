@@ -3,7 +3,7 @@ vis_threshold: 5
 vis_interpolate: 'log2'
 
 # cellpose parameters
-model: 'LC1'
+user_model_path: 'C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_model\models\model.pt'
 diameter: 50
 # "Model is trained on two-channel images, where the first channel is the channel to segment, 
 # and the second channel is an optional nuclear channel."

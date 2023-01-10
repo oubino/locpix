@@ -9,16 +9,17 @@ import os
 from locpix.preprocessing import datastruc
 from locpix.visualise import vis_img
 import numpy as np
-import pickle as pkl
 import argparse
 from locpix.scripts.img_seg import ilastik_output_config
-import tkinter as tk
-from tkinter import filedialog
+import json
+import time
 
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Ilastik output")
+    parser = argparse.ArgumentParser(
+        description="Ilastik output." "If no args are supplied will be run in GUI mode"
+    )
     parser.add_argument(
         "-i",
         "--project_directory",
@@ -34,24 +35,59 @@ def main():
         help="the location of the .yaml configuaration file\
                              for preprocessing",
     )
+    parser.add_argument(
+        "-m",
+        "--project_metadata",
+        action="store_true",
+        help="check the metadata for the specified project and" "seek confirmation!",
+    )
 
     args = parser.parse_args()
 
-    # input project directory
-    if args.project_directory is not None:
-        project_folder = args.project_directory
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        project_folder = filedialog.askdirectory(title="Project directory")
+    # if want to run in headless mode specify all arguments
+    if args.project_directory is None and args.config is None:
+        config, project_folder = ilastik_output_config.config_gui()
 
-    if args.config is not None:
-        # load yaml
+    if args.project_directory is not None and args.config is None:
+        parser.error(
+            "If want to run in headless mode please supply arguments to"
+            "config as well"
+        )
+
+    if args.config is not None and args.project_directory is None:
+        parser.error(
+            "If want to run in headless mode please supply arguments to project"
+            "directory as well"
+        )
+
+    # headless mode
+    if args.project_directory is not None and args.config is not None:
+        project_folder = args.project_directory
+        # load config
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             ilastik_output_config.parse_config(config)
-    elif args.configgui:
-        config = ilastik_output_config.config_gui()
+
+    metadata_path = os.path.join(project_folder, "metadata.json")
+    with open(
+        metadata_path,
+    ) as file:
+        metadata = json.load(file)
+        # check metadata
+        if args.project_metadata:
+            print("".join([f"{key} : {value} \n" for key, value in metadata.items()]))
+            check = input("Are you happy with this? (YES)")
+            if check != "YES":
+                exit()
+        # add time ran this script to metadata
+        file = os.path.basename(__file__)
+        if file not in metadata:
+            metadata[file] = time.asctime(time.gmtime(time.time()))
+        else:
+            print("Overwriting...")
+            metadata[file] = time.asctime(time.gmtime(time.time()))
+        with open(metadata_path, "w") as outfile:
+            json.dump(metadata, outfile)
 
     # list items
     input_folder = os.path.join(project_folder, "annotate/annotated")
@@ -84,21 +120,18 @@ def main():
         os.makedirs(output_cell_img)
 
     for file in files:
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(input_folder, file))
 
-        # load in histograms
-        input_histo_folder = os.path.join(project_folder, "annotate/histos")
-        histo_loc = os.path.join(input_histo_folder, item.name + ".pkl")
-        with open(histo_loc, "rb") as f:
-            histo = pkl.load(f)
+        # convert to histo
+        histo, channel_map, label_map = item.render_histo(
+            [config["channel"], config["alt_channel"]]
+        )
 
         # ---- membrane segmentation ----
 
         # load in ilastik_seg
-        input_membrane_prob = os.path.join(
-            project_folder, "ilastik/ilastik_output/membrane/prob_map_unprocessed"
-        )
+        input_membrane_prob = os.path.join(project_folder, "ilastik/ilastik_pixel/npy")
         membrane_prob_mask_loc = os.path.join(input_membrane_prob, item.name + ".npy")
         ilastik_seg = np.load(membrane_prob_mask_loc)
 
@@ -115,9 +148,7 @@ def main():
         # ---- cell segmentation ----
 
         # load in ilastik_seg
-        input_cell_mask = os.path.join(
-            project_folder, "ilastik/ilastik_output/cell/ilastik_output_mask"
-        )
+        input_cell_mask = os.path.join(project_folder, "ilastik/ilastik_boundary/npy")
         cell_mask_loc = os.path.join(input_cell_mask, item.name + ".npy")
         ilastik_seg = np.load(cell_mask_loc)
 
@@ -131,14 +162,15 @@ def main():
         item.df = df
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
-        # save cell segmentation image - consider only zero channel
-        imgs = {key: value.T for (key, value) in histo.items()}
+        # save cell segmentation image - consider only one channel
+        img = np.transpose(histo, (0, 2, 1))
         save_loc = os.path.join(output_cell_img, item.name + ".png")
         vis_img.visualise_seg(
-            imgs,
+            img,
             ilastik_seg,
             item.bin_sizes,
-            channels=[0],
+            axes=[0],
+            label_map=label_map,
             threshold=config["vis_threshold"],
             how=config["vis_interpolate"],
             blend_overlays=True,

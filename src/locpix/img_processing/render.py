@@ -27,6 +27,7 @@ def visualise_seg_item(item, column):
     x_pixels = item.df.select(pl.col("x_pixel")).to_numpy()
     y_pixels = item.df.select(pl.col("y_pixel")).to_numpy()
 
+    # note this assumes all histos have same shape
     histo_width = item.histo[0].shape[0]
     histo_height = item.histo[0].shape[1]
 

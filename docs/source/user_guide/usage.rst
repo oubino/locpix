@@ -129,12 +129,67 @@ To run the script without a GUI -i and -c flags should be specified
 **API**
 :py:mod:`locpix.scripts.img_seg.classic`
 
-.. _cellpose-segmentation:
+.. _cellpose-segmentation-eval:
 
-Cellpose segmentation
-^^^^^^^^^^^^^^^^^^^^^
+Cellpose segmentation (Training)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To train a Cellpose model we have had to include/modify the following.
+
+#. `Cellpose fork` : Firstly we have a fork of Cellpose which differs to Cellpose in the loss function - as Cellpose assumes the 
+   output is for cell segmentation not membranes.
+#. `Cellpose train prep script` : This script prepares the data for Cellpose training
 
 .. warning::
+    Need to activate extra requirements - these are big and not included in initial install.
+
+    Note that if you have a GPU this will speed this up.
+
+    If you:
+
+    * have a GPU
+
+    .. code-block:: console
+
+        (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+        (locpix-env) $ pip install cellpose
+    
+    * don't have a GPU
+
+    .. code-block:: console
+
+        (locpix-env) $ pip install pytorch cellpose
+
+
+Prepare the data for Cellpose training
+
+.. code-block:: console
+
+   (locpix-env) $ cellpose_train_prep -i path/to/project/directory -c path/to/config/file
+
+Train cellpose (using their scripts)
+
+.. code-block:: console
+
+   (locpix-env) $ python -m cellpose --train --dir path/to/project/directory/cellpose_train/train --test_dir path/to/project/directory/cellpose_train/test --pretrained_model LC1 --chan 0 --chan2 0 --learning_rate 0.1 --weight_decay 0.0001 --n_epochs 10 --min_train_masks 1 --verbose
+
+Evaluate cellpose
+
+.. code-block:: console
+
+   (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file -u -o cellpose_train_eval
+
+**API**
+:py:mod:`locpix.scripts.img_seg.cellpose_train_prep`
+
+.. _cellpose-segmentation-train:
+
+Cellpose segmentation (Evaluation)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. warning::
+   If you haven't done as above you will need to:
+
     Need to activate extra requirements - these are big and not included in initial install.
 
     Note that if you have a GPU this will speed this up.
@@ -170,7 +225,7 @@ To run the script without a GUI -i and -c flags should be specified
    (locpix-env) $ cellpose -i path/to/project/directory -c path/to/config/file
 
 **API**
-:py:mod:`locpix.scripts.img_seg.cellpose`
+:py:mod:`locpix.scripts.img_seg.cellpose_eval`
 
 .. _ilastik-segmentation:
 
@@ -223,13 +278,13 @@ Open Ilastik.
 
 Create a new project: Pixel Classification.
 
-Save the project wherever with any name, but we recommend saving in this repository in folder 
+Save the project wherever with any name, but we recommend saving in
 
 .. code-block:: console
    
-   models
+   path/to/project/directory/ilastik/models
 
-with name
+you will have to create a new folder called models, with file name
 
 .. code-block:: console
    
@@ -243,7 +298,7 @@ Then navigate to
 
 .. code-block:: console
    
-   data/ilastik/input_data 
+   path/to/project/directory/ilastik/prep 
 
 and select all the files at once and click open.
 The axes should say yxc, and the shape should be (x_bins, y_bins, number channels).
@@ -290,11 +345,12 @@ Then click prediction export, make sure probabilities is chosen.
 
 Choose export image settings, choose format numpy.
 
+Choose file name 
+
 .. code-block:: console
    
-   .../smlm_analysis/data/output/ilastik/ilastik_pixel/npy/{nickname}.npy
+   path/to/project/directory/ilastik/ilastik_pixel/npy/{nickname}.npy
 
-where you should replace the ... with the path to your git repo.
 
 Click ok then click export all.
 
@@ -321,8 +377,7 @@ Once you have tar the file, we run
    
    (locpix-env) $ ./run_ilastik.sh
 
-
-Then run Ilastik 
+which will run Ilastik.
 
 Click new project: Boundary-based segmentation with Multicut.
 
@@ -336,15 +391,14 @@ and saving in
 
 .. code-block:: console
    
-   models
-
+   path/to/project/directory/ilastik/models
 
 Click under raw data add new and add separate images, 
 now just add one image - we choose Fov1 - this will be located in 
 
 .. code-block:: console
 
-   data/ilastik/input_data
+   path/to/project/directory/ilastik/prep 
 
 Then under probabilities add the corresponding probability output 
 .npy file from previous stage 
@@ -353,9 +407,8 @@ This will be in
 
 .. code-block:: console
 
-   data/output/ilastik/ilastik_pixel/npy
+   path/to/project/directory/ilastik/ilastik_pixel/npy
 
- 
 N.B: make sure you click the add new button which is the higher of the two.
 
 Then click DT Watershed. 
@@ -384,20 +437,36 @@ choose the dataset directory as
 
 .. code-block:: console
 
-   data/output/ilastik_boundary
-
+   path/to/project/directory/ilastik/ilastik_boundary
 
 i.e. the path will look like
 
 .. code-block:: console
 
-   .../smlm_analysis/data/output/ilastik/ilastik_boundary/npy/{nickname}.npy
+   path/to/project/directory/ilastik/ilastik_boundary/npy/{nickname}.npy
 
-Click Export all
+.. warning::
+
+   As you are in wsl2 the path to project directory will be different
+
+   It will be 
+
+   .. code-block:: console
+
+      /mnt/path/to/project/directory/ilastik/ilastik_boundary/npy/{nickname}.npy
+
+
+      where the exact number of ../ at the beginning will depend on how deeply nested you are in the wsl.
+
+      Further, you must ensure the slashes are forward not backward slashes.
+
+      This may take time to get right, you may also have to put parts of the path in quotation marks
+
+      Alternatively use their folder select function
+
 
 Train/adjust just Fov1_DC 
 
-Then do batch processing and select all remaining images and batch process
+Click batch processing and select all images (including the one you trained using) and probabilities
 
-Then copied from ilastik to windows machine the output and 
-put in ilastik_boundary
+Then click process all files

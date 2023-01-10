@@ -1,19 +1,25 @@
-Overview
-========
+locpix
+======
 
 **locpix** is a Python library for analysing point cloud data from SMLM.
-This includes the following functionality:
 
-#. Converting .csv files representing SMLM data (point cloud) into histograms `Preprocess`_
-#. Manually annotating these histograms to extract relevant localisations `Annotate`_
-#. Labelling histogram with seeds for watershed algorithm `Get markers`_
-#. Utilising Classic method, Cellpose and Ilastik to segment the histograms to extract relevant localisations `Classic segmentation`_ , `Cellpose segmentation`_ and `Ilastik segmentation`_
-#. Performance metrics calculation based on the localisations (not the histograms!) `Membrane performance`_
+   This project is under active development
 
 This is a short ReadMe just containing a QuickStart guide.
 For more comprehensive documentation please see https://oubino.github.io/locpix/ 
 
-   This project is under active development
+**locpix** includes the following functionality in order they are used in a normal workflow:
+
+#. `Preprocess`_ : Initialises project and converts .csv files representing SMLM data (point cloud) into .parquet files, **necessary for this software**
+#. `Annotate`_ : Generating histograms from the SMLM data and manually annotating these histograms to extract relevant localisations
+#. `Get markers`_ : Labelling histogram with seeds for watershed algorithm
+#. Segmentation:
+
+   #. `Classic segmentation`_ : Use classic method to segment histograms to extract relevant localisations 
+   #. `Cellpose segmentation`_ : Use Cellpose method to segment histograms to extract relevant localisations 
+   #. `Ilastik segmentation`_ : Use Ilastik method to segment histograms to extract relevant localisations 
+
+#. `Membrane performance`_ : Performance metrics calculation based on the localisations (not the histograms!)
 
 Project Structure
 -----------------
@@ -140,8 +146,8 @@ To run the script without a GUI -i and -c flags should be specified
 
    (locpix-env) $ classic -i path/to/project/directory -c path/to/config/file
 
-Cellpose segmentation
-^^^^^^^^^^^^^^^^^^^^^
+Cellpose segmentation (no training)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
    Need to activate extra requirements - these are big and not included in initial install.
 
@@ -167,13 +173,54 @@ To run the script using the GUI, run
 
 .. code-block:: console
 
-   (locpix-env) $ cellpose
+   (locpix-env) $ cellpose_eval
 
 To run the script without a GUI -i and -c flags should be specified
 
 .. code-block:: console
 
-   (locpix-env) $ cellpose -i path/to/project/directory -c path/to/config/file
+   (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file
+
+
+Cellpose segmentation (training)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Need to activate extra requirements - these are big and not included in initial install.
+
+   Note that if you have a GPU this will speed this up.
+
+   If you:
+
+   * have a GPU
+   .. code-block:: console
+
+      (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+      (locpix-env) $ pip install cellpose
+
+   * don't have a GPU
+   .. code-block:: console
+
+      (locpix-env) $ pip install pytorch cellpose
+   
+
+Prepare data for training 
+
+.. code-block:: console
+
+   (locpix-env) $ cellpose_train_prep -i path/to/project/directory -c path/to/config/file
+
+Train cellpose (using their scripts)
+
+.. code-block:: console
+
+   (locpix-env) $ python -m cellpose --train --dir path/to/project/directory/cellpose_train/train --test_dir path/to/project/directory/cellpose_train/test --pretrained_model LC1 --chan 0 --chan2 0 --learning_rate 0.1 --weight_decay 0.0001 --n_epochs 10 --min_train_masks 1 --verbose
+
+Evaluate cellpose
+
+.. code-block:: console
+
+   (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file -u -o cellpose_train_eval
+
 
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^

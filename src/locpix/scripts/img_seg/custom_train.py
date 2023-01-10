@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-"""Cellpose segmentation module
+"""Custom segmentation module
 
-Take in items and train the Cellpose module
+Take in items and train the module
 """
 
 import yaml
-import tkinter as tk
-from tkinter import filedialog
 import torch
 from torch.utils.data import DataLoader
 from locpix.img_processing.data_loading import dataset
@@ -16,6 +14,8 @@ from torchvision import transforms
 from cellpose import models
 from torchsummary import summary
 import argparse
+import json
+import time
 
 # from locpix.scripts.img_seg import cellpose_train_config
 
@@ -24,7 +24,9 @@ def main():
 
     # Load in config
 
-    parser = argparse.ArgumentParser(description="Cellpose")
+    parser = argparse.ArgumentParser(
+        description="Train cellpose." "If no args are supplied will be run in GUI mode"
+    )
     parser.add_argument(
         "-i",
         "--project_directory",
@@ -40,27 +42,59 @@ def main():
         help="the location of the .yaml configuaration file\
                              for preprocessing",
     )
+    parser.add_argument(
+        "-m",
+        "--project_metadata",
+        action="store_true",
+        help="check the metadata for the specified project and" "seek confirmation!",
+    )
 
     args = parser.parse_args()
 
-    # input project directory
-    if args.project_directory is not None:
-        project_folder = args.project_directory
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        project_folder = filedialog.askdirectory(title="Project directory")
+    # if want to run in headless mode specify all arguments
+    # if args.project_directory is None and args.config is None:
+    #    config, project_folder = ilastik_output_config.config_gui()
 
-    if args.config is not None:
-        # load yaml
+    if args.project_directory is not None and args.config is None:
+        parser.error(
+            "If want to run in headless mode please supply arguments to"
+            "config as well"
+        )
+
+    if args.config is not None and args.project_directory is None:
+        parser.error(
+            "If want to run in headless mode please supply arguments to project"
+            "directory as well"
+        )
+
+    # headless mode
+    if args.project_directory is not None and args.config is not None:
+        project_folder = args.project_directory
+        # load config
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
-            # cellpose_train_config.parse_config(config)
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        # gt_file_path = filedialog.askdirectory()
-        # config = cellpose_train_config.config_gui(gt_file_path)
+            # ilastik_output_config.parse_config(config)
+
+    metadata_path = os.path.join(project_folder, "metadata.json")
+    with open(
+        metadata_path,
+    ) as file:
+        metadata = json.load(file)
+        # check metadata
+        if args.project_metadata:
+            print("".join([f"{key} : {value} \n" for key, value in metadata.items()]))
+            check = input("Are you happy with this? (YES)")
+            if check != "YES":
+                exit()
+        # add time ran this script to metadata
+        file = os.path.basename(__file__)
+        if file not in metadata:
+            metadata[file] = time.asctime(time.gmtime(time.time()))
+        else:
+            print("Overwriting...")
+            metadata[file] = time.asctime(time.gmtime(time.time()))
+        with open(metadata_path, "w") as outfile:
+            json.dump(metadata, outfile)
 
     # load in config
     input_root = os.path.join(project_folder, "annotate/annotated")
@@ -74,6 +108,7 @@ def main():
     num_workers = config["num_workers"]
     loss_fn = config["loss_fn"]
     train_files = config["train_files"]
+    val_files = config["val_files"]
 
     # list items
     try:
@@ -109,12 +144,14 @@ def main():
         raise ValueError("Specify cpu or gpu !")
 
     # split files into train and validation
-    train_files = files[0:5]
-    val_files = files[5:-1]
+    # train_files = files[0:5]
+    # val_files = files[5:-1]
 
     # check train and test files
     print("Train files")
     print(train_files)
+    # print("Val files")
+    # print(val_files)
 
     # define transformations for train, test
     train_transform = [transforms.ToTensor()]
@@ -122,13 +159,17 @@ def main():
 
     # Initialise train and val dataset
     train_set = dataset.ImgDataset(input_root, train_files, ".parquet", train_transform)
-    val_set = dataset.ImgDataset(input_root, val_files, ".parquet", val_transform)
+    # val_set = dataset.ImgDataset(input_root, val_files, ".parquet", val_transform)
 
     print("Preprocessing datasets")
 
     # Pre-process train and val dataset
-    train_set.preprocess(os.path.join(preprocessed_folder, "train"))
-    val_set.preprocess(os.path.join(preprocessed_folder, "val"))
+    train_set.preprocess(
+        os.path.join(preprocessed_folder, "train"), labels=config["labels"]
+    )
+    val_set.preprocess(
+        os.path.join(preprocessed_folder, "val"), labels=config["labels"]
+    )
 
     # initialise dataloaders
     train_loader = DataLoader(
@@ -207,13 +248,11 @@ def main():
     # ---------------------#
 
     for file in files:
-        item = datastruc.item(None, None, None, None)
+        item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(config["input_folder"], file))
 
-        # load in histograms
-        histo_loc = os.path.join(config["input_histo_folder"], item.name + ".pkl")
-        with open(histo_loc, "rb") as f:
-            histo = pkl.load(f)
+        # convert to histo
+        histo, axis_2_chan = item.render_histo([config['channel'], config['alt_channel']])
 
         # ---- segment membranes ----
 
@@ -275,10 +314,9 @@ def main():
         )
 
         # save cell segmentation image - consider only zero channel
-        imgs = {key: value.T for (key, value) in histo.items()}
         save_loc = os.path.join(config["output_cell_img"], item.name + ".png")
         vis_img.visualise_seg(
-            imgs,
+            img,
             instance_mask,
             item.bin_sizes,
             channels=[0],

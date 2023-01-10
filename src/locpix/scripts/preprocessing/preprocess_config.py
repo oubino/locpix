@@ -22,6 +22,7 @@ from PyQt5.QtGui import QIntValidator
 from PyQt5.QtCore import Qt
 
 import yaml
+import os
 
 default_config_keys = [
     "x_col",
@@ -32,6 +33,7 @@ default_config_keys = [
     "dim",
     # "output_folder",
     "channel_choice",
+    "channel_label",
     "drop_pixel_col",
     "include_files",
     # "yaml_save_loc",
@@ -48,18 +50,30 @@ class InputWidget(QWidget):
 
     """
 
-    def __init__(self, files, config):
+    def __init__(self, config, csv_path, proj_path):
         """Constructor
         Args:
             files (list) : List of files that will be preprocessed
             config (dict) : Dictionary containing the configuration
+            csv_path (list) : List containing the path to the .csvs
+            proj_path (list) : List containing the path to the project folder
         """
 
         super().__init__()
         self.flo = QFormLayout()
 
+        # Load input data
+        self.input_data = QPushButton("Load input data")
+        self.input_data.clicked.connect(self.load_input_directory)
+        self.flo.addRow(self.input_data)
+
+        # Set project directory
+        self.project_directory = QPushButton("Set project directory")
+        self.project_directory.clicked.connect(self.load_project_directory)
+        self.flo.addRow(self.project_directory)
+
         # Load .yaml with button
-        self.load_button = QPushButton("Load yaml")
+        self.load_button = QPushButton("Optional (Load configuration)")
         self.load_button.clicked.connect(self.load_yaml)
         self.flo.addRow(self.load_button)
 
@@ -122,9 +136,6 @@ class InputWidget(QWidget):
 
         # files to include
         self.include_files = QListWidget()
-        for index, value in enumerate(files):
-            self.include_files.insertItem(index, value)
-            self.include_files.setSelectionMode(2)
         self.include_files.setToolTip("Files to include")
         self.flo.addRow("Files to include", self.include_files)
 
@@ -133,11 +144,53 @@ class InputWidget(QWidget):
         # self.save_loc_input.setToolTip("Yaml save location")
         # self.flo.addRow("yaml save location", self.save_loc_input)
 
+        # Finished button
+        self.finished_button = QPushButton("Finished!")
+        self.finished_button.clicked.connect(self.close)
+        self.flo.addRow(self.finished_button)
+
         self.setLayout(self.flo)
         # self.include_files.selectAll()
 
-        self.files = files
+        # self.files = files
         self.config = config
+        self.csv_path = csv_path
+        self.proj_path = proj_path
+
+    def load_input_directory(self):
+        """Load input directory from button"""
+
+        # Load folder
+        input_dir = QFileDialog.getExistingDirectory(
+            self, "window", "/home/some/folder"
+        )
+
+        self.csv_path.append(input_dir)
+
+        # list all .csv at input
+        if input_dir != "":
+
+            self.include_files.clear()
+
+            csvs = os.listdir(input_dir)
+            csvs = [csv.removesuffix(".csv") for csv in csvs if csv.endswith(".csv")]
+
+            for index, value in enumerate(csvs):
+                self.include_files.insertItem(index, value)
+                self.include_files.setSelectionMode(2)
+
+    def load_project_directory(self):
+        """Load project directory from button"""
+
+        # Load folder
+        project_dir = QFileDialog.getExistingDirectory(
+            self, "window", "/home/some/folder"
+        )
+
+        if project_dir == "":
+            print("Empty project directory")
+
+        self.proj_path.append(project_dir)
 
     def load_yaml(self):
         """Load the yaml"""
@@ -224,6 +277,7 @@ class InputWidget(QWidget):
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         reply = reply.exec()
+
         if reply == QMessageBox.StandardButton.Yes:
             self.set_config(self.config)
             event.accept()
@@ -231,7 +285,7 @@ class InputWidget(QWidget):
             event.ignore()
 
 
-def config_gui(files):
+def config_gui():
     """Config gui
     This function opens up a GUI for user to specify
     the configuration
@@ -243,10 +297,19 @@ def config_gui(files):
     app = QApplication([])  # sys.argv if need command line inputs
     # create widget
     config = {}
-    widget = InputWidget(files, config)
+    csv_path = []
+    proj_path = []
+    widget = InputWidget(config, csv_path, proj_path)
     widget.show()
     app.exec()
-    return config
+
+    if not csv_path:
+        raise ValueError("Input data was not specified")
+
+    if not proj_path:
+        raise ValueError("Project directory was not specified")
+
+    return config, csv_path[0], proj_path[0]
 
 
 def parse_config(config):
