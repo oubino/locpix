@@ -115,6 +115,10 @@ def main():
     # check train and test files
     if not set(train_files).isdisjoint(test_files):
         raise ValueError("Train files and test files shared files!!")
+    if len(set(train_files)) != len(train_files):
+        raise ValueError("Train files contains duplicates")
+    if len(set(test_files)) != len(test_files):
+        raise ValueError("Test files contains duplicates")
 
     # list items
     gt_file_path = os.path.join(project_folder, "annotate/annotated")
@@ -127,7 +131,7 @@ def main():
     fig_test, ax_test = plt.subplots()
 
     linestyles = ["dashdot", "-", "--", "dotted"]
-    methods = ["classic", "cellpose", "cellpose_trained_eval", "ilastik"]
+    methods = ["classic", "cellpose", "cellpose_train_eval", "ilastik"]
 
     output_overlay_pr_curves = os.path.join(
         project_folder, "membrane_performance/overlaid_pr_curves"

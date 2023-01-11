@@ -86,6 +86,12 @@ def main():
     # check test and val files
     if not set(test_files).isdisjoint(val_files):
         raise ValueError("Test files and val files shared files!!")
+    if len(set(train_files)) != len(train_files):
+        raise ValueError("Train files contains duplicates")
+    if len(set(test_files)) != len(test_files):
+        raise ValueError("Test files contains duplicates")
+    if len(set(val_files)) != len(val_files):
+        raise ValueError("Val files contains duplicates")
     print("Train files")
     print(train_files)
     print("val files")
