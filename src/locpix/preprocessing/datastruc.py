@@ -350,52 +350,57 @@ class item:
                               already has gt labels in it"
             )
 
-        if self.dim == 2:
-            # overlay all channels for src
-            if len(self.channels) != 1:
-                # create the viewer and add each channel (first channel on own,
-                # then iterate through others)
-                colormap_list = cmap
-                # note image shape when plotted: [x, y]
-                viewer = napari.view_image(
-                    self.histo[self.channels[0]].T,
-                    name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
-                    rgb=False,
-                    blending="additive",
-                    colormap=colormap_list[0],
-                    gamma=2,
-                    contrast_limits=[0, 30],
-                )
-                for index, chan in enumerate(self.channels[1:]):
-                    viewer.add_image(
-                        self.histo[chan].T,
-                        name=f"Channel {chan}/{self.chan_2_label(chan)}",
+        while True:
+            if self.dim == 2:
+                # overlay all channels for src
+                if len(self.channels) != 1:
+                    # create the viewer and add each channel (first channel on own,
+                    # then iterate through others)
+                    colormap_list = cmap
+                    # note image shape when plotted: [x, y]
+                    viewer = napari.view_image(
+                        self.histo[self.channels[0]].T,
+                        name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
                         rgb=False,
                         blending="additive",
-                        colormap=colormap_list[index + 1],
+                        colormap=colormap_list[0],
                         gamma=2,
                         contrast_limits=[0, 30],
                     )
-                napari.run()
+                    for index, chan in enumerate(self.channels[1:]):
+                        viewer.add_image(
+                            self.histo[chan].T,
+                            name=f"Channel {chan}/{self.chan_2_label(chan)}",
+                            rgb=False,
+                            blending="additive",
+                            colormap=colormap_list[index + 1],
+                            gamma=2,
+                            contrast_limits=[0, 30],
+                        )
+                    napari.run()
 
-            # only one channel
-            else:
-                img = self.histo[self.channels[0]].T
-                # create the viewer and add the image
-                viewer = napari.view_image(
-                    img,
-                    name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
-                    rgb=False,
-                    gamma=2,
-                    contrast_limits=[0, 30],
-                )
-                napari.run()
+                # only one channel
+                else:
+                    img = self.histo[self.channels[0]].T
+                    # create the viewer and add the image
+                    viewer = napari.view_image(
+                        img,
+                        name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
+                        rgb=False,
+                        gamma=2,
+                        contrast_limits=[0, 30],
+                    )
+                    napari.run()
 
-            # histogram mask should be assigned to GUI output
-            self.histo_mask = viewer.layers["Labels"].data.T
+                # histogram mask should be assigned to GUI output
+                try:
+                    self.histo_mask = viewer.layers["Labels"].data.T
+                    break
+                except KeyError:
+                    print("You must add labels!")
 
-        elif self.dim == 3:
-            print("segment 3D image")
+            elif self.dim == 3:
+                print("segment 3D image")
 
         # segment the coordinates
         self._manual_seg_pixel_2_coord()
