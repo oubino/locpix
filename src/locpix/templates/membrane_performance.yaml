@@ -1,5 +1,5 @@
 # which to maximise (recall or f)
-maximise_choice: 'f'
+maximise_choice: 'recall'
 
 # membrane images
 vis_threshold: 0

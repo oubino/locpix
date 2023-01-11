@@ -33,7 +33,6 @@ from locpix.scripts.img_seg import membrane_performance_config
 import json
 import time
 
-
 def main():
 
     parser = argparse.ArgumentParser(
@@ -131,7 +130,7 @@ def main():
     fig_test, ax_test = plt.subplots()
 
     linestyles = ["dashdot", "-", "--", "dotted"]
-    methods = ["classic", "cellpose", "cellpose_train_eval", "ilastik"]
+    methods = ["classic", "cellpose_eval", "cellpose_train_eval", "ilastik"]
 
     output_overlay_pr_curves = os.path.join(
         project_folder, "membrane_performance/overlaid_pr_curves"

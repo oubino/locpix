@@ -30,4 +30,4 @@ sum_chan: True
 #   i.e. does all the files
 # - metadata
 #   i.e. does the test files found in metadata
-test_files: metadata
+test_files: all
