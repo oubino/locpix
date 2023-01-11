@@ -112,6 +112,9 @@ def generate_conf_matrix(gtlist, predlist, classes, saveloc):
                 size=16,
              )
 
+    print('Check this')
+    print(conf_mat)
+
     # ax.set_title("Confusion matrix")
     fig.tight_layout()
 
