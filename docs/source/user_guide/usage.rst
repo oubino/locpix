@@ -163,6 +163,8 @@ To train a Cellpose model we have had to include/modify the following.
 
 Prepare the data for Cellpose training
 
+Crucially this is also where the train/val/test split is defined and saved to the project metadata.
+
 .. code-block:: console
 
    (locpix-env) $ cellpose_train_prep -i path/to/project/directory -c path/to/config/file
@@ -284,7 +286,7 @@ Save the project wherever with any name, but we recommend saving in
    
    path/to/project/directory/ilastik/models
 
-you will have to create a new folder called models, with file name
+you will have to create a new folder called models and save the project with name
 
 .. code-block:: console
    
@@ -315,10 +317,7 @@ e.g. (Gaussian smoothing sigma 0.3 then Gaussian smoothing sigma 0.7)
 and evaluate which ones you think are pulling out relevant features; 
 Then click select features again and remove ones you thought weren't useful!
 
-We choose: Gaussian smoothing (3.5, 5); Laplacian of Gaussian (3.5, 5); 
-Gaussian Gradient Magnitude (1.6, 3.5, 5); Difference of Gaussians (3.5, 5); 
-Structure Tensor Eigenvalues (1.6, 3.5, 5, 10); Hessian of Gaussian 
-Eigenvalues (3.5, 5, 10)
+We choose: All features.
 
 Then click training.
 
@@ -337,9 +336,8 @@ and less visible.
 
 Then click on current view (LHS drop down) and change image.
 
-We repeated this process for 5 images (Fov1,Fov2,Fov3,Fov5,Fov6), 
-leaving the remaining 4 (Fov 7,8,9,10) to see what it would look on its own.
-#TODO: #13 CHANGE THIS IF IMAGES CHANGE
+We repeated this process for training images, 
+leaving the remaining to see what it would look on its own.
 
 Then click prediction export, make sure probabilities is chosen. 
 
@@ -394,7 +392,7 @@ and saving in
    path/to/project/directory/ilastik/models
 
 Click under raw data add new and add separate images, 
-now just add one image - we choose Fov1 - this will be located in 
+add all images and remember to only train on train images!
 
 .. code-block:: console
 
@@ -419,18 +417,18 @@ We used:
 * Input channel: 0
 * Threshold: 0.5
 * Min boundary size: 0
-* Presmooth: 3
-* Seed labelling: Connected
-* Min superpixel size: 100
+* Smooth: 3
+* Alpha: .9
 
 Then click training and multicut. 
 
-Then select features - I choose all features for raw data 0, 
-probabilities 0 and 1.
+Then select features - I choose all features.
 
 Then left click to drop an edge right click to preserve an edge.
 
-Then click live predict, then click update now to see updates to multicut.
+Then click then click update now to see updates to multicut.
+
+View multicut edges and superpixel edges and correct the mistakes for each image.
 
 Then click data export and choose same settings as before but now 
 choose the dataset directory as
@@ -464,9 +462,6 @@ i.e. the path will look like
 
       Alternatively use their folder select function
 
+Then click export all
 
-Train/adjust just Fov1_DC 
-
-Click batch processing and select all images (including the one you trained using) and probabilities
-
-Then click process all files
+Then save project : ctrl + s

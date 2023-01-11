@@ -91,7 +91,7 @@ def main():
         if file not in metadata:
             metadata[file] = time.asctime(time.gmtime(time.time()))
         else:
-            print("Overwriting...")
+            print("Overwriting metadata...")
             metadata[file] = time.asctime(time.gmtime(time.time()))
         with open(metadata_path, "w") as outfile:
             json.dump(metadata, outfile)
@@ -109,6 +109,10 @@ def main():
     loss_fn = config["loss_fn"]
     train_files = config["train_files"]
     val_files = config["val_files"]
+
+    # check train and test files
+    if not set(train_files).isdisjoint(val_files):
+        raise ValueError("Train files and val files shared files!!")
 
     # list items
     try:

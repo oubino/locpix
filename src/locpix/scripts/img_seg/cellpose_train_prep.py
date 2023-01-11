@@ -73,6 +73,32 @@ def main():
             config = yaml.safe_load(ymlfile)
             # ilastik_output_config.parse_config(config)
 
+    # check train val test files
+    train_files = config["train_files"]
+    val_files = config["val_files"]
+    test_files = config["test_files"]
+     # check train and val files
+    if not set(train_files).isdisjoint(val_files):
+        raise ValueError("Train files and val files shared files!!")
+    # check train and test files
+    if not set(train_files).isdisjoint(test_files):
+        raise ValueError("Train files and test files shared files!!")
+    # check test and val files
+    if not set(test_files).isdisjoint(val_files):
+        raise ValueError("Test files and val files shared files!!")
+    if len(set(train_files)) != len(train_files):
+        raise ValueError("Train files contains duplicates")
+    if len(set(test_files)) != len(test_files):
+        raise ValueError("Test files contains duplicates")
+    if len(set(val_files)) != len(val_files):
+        raise ValueError("Val files contains duplicates")
+    print("Train files")
+    print(train_files)
+    print("val files")
+    print(val_files)
+    print("Test files")
+    print(test_files)
+
     metadata_path = os.path.join(project_folder, "metadata.json")
     with open(
         metadata_path,
@@ -84,22 +110,22 @@ def main():
             check = input("Are you happy with this? (YES)")
             if check != "YES":
                 exit()
+        # add train val test split
+        metadata['train_files'] = train_files
+        metadata['val_files'] = val_files
+        metadata['test_files'] = test_files
         # add time ran this script to metadata
         file = os.path.basename(__file__)
         if file not in metadata:
             metadata[file] = time.asctime(time.gmtime(time.time()))
         else:
-            print("Overwriting...")
+            print("Overwriting metadata...")
             metadata[file] = time.asctime(time.gmtime(time.time()))
         with open(metadata_path, "w") as outfile:
             json.dump(metadata, outfile)
 
-    # load in config
-    input_root = os.path.join(project_folder, "annotate/annotated")
-    train_files = config["train_files"]
-    test_files = config["test_files"]
-
     # list items
+    input_root = os.path.join(project_folder, "annotate/annotated")
     try:
         files = os.listdir(input_root)
         files = [os.path.splitext(file)[0] for file in files]
@@ -109,11 +135,11 @@ def main():
     # make necessary folders if not present
     preprocessed_folder = os.path.join(project_folder, "cellpose_train")
     train_folder = os.path.join(preprocessed_folder, "train")
-    test_folder = os.path.join(preprocessed_folder, "test")
+    val_folder = os.path.join(preprocessed_folder, "val")
     folders = [
         preprocessed_folder,
         train_folder,
-        test_folder,
+        val_folder,
     ]
     for folder in folders:
         if os.path.exists(folder):
@@ -121,15 +147,9 @@ def main():
         else:
             os.makedirs(folder)
 
-    # check train and test files
-    print("Train files")
-    print(train_files)
-    print("Test files")
-    print(test_files)
-
     # convert files into imgs and masks
     train_files = [os.path.join(input_root, file + ".parquet") for file in train_files]
-    test_files = [os.path.join(input_root, file + ".parquet") for file in test_files]
+    val_files = [os.path.join(input_root, file + ".parquet") for file in val_files]
     parquet_2_img(
         train_files,
         config["labels"],
@@ -139,12 +159,12 @@ def main():
         train_folder,
     )
     parquet_2_img(
-        test_files,
+        val_files,
         config["labels"],
         config["sum_chan"],
         config["img_threshold"],
         config["img_interpolate"],
-        test_folder,
+        val_folder,
     )
 
     # threshold imgs
@@ -153,9 +173,9 @@ def main():
     #    imgs,
     #    labels,
     #    train_files=train_files,
-    #    test_data=test_imgs,
-    #    test_labels=test_labels,
-    #    test_files=test_files,
+    #    val_data=val_imgs,
+    #    val_labels=val_labels,
+    #    val_files=val_files,
     #    channels=config["channels"],
     #    save_path=model_folder,
     #    save_every=config["save_every"],

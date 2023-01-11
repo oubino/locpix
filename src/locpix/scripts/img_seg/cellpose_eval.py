@@ -99,16 +99,29 @@ def main():
         if file not in metadata:
             metadata[file] = time.asctime(time.gmtime(time.time()))
         else:
-            print("Overwriting...")
+            print("Overwriting metadata...")
             metadata[file] = time.asctime(time.gmtime(time.time()))
         with open(metadata_path, "w") as outfile:
             json.dump(metadata, outfile)
 
     # list items
-    files = [
-        os.path.join(project_folder, "annotate/annotated", file)
-        for file in config["test_files"]
-    ]
+    if config["test_files"] == "all":
+        file_path = os.path.join(project_folder, "annotate/annotated")
+        files = os.listdir(file_path)
+        files = [os.path.join(file_path, file) for file in files]
+    elif config["test_files"] == "metadata":
+        with open(metadata_path, ) as file:
+            metadata = json.load(file)
+            test_files = metadata["test_files"]
+            files = [
+                os.path.join(project_folder, "annotate/annotated", file + '.parquet')
+                for file in test_files
+            ]
+    else:
+        files = [
+            os.path.join(project_folder, "annotate/annotated", file + '.parquet')
+            for file in config["test_files"]
+        ]
 
     # output folder
     if args.output_folder is None:
@@ -136,7 +149,7 @@ def main():
     for file in files:
 
         item = datastruc.item(None, None, None, None, None)
-        item.load_from_parquet(file + ".parquet")
+        item.load_from_parquet(file)
 
         # convert to histo
         histo, channel_map, label_map = item.render_histo(

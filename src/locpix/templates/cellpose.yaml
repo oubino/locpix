@@ -20,13 +20,7 @@ channel: 'egfr'
 alt_channel: 'ereg'
 
 # whether to sum channels (currently only channel 0 and 1)
-sum_chan: False
+sum_chan: True
 
 # files to evaluate on
-test_files:
-- egfr_568_ereg_647_fov2
-
-#- Fov7_DC
-#- Fov8_DC
-#- Fov9_DC
-#- Fov10_DC
+test_files: all
