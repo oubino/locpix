@@ -427,9 +427,13 @@ class item:
                 columns=[
                     ("x_pixel", pl.Int64),
                     ("y_pixel", pl.Int64),
-                    ("gt_label", pl.Float64),
+                    ("gt_label", pl.Int64),
                 ],
             ).sort(["x_pixel", "y_pixel"])
+
+            # drop gt_label if already present
+            if "gt_label" in self.df.columns:
+                self.df = self.df.drop("gt_label")
 
             # join mask dataframe
             self.df = self.df.join(mask_df, how="inner", on=["x_pixel", "y_pixel"])
@@ -760,7 +764,7 @@ class item:
         histo_width = np.max(x_pixels) + 1
         histo_height = np.max(y_pixels) + 1
 
-        histo = np.empty((histo_width, histo_height))
+        histo = np.empty((histo_width, histo_height), dtype=np.int64)
 
         histo[x_pixels, y_pixels] = labels
 
