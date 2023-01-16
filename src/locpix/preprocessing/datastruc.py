@@ -740,7 +740,7 @@ class item:
         for chan in channels:
             df = self.df.filter(pl.col("channel") == chan)
 
-            histo = np.empty((x_bins, y_bins))
+            histo = np.zeros((x_bins, y_bins))
             df = df.groupby(by=["x_pixel", "y_pixel"]).count()
             x_pixels = df["x_pixel"].to_numpy()
             y_pixels = df["y_pixel"].to_numpy()
@@ -764,7 +764,7 @@ class item:
         histo_width = np.max(x_pixels) + 1
         histo_height = np.max(y_pixels) + 1
 
-        histo = np.empty((histo_width, histo_height), dtype=np.int64)
+        histo = np.zeros((histo_width, histo_height), dtype=np.int64)
 
         histo[x_pixels, y_pixels] = labels
 
