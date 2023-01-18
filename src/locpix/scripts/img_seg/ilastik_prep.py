@@ -14,7 +14,6 @@ from locpix.scripts.img_seg import ilastik_prep_config
 import json
 import time
 
-
 def main():
 
     parser = argparse.ArgumentParser(
@@ -98,15 +97,25 @@ def main():
 
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "ilastik/prep")
-    if os.path.exists(output_folder):
-        raise ValueError(f"Cannot proceed as {output_folder} already exists")
+
+    img_folder = os.path.join(output_folder, "imgs")
+    if os.path.exists(img_folder):
+        raise ValueError(f"Cannot proceed as {img_folder} already exists")
     else:
-        os.makedirs(output_folder)
+        os.makedirs(img_folder)
+
+    mask_folder = os.path.join(output_folder, "masks")
+    if os.path.exists(mask_folder):
+        raise ValueError(f"Cannot proceed as {mask_folder} already exists")
+    else:
+        os.makedirs(mask_folder)
 
     for file in files:
 
         item = datastruc.item(None, None, None, None, None)
         item.load_from_parquet(os.path.join(input_folder, file))
+
+        # ---------- images -----------
 
         # conver to histo
         histo, channel_map, label_map = item.render_histo(config["channels"])
@@ -122,8 +131,48 @@ def main():
 
         # all images are saved in yxc
         file_name = file.removesuffix(".parquet")
-        save_loc = os.path.join(output_folder, file_name + ".npy")
+        save_loc = os.path.join(output_folder, "imgs", file_name + ".npy")
         np.save(save_loc, img)
+
+        # --------- masks -------------
+
+        # label histo
+        label_histo = item.render_seg()
+
+        # label img
+        # need to tranpose histogram for image space
+        label_img = np.transpose(label_histo, (1, 0))
+
+        # in ilastik
+        # 0: no label
+        # 1: membrane
+        # 2: not membrane
+        # we mean 
+        # 0: not membrane
+        # 1: membrane
+        # therefore need to set all 0s to 2s
+        label_img = np.where(label_img==0, 2, label_img)
+        label_img = np.expand_dims(label_img, axis=2)
+        label_img = label_img.astype('uint8')
+
+        # separate into bkg and label
+        bkg = np.where(label_img==2, label_img, 0)
+        label = np.where(label_img==1, label_img, 0)
+
+        # undersample the background as otherwise hard to 
+        # load into Ilastik
+        rng = np.random.default_rng()
+        noise = rng.choice(2, size=label_img.shape, p=[.8,.2])
+        bkg = np.where(noise==0, 0, bkg)
+
+        # combine bkg back with label
+        label_img = label + bkg
+
+        # save masks
+        file_name = file.removesuffix(".parquet")
+        save_loc = os.path.join(output_folder, "masks", file_name + ".npy")
+        np.save(save_loc, label_img)
+
 
     # save yaml file
     yaml_save_loc = os.path.join(project_folder, "ilastik_prep.yaml")
