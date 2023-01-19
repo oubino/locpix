@@ -114,10 +114,10 @@ def main():
         val_fold = []
 
         for index in train_index:
-            train_fold.append(files[index])
+            train_fold.append(files[index][:-8])
 
         for index in val_index:
-            val_fold.append(files[index])
+            val_fold.append(files[index][:-8])
 
         train_folds.append(train_fold)
         val_folds.append(val_fold)
