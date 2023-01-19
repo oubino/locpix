@@ -31,7 +31,7 @@ def visualise_seg_item(item, column):
     histo_width = item.histo[0].shape[0]
     histo_height = item.histo[0].shape[1]
 
-    histo = np.empty((histo_width, histo_height))
+    histo = np.zeros((histo_width, histo_height))
 
     histo[x_pixels, y_pixels] = labels
 

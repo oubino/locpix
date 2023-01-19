@@ -26,14 +26,28 @@ import yaml
 import os
 import json
 
-default_config_keys = [
+
+# two options for default keys
+
+default_config_keys_0 = [
     "vis_threshold",
     "vis_interpolate",
     "model",
     "diameter",
     "channels",
     "sum_chan",
-    "user_model_path",  # new
+    "test_files",  # new
+    "channel",
+    "alt_channel",
+]
+
+default_config_keys_1 = [
+    "vis_threshold",
+    "vis_interpolate",
+    "user_model_path",
+    "diameter",
+    "channels",
+    "sum_chan",
     "test_files",  # new
     "channel",
     "alt_channel",
@@ -180,10 +194,12 @@ class InputWidget(QWidget):
         if fname != "":
             with open(fname, "r") as ymlfile:
                 load_config = yaml.safe_load(ymlfile)
-                if sorted(load_config.keys()) == sorted(default_config_keys):
+                if sorted(load_config.keys()) == sorted(default_config_keys_0):
+                    self.load_config(load_config)
+                elif sorted(load_config.keys()) == sorted(default_config_keys_1):
                     self.load_config(load_config)
                 else:
-                    print("Can't load in as keys don't match!")
+                    raise ValueError("Can't load in as keys don't match!")
 
     def load_config(self, load_config):
         """Load the config into the gui
@@ -277,7 +293,7 @@ def parse_config(config):
         config (yml file): The configuration
             .yaml file"""
 
-    if sorted(config.keys()) != sorted(default_config_keys):
+    if (sorted(config.keys()) != sorted(default_config_keys_0)) and (sorted(config.keys()) != sorted(default_config_keys_1)):
         raise ValueError(
             "Did not specify necessary default \
             configutation arguments"

@@ -3,7 +3,7 @@ vis_threshold: 5
 vis_interpolate: 'log2'
 
 # cellpose parameters
-user_model_path: 'C:\Users\olive\OneDrive - University of Leeds\Project\output\locpix_project\cellpose_model\models\model.pt'
+user_model_path: 'C:\Users\olive\OneDrive - University of Leeds\Project\output\c15_cells\cellpose_train\train\models\cellpose_residual_on_style_on_concatenation_off_train_2023_01_10_17_44_21.351010'
 diameter: 50
 # "Model is trained on two-channel images, where the first channel is the channel to segment, 
 # and the second channel is an optional nuclear channel."
@@ -20,13 +20,14 @@ channel: 'egfr'
 alt_channel: 'ereg'
 
 # whether to sum channels (currently only channel 0 and 1)
-sum_chan: False
+sum_chan: True
 
-# files to evaluate on
-test_files:
-- egfr_568_ereg_647_fov2
-
-#- Fov7_DC
-#- Fov8_DC
-#- Fov9_DC
-#- Fov10_DC
+# options:
+# - list files
+#   e.g. - Fov7_DC
+#        - Fov8_DC
+# - all 
+#   i.e. does all the files
+# - metadata
+#   i.e. does the test files found in metadata
+test_files: all

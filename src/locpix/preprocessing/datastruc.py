@@ -350,52 +350,57 @@ class item:
                               already has gt labels in it"
             )
 
-        if self.dim == 2:
-            # overlay all channels for src
-            if len(self.channels) != 1:
-                # create the viewer and add each channel (first channel on own,
-                # then iterate through others)
-                colormap_list = cmap
-                # note image shape when plotted: [x, y]
-                viewer = napari.view_image(
-                    self.histo[self.channels[0]].T,
-                    name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
-                    rgb=False,
-                    blending="additive",
-                    colormap=colormap_list[0],
-                    gamma=2,
-                    contrast_limits=[0, 30],
-                )
-                for index, chan in enumerate(self.channels[1:]):
-                    viewer.add_image(
-                        self.histo[chan].T,
-                        name=f"Channel {chan}/{self.chan_2_label(chan)}",
+        while True:
+            if self.dim == 2:
+                # overlay all channels for src
+                if len(self.channels) != 1:
+                    # create the viewer and add each channel (first channel on own,
+                    # then iterate through others)
+                    colormap_list = cmap
+                    # note image shape when plotted: [x, y]
+                    viewer = napari.view_image(
+                        self.histo[self.channels[0]].T,
+                        name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
                         rgb=False,
                         blending="additive",
-                        colormap=colormap_list[index + 1],
+                        colormap=colormap_list[0],
                         gamma=2,
                         contrast_limits=[0, 30],
                     )
-                napari.run()
+                    for index, chan in enumerate(self.channels[1:]):
+                        viewer.add_image(
+                            self.histo[chan].T,
+                            name=f"Channel {chan}/{self.chan_2_label(chan)}",
+                            rgb=False,
+                            blending="additive",
+                            colormap=colormap_list[index + 1],
+                            gamma=2,
+                            contrast_limits=[0, 30],
+                        )
+                    napari.run()
 
-            # only one channel
-            else:
-                img = self.histo[self.channels[0]].T
-                # create the viewer and add the image
-                viewer = napari.view_image(
-                    img,
-                    name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
-                    rgb=False,
-                    gamma=2,
-                    contrast_limits=[0, 30],
-                )
-                napari.run()
+                # only one channel
+                else:
+                    img = self.histo[self.channels[0]].T
+                    # create the viewer and add the image
+                    viewer = napari.view_image(
+                        img,
+                        name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
+                        rgb=False,
+                        gamma=2,
+                        contrast_limits=[0, 30],
+                    )
+                    napari.run()
 
-            # histogram mask should be assigned to GUI output
-            self.histo_mask = viewer.layers["Labels"].data.T
+                # histogram mask should be assigned to GUI output
+                try:
+                    self.histo_mask = viewer.layers["Labels"].data.T
+                    break
+                except KeyError:
+                    print("You must add labels!")
 
-        elif self.dim == 3:
-            print("segment 3D image")
+            elif self.dim == 3:
+                print("segment 3D image")
 
         # segment the coordinates
         self._manual_seg_pixel_2_coord()
@@ -422,9 +427,13 @@ class item:
                 columns=[
                     ("x_pixel", pl.Int64),
                     ("y_pixel", pl.Int64),
-                    ("gt_label", pl.Float64),
+                    ("gt_label", pl.Int64),
                 ],
             ).sort(["x_pixel", "y_pixel"])
+
+            # drop gt_label if already present
+            if "gt_label" in self.df.columns:
+                self.df = self.df.drop("gt_label")
 
             # join mask dataframe
             self.df = self.df.join(mask_df, how="inner", on=["x_pixel", "y_pixel"])
@@ -665,7 +674,7 @@ class item:
         bin_sizes = ast.literal_eval(bin_sizes.decode("utf-8"))
         df = pl.from_arrow(arrow_table)
 
-        print("channel label", channel_label)
+        # print("channel label", channel_label)
 
         self.__init__(
             name=name,
@@ -731,7 +740,7 @@ class item:
         for chan in channels:
             df = self.df.filter(pl.col("channel") == chan)
 
-            histo = np.empty((x_bins, y_bins))
+            histo = np.zeros((x_bins, y_bins))
             df = df.groupby(by=["x_pixel", "y_pixel"]).count()
             x_pixels = df["x_pixel"].to_numpy()
             y_pixels = df["y_pixel"].to_numpy()
@@ -755,7 +764,7 @@ class item:
         histo_width = np.max(x_pixels) + 1
         histo_height = np.max(y_pixels) + 1
 
-        histo = np.empty((histo_width, histo_height))
+        histo = np.zeros((histo_width, histo_height), dtype=np.int64)
 
         histo[x_pixels, y_pixels] = labels
 
