@@ -273,6 +273,11 @@ class item:
     def _coord_2_pixel(self):
         """Calculate the pixels corresponding to each localisation"""
 
+        # drop pixel columns if already present
+        for col in ["x_pixel", "y_pixel", "z_pixel"]:
+            if col in self.df.columns:
+                self.df = self.df.drop(col)
+
         # necessary for pd.eval below
         df_min = self.df.min()
         x_min = df_min["x"][0]
