@@ -96,90 +96,95 @@ def main():
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
-    # if output directory not present create it
-    output_membrane_prob = os.path.join(
-        project_folder, "ilastik/output/membrane/prob_map"
-    )
-    if os.path.exists(output_membrane_prob):
-        raise ValueError(f"Cannot proceed as {output_membrane_prob} already exists")
-    else:
-        os.makedirs(output_membrane_prob)
 
-    # if output directory not present create it
-    output_cell_df = os.path.join(project_folder, "ilastik/output/cell/dataframe")
-    if os.path.exists(output_cell_df):
-        raise ValueError(f"Cannot proceed as {output_cell_df} already exists")
-    else:
-        os.makedirs(output_cell_df)
+    # need to iterate over folds
 
-    # if output directory not present create it
-    output_cell_img = os.path.join(project_folder, "ilastik/output/cell/img")
-    if os.path.exists(output_cell_img):
-        raise ValueError(f"Cannot proceed as {output_cell_img} already exists")
-    else:
-        os.makedirs(output_cell_img)
+    for fold in range(5):
 
-    for file in files:
-        item = datastruc.item(None, None, None, None, None)
-        item.load_from_parquet(os.path.join(input_folder, file))
-
-        # convert to histo
-        histo, channel_map, label_map = item.render_histo(
-            [config["channel"], config["alt_channel"]]
+        # if output directory not present create it
+        output_membrane_prob = os.path.join(
+            project_folder, f"ilastik/output/membrane/prob_map/{fold}"
         )
+        if os.path.exists(output_membrane_prob):
+            raise ValueError(f"Cannot proceed as {output_membrane_prob} already exists")
+        else:
+            os.makedirs(output_membrane_prob)
 
-        # ---- membrane segmentation ----
+        # if output directory not present create it
+        output_cell_df = os.path.join(project_folder, f"ilastik/output/cell/dataframe/{fold}")
+        if os.path.exists(output_cell_df):
+            raise ValueError(f"Cannot proceed as {output_cell_df} already exists")
+        else:
+            os.makedirs(output_cell_df)
 
-        # load in ilastik_seg
-        input_membrane_prob = os.path.join(project_folder, "ilastik/ilastik_pixel/npy")
-        membrane_prob_mask_loc = os.path.join(input_membrane_prob, item.name + ".npy")
-        ilastik_seg = np.load(membrane_prob_mask_loc)
+        # if output directory not present create it
+        output_cell_img = os.path.join(project_folder, f"ilastik/output/cell/img/{fold}")
+        if os.path.exists(output_cell_img):
+            raise ValueError(f"Cannot proceed as {output_cell_img} already exists")
+        else:
+            os.makedirs(output_cell_img)
 
-        # ilastik_seg is [y,x,c] where channel 0 is membranes, channel 1 is inside cells
-        # given we only have labels for membranes and not inside cells
-        # will currently ignore
-        # chanel 1
-        ilastik_seg = ilastik_seg[:, :, 0]
+        for file in files:
+            item = datastruc.item(None, None, None, None, None)
+            item.load_from_parquet(os.path.join(input_folder, file))
 
-        # save the probability map
-        prob_loc = os.path.join(output_membrane_prob, item.name + ".npy")
-        np.save(prob_loc, ilastik_seg)
+            # convert to histo
+            histo, channel_map, label_map = item.render_histo(
+                [config["channel"], config["alt_channel"]]
+            )
 
-        # ---- cell segmentation ----
+            # ---- membrane segmentation ----
 
-        # load in ilastik_seg
-        input_cell_mask = os.path.join(project_folder, "ilastik/ilastik_boundary/npy")
-        cell_mask_loc = os.path.join(input_cell_mask, item.name + ".npy")
-        ilastik_seg = np.load(cell_mask_loc)
+            # load in ilastik_seg
+            input_membrane_prob = os.path.join(project_folder, f"ilastik/ilastik_pixel/{fold}")
+            membrane_prob_mask_loc = os.path.join(input_membrane_prob, item.name + ".npy")
+            ilastik_seg = np.load(membrane_prob_mask_loc)
 
-        # ilastik_seg is [y,x,c] where channel 0 is segmentation
-        # where each integer represents different instance of a cell
-        # i.e. 1 = one cell; 2 = different cell; etc.
-        ilastik_seg = ilastik_seg[:, :, 0]
+            # ilastik_seg is [y,x,c] where channel 0 is membranes, channel 1 is inside cells
+            # given we only have labels for membranes and not inside cells
+            # will currently ignore
+            # chanel 1
+            ilastik_seg = ilastik_seg[:, :, 0]
 
-        # save instance mask to dataframe
-        df = item.mask_pixel_2_coord(ilastik_seg)
-        item.df = df
-        item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
+            # save the probability map
+            prob_loc = os.path.join(output_membrane_prob, item.name + ".npy")
+            np.save(prob_loc, ilastik_seg)
 
-        # save cell segmentation image - consider only one channel
-        img = np.transpose(histo, (0, 2, 1))
-        save_loc = os.path.join(output_cell_img, item.name + ".png")
-        vis_img.visualise_seg(
-            img,
-            ilastik_seg,
-            item.bin_sizes,
-            axes=[0],
-            label_map=label_map,
-            threshold=config["vis_threshold"],
-            how=config["vis_interpolate"],
-            blend_overlays=True,
-            alpha_seg=0.5,
-            origin="upper",
-            save=True,
-            save_loc=save_loc,
-            four_colour=True,
-        )
+            # ---- cell segmentation ----
+
+            # load in ilastik_seg
+            input_cell_mask = os.path.join(project_folder, f"ilastik/ilastik_boundary/{fold}")
+            cell_mask_loc = os.path.join(input_cell_mask, item.name + ".npy")
+            ilastik_seg = np.load(cell_mask_loc)
+
+            # ilastik_seg is [y,x,c] where channel 0 is segmentation
+            # where each integer represents different instance of a cell
+            # i.e. 1 = one cell; 2 = different cell; etc.
+            ilastik_seg = ilastik_seg[:, :, 0]
+
+            # save instance mask to dataframe
+            df = item.mask_pixel_2_coord(ilastik_seg)
+            item.df = df
+            item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
+
+            # save cell segmentation image - consider only one channel
+            img = np.transpose(histo, (0, 2, 1))
+            save_loc = os.path.join(output_cell_img, item.name + ".png")
+            vis_img.visualise_seg(
+                img,
+                ilastik_seg,
+                item.bin_sizes,
+                axes=[0],
+                label_map=label_map,
+                threshold=config["vis_threshold"],
+                how=config["vis_interpolate"],
+                blend_overlays=True,
+                alpha_seg=0.5,
+                origin="upper",
+                save=True,
+                save_loc=save_loc,
+                four_colour=True,
+            )
 
         # save yaml file
         yaml_save_loc = os.path.join(project_folder, "ilastik_output.yaml")
