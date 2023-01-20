@@ -88,11 +88,9 @@ def main():
     # create train and test folder
     train_folder = os.path.join(project_folder, "train_files")
     test_folder = os.path.join(project_folder, "test_files")
-    val_folder = os.path.join(project_folder, "val_files")
     folders = [
         train_folder,
         test_folder,
-        val_folder,
     ]
     for folder in folders:
         if os.path.exists(folder):
