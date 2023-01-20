@@ -53,8 +53,9 @@ def main(*args):
     parser.add_argument(
         "-u",
         "--user_model",
-        action="store_true",
-        help="use the user model",
+        action="store",
+        type=str,
+        help="The user model to load",
     )
 
     # so can be parsed either command line or as such
@@ -62,6 +63,8 @@ def main(*args):
         args = parser.parse_args()
     else:
         args = parser.parse_args(args[0])
+
+    print(args)
 
     # if want to run in headless mode specify all arguments
     if args.project_directory is None and args.config is None:
@@ -173,7 +176,7 @@ def main(*args):
         imgs = [img]
 
         if args.user_model is not None:
-            model = models.CellposeModel(pretrained_model=args.user_model)#config["user_model_path"])
+            model = models.CellposeModel(pretrained_model=args.user_model)
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow

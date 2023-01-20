@@ -50,13 +50,6 @@ def main():
         action="store_true",
         help="check the metadata for the specified project and" "seek confirmation!",
     )
-    parser.add_argument(
-        "-f",
-        "--fold",
-        action="store",
-        type=int,
-        help="the fold to preprocess",
-    )
 
     args = parser.parse_args()
 
@@ -109,7 +102,7 @@ def main():
     folds = len(metadata["train_folds"])
 
     # cellpose test prep
-    cellpose_train_prep.preprocess_test_files(project_folder, config, metadata, fold)
+    cellpose_train_prep.preprocess_test_files(project_folder, config, metadata)
 
     # make folder
     cellpose_train_folder = os.path.join(project_folder, "cellpose_train")
