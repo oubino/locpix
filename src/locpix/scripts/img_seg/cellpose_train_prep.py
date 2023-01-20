@@ -105,7 +105,7 @@ def preprocess_test_files(project_folder, config, metadata):
             the project"""
 
     folds = len(metadata["train_folds"])
-    for fold in folds:
+    for fold in range(folds):
         # check train val test files
         train_files = metadata["train_folds"][fold]
         val_files = metadata["val_folds"][fold]

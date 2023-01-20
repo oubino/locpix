@@ -110,16 +110,16 @@ def main():
     train_folds = []
     val_folds = []
 
-    for (train_index, val_index) in kf.split(files):
+    for (train_index, val_index) in kf.split(train_files):
 
         train_fold = []
         val_fold = []
 
         for index in train_index:
-            train_fold.append(files[index][:-8])
+            train_fold.append(train_files[index][:-8])
 
         for index in val_index:
-            val_fold.append(files[index][:-8])
+            val_fold.append(train_files[index][:-8])
 
         train_folds.append(train_fold)
         val_folds.append(val_fold)
