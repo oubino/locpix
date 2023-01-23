@@ -156,12 +156,16 @@ def main():
             print(f"{method} ...")
 
             # get folder names
+            
             if method == "ilastik":
                 seg_folder = os.path.join(
                     project_folder, f"ilastik/output/membrane/prob_map/{fold}"
                 )
-            else:
-                seg_folder = os.path.join(project_folder, f"{method}/membrane/prob_map/{fold}")
+            elif method == "classic" or method == "cellpose_no_train":
+                seg_folder = os.path.join(project_folder, f"{method}/membrane/prob_map/")
+            elif method == "cellpose_train":
+                seg_folder = os.path.join(project_folder, f"{method}/{fold}/membrane/prob_map/")
+            
             output_df_folder_test = os.path.join(
                 project_folder, f"membrane_performance/{method}/membrane/seg_dataframes/test/{fold}"
             )

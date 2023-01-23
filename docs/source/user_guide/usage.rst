@@ -296,6 +296,8 @@ Click the add new button under Raw Data.
 
 Click add separate images.
 
+Note we are going to be loading in train images to train on then validation images to evaluate on for each fold
+
 Then navigate to 
 
 .. code-block:: console
@@ -321,23 +323,11 @@ We choose: All features.
 
 Then click training.
 
-Click the label 1 and label the boundaries
-Click the label 2 and label places inside cells
-Note you can adjust brush size, rub it out etc.
+Then for training images we loaded in the labels by right clicking on labels and choosing import.
 
-After adding a few labels click live update - you could have clicked 
-earlier as well.
+For validation and test will make predictions.
 
-Then keep adding manual labels until happy with the output - focus on 
-areas it is predicting incorrectly.
-i.e. Look at Prediction for label 1, and prediction for label 2. 
-Click the eyes to turn off and on. Scroll the alphas to make more 
-and less visible.
-
-Then click on current view (LHS drop down) and change image.
-
-We repeated this process for training images, 
-leaving the remaining to see what it would look on its own.
+Use print folds script to get files to train on for each fold.
 
 Then click prediction export, make sure probabilities is chosen. 
 
@@ -347,7 +337,7 @@ Choose file name
 
 .. code-block:: console
    
-   path/to/project/directory/ilastik/ilastik_pixel/npy/{nickname}.npy
+   path/to/project/directory/ilastik/ilastik_pixel/{fold}/{nickname}.npy
 
 
 Click ok then click export all.

@@ -136,6 +136,8 @@ def main(*args):
     else:
         output_folder = args.output_folder
 
+    print('output folder', output_folder)
+
     # output directories
     output_membrane_prob = os.path.join(
         project_folder, f"{output_folder}/membrane/prob_map"

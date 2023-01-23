@@ -153,8 +153,8 @@ def main():
             os.makedirs(output_folder)
 
         # run cellpose_eval
-        config_file = 'src/locpix/templates/cellpose_eval.yaml'
-        cellpose_eval([f'--project_directory={project_folder}', f'--config={config_file}', f'--output_folder=={cellpose_train_folder}', '--user_model=True'])
+        config_file = 'src/locpix/templates/cellpose.yaml'
+        cellpose_eval.main(([f'--project_directory={project_folder}', f'--config={config_file}', f'--output_folder=cellpose_train/{fold}', '--user_model=True']))
 
 
 if __name__ == "__main__":
