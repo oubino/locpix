@@ -1,12 +1,12 @@
 Project organisation
 ====================
 
-Directory layout 
+Directory layout
 ----------------
 
 The python scripts to run analysis can be found in :py:mod:`locpix.scripts`
 
-The python library code can be found in 
+The python library code can be found in
 
 * :py:mod:`locpix.preprocessing`
 * :py:mod:`locpix.img_processing`

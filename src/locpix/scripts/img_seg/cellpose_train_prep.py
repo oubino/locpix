@@ -4,10 +4,8 @@
 Take in items and train the Cellpose module
 """
 
-import yaml
 import os
 import json
-import time
 
 from locpix.preprocessing import datastruc
 import numpy as np
@@ -19,15 +17,14 @@ import tifffile
 
 def preprocess_train_files(project_folder, config, metadata, fold):
     """Preprocess data for cellpose
-    
+
     Args:
         project_folder (string) : Project folder
-        config (dict) : Configuration for the 
+        config (dict) : Configuration for the
             train cellpose script
         metadata (dict) : Metadata associated with
-            the project 
+            the project
         fold (int) : Fold to be preprocessed"""
-
 
     # check train val test files
     train_files = metadata["train_folds"][fold]
@@ -94,12 +91,13 @@ def preprocess_train_files(project_folder, config, metadata, fold):
         val_folder,
     )
 
+
 def preprocess_test_files(project_folder, config, metadata):
     """Preprocess data for cellpose
-    
+
     Args:
         project_folder (string) : Project folder
-        config (dict) : Configuration for the 
+        config (dict) : Configuration for the
             train cellpose script
         metadata (dict) : Metadata associated with
             the project"""
@@ -160,13 +158,13 @@ def preprocess_test_files(project_folder, config, metadata):
         test_folder,
     )
 
+
 def clean_up(project_folder):
     """Clean up data for cellpose from train
-    
+
     Args:
         project_folder (string) : Project folder"""
 
-    
     train_folder = os.path.join(project_folder, "train_files/cellpose/train")
     val_folder = os.path.join(project_folder, "train_files/cellpose/val")
 

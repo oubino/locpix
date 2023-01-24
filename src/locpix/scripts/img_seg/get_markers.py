@@ -114,7 +114,9 @@ def main():
             continue
 
         # convert to histo
-        histo, channel_map, label_map = item.render_histo([config["channel"], config["alt_channel"]])
+        histo, channel_map, label_map = item.render_histo(
+            [config["channel"], config["alt_channel"]]
+        )
 
         # sum the histos
         img = histo[0].T + histo[1].T

@@ -13,17 +13,16 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../../src"))
+# version (unsure what this means: including alpha/beta/rc tags)
+from importlib.metadata import version
 
+sys.path.insert(0, os.path.abspath("../../src"))
 
 # -- Project information -----------------------------------------------------
 
 project = "locpix"
 copyright = "2022, Oliver Umney"
 author = "Oliver Umney"
-
-# version (unsure what this means: including alpha/beta/rc tags)
-from importlib.metadata import version
 
 release = version("locpix")
 # for example take major/minor

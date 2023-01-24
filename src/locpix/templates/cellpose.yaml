@@ -5,7 +5,7 @@ vis_interpolate: 'log2'
 # cellpose parameters
 model: 'LC1'
 diameter: 50
-# "Model is trained on two-channel images, where the first channel is the channel to segment, 
+# "Model is trained on two-channel images, where the first channel is the channel to segment,
 # and the second channel is an optional nuclear channel."
 # Options for each:
 #   a. 0=grayscale, 1=red, 2=green, 3=blue

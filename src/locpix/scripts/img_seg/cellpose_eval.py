@@ -117,16 +117,18 @@ def main(*args):
         files = os.listdir(file_path)
         files = [os.path.join(file_path, file) for file in files]
     elif config["test_files"] == "metadata":
-        with open(metadata_path, ) as file:
+        with open(
+            metadata_path,
+        ) as file:
             metadata = json.load(file)
             test_files = metadata["test_files"]
             files = [
-                os.path.join(project_folder, "annotate/annotated", file + '.parquet')
+                os.path.join(project_folder, "annotate/annotated", file + ".parquet")
                 for file in test_files
             ]
     else:
         files = [
-            os.path.join(project_folder, "annotate/annotated", file + '.parquet')
+            os.path.join(project_folder, "annotate/annotated", file + ".parquet")
             for file in config["test_files"]
         ]
 
@@ -136,7 +138,7 @@ def main(*args):
     else:
         output_folder = args.output_folder
 
-    print('output folder', output_folder)
+    print("output folder", output_folder)
 
     # output directories
     output_membrane_prob = os.path.join(

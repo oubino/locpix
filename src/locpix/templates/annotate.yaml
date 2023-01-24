@@ -1,5 +1,5 @@
-# The number of bins in each dimension i.e. x_bins = 500, y_bins = 500 will create a 
-# 500x500 pixel image - where the bin size in metric space will vary depending on the 
+# The number of bins in each dimension i.e. x_bins = 500, y_bins = 500 will create a
+# 500x500 pixel image - where the bin size in metric space will vary depending on the
 # input data
 x_bins: 500
 y_bins: 500
@@ -13,7 +13,7 @@ plot: True
 
 # this defines the interpolation applied to the histogram when visualising the image of the histogram
 # - importantly the histogram which is part of dataitem will be kept in "raw form"
-vis_interpolation: 'log2' 
+vis_interpolation: 'log2'
 
 # When saving annotations - you can choose to not save the localisations associated with the background
 # which are assigned a label of zero
