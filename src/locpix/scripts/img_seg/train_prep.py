@@ -77,26 +77,20 @@ def main():
     train_files = config["train_files"]
     test_files = config["test_files"]
 
-    # check train and test files
+    # check files
     if not set(train_files).isdisjoint(test_files):
-        raise ValueError("Train files and test files shared files!!")
+            raise ValueError("Train files and test files shared files!!")
     if len(set(train_files)) != len(train_files):
         raise ValueError("Train files contains duplicates")
     if len(set(test_files)) != len(test_files):
         raise ValueError("Test files contains duplicates")
-    print("Train files")
-    print(train_files)
-    print("Test files")
-    print(test_files)
 
     # create train and test folder
     train_folder = os.path.join(project_folder, "train_files")
     test_folder = os.path.join(project_folder, "test_files")
-    val_folder = os.path.join(project_folder, "val_files")
     folders = [
         train_folder,
         test_folder,
-        val_folder,
     ]
     for folder in folders:
         if os.path.exists(folder):
@@ -105,24 +99,48 @@ def main():
             os.makedirs(folder)
 
     # split train into folds
-    kf = KFold(n_splits=5, shuffle=True)
+    folds = 5
+    kf = KFold(n_splits=folds, shuffle=True)
 
     train_folds = []
     val_folds = []
 
-    for (train_index, val_index) in kf.split(files):
+    for (train_index, val_index) in kf.split(train_files):
 
         train_fold = []
         val_fold = []
 
         for index in train_index:
-            train_fold.append(files[index][:-8])
+            train_fold.append(train_files[index])
 
         for index in val_index:
-            val_fold.append(files[index][:-8])
+            val_fold.append(train_files[index])
 
         train_folds.append(train_fold)
         val_folds.append(val_fold)
+
+    # check files
+    for fold in range(folds):
+        # check train val test files
+        train_files = train_folds[fold]
+        val_files = val_folds[fold]
+        # check files
+        if not set(train_files).isdisjoint(test_files):
+            raise ValueError("Train files and test files shared files!!")
+        if not set(train_files).isdisjoint(val_files):
+            raise ValueError("Train files and val files shared files!!")
+        if not set(val_files).isdisjoint(test_files):
+            raise ValueError("Val files and test files shared files!!")
+        if len(set(train_files)) != len(train_files):
+            raise ValueError("Train files contains duplicates")
+        if len(set(val_files)) != len(val_files):
+            raise ValueError("Val files contains duplicates")
+        if len(set(test_files)) != len(test_files):
+            raise ValueError("Test files contains duplicates")
+    print("Train files")
+    print(train_files)
+    print("Test files")
+    print(test_files)
 
     # load and add to metadata
     metadata_path = os.path.join(project_folder, "metadata.json")

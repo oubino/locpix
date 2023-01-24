@@ -19,7 +19,7 @@ import argparse
 from locpix.scripts.img_seg import cellpose_train_prep
 import json
 import time
-import cellpose
+from cellpose import __main__
 from locpix.scripts.img_seg import cellpose_eval
 
 def main():
@@ -49,13 +49,6 @@ def main():
         "--project_metadata",
         action="store_true",
         help="check the metadata for the specified project and" "seek confirmation!",
-    )
-    parser.add_argument(
-        "-f",
-        "--fold",
-        action="store",
-        type=int,
-        help="the fold to preprocess",
     )
 
     args = parser.parse_args()
@@ -109,7 +102,7 @@ def main():
     folds = len(metadata["train_folds"])
 
     # cellpose test prep
-    cellpose_train_prep.preprocess_test_files(project_folder, config, metadata, fold)
+    cellpose_train_prep.preprocess_test_files(project_folder, config, metadata)
 
     # make folder
     cellpose_train_folder = os.path.join(project_folder, "cellpose_train")
@@ -121,10 +114,12 @@ def main():
             raise ValueError(f"Cannot proceed as {folder} already exists")
         else:
             os.makedirs(folder)
+
+    print('------ Training --------')
     
     for fold in range(folds):
 
-        print('----- Fold -------')
+        print(f'----- Fold {fold} -------')
 
         # cellpose train prep
         cellpose_train_prep.preprocess_train_files(project_folder, config, metadata, fold)
@@ -138,12 +133,12 @@ def main():
         wd = config['weight_decay']
         epochs = config['epochs']
 
-        cellpose.main(['--train', f'--dir={train_folder}', f'--test_dir={test_folder}', f'--pretrained_model={model}', '--chan=0', '--chan2=0', f'--learning_rate={lr}', f'weight_decay={wd}', f'--n_epochs={epochs}', '--min_train_masks=1', '--verbose', f'--fold=={fold}', f'model_save_path={model_save_path}'])
+        __main__.main(['--train', f'--dir={train_folder}', f'--test_dir={test_folder}', f'--pretrained_model={model}', '--chan=0', '--chan2=0', f'--learning_rate={lr}', f'--weight_decay={wd}', f'--n_epochs={epochs}', '--min_train_masks=1', '--verbose', f'--fold={fold}', f'--model_save_path={model_save_path}'])
 
         # clean up
         cellpose_train_prep.clean_up(project_folder)
 
-    print('Outputting for evaluation')
+    print('------ Outputting for evaluation -------- ')
 
     for fold in range(folds):
 
@@ -158,8 +153,8 @@ def main():
             os.makedirs(output_folder)
 
         # run cellpose_eval
-        config_file = 'src/locpix/templates/cellpose_eval.yaml'
-        cellpose_eval([f'--project_directory={project_folder}', f'--config={config_file}', f'--output_folder=={cellpose_train_folder}', '--user_model=True'])
+        config_file = 'src/locpix/templates/cellpose.yaml'
+        cellpose_eval.main(([f'--project_directory={project_folder}', f'--config={config_file}', f'--output_folder=cellpose_train/{fold}', '--user_model=True']))
 
 
 if __name__ == "__main__":
