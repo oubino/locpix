@@ -4,7 +4,7 @@ Development
 Git
 ---
 
-If have accidentally committed to wrong branch need these series of commands 
+If have accidentally committed to wrong branch need these series of commands
 
 .. code-block:: console
 
@@ -48,7 +48,7 @@ Before running
 YAML files
 ^^^^^^^^^^
 
-Have yaml files with configuration - need to convert these to .rst 
+Have yaml files with configuration - need to convert these to .rst
 
 .. code-block:: console
 
@@ -77,9 +77,9 @@ Then can run
    (locpix-env) $ make clean
    (locpix-env) $ make html
 
-.. warning:: 
+.. warning::
 
-   You get an error when running 
+   You get an error when running
 
    .. code-block:: console
 
@@ -170,8 +170,8 @@ Make changes then run (if don't want to push to pypi)
 
 .. code-block:: console
 
-      git add -A 
-      git commit 
+      git add -A
+      git commit
       git push origin <branch-name>
 
 Then to push to pypi have to just push tagged master branch, where tag must start with v
@@ -188,7 +188,7 @@ Code coverage
 
 .. code-block:: console
 
-      (locpix-env) $ pip install pytest 
+      (locpix-env) $ pip install pytest
       (locpix-env) $ pip install pytest-cov
       (locpix-env) $ pytest --cov=src tests/
 

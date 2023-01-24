@@ -3,7 +3,7 @@
 
 Split the dataset into train and test
 Save these splits and also perform k fold split
-Save all results in metadata and 
+Save all results in metadata and
 """
 
 import yaml
@@ -12,6 +12,7 @@ import argparse
 import json
 import time
 from sklearn.model_selection import KFold
+
 
 def main():
 
@@ -43,7 +44,7 @@ def main():
     args = parser.parse_args()
 
     # if want to run in headless mode specify all arguments
-    #if args.project_directory is None and args.config is None:
+    # if args.project_directory is None and args.config is None:
     #    config, project_folder = train_prep_config.config_gui()
 
     if args.project_directory is not None and args.config is None:
@@ -69,7 +70,7 @@ def main():
     # list items
     input_folder = os.path.join(project_folder, "annotate/annotated")
     try:
-        files = os.listdir(input_folder)
+        os.listdir(input_folder)
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
@@ -79,7 +80,7 @@ def main():
 
     # check files
     if not set(train_files).isdisjoint(test_files):
-            raise ValueError("Train files and test files shared files!!")
+        raise ValueError("Train files and test files shared files!!")
     if len(set(train_files)) != len(train_files):
         raise ValueError("Train files contains duplicates")
     if len(set(test_files)) != len(test_files):
@@ -155,10 +156,10 @@ def main():
             if check != "YES":
                 exit()
         # add train val test split
-        metadata['train_files'] = train_files
-        metadata['test_files'] = test_files
-        metadata['train_folds'] = train_folds
-        metadata['val_folds'] = val_folds
+        metadata["train_files"] = train_files
+        metadata["test_files"] = test_files
+        metadata["train_folds"] = train_folds
+        metadata["val_folds"] = val_folds
         # add time ran this script to metadata
         file = os.path.basename(__file__)
         if file not in metadata:
@@ -167,7 +168,7 @@ def main():
             print("Overwriting metadata...")
             metadata[file] = time.asctime(time.gmtime(time.time()))
         with open(metadata_path, "w") as outfile:
-            json.dump(metadata, outfile)    
+            json.dump(metadata, outfile)
 
     # save yaml file
     yaml_save_loc = os.path.join(project_folder, "train_prep.yaml")

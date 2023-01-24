@@ -96,7 +96,6 @@ def main():
     except FileNotFoundError:
         raise ValueError("There should be some files to open")
 
-
     # need to iterate over folds
 
     for fold in range(5):
@@ -111,14 +110,18 @@ def main():
             os.makedirs(output_membrane_prob)
 
         # if output directory not present create it
-        output_cell_df = os.path.join(project_folder, f"ilastik/output/cell/dataframe/{fold}")
+        output_cell_df = os.path.join(
+            project_folder, f"ilastik/output/cell/dataframe/{fold}"
+        )
         if os.path.exists(output_cell_df):
             raise ValueError(f"Cannot proceed as {output_cell_df} already exists")
         else:
             os.makedirs(output_cell_df)
 
         # if output directory not present create it
-        output_cell_img = os.path.join(project_folder, f"ilastik/output/cell/img/{fold}")
+        output_cell_img = os.path.join(
+            project_folder, f"ilastik/output/cell/img/{fold}"
+        )
         if os.path.exists(output_cell_img):
             raise ValueError(f"Cannot proceed as {output_cell_img} already exists")
         else:
@@ -136,11 +139,16 @@ def main():
             # ---- membrane segmentation ----
 
             # load in ilastik_seg
-            input_membrane_prob = os.path.join(project_folder, f"ilastik/ilastik_pixel/{fold}")
-            membrane_prob_mask_loc = os.path.join(input_membrane_prob, item.name + ".npy")
+            input_membrane_prob = os.path.join(
+                project_folder, f"ilastik/ilastik_pixel/{fold}"
+            )
+            membrane_prob_mask_loc = os.path.join(
+                input_membrane_prob, item.name + ".npy"
+            )
             ilastik_seg = np.load(membrane_prob_mask_loc)
 
-            # ilastik_seg is [y,x,c] where channel 0 is membranes, channel 1 is inside cells
+            # ilastik_seg is [y,x,c] where channel 0 is membranes,
+            # channel 1 is inside cells
             # given we only have labels for membranes and not inside cells
             # will currently ignore
             # chanel 1
@@ -153,7 +161,9 @@ def main():
             # ---- cell segmentation ----
 
             # load in ilastik_seg
-            input_cell_mask = os.path.join(project_folder, f"ilastik/ilastik_boundary/{fold}")
+            input_cell_mask = os.path.join(
+                project_folder, f"ilastik/ilastik_boundary/{fold}"
+            )
             cell_mask_loc = os.path.join(input_cell_mask, item.name + ".npy")
             ilastik_seg = np.load(cell_mask_loc)
 
@@ -165,7 +175,9 @@ def main():
             # save instance mask to dataframe
             df = item.mask_pixel_2_coord(ilastik_seg)
             item.df = df
-            item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
+            item.save_to_parquet(
+                output_cell_df, drop_zero_label=False, drop_pixel_col=True
+            )
 
             # save cell segmentation image - consider only one channel
             img = np.transpose(histo, (0, 2, 1))

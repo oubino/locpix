@@ -1,14 +1,13 @@
 #!/usr/bin/env python
-"""Get file names without extensions from 
+"""Get file names without extensions from
 """
 import os
 import argparse
 
+
 def main():
 
-    parser = argparse.ArgumentParser(
-        description="Get file names"
-    )
+    parser = argparse.ArgumentParser(description="Get file names")
     parser.add_argument(
         "-i",
         "--project_directory",
@@ -29,7 +28,7 @@ def main():
 
     args = parser.parse_args()
 
-    folder = os.path.join(args.project_directory, 'preprocess/no_gt_label')
+    folder = os.path.join(args.project_directory, "preprocess/no_gt_label")
     files = os.listdir(folder)
 
     for file in files:

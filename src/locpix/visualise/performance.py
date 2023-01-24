@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix
 
+
 def plot_pr_curve(
     ax,
     label,
@@ -102,7 +103,7 @@ def generate_conf_matrix(gtlist, predlist, classes, saveloc):
     # Loop over data dimensions and create text annotations
     for i in range(len(classes)):
         for j in range(len(classes)):
-            text = ax.text(
+            ax.text(
                 j,
                 i,
                 "{:.2e}".format(conf_mat[i, j]),
@@ -110,9 +111,9 @@ def generate_conf_matrix(gtlist, predlist, classes, saveloc):
                 va="center",
                 color="r",
                 size=16,
-             )
+            )
 
-    print('Check this')
+    print("Check this")
     print(conf_mat)
 
     # ax.set_title("Confusion matrix")

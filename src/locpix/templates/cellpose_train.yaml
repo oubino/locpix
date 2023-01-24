@@ -3,7 +3,7 @@ labels: ["egfr", "ereg"]
 # whether to sum channels (currently only channel 0 and 1)
 sum_chan: True
 
-img_interpolate: log2 
+img_interpolate: log2
 
 img_threshold: 5
 

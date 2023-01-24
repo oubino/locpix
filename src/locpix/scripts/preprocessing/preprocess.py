@@ -136,7 +136,8 @@ def main():
         and args.parquet_files is True
     ):
         parser.error(
-            "You didn't specify any arguments therefore tried to run in GUI, however you cannot process"
+            "You didn't specify any arguments therefore"
+            "tried to run in GUI, however you cannot process"
             "as parquet files in the GUI"
         )
 
