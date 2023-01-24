@@ -520,66 +520,66 @@ def main():
             else:
                 assert item.gt_label_map == gt_label_map
 
-        # print("Sanity check... ")
-        # print("gt", len(gt_list), gt_list)
-        # print("pred", len(pred_list), pred_list)
+            # print("Sanity check... ")
+            # print("gt", len(gt_list), gt_list)
+            # print("pred", len(pred_list), pred_list)
 
-        # calculate precision recall curve
-        gt_list = gt_list.flatten()
-        prob_list = prob_list.flatten()
-        pr, rec, pr_threshold = precision_recall_curve(gt_list, prob_list, pos_label=1)
-        baseline = len(gt[gt == 1]) / len(gt)
+            # calculate precision recall curve
+            gt_list = gt_list.flatten()
+            prob_list = prob_list.flatten()
+            pr, rec, pr_threshold = precision_recall_curve(gt_list, prob_list, pos_label=1)
+            baseline = len(gt[gt == 1]) / len(gt)
 
-        # calculate confusion matrix
-        date = datetime.today().strftime("%H_%M_%d_%m_%Y")
-        saveloc = os.path.join(output_conf_matrix, f"conf_matrix_val_{date}.png")
-        classes = [item.gt_label_map[0], item.gt_label_map[1]]
-        pred_list = pred_list.flatten()
-        generate_conf_matrix(gt_list, pred_list, classes, saveloc)
-        # could just use aggregated metric function to plot the confusion matrix
+            # calculate confusion matrix
+            date = datetime.today().strftime("%H_%M_%d_%m_%Y")
+            saveloc = os.path.join(output_conf_matrix, f"conf_matrix_val_{date}.png")
+            classes = [item.gt_label_map[0], item.gt_label_map[1]]
+            pred_list = pred_list.flatten()
+            generate_conf_matrix(gt_list, pred_list, classes, saveloc)
+            # could just use aggregated metric function to plot the confusion matrix
 
-        # plot pr curve
-        save_loc = os.path.join(output_val_pr, "_curve.pkl")
-        plot_pr_curve(
-            ax_val,
-            method.capitalize(),
-            linestyles[index],
-            "darkorange",
-            pr,
-            rec,
-            baseline,
-            # save_loc,
-            # pickle=True,
-        )
-        pr_auc = auc(rec, pr)
-        add_metrics = {"pr_auc": pr_auc}
+            # plot pr curve
+            save_loc = os.path.join(output_val_pr, "_curve.pkl")
+            plot_pr_curve(
+                ax_val,
+                method.capitalize(),
+                linestyles[index],
+                "darkorange",
+                pr,
+                rec,
+                baseline,
+                # save_loc,
+                # pickle=True,
+            )
+            pr_auc = auc(rec, pr)
+            add_metrics = {"pr_auc": pr_auc}
 
-        # metric calculations based on final prediction
-        save_loc = os.path.join(output_metrics, f"val_{date}.txt")
-        metrics.aggregated_metrics(
-            output_df_folder_val,
-            save_loc,
-            gt_label_map,
-            add_metrics=add_metrics,
-            metadata=metadata,
-        )
+            # metric calculations based on final prediction
+            save_loc = os.path.join(output_metrics, f"val_{date}.txt")
+            metrics.aggregated_metrics(
+                output_df_folder_val,
+                save_loc,
+                gt_label_map,
+                add_metrics=add_metrics,
+                metadata=metadata,
+            )
 
-        fig_train.tight_layout()
-        fig_test.tight_layout()
-        fig_val.tight_layout()
+            fig_train.tight_layout()
+            fig_test.tight_layout()
+            fig_val.tight_layout()
 
-        # get handles and labels
-        # handles_train, labels_train = ax_train.get_legend_handles_labels()
-        # handles_test, labels_test = ax_test.get_legend_handles_labels()
+            # get handles and labels
+            # handles_train, labels_train = ax_train.get_legend_handles_labels()
+            # handles_test, labels_test = ax_test.get_legend_handles_labels()
 
-        # specify order of items in legend
-        # order = [1,0,2]
+            # specify order of items in legend
+            # order = [1,0,2]
 
-        # add legend to plot
-        # ax_train.legend([handles_train[idx] for idx in order],
-        #                   [methods[idx] for idx in order])
-        # ax_test.legend([handles_test[idx] for idx in order],
-        #                   [methods[idx] for idx in order])
+            # add legend to plot
+            # ax_train.legend([handles_train[idx] for idx in order],
+            #                   [methods[idx] for idx in order])
+            # ax_test.legend([handles_test[idx] for idx in order],
+            #                   [methods[idx] for idx in order])
 
         fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
         fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)
