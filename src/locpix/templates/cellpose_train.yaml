@@ -1,29 +1,16 @@
-# device to train on (gpu or cpu)
-gpu: True
+labels: ["egfr", "ereg"]
 
-# model parameters
+# whether to sum channels (currently only channel 0 and 1)
+sum_chan: True
+
+img_interpolate: log2 
+
+img_threshold: 5
+
 model: LC1
 
-# optimiser parameters
-optimiser: adam
-lr: 0.001
+learning_rate: 0.1
+
 weight_decay: 0.0001
 
-# training parameters
-epochs: 2
-batch_size: 1
-num_workers: 1 # generall higher -> faster
-loss_fn: nll
-
-train_files:
-- Fov1_DC
-- Fov2_DC
-- Fov3_DC
-- Fov5_DC
-- Fov6_DC
-
-test_files:
-- Fov7_DC
-- Fov8_DC
-- Fov9_DC
-- Fov10_DC
+epochs: 100

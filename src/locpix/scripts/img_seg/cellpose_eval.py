@@ -17,7 +17,7 @@ import json
 import time
 
 
-def main():
+def main(*args):
 
     parser = argparse.ArgumentParser(
         description="Cellpose." "If no args are supplied will be run in GUI mode"
@@ -53,11 +53,18 @@ def main():
     parser.add_argument(
         "-u",
         "--user_model",
-        action="store_true",
-        help="use the user model",
+        action="store",
+        type=str,
+        help="The user model to load",
     )
 
-    args = parser.parse_args()
+    # so can be parsed either command line or as such
+    if len(args) == 0:
+        args = parser.parse_args()
+    else:
+        args = parser.parse_args(args[0])
+
+    print(args)
 
     # if want to run in headless mode specify all arguments
     if args.project_directory is None and args.config is None:
@@ -125,9 +132,11 @@ def main():
 
     # output folder
     if args.output_folder is None:
-        output_folder = "cellpose_eval"
+        output_folder = "cellpose_no_train"
     else:
         output_folder = args.output_folder
+
+    print('output folder', output_folder)
 
     # output directories
     output_membrane_prob = os.path.join(
@@ -168,8 +177,8 @@ def main():
         )
         imgs = [img]
 
-        if args.user_model:
-            model = models.CellposeModel(pretrained_model=config["user_model_path"])
+        if args.user_model is not None:
+            model = models.CellposeModel(pretrained_model=args.user_model)
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow

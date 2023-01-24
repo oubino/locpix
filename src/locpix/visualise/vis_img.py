@@ -56,6 +56,9 @@ def label_2_4_colours(labels: np.ndarray):
 
     graph = RAG(labels)
     d = nx.coloring.greedy_color(graph)
+    # dict empty and only one label
+    if not d and np.min(labels) == np.max(labels):
+        d = {np.min(labels): 0}
     return np.vectorize(d.get)(labels)
 
 
