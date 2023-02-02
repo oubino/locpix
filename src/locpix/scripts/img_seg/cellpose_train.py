@@ -143,7 +143,7 @@ def main():
     for fold in range(folds):
 
         # load model
-        model = os.listdir(os.path.join(project_folder, f"cellpose_train/models/{fold}"))
+        model = os.listdir(os.path.join(project_folder, f"cellpose_train/models/{fold}"))[0]
         model = os.path.abspath(os.path.join(project_folder, f"cellpose_train/models/{fold}/{model}"))
         output_folder = os.path.join(cellpose_train_folder, f"{fold}")
 
@@ -154,7 +154,7 @@ def main():
 
         # run cellpose_eval
         config_file = 'src/locpix/templates/cellpose.yaml'
-        cellpose_eval.main(([f'--project_directory={project_folder}', f'--config={config_file}', f'--output_folder=cellpose_train/{fold}', '--user_model=True']))
+        cellpose_eval.main(([f'--project_directory={project_folder}', f'--config={config_file}', f'--output_folder=cellpose_train/{fold}', f'--user_model={model}']))
 
 
 if __name__ == "__main__":

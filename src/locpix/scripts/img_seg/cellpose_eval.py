@@ -178,13 +178,41 @@ def main(*args):
         imgs = [img]
 
         if args.user_model is not None:
-            model = models.CellposeModel(pretrained_model=args.user_model)
+            #print('loaded model')
+            #input('stop')
+            #print(args.user_model)
+            # GPU has to be true otherwise runs on mkldnn which fails with track running stats true
+            model = models.CellposeModel(pretrained_model=args.user_model, gpu=False)
+
+            # base model
+            base_model = models.CellposeModel(model_type=config["model"])
+            base_model = base_model.net.state_dict()
+            sd = model.net.state_dict()
+            for (k1, v1) in sd.items():
+                vars = ["running_mean", "running_var", "num_batches_tracked"]
+                #print(type(k1))
+                if any(var in k1 for var in vars):
+                    #print(f'true for {k1}')
+                    #print(model.net.state_dict()[k1])
+                    sd[k1] = base_model[k1]
+                    #print(base_model[k1])
+            model.net.load_state_dict(sd)
+
+            #for (k1,v1), (k2,v2) in zip(base_model.items(), model.net.state_dict().items()):
+            #    if v1.ne(v2).sum() > 0 :
+            #        print(k1)
+            #        input('stop 1')
+
+            #for p1, p2 in zip(models.CellposeModel(model_type=config["model"]).net.parameters(), model.net.parameters()):
+            #    if p1.data.ne(p2.data).sum() > 0:
+            #        input('stop 2')
+
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow
-            _, flows, _ = model.eval(imgs, channels=channels)
+            _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
         else:
-            model = models.CellposeModel(model_type=config["model"])
+            model = models.CellposeModel(model_type=config["model"], gpu=False)
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow
@@ -194,12 +222,33 @@ def main(*args):
         # flows[0] as we have only one image so get first flow
         # flows[0][2] as this is the probability see
         # (https://cellpose.readthedocs.io/en/latest/api.html)
+        #print('flows shape')
+        #print(len(flows))
+        #print(len(flows[0]))
         semantic_mask = flows[0][2]
 
-        # convert mask (probabilities) to range 0-1
-        semantic_mask = (semantic_mask - np.min(semantic_mask)) / (
-            np.max(semantic_mask) - np.min(semantic_mask)
-        )
+        print('in cellpose eval')
+        #import matplotlib.pyplot as plt
+        #plt.imshow(semantic_mask, cmap='Greys')
+        #plt.show()
+
+        # convert mask (probabilities) to range 0-1 using sigmoid
+        #semantic_mask = 1/(1 + np.exp(-semantic_mask))
+        #semantic_mask = (semantic_mask - np.min(semantic_mask)) / (
+        #    np.max(semantic_mask) - np.min(semantic_mask)
+        #)
+        # convert using method in io.masks_flows_to_seg
+        #print('min max semantic mask')
+        #print(np.min(semantic_mask), np.max(semantic_mask))
+        lower = 1
+        upper = 99
+        X = semantic_mask
+        x01 = np.percentile(X, lower)
+        x99 = np.percentile(X, upper)
+        X = (X - x01) / (x99 - x01)
+        semantic_mask = np.clip(X, 0, 1)
+        #plt.imshow(semantic_mask, cmap='Greys')
+        #plt.show()
 
         # ---- segment cells ----
         # get markers

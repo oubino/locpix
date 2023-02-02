@@ -34,18 +34,6 @@ def preprocess_train_files(project_folder, config, metadata, fold):
     val_files = metadata["val_folds"][fold]
     test_files = metadata["test_files"]
     # check files
-    if not set(train_files).isdisjoint(test_files):
-        raise ValueError("Train files and test files shared files!!")
-    if not set(train_files).isdisjoint(val_files):
-        raise ValueError("Train files and val files shared files!!")
-    if not set(val_files).isdisjoint(test_files):
-        raise ValueError("Val files and test files shared files!!")
-    if len(set(train_files)) != len(train_files):
-        raise ValueError("Train files contains duplicates")
-    if len(set(val_files)) != len(val_files):
-        raise ValueError("Val files contains duplicates")
-    if len(set(test_files)) != len(test_files):
-        raise ValueError("Test files contains duplicates")
     print("Train files")
     print(train_files)
     print("Test files")
@@ -111,18 +99,7 @@ def preprocess_test_files(project_folder, config, metadata):
         val_files = metadata["val_folds"][fold]
         test_files = metadata["test_files"]
         # check files
-        if not set(train_files).isdisjoint(test_files):
-            raise ValueError("Train files and test files shared files!!")
-        if not set(train_files).isdisjoint(val_files):
-            raise ValueError("Train files and val files shared files!!")
-        if not set(val_files).isdisjoint(test_files):
-            raise ValueError("Val files and test files shared files!!")
-        if len(set(train_files)) != len(train_files):
-            raise ValueError("Train files contains duplicates")
-        if len(set(val_files)) != len(val_files):
-            raise ValueError("Val files contains duplicates")
-        if len(set(test_files)) != len(test_files):
-            raise ValueError("Test files contains duplicates")
+       
     print("Train files")
     print(train_files)
     print("Test files")
