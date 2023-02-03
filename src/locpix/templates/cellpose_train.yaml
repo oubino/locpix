@@ -13,6 +13,6 @@ learning_rate: 0.01 # 0.1
 
 weight_decay: 0.0001
 
-epochs: 100
+epochs: 200
 
 use_gpu: True
