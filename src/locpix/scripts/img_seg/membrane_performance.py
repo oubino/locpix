@@ -33,6 +33,7 @@ from locpix.scripts.img_seg import membrane_performance_config
 import json
 import time
 
+
 def main():
 
     parser = argparse.ArgumentParser(
@@ -147,7 +148,9 @@ def main():
         )
 
         if os.path.exists(output_overlay_pr_curves):
-            raise ValueError(f"Cannot proceed as {output_overlay_pr_curves} already exists")
+            raise ValueError(
+                f"Cannot proceed as {output_overlay_pr_curves} already exists"
+            )
         else:
             os.makedirs(output_overlay_pr_curves)
 
@@ -156,27 +159,35 @@ def main():
             print(f"{method} ...")
 
             # get folder names
-            
+
             if method == "ilastik":
                 seg_folder = os.path.join(
                     project_folder, f"ilastik/output/membrane/prob_map/{fold}"
                 )
             elif method == "classic" or method == "cellpose_no_train":
-                seg_folder = os.path.join(project_folder, f"{method}/membrane/prob_map/")
+                seg_folder = os.path.join(
+                    project_folder, f"{method}/membrane/prob_map/"
+                )
             elif method == "cellpose_train":
-                seg_folder = os.path.join(project_folder, f"{method}/{fold}/membrane/prob_map/")
-            
+                seg_folder = os.path.join(
+                    project_folder, f"{method}/{fold}/membrane/prob_map/"
+                )
+
             output_df_folder_test = os.path.join(
-                project_folder, f"membrane_performance/{method}/membrane/seg_dataframes/test/{fold}"
+                project_folder,
+                f"membrane_performance/{method}/membrane/seg_dataframes/test/{fold}",
             )
             output_df_folder_val = os.path.join(
-                project_folder, f"membrane_performance/{method}/membrane/seg_dataframes/val/{fold}"
+                project_folder,
+                f"membrane_performance/{method}/membrane/seg_dataframes/val/{fold}",
             )
             output_seg_imgs = os.path.join(
-                project_folder, f"membrane_performance/{method}/membrane/seg_images/{fold}"
+                project_folder,
+                f"membrane_performance/{method}/membrane/seg_images/{fold}",
             )
             output_train_pr = os.path.join(
-                project_folder, f"membrane_performance/{method}/membrane/train_pr/{fold}"
+                project_folder,
+                f"membrane_performance/{method}/membrane/train_pr/{fold}",
             )
             output_test_pr = os.path.join(
                 project_folder, f"membrane_performance/{method}/membrane/test_pr/{fold}"
@@ -188,7 +199,8 @@ def main():
                 project_folder, f"membrane_performance/{method}/membrane/metrics/{fold}"
             )
             output_conf_matrix = os.path.join(
-                project_folder, f"membrane_performance/{method}/membrane/conf_matrix/{fold}"
+                project_folder,
+                f"membrane_performance/{method}/membrane/conf_matrix/{fold}",
             )
 
             # create output folders
@@ -249,7 +261,9 @@ def main():
             # calculate precision recall curve
             gt_list = gt_list.flatten()
             prob_list = prob_list.flatten()
-            pr, rec, pr_threshold = precision_recall_curve(gt_list, prob_list, pos_label=1)
+            pr, rec, pr_threshold = precision_recall_curve(
+                gt_list, prob_list, pos_label=1
+            )
             baseline = len(gt[gt == 1]) / len(gt)
 
             # plot pr curve
@@ -386,7 +400,9 @@ def main():
             # calculate precision recall curve
             gt_list = gt_list.flatten()
             prob_list = prob_list.flatten()
-            pr, rec, pr_threshold = precision_recall_curve(gt_list, prob_list, pos_label=1)
+            pr, rec, pr_threshold = precision_recall_curve(
+                gt_list, prob_list, pos_label=1
+            )
             baseline = len(gt[gt == 1]) / len(gt)
 
             # calculate confusion matrix
@@ -527,7 +543,9 @@ def main():
             # calculate precision recall curve
             gt_list = gt_list.flatten()
             prob_list = prob_list.flatten()
-            pr, rec, pr_threshold = precision_recall_curve(gt_list, prob_list, pos_label=1)
+            pr, rec, pr_threshold = precision_recall_curve(
+                gt_list, prob_list, pos_label=1
+            )
             baseline = len(gt[gt == 1]) / len(gt)
 
             # calculate confusion matrix

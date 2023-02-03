@@ -6,7 +6,7 @@ Project Structure
 
 We assume your input SMLM data are .csv files.
 
-This input data must first be preprocessed into a user chosen project directory, using the `Preprocess`_ script. 
+This input data must first be preprocessed into a user chosen project directory, using the `Preprocess`_ script.
 We strongly suggest this project directory is located outside the locpix folder.
 
 The input and output of all further scripts will remain located inside the project directory, the input data folder
@@ -17,7 +17,7 @@ Usage configuration
 
 Each script can be run with a GUI, but can also be run in headless mode.
 
-In headless mode each script needs a configuration file (.yaml file), which should be 
+In headless mode each script needs a configuration file (.yaml file), which should be
 specified using the -c flag.
 
 Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
@@ -31,13 +31,13 @@ Prerequisites
 ^^^^^^^^^^^^^
 
 You will need anaconda or miniconda or mamba.
-We recommend `mamba <https://mamba.readthedocs.io/en/latest/>`_ 
+We recommend `mamba <https://mamba.readthedocs.io/en/latest/>`_
 
 
 Install
 ^^^^^^^
 
-Create an environment and install via pypi 
+Create an environment and install via pypi
 
 .. code-block:: console
 
@@ -55,7 +55,7 @@ Preprocess
 
 This script preprocesses the input .csv data for later use AND **must be run first**.
 
-This script will take in .csv files, and convert them to .parquet files, 
+This script will take in .csv files, and convert them to .parquet files,
 while also wrangling the data into our data format.
 
 To run the script using the GUI, run
@@ -152,7 +152,7 @@ Cellpose segmentation
 
         (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
         (locpix-env) $ pip install cellpose
-    
+
     * don't have a GPU
 
     .. code-block:: console

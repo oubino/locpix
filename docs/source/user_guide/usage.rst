@@ -6,7 +6,7 @@ Project Structure
 
 We assume your input SMLM data are .csv files.
 
-This input data must first be preprocessed into a user chosen project directory, using the `Preprocess`_ script. 
+This input data must first be preprocessed into a user chosen project directory, using the `Preprocess`_ script.
 We strongly suggest this project directory is located outside the locpix folder.
 
 The input and output of all further scripts will remain located inside the project directory, the input data folder
@@ -17,7 +17,7 @@ Usage configuration
 
 Each script can be run with a GUI, but can also be run in headless mode.
 
-In headless mode each script needs a configuration file (.yaml file), which should be 
+In headless mode each script needs a configuration file (.yaml file), which should be
 specified using the -c flag.
 
 Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
@@ -42,7 +42,7 @@ Preprocess
 
 This script preprocesses the input .csv data for later use AND **must be run first**.
 
-This script will take in .csv files, and convert them to .parquet files, 
+This script will take in .csv files, and convert them to .parquet files,
 while also wrangling the data into our data format.
 
 To run the script using the GUI, run
@@ -136,7 +136,7 @@ Cellpose segmentation (Training)
 
 To train a Cellpose model we have had to include/modify the following.
 
-#. `Cellpose fork` : Firstly we have a fork of Cellpose which differs to Cellpose in the loss function - as Cellpose assumes the 
+#. `Cellpose fork` : Firstly we have a fork of Cellpose which differs to Cellpose in the loss function - as Cellpose assumes the
    output is for cell segmentation not membranes.
 #. `Cellpose train prep script` : This script prepares the data for Cellpose training
 
@@ -153,7 +153,7 @@ To train a Cellpose model we have had to include/modify the following.
 
         (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
         (locpix-env) $ pip install cellpose
-    
+
     * don't have a GPU
 
     .. code-block:: console
@@ -204,7 +204,7 @@ Cellpose segmentation (Evaluation)
 
         (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
         (locpix-env) $ pip install cellpose
-    
+
     * don't have a GPU
 
     .. code-block:: console
@@ -272,7 +272,7 @@ Ilastik GUI
 ^^^^^^^^^^^
 
 We need to install ilastik
-Install binary from `Ilastik <https://www.ilastik.org/download.html>`_ 
+Install binary from `Ilastik <https://www.ilastik.org/download.html>`_
 
 **Ilastik membrane segmentation**
 
@@ -283,13 +283,13 @@ Create a new project: Pixel Classification.
 Save the project wherever with any name, but we recommend saving in
 
 .. code-block:: console
-   
+
    path/to/project/directory/ilastik/models
 
 you will have to create a new folder called models and save the project with name
 
 .. code-block:: console
-   
+
    pixel_classification
 
 Click the add new button under Raw Data.
@@ -298,11 +298,11 @@ Click add separate images.
 
 Note we are going to be loading in train images to train on then validation images to evaluate on for each fold
 
-Then navigate to 
+Then navigate to
 
 .. code-block:: console
-   
-   path/to/project/directory/ilastik/prep 
+
+   path/to/project/directory/ilastik/prep
 
 and select all the files at once and click open.
 The axes should say yxc, and the shape should be (x_bins, y_bins, number channels).
@@ -313,10 +313,10 @@ Click select features.
 
 Choose the ones you feel are relevant.
 
-Our recommendation: go through each row choosing all the sigmas for a row; 
-Then click okay; Then on left hand side click on the features 
-e.g. (Gaussian smoothing sigma 0.3 then Gaussian smoothing sigma 0.7) 
-and evaluate which ones you think are pulling out relevant features; 
+Our recommendation: go through each row choosing all the sigmas for a row;
+Then click okay; Then on left hand side click on the features
+e.g. (Gaussian smoothing sigma 0.3 then Gaussian smoothing sigma 0.7)
+and evaluate which ones you think are pulling out relevant features;
 Then click select features again and remove ones you thought weren't useful!
 
 We choose: All features.
@@ -329,14 +329,14 @@ For validation and test will make predictions.
 
 Use print folds script to get files to train on for each fold.
 
-Then click prediction export, make sure probabilities is chosen. 
+Then click prediction export, make sure probabilities is chosen.
 
 Choose export image settings, choose format numpy.
 
-Choose file name 
+Choose file name
 
 .. code-block:: console
-   
+
    path/to/project/directory/ilastik/ilastik_pixel/{fold}/{nickname}.npy
 
 
@@ -350,46 +350,46 @@ Then close.
 
 Batch multicut doesn't work via windows. Therefore, do this step in wsl2
 
-Note all data will be on windows machine, therefore all paths on wsl2 
+Note all data will be on windows machine, therefore all paths on wsl2
 need to point to the folders on the windows machine
 
 One can see `wsl subsystem <https://learn.microsoft.com/en-us/windows/wsl/install>`_
 for setup instructions
 
-We now will need to install Ilastik into this linux wsl2 subsystem 
+We now will need to install Ilastik into this linux wsl2 subsystem
 as per Ilastik's instructions
 
 Once you have tar the file, we run
 
 .. code-block:: console
-   
+
    (locpix-env) $ ./run_ilastik.sh
 
 which will run Ilastik.
 
 Click new project: Boundary-based segmentation with Multicut.
 
-We suggest naming this 
+We suggest naming this
 
 .. code-block:: console
 
    boundary_seg
 
-and saving in 
+and saving in
 
 .. code-block:: console
-   
+
    path/to/project/directory/ilastik/models
 
-Click under raw data add new and add separate images, 
+Click under raw data add new and add separate images,
 add all images and remember to only train on train images!
 
 .. code-block:: console
 
-   path/to/project/directory/ilastik/prep 
+   path/to/project/directory/ilastik/prep
 
-Then under probabilities add the corresponding probability output 
-.npy file from previous stage 
+Then under probabilities add the corresponding probability output
+.npy file from previous stage
 
 This will be in
 
@@ -399,7 +399,7 @@ This will be in
 
 N.B: make sure you click the add new button which is the higher of the two.
 
-Then click DT Watershed. 
+Then click DT Watershed.
 
 You can now mess with parameters and click update watershed until happy.
 
@@ -410,7 +410,7 @@ We used:
 * Smooth: 3
 * Alpha: .9
 
-Then click training and multicut. 
+Then click training and multicut.
 
 Then select features - I choose all features.
 
@@ -420,7 +420,7 @@ Then click then click update now to see updates to multicut.
 
 View multicut edges and superpixel edges and correct the mistakes for each image.
 
-Then click data export and choose same settings as before but now 
+Then click data export and choose same settings as before but now
 choose the dataset directory as
 
 .. code-block:: console
@@ -437,7 +437,7 @@ i.e. the path will look like
 
    As you are in wsl2 the path to project directory will be different
 
-   It will be 
+   It will be
 
    .. code-block:: console
 

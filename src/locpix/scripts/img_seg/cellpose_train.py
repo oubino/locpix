@@ -5,22 +5,25 @@ Take in items and train the Cellpose module
 """
 
 import yaml
-#import tkinter as tk
-#from tkinter import filedialog
-#import torch
-#from torch.utils.data import DataLoader
-#from locpix.img_processing.data_loading import dataset
-#from locpix.img_processing.training import train
+
+# import tkinter as tk
+# from tkinter import filedialog
+# import torch
+# from torch.utils.data import DataLoader
+# from locpix.img_processing.data_loading import dataset
+# from locpix.img_processing.training import train
 import os
-#from torchvision import transforms
-#from cellpose import models
-#from torchsummary import summary
+
+# from torchvision import transforms
+# from cellpose import models
+# from torchsummary import summary
 import argparse
 from locpix.scripts.img_seg import cellpose_train_prep
 import json
 import time
 from cellpose import __main__
 from locpix.scripts.img_seg import cellpose_eval
+
 
 def main():
 
@@ -76,7 +79,7 @@ def main():
         with open(args.config, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
             # ilastik_output_config.parse_config(config)
-    
+
     metadata_path = os.path.join(project_folder, "metadata.json")
     with open(
         metadata_path,
@@ -115,14 +118,16 @@ def main():
         else:
             os.makedirs(folder)
 
-    print('------ Training --------')
-    
+    print("------ Training --------")
+
     for fold in range(folds):
 
-        print(f'----- Fold {fold} -------')
+        print(f"----- Fold {fold} -------")
 
         # cellpose train prep
-        cellpose_train_prep.preprocess_train_files(project_folder, config, metadata, fold)
+        cellpose_train_prep.preprocess_train_files(
+            project_folder, config, metadata, fold
+        )
 
         # train cellpose
         train_folder = os.path.abspath(os.path.join(project_folder, "train_files/cellpose/train"))
@@ -141,13 +146,14 @@ def main():
         # clean up
         cellpose_train_prep.clean_up(project_folder)
 
-    print('------ Outputting for evaluation -------- ')
+    print("------ Outputting for evaluation -------- ")
 
     for fold in range(folds):
 
         # load model
         model = os.listdir(os.path.join(project_folder, f"cellpose_train/models/{fold}"))[0]
         model = os.path.abspath(os.path.join(project_folder, f"cellpose_train/models/{fold}/{model}"))
+
         output_folder = os.path.join(cellpose_train_folder, f"{fold}")
 
         if os.path.exists(output_folder):

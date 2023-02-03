@@ -6,7 +6,7 @@ locpix
    This project is under active development
 
 This is a short ReadMe just containing a QuickStart guide.
-For more comprehensive documentation please see https://oubino.github.io/locpix/ 
+For more comprehensive documentation please see https://oubino.github.io/locpix/
 
 **locpix** includes the following functionality in order they are used in a normal workflow:
 
@@ -15,9 +15,9 @@ For more comprehensive documentation please see https://oubino.github.io/locpix/
 #. `Get markers`_ : Labelling histogram with seeds for watershed algorithm
 #. Segmentation:
 
-   #. `Classic segmentation`_ : Use classic method to segment histograms to extract relevant localisations 
-   #. `Cellpose segmentation`_ : Use Cellpose method to segment histograms to extract relevant localisations 
-   #. `Ilastik segmentation`_ : Use Ilastik method to segment histograms to extract relevant localisations 
+   #. `Classic segmentation`_ : Use classic method to segment histograms to extract relevant localisations
+   #. `Cellpose segmentation`_ : Use Cellpose method to segment histograms to extract relevant localisations
+   #. `Ilastik segmentation`_ : Use Ilastik method to segment histograms to extract relevant localisations
 
 #. `Membrane performance`_ : Performance metrics calculation based on the localisations (not the histograms!)
 
@@ -26,7 +26,7 @@ Project Structure
 
 We assume your input SMLM data are .csv files.
 
-This input data must first be preprocessed into a user chosen project directory, using the  `Preprocess`_ script. 
+This input data must first be preprocessed into a user chosen project directory, using the  `Preprocess`_ script.
 We strongly suggest this project directory is located outside the locpix folder.
 
 The input and output of all further scripts will remain located inside the project directory, the input data folder
@@ -37,7 +37,7 @@ Usage configuration
 
 Each script can be run with a GUI, but can also be run in headless mode.
 
-In headless mode each script needs a configuration file (.yaml file), which should be 
+In headless mode each script needs a configuration file (.yaml file), which should be
 specified using the -c flag.
 
 Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
@@ -54,13 +54,13 @@ Prerequisites
 ^^^^^^^^^^^^^
 
 You will need anaconda or miniconda or mamba.
-We recommend `mamba <https://mamba.readthedocs.io/en/latest/>`_ 
+We recommend `mamba <https://mamba.readthedocs.io/en/latest/>`_
 
 
 Install
 ^^^^^^^
 
-Create an environment and install via pypi 
+Create an environment and install via pypi
 
 .. code-block:: console
 
@@ -77,7 +77,7 @@ Preprocess
 
 This script preprocesses the input .csv data for later use AND **must be run first**.
 
-This script will take in .csv files, and convert them to .parquet files, 
+This script will take in .csv files, and convert them to .parquet files,
 while also wrangling the data into our data format.
 
 To run the script using the GUI, run
@@ -160,7 +160,7 @@ Cellpose segmentation (no training)
 
       (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
       (locpix-env) $ pip install cellpose
-   
+
    * don't have a GPU
    .. code-block:: console
 
@@ -201,9 +201,9 @@ Cellpose segmentation (training)
    .. code-block:: console
 
       (locpix-env) $ pip install pytorch cellpose
-   
 
-Prepare data for training 
+
+Prepare data for training
 
 .. code-block:: console
 
@@ -232,7 +232,7 @@ Need to prepare the data for Ilastik segmentation
    (locpix-env) $ ilastik_prep -i path/to/project/directory -c path/to/config/file
 
 Then run the data through the Ilastik GUI, which needs to be installed from
-`Ilastik <https://www.ilastik.org/download.html>`_  and to run it 
+`Ilastik <https://www.ilastik.org/download.html>`_  and to run it
 please see `usage:Ilastik GUI`_
 
 Then convert the output of the Ilastik GUI back into our format

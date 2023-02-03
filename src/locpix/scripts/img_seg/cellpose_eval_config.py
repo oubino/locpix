@@ -295,7 +295,9 @@ def parse_config(config):
         config (yml file): The configuration
             .yaml file"""
 
-    if (sorted(config.keys()) != sorted(default_config_keys_0)) and (sorted(config.keys()) != sorted(default_config_keys_1)):
+    if (sorted(config.keys()) != sorted(default_config_keys_0)) and (
+        sorted(config.keys()) != sorted(default_config_keys_1)
+    ):
         raise ValueError(
             "Did not specify necessary default \
             configutation arguments"

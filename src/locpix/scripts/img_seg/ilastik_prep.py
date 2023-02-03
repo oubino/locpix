@@ -14,6 +14,7 @@ from locpix.scripts.img_seg import ilastik_prep_config
 import json
 import time
 
+
 def main():
 
     parser = argparse.ArgumentParser(
@@ -147,23 +148,23 @@ def main():
         # 0: no label
         # 1: membrane
         # 2: not membrane
-        # we mean 
+        # we mean
         # 0: not membrane
         # 1: membrane
         # therefore need to set all 0s to 2s
-        label_img = np.where(label_img==0, 2, label_img)
+        label_img = np.where(label_img == 0, 2, label_img)
         label_img = np.expand_dims(label_img, axis=2)
-        label_img = label_img.astype('uint8')
+        label_img = label_img.astype("uint8")
 
         # separate into bkg and label
-        bkg = np.where(label_img==2, label_img, 0)
-        label = np.where(label_img==1, label_img, 0)
+        bkg = np.where(label_img == 2, label_img, 0)
+        label = np.where(label_img == 1, label_img, 0)
 
-        # undersample the background as otherwise hard to 
+        # undersample the background as otherwise hard to
         # load into Ilastik
         rng = np.random.default_rng()
-        noise = rng.choice(2, size=label_img.shape, p=[.8,.2])
-        bkg = np.where(noise==0, 0, bkg)
+        noise = rng.choice(2, size=label_img.shape, p=[0.8, 0.2])
+        bkg = np.where(noise == 0, 0, bkg)
 
         # combine bkg back with label
         label_img = label + bkg
@@ -172,7 +173,6 @@ def main():
         file_name = file.removesuffix(".parquet")
         save_loc = os.path.join(output_folder, "masks", file_name + ".npy")
         np.save(save_loc, label_img)
-
 
     # save yaml file
     yaml_save_loc = os.path.join(project_folder, "ilastik_prep.yaml")

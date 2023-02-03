@@ -365,7 +365,8 @@ class item:
                     # note image shape when plotted: [x, y]
                     viewer = napari.view_image(
                         self.histo[self.channels[0]].T,
-                        name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
+                        name=f"Channel {self.channels[0]}/"
+                        f"{self.chan_2_label(self.channels[0])}",
                         rgb=False,
                         blending="additive",
                         colormap=colormap_list[0],
@@ -390,7 +391,8 @@ class item:
                     # create the viewer and add the image
                     viewer = napari.view_image(
                         img,
-                        name=f"Channel {self.channels[0]}/{self.chan_2_label(self.channels[0])}",
+                        name=f"Channel {self.channels[0]}/"
+                        f"{self.chan_2_label(self.channels[0])}",
                         rgb=False,
                         gamma=2,
                         contrast_limits=[0, 30],
