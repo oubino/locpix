@@ -33,6 +33,7 @@ dependencies = [
     "scikit-learn",
     "python-dotenv",
     "tifffile",
+    "pre-commit",
     
 ]
 

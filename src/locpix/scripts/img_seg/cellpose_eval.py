@@ -182,7 +182,7 @@ def main(*args):
             #input('stop')
             #print(args.user_model)
             # GPU has to be true otherwise runs on mkldnn which fails with track running stats true
-            model = models.CellposeModel(pretrained_model=args.user_model, gpu=False)
+            model = models.CellposeModel(pretrained_model=args.user_model, gpu=config['use_gpu'])
 
             # base model
             base_model = models.CellposeModel(model_type=config["model"])
@@ -212,7 +212,7 @@ def main(*args):
             # doing one at a time (rather than in batch) like this might be very slow
             _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
         else:
-            model = models.CellposeModel(model_type=config["model"], gpu=False)
+            model = models.CellposeModel(model_type=config["model"], gpu=config['use_gpu'])
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow
