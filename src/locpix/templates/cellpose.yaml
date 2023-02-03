@@ -24,3 +24,5 @@ sum_chan: True
 
 # files to evaluate on
 test_files: all
+
+use_gpu: True

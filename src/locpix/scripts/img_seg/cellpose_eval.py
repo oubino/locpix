@@ -180,29 +180,45 @@ def main(*args):
         imgs = [img]
 
         if args.user_model is not None:
-            model = models.CellposeModel(pretrained_model=args.user_model)
+            model = models.CellposeModel(pretrained_model=args.user_model, gpu=config['use_gpu'])
+
+            # base model
+            base_model = models.CellposeModel(model_type=config["model"])
+            base_model = base_model.net.state_dict()
+            sd = model.net.state_dict()
+            for (k1, v1) in sd.items():
+                vars = ["running_mean", "running_var", "num_batches_tracked"]
+                # set these variables in our model to the ones from LC1
+                if any(var in k1 for var in vars):
+                    sd[k1] = base_model[k1]
+            model.net.load_state_dict(sd)
+
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow
-            _, flows, _ = model.eval(imgs, channels=channels)
+            _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
         else:
-            model = models.CellposeModel(model_type=config["model"])
+            model = models.CellposeModel(model_type=config["model"], gpu=config['use_gpu'])
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow
             _, flows, _ = model.eval(
                 imgs, diameter=config["diameter"], channels=channels
             )
+
+        # get semantic mask
         # flows[0] as we have only one image so get first flow
         # flows[0][2] as this is the probability see
         # (https://cellpose.readthedocs.io/en/latest/api.html)
         semantic_mask = flows[0][2]
-
-        # convert mask (probabilities) to range 0-1
-        semantic_mask = (semantic_mask - np.min(semantic_mask)) / (
-            np.max(semantic_mask) - np.min(semantic_mask)
-        )
-
+        lower = 1
+        upper = 99
+        X = semantic_mask
+        x01 = np.percentile(X, lower)
+        x99 = np.percentile(X, upper)
+        X = (X - x01) / (x99 - x01)
+        semantic_mask = np.clip(X, 0, 1)
+       
         # ---- segment cells ----
         # get markers
         markers_loc = os.path.join(project_folder, "markers")

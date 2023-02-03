@@ -130,37 +130,18 @@ def main():
         )
 
         # train cellpose
-        train_folder = os.path.abspath(
-            os.path.join(project_folder, "train_files/cellpose/train")
-        )
-        test_folder = os.path.abspath(
-            os.path.join(project_folder, "train_files/cellpose/val")
-        )
-        model_save_path = os.path.abspath(
-            os.path.join(project_folder, "cellpose_train/")
-        )
-        model = config["model"]
-        lr = config["learning_rate"]
-        wd = config["weight_decay"]
-        epochs = config["epochs"]
+        train_folder = os.path.abspath(os.path.join(project_folder, "train_files/cellpose/train"))
+        test_folder = os.path.abspath(os.path.join(project_folder, "train_files/cellpose/val"))
+        model_save_path = os.path.abspath(os.path.join(project_folder, "cellpose_train/"))
+        model = config['model']
+        lr = config['learning_rate']
+        wd = config['weight_decay']
+        epochs = config['epochs']
 
-        __main__.main(
-            [
-                "--train",
-                f"--dir={train_folder}",
-                f"--test_dir={test_folder}",
-                f"--pretrained_model={model}",
-                "--chan=0",
-                "--chan2=0",
-                f"--learning_rate={lr}",
-                f"--weight_decay={wd}",
-                f"--n_epochs={epochs}",
-                "--min_train_masks=1",
-                "--verbose",
-                f"--fold={fold}",
-                f"--model_save_path={model_save_path}",
-            ]
-        )
+        if config['use_gpu']:
+            __main__.main(['--train', f'--dir={train_folder}', f'--test_dir={test_folder}', f'--pretrained_model={model}', '--chan=0', '--chan2=0', f'--learning_rate={lr}', f'--weight_decay={wd}', f'--n_epochs={epochs}', '--min_train_masks=1', '--verbose', f'--fold={fold}', f'--model_save_path={model_save_path}', '--use_gpu'])
+        else:
+            __main__.main(['--train', f'--dir={train_folder}', f'--test_dir={test_folder}', f'--pretrained_model={model}', '--chan=0', '--chan2=0', f'--learning_rate={lr}', f'--weight_decay={wd}', f'--n_epochs={epochs}', '--min_train_masks=1', '--verbose', f'--fold={fold}', f'--model_save_path={model_save_path}'])
 
         # clean up
         cellpose_train_prep.clean_up(project_folder)
@@ -170,12 +151,9 @@ def main():
     for fold in range(folds):
 
         # load model
-        model = os.listdir(
-            os.path.join(project_folder, f"cellpose_train/models/{fold}")
-        )
-        model = os.path.abspath(
-            os.path.join(project_folder, f"cellpose_train/models/{fold}/{model}")
-        )
+        model = os.listdir(os.path.join(project_folder, f"cellpose_train/models/{fold}"))[0]
+        model = os.path.abspath(os.path.join(project_folder, f"cellpose_train/models/{fold}/{model}"))
+
         output_folder = os.path.join(cellpose_train_folder, f"{fold}")
 
         if os.path.exists(output_folder):
@@ -184,17 +162,18 @@ def main():
             os.makedirs(output_folder)
 
         # run cellpose_eval
-        config_file = "src/locpix/templates/cellpose.yaml"
-        cellpose_eval.main(
-            (
-                [
-                    f"--project_directory={project_folder}",
-                    f"--config={config_file}",
-                    f"--output_folder=cellpose_train/{fold}",
-                    "--user_model=True",
-                ]
-            )
-        )
+        config_eval = 'src/locpix/templates/cellpose.yaml'
+        cellpose_eval.main(([f'--project_directory={project_folder}', f'--config={config_eval}', f'--output_folder=cellpose_train/{fold}', f'--user_model={model}']))
+
+    # save train yaml file
+    yaml_save_loc = os.path.join(project_folder, "cellpose_train.yaml")
+    with open(yaml_save_loc, "w") as outfile:
+        yaml.dump(config, outfile)
+
+    # save eval yaml file
+    yaml_save_loc = os.path.join(project_folder, "cellpose_train_eval.yaml")
+    with open(yaml_save_loc, "w") as outfile:
+        yaml.dump(config_eval, outfile)
 
 
 if __name__ == "__main__":

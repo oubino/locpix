@@ -34,7 +34,6 @@ dependencies = [
     "python-dotenv",
     "tifffile",
     "pre-commit",
-
 ]
 
 [project.scripts]

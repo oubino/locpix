@@ -121,12 +121,13 @@ def preprocess_test_files(project_folder, config, metadata):
             raise ValueError("Val files contains duplicates")
         if len(set(test_files)) != len(test_files):
             raise ValueError("Test files contains duplicates")
-    print("Train files")
-    print(train_files)
-    print("Test files")
-    print(test_files)
-    print("Val files")
-    print(val_files)
+        print("Fold: ", fold)
+        print("Train files")
+        print(train_files)
+        print("Test files")
+        print(test_files)
+        print("Val files")
+        print(val_files)
 
     # list items
     input_root = os.path.join(project_folder, "annotate/annotated")

@@ -39,6 +39,7 @@ default_config_keys_0 = [
     "test_files",  # new
     "channel",
     "alt_channel",
+    "use_gpu",
 ]
 
 default_config_keys_1 = [
@@ -51,6 +52,7 @@ default_config_keys_1 = [
     "test_files",  # new
     "channel",
     "alt_channel",
+    "use_gpu",
 ]
 
 
