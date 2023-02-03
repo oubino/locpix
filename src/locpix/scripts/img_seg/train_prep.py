@@ -77,7 +77,13 @@ def main():
     train_files = config["train_files"]
     test_files = config["test_files"]
 
-
+    # check files
+    if not set(train_files).isdisjoint(test_files):
+            raise ValueError("Train files and test files shared files!!")
+    if len(set(train_files)) != len(train_files):
+        raise ValueError("Train files contains duplicates")
+    if len(set(test_files)) != len(test_files):
+        raise ValueError("Test files contains duplicates")
 
     # create train and test folder
     train_folder = os.path.join(project_folder, "train_files")
@@ -119,8 +125,23 @@ def main():
         train_files = train_folds[fold]
         val_files = val_folds[fold]
         # check files
-    print("Train files")
-    print(train_files)
+        if not set(train_files).isdisjoint(test_files):
+            raise ValueError("Train files and test files shared files!!")
+        if not set(train_files).isdisjoint(val_files):
+            raise ValueError("Train files and val files shared files!!")
+        if not set(val_files).isdisjoint(test_files):
+            raise ValueError("Val files and test files shared files!!")
+        if len(set(train_files)) != len(train_files):
+            raise ValueError("Train files contains duplicates")
+        if len(set(val_files)) != len(val_files):
+            raise ValueError("Val files contains duplicates")
+        if len(set(test_files)) != len(test_files):
+            raise ValueError("Test files contains duplicates")
+        print('Fold', fold)
+        print("Train files")
+        print(train_files)
+        print("Val files")
+        print(val_files)
     print("Test files")
     print(test_files)
 
