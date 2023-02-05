@@ -439,165 +439,165 @@ def main():
                 metadata=metadata,
             )
 
-        print("Val set...")
+            print("Val set...")
 
-        metadata = {
-            "train_set": train_files,
-            "test_set": test_files,
-            "threshold": threshold,
-            "val_set": val_files,
-        }
+            metadata = {
+                "train_set": train_files,
+                "test_set": test_files,
+                "threshold": threshold,
+                "val_set": val_files,
+            }
 
-        prob_list = np.array([])
-        gt_list = np.array([])
-        pred_list = np.array([])
-
-        # sanity check all have same gt label map
-        gt_label_map = None
-
-        # threshold dataframe and save to parquet file with pred label
-        for file in files:
-
-            if file.removesuffix(".parquet") not in val_files:
-                continue
-
-            print("File ", file)
-
-            item = datastruc.item(None, None, None, None, None)
-            item.load_from_parquet(os.path.join(gt_file_path, file))
-
-            # convert to histo
-            histo, channel_map, label_map = item.render_histo(
-                [config["channel"], config["alt_channel"]]
-            )
-
-            # load prob map
-            img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
-
-            # merge prob map and df
-            merged_df = item.mask_pixel_2_coord(img_prob)
-            merged_df = merged_df.rename({"pred_label": "prob"})
-
-            # get gt and predicted probability
-            gt = merged_df.select(pl.col("gt_label")).to_numpy()
-            prob = merged_df.select(pl.col("prob")).to_numpy()
-
-            save_df = merged_df.select(
-                [
-                    pl.all(),
-                    pl.when(pl.col("prob") > threshold)
-                    .then(1)
-                    .otherwise(0)
-                    .alias("pred_label"),
-                ]
-            )
-
-            # append to aggregated data set
-            prob_list = np.append(prob_list, prob)
-            gt_list = np.append(gt_list, gt)
-            pred = save_df.select(pl.col("pred_label")).to_numpy()
-            pred_list = np.append(pred_list, pred)
-
-            # assign save dataframe to item
-            item.df = save_df
-
-            # save dataframe with predicted label column
-            item.save_to_parquet(
-                output_df_folder_val, drop_zero_label=False, drop_pixel_col=True
-            )
-
-            # also save image of predicted membrane
-            output_img = np.where(img_prob > threshold, 1, 0)
-
-            img = np.transpose(histo, (0, 2, 1))
-
-            # consider the correct channel
-            save_loc = os.path.join(output_seg_imgs, item.name + ".png")
-            vis_img.visualise_seg(
-                img,
-                output_img,
-                item.bin_sizes,
-                axes=[0],
-                label_map=label_map,
-                threshold=config["vis_threshold"],
-                how=config["vis_interpolate"],
-                origin="upper",
-                blend_overlays=False,
-                alpha_seg=0.8,
-                cmap_seg=["k", "y"],
-                save=True,
-                save_loc=save_loc,
-                four_colour=False,
-            )
+            prob_list = np.array([])
+            gt_list = np.array([])
+            pred_list = np.array([])
 
             # sanity check all have same gt label map
-            if gt_label_map is None:
-                gt_label_map = item.gt_label_map
-            else:
-                assert item.gt_label_map == gt_label_map
+            gt_label_map = None
 
-            # print("Sanity check... ")
-            # print("gt", len(gt_list), gt_list)
-            # print("pred", len(pred_list), pred_list)
+            # threshold dataframe and save to parquet file with pred label
+            for file in files:
 
-            # calculate precision recall curve
-            gt_list = gt_list.flatten()
-            prob_list = prob_list.flatten()
-            pr, rec, pr_threshold = precision_recall_curve(
-                gt_list, prob_list, pos_label=1
-            )
-            baseline = len(gt[gt == 1]) / len(gt)
+                if file.removesuffix(".parquet") not in val_files:
+                    continue
 
-            # calculate confusion matrix
-            date = datetime.today().strftime("%H_%M_%d_%m_%Y")
-            saveloc = os.path.join(output_conf_matrix, f"conf_matrix_val_{date}.png")
-            classes = [item.gt_label_map[0], item.gt_label_map[1]]
-            pred_list = pred_list.flatten()
-            generate_conf_matrix(gt_list, pred_list, classes, saveloc)
-            # could just use aggregated metric function to plot the confusion matrix
+                print("File ", file)
 
-            # plot pr curve
-            save_loc = os.path.join(output_val_pr, "_curve.pkl")
-            plot_pr_curve(
-                ax_val,
-                method.capitalize(),
-                linestyles[index],
-                "darkorange",
-                pr,
-                rec,
-                baseline,
-                # save_loc,
-                # pickle=True,
-            )
-            pr_auc = auc(rec, pr)
-            add_metrics = {"pr_auc": pr_auc}
+                item = datastruc.item(None, None, None, None, None)
+                item.load_from_parquet(os.path.join(gt_file_path, file))
 
-            # metric calculations based on final prediction
-            save_loc = os.path.join(output_metrics, f"val_{date}.txt")
-            metrics.aggregated_metrics(
-                output_df_folder_val,
-                save_loc,
-                gt_label_map,
-                add_metrics=add_metrics,
-                metadata=metadata,
-            )
+                # convert to histo
+                histo, channel_map, label_map = item.render_histo(
+                    [config["channel"], config["alt_channel"]]
+                )
 
-            fig_train.tight_layout()
-            fig_test.tight_layout()
-            fig_val.tight_layout()
+                # load prob map
+                img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
 
-            # get handles and labels
-            # handles_train, labels_train = ax_train.get_legend_handles_labels()
-            # handles_test, labels_test = ax_test.get_legend_handles_labels()
+                # merge prob map and df
+                merged_df = item.mask_pixel_2_coord(img_prob)
+                merged_df = merged_df.rename({"pred_label": "prob"})
 
-            # specify order of items in legend
-            # order = [1,0,2]
+                # get gt and predicted probability
+                gt = merged_df.select(pl.col("gt_label")).to_numpy()
+                prob = merged_df.select(pl.col("prob")).to_numpy()
 
-            # add legend to plot
-            # ax_train.legend([handles_train[idx] for idx in order],
-            #                   [methods[idx] for idx in order])
-            # ax_test.legend([handles_test[idx] for idx in order],
-            #                   [methods[idx] for idx in order])
+                save_df = merged_df.select(
+                    [
+                        pl.all(),
+                        pl.when(pl.col("prob") > threshold)
+                        .then(1)
+                        .otherwise(0)
+                        .alias("pred_label"),
+                    ]
+                )
+
+                # append to aggregated data set
+                prob_list = np.append(prob_list, prob)
+                gt_list = np.append(gt_list, gt)
+                pred = save_df.select(pl.col("pred_label")).to_numpy()
+                pred_list = np.append(pred_list, pred)
+
+                # assign save dataframe to item
+                item.df = save_df
+
+                # save dataframe with predicted label column
+                item.save_to_parquet(
+                    output_df_folder_val, drop_zero_label=False, drop_pixel_col=True
+                )
+
+                # also save image of predicted membrane
+                output_img = np.where(img_prob > threshold, 1, 0)
+
+                img = np.transpose(histo, (0, 2, 1))
+
+                # consider the correct channel
+                save_loc = os.path.join(output_seg_imgs, item.name + ".png")
+                vis_img.visualise_seg(
+                    img,
+                    output_img,
+                    item.bin_sizes,
+                    axes=[0],
+                    label_map=label_map,
+                    threshold=config["vis_threshold"],
+                    how=config["vis_interpolate"],
+                    origin="upper",
+                    blend_overlays=False,
+                    alpha_seg=0.8,
+                    cmap_seg=["k", "y"],
+                    save=True,
+                    save_loc=save_loc,
+                    four_colour=False,
+                )
+
+                # sanity check all have same gt label map
+                if gt_label_map is None:
+                    gt_label_map = item.gt_label_map
+                else:
+                    assert item.gt_label_map == gt_label_map
+
+                # print("Sanity check... ")
+                # print("gt", len(gt_list), gt_list)
+                # print("pred", len(pred_list), pred_list)
+
+                # calculate precision recall curve
+                gt_list = gt_list.flatten()
+                prob_list = prob_list.flatten()
+                pr, rec, pr_threshold = precision_recall_curve(
+                    gt_list, prob_list, pos_label=1
+                )
+                baseline = len(gt[gt == 1]) / len(gt)
+
+                # calculate confusion matrix
+                date = datetime.today().strftime("%H_%M_%d_%m_%Y")
+                saveloc = os.path.join(output_conf_matrix, f"conf_matrix_val_{date}.png")
+                classes = [item.gt_label_map[0], item.gt_label_map[1]]
+                pred_list = pred_list.flatten()
+                generate_conf_matrix(gt_list, pred_list, classes, saveloc)
+                # could just use aggregated metric function to plot the confusion matrix
+
+                # plot pr curve
+                save_loc = os.path.join(output_val_pr, "_curve.pkl")
+                plot_pr_curve(
+                    ax_val,
+                    method.capitalize(),
+                    linestyles[index],
+                    "darkorange",
+                    pr,
+                    rec,
+                    baseline,
+                    # save_loc,
+                    # pickle=True,
+                )
+                pr_auc = auc(rec, pr)
+                add_metrics = {"pr_auc": pr_auc}
+
+                # metric calculations based on final prediction
+                save_loc = os.path.join(output_metrics, f"val_{date}.txt")
+                metrics.aggregated_metrics(
+                    output_df_folder_val,
+                    save_loc,
+                    gt_label_map,
+                    add_metrics=add_metrics,
+                    metadata=metadata,
+                )
+
+                fig_train.tight_layout()
+                fig_test.tight_layout()
+                fig_val.tight_layout()
+
+                # get handles and labels
+                # handles_train, labels_train = ax_train.get_legend_handles_labels()
+                # handles_test, labels_test = ax_test.get_legend_handles_labels()
+
+                # specify order of items in legend
+                # order = [1,0,2]
+
+                # add legend to plot
+                # ax_train.legend([handles_train[idx] for idx in order],
+                #                   [methods[idx] for idx in order])
+                # ax_test.legend([handles_test[idx] for idx in order],
+                #                   [methods[idx] for idx in order])
 
         fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
         fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)
