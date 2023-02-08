@@ -85,3 +85,6 @@ paper_figures/
 
 # labnotes
 labnotes.rst
+
+# profile
+*.lprof
