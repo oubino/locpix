@@ -21,7 +21,7 @@ import yaml
 import os
 import numpy as np
 from locpix.preprocessing import datastruc
-from locpix.visualise.performance import plot_pr_curve, generate_conf_matrix
+from locpix.visualise.performance import plot_pr_curve, generate_binary_conf_matrix
 import locpix.evaluate.metrics as metrics
 from sklearn.metrics import precision_recall_curve, auc
 import polars as pl
@@ -33,7 +33,7 @@ from locpix.scripts.img_seg import membrane_performance_config
 import json
 import time
 
-
+@profile
 def main():
 
     parser = argparse.ArgumentParser(
@@ -154,6 +154,9 @@ def main():
         else:
             os.makedirs(output_overlay_pr_curves)
 
+        # one date for all methods
+        date = datetime.today().strftime("%H_%M_%d_%m_%Y")
+
         for index, method in enumerate(methods):
 
             print(f"{method} ...")
@@ -181,20 +184,24 @@ def main():
                 project_folder,
                 f"membrane_performance/{method}/membrane/seg_dataframes/val/{fold}",
             )
-            output_seg_imgs = os.path.join(
+            output_seg_imgs_test = os.path.join(
                 project_folder,
-                f"membrane_performance/{method}/membrane/seg_images/{fold}",
+                f"membrane_performance/{method}/membrane/seg_images/test/{fold}",
             )
-            output_train_pr = os.path.join(
+            output_seg_imgs_val = os.path.join(
                 project_folder,
-                f"membrane_performance/{method}/membrane/train_pr/{fold}",
+                f"membrane_performance/{method}/membrane/seg_images/val/{fold}",
             )
-            output_test_pr = os.path.join(
-                project_folder, f"membrane_performance/{method}/membrane/test_pr/{fold}"
-            )
-            output_val_pr = os.path.join(
-                project_folder, f"membrane_performance/{method}/membrane/val_pr/{fold}"
-            )
+            #output_train_pr = os.path.join(
+            #    project_folder,
+            #    f"membrane_performance/{method}/membrane/train_pr/{fold}",
+            #)
+            #output_test_pr = os.path.join(
+            #    project_folder, f"membrane_performance/{method}/membrane/test_pr/{fold}"
+            #)
+            #output_val_pr = os.path.join(
+            #    project_folder, f"membrane_performance/{method}/membrane/val_pr/{fold}"
+            #)
             output_metrics = os.path.join(
                 project_folder, f"membrane_performance/{method}/membrane/metrics/{fold}"
             )
@@ -207,10 +214,11 @@ def main():
             folders = [
                 output_df_folder_test,
                 output_df_folder_val,
-                output_seg_imgs,
-                output_train_pr,
-                output_val_pr,
-                output_test_pr,
+                output_seg_imgs_val,
+                output_seg_imgs_test,
+                #output_train_pr,
+                #output_val_pr,
+                #output_test_pr,
                 output_metrics,
                 output_conf_matrix,
             ]
@@ -256,7 +264,6 @@ def main():
 
             # print("Sanity check... ")
             # print("gt", len(gt_list), gt_list)
-            # print("pred", len(pred_list), pred_list)
 
             # calculate precision recall curve
             gt_list = gt_list.flatten()
@@ -267,7 +274,7 @@ def main():
             baseline = len(gt[gt == 1]) / len(gt)
 
             # plot pr curve
-            save_loc = os.path.join(output_train_pr, "_curve.pkl")
+            #save_loc = os.path.join(output_train_pr, "_curve.pkl")
             plot_pr_curve(
                 ax_train,
                 method.capitalize(),
@@ -307,7 +314,6 @@ def main():
 
             prob_list = np.array([])
             gt_list = np.array([])
-            pred_list = np.array([])
 
             # sanity check all have same gt label map
             gt_label_map = None
@@ -352,8 +358,6 @@ def main():
                 # append to aggregated data set
                 prob_list = np.append(prob_list, prob)
                 gt_list = np.append(gt_list, gt)
-                pred = save_df.select(pl.col("pred_label")).to_numpy()
-                pred_list = np.append(pred_list, pred)
 
                 # assign save dataframe to item
                 item.df = save_df
@@ -369,7 +373,7 @@ def main():
                 img = np.transpose(histo, (0, 2, 1))
 
                 # consider the correct channel
-                save_loc = os.path.join(output_seg_imgs, item.name + ".png")
+                save_loc = os.path.join(output_seg_imgs_test, item.name + ".png")
                 vis_img.visualise_seg(
                     img,
                     output_img,
@@ -395,7 +399,6 @@ def main():
 
             # print("Sanity check... ")
             # print("gt", len(gt_list), gt_list)
-            # print("pred", len(pred_list), pred_list)
 
             # calculate precision recall curve
             gt_list = gt_list.flatten()
@@ -405,16 +408,8 @@ def main():
             )
             baseline = len(gt[gt == 1]) / len(gt)
 
-            # calculate confusion matrix
-            date = datetime.today().strftime("%H_%M_%d_%m_%Y")
-            saveloc = os.path.join(output_conf_matrix, f"conf_matrix_test_{date}.png")
-            classes = [item.gt_label_map[0], item.gt_label_map[1]]
-            pred_list = pred_list.flatten()
-            generate_conf_matrix(gt_list, pred_list, classes, saveloc)
-            # could just use aggregated metric function to plot the confusion matrix
-
             # plot pr curve
-            save_loc = os.path.join(output_test_pr, "_curve.pkl")
+            #save_loc = os.path.join(output_test_pr, "_curve.pkl")
             plot_pr_curve(
                 ax_test,
                 method.capitalize(),
@@ -431,13 +426,29 @@ def main():
 
             # metric calculations based on final prediction
             save_loc = os.path.join(output_metrics, f"test_{date}.txt")
-            metrics.aggregated_metrics(
+            agg_results = metrics.aggregated_metrics(
                 output_df_folder_test,
                 save_loc,
                 gt_label_map,
                 add_metrics=add_metrics,
                 metadata=metadata,
             )
+
+            # assume label 1 is positive label
+            tp = agg_results[1]["TP"]
+            fp = agg_results[1]["FP"]
+            tn = agg_results[1]["TN"]
+            fn = agg_results[1]["FN"]
+            assert agg_results[1]["TP"] == agg_results[0]["TN"]
+            assert agg_results[1]["FP"] == agg_results[0]["FN"]
+            assert agg_results[1]["TN"] == agg_results[0]["TP"]
+            assert agg_results[1]["FN"] == agg_results[0]["FP"]
+
+            # calculate confusion matrix
+            saveloc = os.path.join(output_conf_matrix, f"conf_matrix_test_{date}.png")
+            classes = [item.gt_label_map[0], item.gt_label_map[1]]
+            generate_binary_conf_matrix(tn, fp, fn, tp, classes, saveloc)
+            # could just use aggregated metric function to plot the confusion matrix
 
             print("Val set...")
 
@@ -450,7 +461,6 @@ def main():
 
             prob_list = np.array([])
             gt_list = np.array([])
-            pred_list = np.array([])
 
             # sanity check all have same gt label map
             gt_label_map = None
@@ -495,8 +505,6 @@ def main():
                 # append to aggregated data set
                 prob_list = np.append(prob_list, prob)
                 gt_list = np.append(gt_list, gt)
-                pred = save_df.select(pl.col("pred_label")).to_numpy()
-                pred_list = np.append(pred_list, pred)
 
                 # assign save dataframe to item
                 item.df = save_df
@@ -512,7 +520,7 @@ def main():
                 img = np.transpose(histo, (0, 2, 1))
 
                 # consider the correct channel
-                save_loc = os.path.join(output_seg_imgs, item.name + ".png")
+                save_loc = os.path.join(output_seg_imgs_val, item.name + ".png")
                 vis_img.visualise_seg(
                     img,
                     output_img,
@@ -538,70 +546,77 @@ def main():
 
                 # print("Sanity check... ")
                 # print("gt", len(gt_list), gt_list)
-                # print("pred", len(pred_list), pred_list)
 
-                # calculate precision recall curve
-                gt_list = gt_list.flatten()
-                prob_list = prob_list.flatten()
-                pr, rec, pr_threshold = precision_recall_curve(
-                    gt_list, prob_list, pos_label=1
-                )
-                baseline = len(gt[gt == 1]) / len(gt)
+            # calculate precision recall curve
+            gt_list = gt_list.flatten()
+            prob_list = prob_list.flatten()
+            pr, rec, pr_threshold = precision_recall_curve(
+                gt_list, prob_list, pos_label=1
+            )
+            baseline = len(gt[gt == 1]) / len(gt)
 
-                # calculate confusion matrix
-                date = datetime.today().strftime("%H_%M_%d_%m_%Y")
-                saveloc = os.path.join(output_conf_matrix, f"conf_matrix_val_{date}.png")
-                classes = [item.gt_label_map[0], item.gt_label_map[1]]
-                pred_list = pred_list.flatten()
-                generate_conf_matrix(gt_list, pred_list, classes, saveloc)
-                # could just use aggregated metric function to plot the confusion matrix
+            
 
-                # plot pr curve
-                save_loc = os.path.join(output_val_pr, "_curve.pkl")
-                plot_pr_curve(
-                    ax_val,
-                    method.capitalize(),
-                    linestyles[index],
-                    "darkorange",
-                    pr,
-                    rec,
-                    baseline,
-                    # save_loc,
-                    # pickle=True,
-                )
-                pr_auc = auc(rec, pr)
-                add_metrics = {"pr_auc": pr_auc}
+            # plot pr curve
+            #save_loc = os.path.join(output_val_pr, "_curve.pkl")
+            plot_pr_curve(
+                ax_val,
+                method.capitalize(),
+                linestyles[index],
+                "darkorange",
+                pr,
+                rec,
+                baseline,
+                # save_loc,
+                # pickle=True,
+            )
+            pr_auc = auc(rec, pr)
+            add_metrics = {"pr_auc": pr_auc}
 
-                # metric calculations based on final prediction
-                save_loc = os.path.join(output_metrics, f"val_{date}.txt")
-                metrics.aggregated_metrics(
-                    output_df_folder_val,
-                    save_loc,
-                    gt_label_map,
-                    add_metrics=add_metrics,
-                    metadata=metadata,
-                )
+            # metric calculations based on final prediction
+            save_loc = os.path.join(output_metrics, f"val_{date}.txt")
+            agg_results =metrics.aggregated_metrics(
+                output_df_folder_val,
+                save_loc,
+                gt_label_map,
+                add_metrics=add_metrics,
+                metadata=metadata,
+            )
 
-                fig_train.tight_layout()
-                fig_test.tight_layout()
-                fig_val.tight_layout()
+            # assume label 1 is positive label
+            tp = agg_results[1]["TP"]
+            fp = agg_results[1]["FP"]
+            tn = agg_results[1]["TN"]
+            fn = agg_results[1]["FN"]
+            assert agg_results[1]["TP"] == agg_results[0]["TN"]
+            assert agg_results[1]["FP"] == agg_results[0]["FN"]
+            assert agg_results[1]["TN"] == agg_results[0]["TP"]
+            assert agg_results[1]["FN"] == agg_results[0]["FP"]
+            # calculate confusion matrix
+            saveloc = os.path.join(output_conf_matrix, f"conf_matrix_val_{date}.png")
+            classes = [item.gt_label_map[0], item.gt_label_map[1]]
+            generate_binary_conf_matrix(tn, fp, fn, tp, classes, saveloc)
 
-                # get handles and labels
-                # handles_train, labels_train = ax_train.get_legend_handles_labels()
-                # handles_test, labels_test = ax_test.get_legend_handles_labels()
+            fig_train.tight_layout()
+            fig_test.tight_layout()
+            fig_val.tight_layout()
 
-                # specify order of items in legend
-                # order = [1,0,2]
+            # get handles and labels
+            # handles_train, labels_train = ax_train.get_legend_handles_labels()
+            # handles_test, labels_test = ax_test.get_legend_handles_labels()
 
-                # add legend to plot
-                # ax_train.legend([handles_train[idx] for idx in order],
-                #                   [methods[idx] for idx in order])
-                # ax_test.legend([handles_test[idx] for idx in order],
-                #                   [methods[idx] for idx in order])
+            # specify order of items in legend
+            # order = [1,0,2]
 
-        fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
-        fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)
-        fig_val.savefig(os.path.join(output_overlay_pr_curves, "_val.png"), dpi=600)
+            # add legend to plot
+            # ax_train.legend([handles_train[idx] for idx in order],
+            #                   [methods[idx] for idx in order])
+            # ax_test.legend([handles_test[idx] for idx in order],
+            #                   [methods[idx] for idx in order])
+
+            fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
+            fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)
+            fig_val.savefig(os.path.join(output_overlay_pr_curves, "_val.png"), dpi=600)
 
     # save yaml file
     yaml_save_loc = os.path.join(project_folder, "membrane_performance.yaml")

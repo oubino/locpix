@@ -99,7 +99,12 @@ def aggregated_metrics(
             is an integer and the value is the associated
             label
         metadata (dictionary): Any additional metadata
-            to save"""
+            to save
+            
+    Returns:
+        agg_results (dict) : Dictionary containining TP, etc.
+            for labels"""
+
 
     # list items
     try:
@@ -195,3 +200,7 @@ def aggregated_metrics(
 
     with open(save_loc, "w") as f:
         f.writelines("\n".join(lines))
+
+    return agg_results
+
+

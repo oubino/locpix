@@ -56,22 +56,25 @@ def plot_pr_curve(
     ax.legend(loc="upper right")
 
 
-def generate_conf_matrix(gtlist, predlist, classes, saveloc):
+def generate_binary_conf_matrix(tn, fp, fn, tp, classes, saveloc):
     """Generates a confusion matrix and saves it
 
     Args:
-        gtlist (list) : List of ground truth labels
-        predlist (list): List of predicted labels
+        tn (int) : Number of true negatives
+        fp (int) : Number of false positives
+        fn (int) : Number of false negatives
+        tp (int) : Number of true positives
         classes (list): List of classes associated
-            with each label
+            with each label - assumes labels are ordered
+            0, 1 and that 0 is negative and 1 is positive
         saveloc (string): Location to save the confusion matrix
             to
 
     Returns:
         None
     """
-    conf_mat = confusion_matrix(gtlist, predlist)
-    conf_mat = np.array(conf_mat)
+    # conf_mat = confusion_matrix(gtlist, predlist)
+    conf_mat = np.array([[tn, fp], [fn, tp]], dtype=np.int64)
 
     fig, ax = plt.subplots(figsize=(5, 5))
     im = ax.imshow(conf_mat, cmap="YlGn")
