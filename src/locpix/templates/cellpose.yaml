@@ -1,6 +1,7 @@
 # threshold for visualisation
-vis_threshold: 5
+img_threshold: 5
 vis_interpolate: 'log2'
+vis_threshold: 0
 
 # cellpose parameters
 model: 'LC1'
