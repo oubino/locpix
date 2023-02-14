@@ -452,13 +452,6 @@ def main():
 
             print("Val set...")
 
-            metadata = {
-                "train_set": train_files,
-                "test_set": test_files,
-                "threshold": threshold,
-                "val_set": val_files,
-            }
-
             prob_list = np.array([])
             gt_list = np.array([])
 

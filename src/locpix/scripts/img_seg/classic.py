@@ -159,7 +159,7 @@ def main():
             )
 
         # tested very small amount annd line below is better than doing
-        # watershed on grey_log_img
+        # watershed on grey_img
         instance_mask = watershed.watershed_segment(
             grey_img, coords=markers
         )  # watershed on the grey image
