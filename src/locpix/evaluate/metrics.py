@@ -70,6 +70,8 @@ def mean_metrics(results, labels):
     acc_list = []  # empty list will have length = number of labels
     iou_list = []
     recall_list = []
+    pr_list = []
+    f1_score = []
     for label in labels:
         TP = results[label]["TP"]
         FP = results[label]["FP"]
@@ -77,10 +79,14 @@ def mean_metrics(results, labels):
         FN = results[label]["FN"]
         acc_list.append((TP + TN) / (TP + TN + FP + FN))
         iou_list.append((TP) / (TP + FP + FN))
-        recall_list.append(TP / (TP + FN))
+        recall = TP / (TP + FN)
+        precision = TP/(TP + FP)
+        recall_list.append(recall)
+        pr_list.append(precision)
+        f1_score.append((2*precision*recall)/(precision + recall))
     macc = np.mean(acc_list)
     miou = np.mean(iou_list)
-    return iou_list, acc_list, recall_list, miou, macc
+    return iou_list, acc_list, recall_list, pr_list, miou, macc, f1_score
 
 @profile
 def aggregated_metrics(
@@ -139,13 +145,15 @@ def aggregated_metrics(
     results = {}
 
     # calculate macc/miou/oacc
-    iou_list, acc_list, recall_list, miou, macc = mean_metrics(agg_results, labels)
+    iou_list, acc_list, recall_list, pr_list, miou, macc, f1_score = mean_metrics(agg_results, labels)
     results["iou_list"] = iou_list
     results["acc_list"] = acc_list
     results["recall_list"] = recall_list
+    results["precision_list"] = pr_list
     results["macc"] = macc
     results["miou"] = miou
     results["agg_results"] = agg_results
+    results["f1_score"] = f1_score
 
     # calculate oa
     tp_running_total = 0
