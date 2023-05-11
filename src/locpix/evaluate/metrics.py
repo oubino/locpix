@@ -70,7 +70,6 @@ def mean_metrics(results, labels):
     acc_list = []  # empty list will have length = number of labels
     iou_list = []
     recall_list = []
-    label_raw = []
     for label in labels:
         TP = results[label]["TP"]
         FP = results[label]["FP"]
@@ -79,10 +78,9 @@ def mean_metrics(results, labels):
         acc_list.append((TP + TN) / (TP + TN + FP + FN))
         iou_list.append((TP) / (TP + FP + FN))
         recall_list.append(TP / (TP + FN))
-        label_raw.append({'TP': TP, 'FP': FP, 'TN': TN, 'FN':FN})
     macc = np.mean(acc_list)
     miou = np.mean(iou_list)
-    return iou_list, acc_list, recall_list, miou, macc, label_raw
+    return iou_list, acc_list, recall_list, miou, macc
 
 @profile
 def aggregated_metrics(
@@ -141,13 +139,13 @@ def aggregated_metrics(
     results = {}
 
     # calculate macc/miou/oacc
-    iou_list, acc_list, recall_list, miou, macc, label_raw = mean_metrics(agg_results, labels)
+    iou_list, acc_list, recall_list, miou, macc = mean_metrics(agg_results, labels)
     results["iou_list"] = iou_list
     results["acc_list"] = acc_list
     results["recall_list"] = recall_list
     results["macc"] = macc
     results["miou"] = miou
-    results["label_raw"] = label_raw
+    results["agg_results"] = agg_results
 
     # calculate oa
     tp_running_total = 0
