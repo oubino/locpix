@@ -447,6 +447,13 @@ def main():
             assert agg_results[1]["TN"] == agg_results[0]["TP"]
             assert agg_results[1]["FN"] == agg_results[0]["FP"]
 
+            # assume label 1 is positive label
+            ones = tp + fn
+            zeros = fp + tn
+            skew = ones/(zeros + ones)
+            aucprmin = 1 + ((1-skew)*np.log(1-skew))/skew
+            add_metrics["aucnpr": (pr_auc - aucprmin)/(1 - aucprmin)]
+
             # calculate confusion matrix
             saveloc = os.path.join(output_conf_matrix, f"conf_matrix_test_{date}.png")
             classes = [item.gt_label_map[0], item.gt_label_map[1]]
@@ -591,6 +598,14 @@ def main():
             assert agg_results[1]["FP"] == agg_results[0]["FN"]
             assert agg_results[1]["TN"] == agg_results[0]["TP"]
             assert agg_results[1]["FN"] == agg_results[0]["FP"]
+
+            # assume label 1 is positive label
+            ones = tp + fn
+            zeros = fp + tn
+            skew = ones/(zeros + ones)
+            aucprmin = 1 + ((1-skew)*np.log(1-skew))/skew
+            add_metrics["aucnpr": (pr_auc - aucprmin)/(1 - aucprmin)]
+
             # calculate confusion matrix
             saveloc = os.path.join(output_conf_matrix, f"conf_matrix_val_{date}.png")
             classes = [item.gt_label_map[0], item.gt_label_map[1]]
