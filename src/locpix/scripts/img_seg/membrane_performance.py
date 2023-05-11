@@ -422,7 +422,10 @@ def main():
                 # pickle=True,
             )
             pr_auc = auc(rec, pr)
-            add_metrics = {"pr_auc": pr_auc}
+            add_metrics = {"pr_auc": pr_auc,
+                           "prcurve_pr": pr,
+                           "prcurve_rec": rec,
+                           "prcurve_baseline": baseline}
 
             # metric calculations based on final prediction
             save_loc = os.path.join(output_metrics, f"test_{date}.txt")
@@ -564,7 +567,10 @@ def main():
                 # pickle=True,
             )
             pr_auc = auc(rec, pr)
-            add_metrics = {"pr_auc": pr_auc}
+            add_metrics = {"pr_auc": pr_auc,
+                           "prcurve_pr": pr,
+                           "prcurve_rec": rec,
+                           "prcurve_baseline": baseline}
 
             # metric calculations based on final prediction
             save_loc = os.path.join(output_metrics, f"val_{date}.txt")
