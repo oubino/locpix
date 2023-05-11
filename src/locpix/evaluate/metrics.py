@@ -82,7 +82,7 @@ def mean_metrics(results, labels):
     miou = np.mean(iou_list)
     return iou_list, acc_list, recall_list, miou, macc
 
-
+@profile
 def aggregated_metrics(
     files_folder, save_loc, gt_label_map, add_metrics={}, metadata={}
 ):

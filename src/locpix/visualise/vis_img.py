@@ -97,6 +97,7 @@ def visualise_seg(
     four_colour=True,
     background_one_colour=False,
     legend=True,
+    show=False,
 ):
     """Take in image and the associated segmentation and plot it,
     with option to convert to 4 colours and also option to choose to
@@ -135,6 +136,7 @@ def visualise_seg(
         background_one_colour (bool) : Whether to keep background
             as all same colour when doing 4 colour conversion
         legend (bool) : Whether to include a legend
+        show (bool) : Whether to show img to screen
 
     """
 
@@ -230,5 +232,8 @@ def visualise_seg(
         if save_loc is None:
             raise ValueError("Need a save location!")
         plt.savefig(save_loc, bbox_inches="tight")
+
+    if show:
+        plt.show()
 
     plt.close()

@@ -5,6 +5,8 @@ import os
 import argparse
 import json
 import numpy as np
+from locpix.preprocessing import datastruc
+import polars as pl
 
 def main():
 
@@ -30,6 +32,35 @@ def main():
         metadata_path,
     ) as file:
         metadata = json.load(file)
+        # load in train and test files
+        train_folds = metadata["train_folds"]
+        val_folds = metadata["val_folds"]
+        test_files = metadata["test_files"]
+
+    # calculate aucprmin
+    gt_file_path = os.path.join(project_folder, "annotate/annotated")
+    files = os.listdir(gt_file_path)
+
+    zero_tot = 0
+    one_tot = 0
+    
+    for file in files:
+
+        if file.removesuffix(".parquet") not in test_files:
+            continue
+
+        item = datastruc.item(None, None, None, None, None)
+        item.load_from_parquet(os.path.join(gt_file_path, file))
+
+        # count labels
+        zeros = item.df["gt_label"].value_counts().filter(pl.col("gt_label") == 0).select(pl.col("counts"))[0,0]
+        ones = item.df["gt_label"].value_counts().filter(pl.col("gt_label") == 1).select(pl.col("counts"))[0,0]
+
+        zero_tot += zeros
+        one_tot += ones
+
+    skew = one_tot/(zero_tot + one_tot)
+    aucprmin = 1 + ((1-skew)*np.log(1-skew))/skew
 
     # for every fold
     folds = len(metadata["train_folds"])
@@ -79,6 +110,7 @@ def main():
                     elif no == 8:
                         pr_auc = float(line[10:])
                         pr_auc_list.append(pr_auc)
+        
 
         # return method results
         print('Method', method)
@@ -89,6 +121,10 @@ def main():
         print('macc ', np.mean(macc_list), ' +/- ', np.std(macc_list))
         print('miou ', np.mean(miou_list), ' +/- ', np.std(miou_list))
         print('pr_auc', np.mean(pr_auc_list), ' +/- ', np.std(pr_auc_list))
+        auc = np.mean(pr_auc_list)
+        pr_auc_norm = (auc - aucprmin)/(1 - aucprmin)
+        pr_auc_norm_err = np.std(pr_auc_list)/(1-aucprmin)
+        print('pr_auc_normalised', pr_auc_norm, ' +/- ', pr_auc_norm_err)
 
         # return method results in latex form
         latex_list = []
@@ -99,6 +135,7 @@ def main():
         latex_list.append(f"{np.mean(iou_1):.2g}$\pm${np.std(iou_1):.2g}")
         latex_list.append(f"{np.mean(macc_list):.2g}$\pm${np.std(macc_list):.2g}")
         latex_list.append(f"{np.mean(pr_auc_list):.2g}$\pm${np.std(pr_auc_list):.2g}")
+        latex_list.append(f"{pr_auc_norm:.2g}$\pm${pr_auc_norm_err:.2g}")
         res = ' & '.join(latex_list)
         print(res)
 
