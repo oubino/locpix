@@ -273,6 +273,15 @@ def main():
             )
             baseline = len(gt[gt == 1]) / len(gt)
 
+            # pr, recall saved for train 
+            save_loc = os.path.join(output_metrics, f"train_{date}.txt")
+            lines = ["Overall results", "-----------"]
+            lines.append(f"prcurve_pr: {pr}")
+            lines.append(f"prcurve_rec: {rec}")
+            lines.append(f"prcurve_baseline: {baseline}")
+            with open(save_loc, "w") as f:
+                f.writelines("\n".join(lines))
+
             # plot pr curve
             #save_loc = os.path.join(output_train_pr, "_curve.pkl")
             # plot_pr_curve(
