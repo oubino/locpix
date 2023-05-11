@@ -7,7 +7,7 @@ Process output of Ilastik
 import yaml
 import os
 from locpix.preprocessing import datastruc
-from locpix.visualise import vis_img
+# from locpix.visualise import vis_img
 import numpy as np
 import argparse
 from locpix.scripts.img_seg import ilastik_output_config
@@ -132,9 +132,9 @@ def main():
             item.load_from_parquet(os.path.join(input_folder, file))
 
             # convert to histo
-            histo, channel_map, label_map = item.render_histo(
-                [config["channel"], config["alt_channel"]]
-            )
+            # histo, channel_map, label_map = item.render_histo(
+            #     [config["channel"], config["alt_channel"]]
+            # )
 
             # ---- membrane segmentation ----
 
@@ -180,23 +180,23 @@ def main():
             )
 
             # save cell segmentation image - consider only one channel
-            img = np.transpose(histo, (0, 2, 1))
-            save_loc = os.path.join(output_cell_img, item.name + ".png")
-            vis_img.visualise_seg(
-                img,
-                ilastik_seg,
-                item.bin_sizes,
-                axes=[0],
-                label_map=label_map,
-                threshold=config["vis_threshold"],
-                how=config["vis_interpolate"],
-                blend_overlays=True,
-                alpha_seg=0.5,
-                origin="upper",
-                save=True,
-                save_loc=save_loc,
-                four_colour=True,
-            )
+            # img = np.transpose(histo, (0, 2, 1))
+            # save_loc = os.path.join(output_cell_img, item.name + ".png")
+            # vis_img.visualise_seg(
+            #     img,
+            #     ilastik_seg,
+            #     item.bin_sizes,
+            #     axes=[0],
+            #     label_map=label_map,
+            #     threshold=config["vis_threshold"],
+            #     how=config["vis_interpolate"],
+            #     blend_overlays=True,
+            #     alpha_seg=0.5,
+            #     origin="upper",
+            #     save=True,
+            #     save_loc=save_loc,
+            #     four_colour=True,
+            # )
 
         # save yaml file
         yaml_save_loc = os.path.join(project_folder, "ilastik_output.yaml")
