@@ -179,6 +179,11 @@ def main():
                 output_cell_df, drop_zero_label=False, drop_pixel_col=True
             )
 
+            # save cell segmentation image (as .npy) - consider only one channel
+            output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
+            save_loc = os.path.join(output_cell_img, item.name + ".npy")
+            np.save(save_loc, ilastik_seg)
+
             # save cell segmentation image - consider only one channel
             # img = np.transpose(histo, (0, 2, 1))
             # save_loc = os.path.join(output_cell_img, item.name + ".png")
