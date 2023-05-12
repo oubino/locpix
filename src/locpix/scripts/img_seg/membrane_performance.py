@@ -33,7 +33,6 @@ from locpix.scripts.img_seg import membrane_performance_config
 import json
 import time
 
-@profile
 def main():
 
     parser = argparse.ArgumentParser(
@@ -267,7 +266,7 @@ def main():
 
             # calculate precision recall curve
             gt_list = gt_list.flatten()
-            prob_list = prob_list.flatten()
+            prob_list = prob_list.flatten().round(2)
             pr, rec, pr_threshold = precision_recall_curve(
                 gt_list, prob_list, pos_label=1
             )
