@@ -71,7 +71,7 @@ class item:
         channel_label,
         histo={},
         histo_edges=None,
-        histo_mask={},
+        histo_mask=None,
         bin_sizes=None,
         gt_label_map={},
     ):
