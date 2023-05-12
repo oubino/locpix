@@ -180,9 +180,11 @@ def main():
         output_cell_df = os.path.join(project_folder, "classic/cell/seg_dataframes")
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
-        # save cell segmentation image - consider only one channel
-        # output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
-        # save_loc = os.path.join(output_cell_img, item.name + ".png")
+        # save cell segmentation image (as .npy) - consider only one channel
+        output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
+        save_loc = os.path.join(output_cell_img, item.name + ".npy")
+        np.save(save_loc, instance_mask)
+        
         # only plot the one channel specified
         # vis_img.visualise_seg(
         #     np.expand_dims(img, axis=0),
