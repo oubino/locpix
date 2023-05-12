@@ -12,6 +12,7 @@ from locpix.scripts.preprocessing import preprocess_config
 import time
 import json
 import socket
+import shutil
 
 
 class project_info:
@@ -225,6 +226,9 @@ def main():
         item.save_to_parquet(
             output_folder,
         )
+
+    # add visualisation notebook
+    shutil.copyfile("src/locpix/templates/visualisation.ipynb", os.path.join(project_folder, "visualisation.ipynb"))
 
     # save yaml file
     config["input_data_folder"] = input_path
