@@ -410,7 +410,7 @@ def main():
 
             # calculate precision recall curve
             gt_list = gt_list.flatten()
-            prob_list = prob_list.flatten()
+            prob_list = prob_list.flatten().round(2)
             pr, rec, pr_threshold = precision_recall_curve(
                 gt_list, prob_list, pos_label=1
             )
@@ -543,7 +543,7 @@ def main():
 
             # calculate precision recall curve
             gt_list = gt_list.flatten()
-            prob_list = prob_list.flatten()
+            prob_list = prob_list.flatten().round(2)
             pr, rec, pr_threshold = precision_recall_curve(
                 gt_list, prob_list, pos_label=1
             )
