@@ -166,6 +166,25 @@ def aggregated_metrics(
     oacc = (tp_running_total) / (tp_running_total + fp_running_total)
     results["oacc"] = oacc
 
+    # calculate aucnpr
+    auc = add_metrics["pr_auc"]
+    # assume label 1 is positive label
+    tp = agg_results[1]["TP"]
+    fp = agg_results[1]["FP"]
+    tn = agg_results[1]["TN"]
+    fn = agg_results[1]["FN"]
+    assert agg_results[1]["TP"] == agg_results[0]["TN"]
+    assert agg_results[1]["FP"] == agg_results[0]["FN"]
+    assert agg_results[1]["TN"] == agg_results[0]["TP"]
+    assert agg_results[1]["FN"] == agg_results[0]["FP"]
+
+    # assume label 1 is positive label
+    ones = tp + fn
+    zeros = fp + tn
+    skew = ones/(zeros + ones)
+    aucprmin = 1 + ((1-skew)*np.log(1-skew))/skew
+    add_metrics["aucnpr"] = (auc - aucprmin)/(1 - aucprmin)
+
     # save to .csv in output results
     # df = pl.DataFrame(results)
     # df.write_csv(output_results)

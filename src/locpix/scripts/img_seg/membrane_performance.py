@@ -21,7 +21,7 @@ import yaml
 import os
 import numpy as np
 from locpix.preprocessing import datastruc
-from locpix.visualise.performance import # plot_pr_curve , generate_binary_conf_matrix
+# from locpix.visualise.performance import plot_pr_curve , generate_binary_conf_matrix
 import locpix.evaluate.metrics as metrics
 from sklearn.metrics import precision_recall_curve, auc
 import polars as pl
@@ -141,7 +141,7 @@ def main():
         # fig_val, ax_val = plt.subplots()
 
         # linestyles = ["dashdot", "-", "--", "dotted"]
-        # methods = ["classic", "cellpose_no_train", "cellpose_train", "ilastik"]
+        methods = ["classic", "cellpose_no_train", "cellpose_train", "ilastik"]
 
         # output_overlay_pr_curves = os.path.join(
         #     project_folder, f"membrane_performance/overlaid_pr_curves/{fold}"
@@ -276,8 +276,8 @@ def main():
             # pr, recall saved for train 
             save_loc = os.path.join(output_metrics, f"train_{date}.txt")
             lines = ["Overall results", "-----------"]
-            lines.append(f"prcurve_pr: {pr}")
-            lines.append(f"prcurve_rec: {rec}")
+            lines.append(f"prcurve_pr: {list(pr)}")
+            lines.append(f"prcurve_rec: {list(rec)}")
             lines.append(f"prcurve_baseline: {baseline}")
             with open(save_loc, "w") as f:
                 f.writelines("\n".join(lines))
@@ -432,8 +432,8 @@ def main():
             # )
             pr_auc = auc(rec, pr)
             add_metrics = {"pr_auc": pr_auc,
-                           "prcurve_pr": pr,
-                           "prcurve_rec": rec,
+                           "prcurve_pr": list(pr),
+                           "prcurve_rec": list(rec),
                            "prcurve_baseline": baseline}
 
             # metric calculations based on final prediction
@@ -445,23 +445,6 @@ def main():
                 add_metrics=add_metrics,
                 metadata=metadata,
             )
-
-            # assume label 1 is positive label
-            tp = agg_results[1]["TP"]
-            fp = agg_results[1]["FP"]
-            tn = agg_results[1]["TN"]
-            fn = agg_results[1]["FN"]
-            assert agg_results[1]["TP"] == agg_results[0]["TN"]
-            assert agg_results[1]["FP"] == agg_results[0]["FN"]
-            assert agg_results[1]["TN"] == agg_results[0]["TP"]
-            assert agg_results[1]["FN"] == agg_results[0]["FP"]
-
-            # assume label 1 is positive label
-            ones = tp + fn
-            zeros = fp + tn
-            skew = ones/(zeros + ones)
-            aucprmin = 1 + ((1-skew)*np.log(1-skew))/skew
-            add_metrics["aucnpr": (pr_auc - aucprmin)/(1 - aucprmin)]
 
             # calculate confusion matrix
             # saveloc = os.path.join(output_conf_matrix, f"conf_matrix_test_{date}.png")
@@ -584,8 +567,8 @@ def main():
             # )
             pr_auc = auc(rec, pr)
             add_metrics = {"pr_auc": pr_auc,
-                           "prcurve_pr": pr,
-                           "prcurve_rec": rec,
+                           "prcurve_pr": list(pr),
+                           "prcurve_rec": list(rec),
                            "prcurve_baseline": baseline}
 
             # metric calculations based on final prediction
@@ -597,23 +580,6 @@ def main():
                 add_metrics=add_metrics,
                 metadata=metadata,
             )
-
-            # assume label 1 is positive label
-            tp = agg_results[1]["TP"]
-            fp = agg_results[1]["FP"]
-            tn = agg_results[1]["TN"]
-            fn = agg_results[1]["FN"]
-            assert agg_results[1]["TP"] == agg_results[0]["TN"]
-            assert agg_results[1]["FP"] == agg_results[0]["FN"]
-            assert agg_results[1]["TN"] == agg_results[0]["TP"]
-            assert agg_results[1]["FN"] == agg_results[0]["FP"]
-
-            # assume label 1 is positive label
-            ones = tp + fn
-            zeros = fp + tn
-            skew = ones/(zeros + ones)
-            aucprmin = 1 + ((1-skew)*np.log(1-skew))/skew
-            add_metrics["aucnpr": (pr_auc - aucprmin)/(1 - aucprmin)]
 
             # calculate confusion matrix
             # saveloc = os.path.join(output_conf_matrix, f"conf_matrix_val_{date}.png")
