@@ -693,16 +693,6 @@ class item:
             bin_sizes=bin_sizes,
         )
 
-    # def get_img_dict(self):
-    #    """Return dictionary of images,
-    #    where each key represents a channel"""
-
-    #    img_dict = {}
-    #    for key, value in self.histo.items():
-    #        img_dict[key] = value.T
-    #
-    #    return img_dict
-
     def render_histo(self, labels=None):
         """Render the histogram from the .parquet file
 
