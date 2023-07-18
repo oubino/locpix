@@ -14,12 +14,12 @@ take in the annotate parquets
 import yaml
 import os
 from locpix.preprocessing import datastruc
-from locpix.visualise import vis_img
+# from locpix.visualise import vis_img
 import argparse
 from locpix.scripts.preprocessing import annotate_config
 import json
 import time
-import numpy as np
+# import numpy as np
 
 
 def main():
@@ -114,9 +114,9 @@ def main():
         os.makedirs(output_folder)
 
     # if output directory for seg imgs not present create it
-    output_seg_folder = os.path.join(project_folder, "annotate/seg_imgs")
-    if not os.path.exists(output_seg_folder):
-        os.makedirs(output_seg_folder)
+    # output_seg_folder = os.path.join(project_folder, "annotate/seg_imgs")
+    # if not os.path.exists(output_seg_folder):
+    #     os.makedirs(output_seg_folder)
 
     if config["dim"] == 2:
         histo_size = (config["x_bins"], config["y_bins"])
@@ -134,13 +134,13 @@ def main():
         # 1. assumes name convention of save_to_parquet is
         # os.path.join(save_folder, self.name + '.parquet')
         parquet_save_loc = os.path.join(output_folder, item.name + ".parquet")
-        seg_save_loc = os.path.join(output_seg_folder, item.name + ".png")
+        # seg_save_loc = os.path.join(output_seg_folder, item.name + ".png")
         if os.path.exists(parquet_save_loc) and not args.force:
             print(f"Skipping file as already present: {parquet_save_loc}")
             continue
-        if os.path.exists(seg_save_loc) and not args.force:
-            print(f"Skipping file as already present: {seg_save_loc}")
-            continue
+        # if os.path.exists(seg_save_loc) and not args.force:
+        #    print(f"Skipping file as already present: {seg_save_loc}")
+        #    continue
 
         # coord2histo
         item.coord_2_histo(histo_size, vis_interpolation=config["vis_interpolation"])
@@ -156,33 +156,33 @@ def main():
         )
 
         # convert to histo
-        histo, channel_map, label_map = item.render_histo([config["channel"]])
+        # histo, channel_map, label_map = item.render_histo([config["channel"]])
 
-        img = np.transpose(histo, (0, 2, 1))
+        # img = np.transpose(histo, (0, 2, 1))
 
         # save images
-        if config["save_img"] is True:
-            # only visualise one channel
-            vis_img.visualise_seg(
-                img,
-                item.histo_mask.T,
-                item.bin_sizes,
-                axes=[0],
-                label_map=label_map,
-                threshold=config["save_threshold"],
-                how=config["save_interpolate"],
-                alphas=config["alphas"],
-                blend_overlays=False,
-                alpha_seg=config["alpha_seg"],
-                cmap_img=None,
-                cmap_seg=config["cmap_seg"],
-                figsize=config["fig_size"],
-                origin="upper",
-                save=True,
-                save_loc=seg_save_loc,
-                four_colour=config["four_colour"],
-                background_one_colour=config["background_one_colour"],
-            )
+        # if config["save_img"] is True:
+        #     # only visualise one channel
+        #     vis_img.visualise_seg(
+        #         img,
+        #         item.histo_mask.T,
+        #         item.bin_sizes,
+        #         axes=[0],
+        #         label_map=label_map,
+        #         threshold=config["save_threshold"],
+        #         how=config["save_interpolate"],
+        #         alphas=config["alphas"],
+        #         blend_overlays=False,
+        #         alpha_seg=config["alpha_seg"],
+        #         cmap_img=None,
+        #         cmap_seg=config["cmap_seg"],
+        #         figsize=config["fig_size"],
+        #         origin="upper",
+        #         save=True,
+        #         save_loc=seg_save_loc,
+        #         four_colour=config["four_colour"],
+        #         background_one_colour=config["background_one_colour"],
+        #     )
 
     # save yaml file
     yaml_save_loc = os.path.join(project_folder, "annotate.yaml")

@@ -159,7 +159,7 @@ def main():
             )
 
         # tested very small amount annd line below is better than doing
-        # watershed on grey_log_img
+        # watershed on grey_img
         instance_mask = watershed.watershed_segment(
             grey_img, coords=markers
         )  # watershed on the grey image
@@ -180,25 +180,27 @@ def main():
         output_cell_df = os.path.join(project_folder, "classic/cell/seg_dataframes")
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
 
-        # save cell segmentation image - consider only one channel
+        # save cell segmentation image (as .npy) - consider only one channel
         output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
-        save_loc = os.path.join(output_cell_img, item.name + ".png")
+        save_loc = os.path.join(output_cell_img, item.name + ".npy")
+        np.save(save_loc, instance_mask)
+        
         # only plot the one channel specified
-        vis_img.visualise_seg(
-            np.expand_dims(img, axis=0),
-            instance_mask,
-            item.bin_sizes,
-            axes=[0],
-            label_map=label_map,
-            threshold=config["vis_threshold"],
-            how=config["vis_interpolate"],
-            origin="upper",
-            blend_overlays=True,
-            alpha_seg=0.5,
-            save=True,
-            save_loc=save_loc,
-            four_colour=True,
-        )
+        # vis_img.visualise_seg(
+        #     np.expand_dims(img, axis=0),
+        #     instance_mask,
+        #     item.bin_sizes,
+        #     axes=[0],
+        #     label_map=label_map,
+        #     threshold=config["vis_threshold"],
+        #     how=config["vis_interpolate"],
+        #     origin="upper",
+        #     blend_overlays=True,
+        #     alpha_seg=0.5,
+        #     save=True,
+        #     save_loc=save_loc,
+        #     four_colour=True,
+        # )
 
         # save yaml file
         yaml_save_loc = os.path.join(project_folder, "classic.yaml")

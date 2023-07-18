@@ -70,6 +70,8 @@ def mean_metrics(results, labels):
     acc_list = []  # empty list will have length = number of labels
     iou_list = []
     recall_list = []
+    pr_list = []
+    f1_score = []
     for label in labels:
         TP = results[label]["TP"]
         FP = results[label]["FP"]
@@ -77,11 +79,14 @@ def mean_metrics(results, labels):
         FN = results[label]["FN"]
         acc_list.append((TP + TN) / (TP + TN + FP + FN))
         iou_list.append((TP) / (TP + FP + FN))
-        recall_list.append(TP / (TP + FN))
+        recall = TP / (TP + FN)
+        precision = TP/(TP + FP)
+        recall_list.append(recall)
+        pr_list.append(precision)
+        f1_score.append((2*precision*recall)/(precision + recall))
     macc = np.mean(acc_list)
     miou = np.mean(iou_list)
-    return iou_list, acc_list, recall_list, miou, macc
-
+    return iou_list, acc_list, recall_list, pr_list, miou, macc, f1_score
 
 def aggregated_metrics(
     files_folder, save_loc, gt_label_map, add_metrics={}, metadata={}
@@ -139,12 +144,15 @@ def aggregated_metrics(
     results = {}
 
     # calculate macc/miou/oacc
-    iou_list, acc_list, recall_list, miou, macc = mean_metrics(agg_results, labels)
+    iou_list, acc_list, recall_list, pr_list, miou, macc, f1_score = mean_metrics(agg_results, labels)
     results["iou_list"] = iou_list
     results["acc_list"] = acc_list
     results["recall_list"] = recall_list
+    results["precision_list"] = pr_list
     results["macc"] = macc
     results["miou"] = miou
+    results["agg_results"] = agg_results
+    results["f1_score"] = f1_score
 
     # calculate oa
     tp_running_total = 0
@@ -156,6 +164,25 @@ def aggregated_metrics(
         fp_running_total += FP
     oacc = (tp_running_total) / (tp_running_total + fp_running_total)
     results["oacc"] = oacc
+
+    # calculate aucnpr
+    auc = add_metrics["pr_auc"]
+    # assume label 1 is positive label
+    tp = agg_results[1]["TP"]
+    fp = agg_results[1]["FP"]
+    tn = agg_results[1]["TN"]
+    fn = agg_results[1]["FN"]
+    assert agg_results[1]["TP"] == agg_results[0]["TN"]
+    assert agg_results[1]["FP"] == agg_results[0]["FN"]
+    assert agg_results[1]["TN"] == agg_results[0]["TP"]
+    assert agg_results[1]["FN"] == agg_results[0]["FP"]
+
+    # assume label 1 is positive label
+    ones = tp + fn
+    zeros = fp + tn
+    skew = ones/(zeros + ones)
+    aucprmin = 1 + ((1-skew)*np.log(1-skew))/skew
+    add_metrics["aucnpr"] = (auc - aucprmin)/(1 - aucprmin)
 
     # save to .csv in output results
     # df = pl.DataFrame(results)

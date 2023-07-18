@@ -40,6 +40,7 @@ default_config_keys_0 = [
     "channel",
     "alt_channel",
     "use_gpu",
+    "img_threshold",
 ]
 
 default_config_keys_1 = [
@@ -53,6 +54,7 @@ default_config_keys_1 = [
     "channel",
     "alt_channel",
     "use_gpu",
+    "img_threshold",
 ]
 
 

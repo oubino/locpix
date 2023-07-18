@@ -141,24 +141,31 @@ To train a Cellpose model we have had to include/modify the following.
 #. `Cellpose train prep script` : This script prepares the data for Cellpose training
 
 .. warning::
-    Need to activate extra requirements - these are big and not included in initial install.
+   Need to activate extra requirements - these are big and not included in initial install.
 
-    Note that if you have a GPU this will speed this up.
+   Note that if you have a GPU this will speed this up.
 
-    If you:
+   Note we modified Cellpose to fit in with our analysis, therefore you need to install our forked repository - note below will clone the Cellpose repository to wherever you are located
 
-    * have a GPU
+   If you:
 
-    .. code-block:: console
+   * have a GPU
 
-        (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
-        (locpix-env) $ pip install cellpose
+   .. code-block:: console
 
-    * don't have a GPU
+      (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+      (locpix-env) $ git clone https://github.com/oubino/cellpose
+      (locpix-env) $ cd cellpose
+      (locpix-env) $ pip install .
 
-    .. code-block:: console
+   * don't have a GPU
 
-        (locpix-env) $ pip install pytorch cellpose
+   .. code-block:: console
+
+      (locpix-env) $ pip install pytorch
+      (locpix-env) $ git clone https://github.com/oubino/cellpose
+      (locpix-env) $ cd cellpose
+      (locpix-env) $ pip install .
 
 
 Prepare the data for Cellpose training
@@ -190,26 +197,33 @@ Cellpose segmentation (Evaluation)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning::
-   If you haven't done as above you will need to:
+   If you haven't done as above you will need to...
 
-    Need to activate extra requirements - these are big and not included in initial install.
+   Need to activate extra requirements - these are big and not included in initial install.
 
-    Note that if you have a GPU this will speed this up.
+   Note that if you have a GPU this will speed this up.
 
-    If you:
+   Note we modified Cellpose to fit in with our analysis, therefore you need to install our forked repository - note below will clone the Cellpose repository to wherever you are located
 
-    * have a GPU
+   If you:
 
-    .. code-block:: console
+   * have a GPU
 
-        (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
-        (locpix-env) $ pip install cellpose
+   .. code-block:: console
 
-    * don't have a GPU
+      (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+      (locpix-env) $ git clone https://github.com/oubino/cellpose
+      (locpix-env) $ cd cellpose
+      (locpix-env) $ pip install .
 
-    .. code-block:: console
+   * don't have a GPU
 
-        (locpix-env) $ pip install pytorch cellpose
+   .. code-block:: console
+
+      (locpix-env) $ pip install pytorch
+      (locpix-env) $ git clone https://github.com/oubino/cellpose
+      (locpix-env) $ cd cellpose
+      (locpix-env) $ pip install .
 
 
 Perform Cellpose segmentation on our localisation dataset.

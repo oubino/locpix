@@ -47,7 +47,7 @@ Mapping from integers to real terms
 Save segmentation images settings
 ::
 
-  save_img: True
+  .. save_img: True
   save_threshold: 0
   save_interpolate: 'log2'
   background_one_colour: True

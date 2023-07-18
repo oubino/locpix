@@ -35,7 +35,7 @@ default_config_keys = [
     "vis_interpolation",
     "drop_zero_label",
     "gt_label_map",
-    "save_img",
+    #"save_img",
     "save_threshold",
     "save_interpolate",
     "background_one_colour",
@@ -142,10 +142,10 @@ class InputWidget(QWidget):
         self.gt_label_map_one.setToolTip("1 lable in real terms")
         self.flo.addRow("Gt label map", h_box)
 
-        self.save_img = QCheckBox()
-        self.save_img.setChecked(True)
-        self.save_img.setToolTip("Save segmentation images settings")
-        self.flo.addRow("Save image", self.save_img)
+        #self.save_img = QCheckBox()
+        #self.save_img.setChecked(True)
+        #self.save_img.setToolTip("Save segmentation images settings")
+        #self.flo.addRow("Save image", self.save_img)
 
         self.save_threshold = QLineEdit("0")
         self.save_threshold.setValidator(QDoubleValidator())
@@ -309,7 +309,7 @@ class InputWidget(QWidget):
         self.drop_zero_label.setCheckState(load_config["drop_zero_label"])
         self.gt_label_map_zero.setText(str(load_config["gt_label_map"][0]))
         self.gt_label_map_one.setText(str(load_config["gt_label_map"][1]))
-        self.save_img.setCheckState(load_config["save_img"])
+        #self.save_img.setCheckState(load_config["save_img"])
         self.save_threshold.setText(str(load_config["save_threshold"]))
         self.save_interpolation.clearSelection()
         item = self.save_interpolation.findItems(
@@ -350,7 +350,7 @@ class InputWidget(QWidget):
             0: self.gt_label_map_zero.text(),
             1: self.gt_label_map_one.text(),
         }
-        config["save_img"] = self.save_img.isChecked()
+        #config["save_img"] = self.save_img.isChecked()
         config["save_threshold"] = float(self.save_threshold.text())
         config["save_interpolate"] = self.save_interpolation.selectedItems()[0].text()
         config["background_one_colour"] = self.background_one_colour.isChecked()

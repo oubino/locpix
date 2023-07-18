@@ -175,7 +175,7 @@ def main(*args):
         else:
             raise ValueError("sum_chan should be true or false")
         img = vis_img.manual_threshold(
-            img, config["vis_threshold"], how=config["vis_interpolate"]
+            img, config["img_threshold"], how=config["vis_interpolate"]
         )
         imgs = [img]
 
@@ -255,26 +255,32 @@ def main(*args):
             project_folder, f"{output_folder}/cell/seg_dataframes"
         )
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
-
+        
+        # save cell segmentation image (as .npy) - consider only one channel
+        output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
+        save_loc = os.path.join(output_cell_img, item.name + ".npy")
+        np.save(save_loc, instance_mask)
+        
         # save cell segmentation image
-        output_cell_img = os.path.join(project_folder, f"{output_folder}/cell/seg_img")
-        save_loc = os.path.join(output_cell_img, item.name + ".png")
+        # output_cell_img = os.path.join(project_folder, f"{output_folder}/cell/seg_img")
+        # save_loc = os.path.join(output_cell_img, item.name + ".png")
+
         # only plot the one channel specified
-        vis_img.visualise_seg(
-            np.expand_dims(img, axis=0),
-            instance_mask,
-            item.bin_sizes,
-            axes=[0],
-            label_map=label_map,
-            threshold=config["vis_threshold"],
-            how=config["vis_interpolate"],
-            blend_overlays=True,
-            alpha_seg=0.5,
-            origin="upper",
-            save=True,
-            save_loc=save_loc,
-            four_colour=True,
-        )
+        # vis_img.visualise_seg(
+        #     np.expand_dims(img, axis=0),
+        #     instance_mask,
+        #     item.bin_sizes,
+        #     axes=[0],
+        #     label_map=label_map,
+        #     threshold=config["vis_threshold"],
+        #     how=config["vis_interpolate"],
+        #     blend_overlays=True,
+        #     alpha_seg=0.5,
+        #     origin="upper",
+        #     save=True,
+        #     save_loc=save_loc,
+        #     four_colour=True,
+        # )
 
         # save yaml file
         yaml_save_loc = os.path.join(project_folder, "cellpose_eval.yaml")
