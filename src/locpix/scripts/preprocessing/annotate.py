@@ -14,11 +14,14 @@ take in the annotate parquets
 import yaml
 import os
 from locpix.preprocessing import datastruc
+
 # from locpix.visualise import vis_img
 import argparse
 from locpix.scripts.preprocessing import annotate_config
 import json
 import time
+import numpy as np
+
 # import numpy as np
 
 
@@ -113,6 +116,11 @@ def main():
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
+    # if output directory not present create it
+    markers_folder = os.path.join(project_folder, "markers")
+    if not os.path.exists(markers_folder):
+        os.makedirs(markers_folder)
+
     # if output directory for seg imgs not present create it
     # output_seg_folder = os.path.join(project_folder, "annotate/seg_imgs")
     # if not os.path.exists(output_seg_folder):
@@ -146,7 +154,11 @@ def main():
         item.coord_2_histo(histo_size, vis_interpolation=config["vis_interpolation"])
 
         # manual segment
-        item.manual_segment()
+        markers = item.manual_segment()
+
+        # save markers
+        markers_loc = os.path.join(markers_folder, item.name + ".npy")
+        np.save(markers_loc, markers)
 
         # save df to parquet with mapping metadata
         item.save_to_parquet(

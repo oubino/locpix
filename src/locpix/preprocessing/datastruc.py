@@ -346,6 +346,9 @@ class item:
         Args:
             cmap (list of strings) : Colourmaps napari uses to
                 plot the histograms
+
+        Returns:
+            markers (list) : Coordinates of markers if added
         """
 
         # if already has gt label raise error
@@ -399,6 +402,15 @@ class item:
                     )
                     napari.run()
 
+                try:
+                    markers = viewer.layers["Points"].data
+                    x = markers[:, 1:3]
+                    x = [[int(float(j)) for j in i] for i in x]
+                    markers = [tuple(i) for i in x]
+                except KeyError:
+                    print("You must add points!")
+                    markers = None
+
                 # histogram mask should be assigned to GUI output
                 try:
                     self.histo_mask = viewer.layers["Labels"].data.T
@@ -411,6 +423,8 @@ class item:
 
         # segment the coordinates
         self._manual_seg_pixel_2_coord()
+
+        return markers
 
     def _manual_seg_pixel_2_coord(self):
         """Get the localisations associated with manual annotation.
