@@ -98,6 +98,8 @@ def visualise_seg(
     background_one_colour=False,
     legend=True,
     show=False,
+    vmin_img=0,
+    vmax_img=255,
 ):
     """Take in image and the associated segmentation and plot it,
     with option to convert to 4 colours and also option to choose to
@@ -137,6 +139,8 @@ def visualise_seg(
             as all same colour when doing 4 colour conversion
         legend (bool) : Whether to include a legend
         show (bool) : Whether to show img to screen
+        vmin_img (int) : vmin for plotting image
+        vmax_img (int) : vmax for plotting image
 
     """
 
@@ -184,7 +188,12 @@ def visualise_seg(
         segmentation = segmentation[0:h_old, 0:w_old]
 
         ax.imshow(
-            img, cmap=cmap_img[index], origin=origin, alpha=alphas[index]
+            img,
+            cmap=cmap_img[index],
+            origin=origin,
+            alpha=alphas[index],
+            vmin=vmin_img,
+            vmax=vmax_img,
         )  # cmap=cmap_list[index]
         # x,y scale bars
         x = [15, 115]

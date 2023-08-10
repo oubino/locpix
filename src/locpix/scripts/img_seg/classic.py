@@ -14,6 +14,7 @@ import argparse
 from locpix.scripts.img_seg import classic_config
 import json
 import time
+from skimage.filters import threshold_otsu
 
 
 def main():
@@ -140,12 +141,9 @@ def main():
             img, config["vis_threshold"], how=config["vis_interpolate"]
         )
         grey_log_img = vis_img.img_2_grey(log_img)  # convert img to grey
-        grey_img = vis_img.img_2_grey(img)  # convert img to grey
 
-        # img mask
-        semantic_mask = (grey_log_img - np.min(grey_log_img)) / (
-            np.max(grey_log_img) - np.min(grey_log_img)
-        )
+        thresh = threshold_otsu(grey_log_img)
+        semantic_mask = grey_log_img > thresh
 
         # ---- segment cells ----
         # get markers
@@ -158,10 +156,8 @@ def main():
                 "Couldn't open the file/No markers were found in relevant location"
             )
 
-        # tested very small amount annd line below is better than doing
-        # watershed on grey_img
         instance_mask = watershed.watershed_segment(
-            grey_img, coords=markers
+            grey_log_img, coords=markers
         )  # watershed on the grey image
 
         # ---- save ----
@@ -184,7 +180,7 @@ def main():
         output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
         save_loc = os.path.join(output_cell_img, item.name + ".npy")
         np.save(save_loc, instance_mask)
-        
+
         # only plot the one channel specified
         # vis_img.visualise_seg(
         #     np.expand_dims(img, axis=0),
