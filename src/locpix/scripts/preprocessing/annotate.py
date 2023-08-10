@@ -53,6 +53,13 @@ def main():
         help="check the metadata for the specified project and" "seek confirmation!",
     )
     parser.add_argument(
+        "-r",
+        "--relabel",
+        action="store_true",
+        default=False,
+        help="If true will relabel and assume labels are present (default = False)",
+    )
+    parser.add_argument(
         "-f", "--force", action="store_true", help="if true then will overwrite files"
     )
 
@@ -104,7 +111,10 @@ def main():
             json.dump(metadata, outfile)
 
     # list items
-    input_folder = os.path.join(project_folder, "preprocess/no_gt_label")
+    if args.relabel:
+        input_folder = os.path.join(project_folder, "annotate/annotated")
+    else:
+        input_folder = os.path.join(project_folder, "preprocess/no_gt_label")
     print(input_folder)
     try:
         files = os.listdir(input_folder)
@@ -135,6 +145,7 @@ def main():
 
     for file in files:
         item = datastruc.item(None, None, None, None, None)
+
         item.load_from_parquet(os.path.join(input_folder, file))
 
         # check if file already present and annotated
@@ -143,7 +154,9 @@ def main():
         # os.path.join(save_folder, self.name + '.parquet')
         parquet_save_loc = os.path.join(output_folder, item.name + ".parquet")
         # seg_save_loc = os.path.join(output_seg_folder, item.name + ".png")
-        if os.path.exists(parquet_save_loc) and not args.force:
+        if args.force or args.relabel:
+            go_ahead = True
+        if os.path.exists(parquet_save_loc) and not go_ahead:
             print(f"Skipping file as already present: {parquet_save_loc}")
             continue
         # if os.path.exists(seg_save_loc) and not args.force:
@@ -154,7 +167,7 @@ def main():
         item.coord_2_histo(histo_size, vis_interpolation=config["vis_interpolation"])
 
         # manual segment
-        markers = item.manual_segment()
+        markers = item.manual_segment(relabel=args.relabel)
 
         # save markers
         markers_loc = os.path.join(markers_folder, item.name + ".npy")
@@ -165,6 +178,7 @@ def main():
             output_folder,
             drop_zero_label=config["drop_zero_label"],
             gt_label_map=config["gt_label_map"],
+            overwrite=args.relabel,
         )
 
         # convert to histo
