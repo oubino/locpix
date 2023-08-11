@@ -14,11 +14,14 @@ take in the annotate parquets
 import yaml
 import os
 from locpix.preprocessing import datastruc
+
 # from locpix.visualise import vis_img
 import argparse
 from locpix.scripts.preprocessing import annotate_config
 import json
 import time
+import numpy as np
+
 # import numpy as np
 
 
@@ -48,6 +51,13 @@ def main():
         "--project_metadata",
         action="store_true",
         help="check the metadata for the specified project and" "seek confirmation!",
+    )
+    parser.add_argument(
+        "-r",
+        "--relabel",
+        action="store_true",
+        default=False,
+        help="If true will relabel and assume labels are present (default = False)",
     )
     parser.add_argument(
         "-f", "--force", action="store_true", help="if true then will overwrite files"
@@ -101,7 +111,10 @@ def main():
             json.dump(metadata, outfile)
 
     # list items
-    input_folder = os.path.join(project_folder, "preprocess/no_gt_label")
+    if args.relabel:
+        input_folder = os.path.join(project_folder, "annotate/annotated")
+    else:
+        input_folder = os.path.join(project_folder, "preprocess/no_gt_label")
     print(input_folder)
     try:
         files = os.listdir(input_folder)
@@ -112,6 +125,11 @@ def main():
     output_folder = os.path.join(project_folder, "annotate/annotated")
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
+
+    # if output directory not present create it
+    markers_folder = os.path.join(project_folder, "markers")
+    if not os.path.exists(markers_folder):
+        os.makedirs(markers_folder)
 
     # if output directory for seg imgs not present create it
     # output_seg_folder = os.path.join(project_folder, "annotate/seg_imgs")
@@ -127,6 +145,7 @@ def main():
 
     for file in files:
         item = datastruc.item(None, None, None, None, None)
+
         item.load_from_parquet(os.path.join(input_folder, file))
 
         # check if file already present and annotated
@@ -135,7 +154,9 @@ def main():
         # os.path.join(save_folder, self.name + '.parquet')
         parquet_save_loc = os.path.join(output_folder, item.name + ".parquet")
         # seg_save_loc = os.path.join(output_seg_folder, item.name + ".png")
-        if os.path.exists(parquet_save_loc) and not args.force:
+        if args.force or args.relabel:
+            go_ahead = True
+        if os.path.exists(parquet_save_loc) and not go_ahead:
             print(f"Skipping file as already present: {parquet_save_loc}")
             continue
         # if os.path.exists(seg_save_loc) and not args.force:
@@ -146,13 +167,18 @@ def main():
         item.coord_2_histo(histo_size, vis_interpolation=config["vis_interpolation"])
 
         # manual segment
-        item.manual_segment()
+        markers = item.manual_segment(relabel=args.relabel)
+
+        # save markers
+        markers_loc = os.path.join(markers_folder, item.name + ".npy")
+        np.save(markers_loc, markers)
 
         # save df to parquet with mapping metadata
         item.save_to_parquet(
             output_folder,
             drop_zero_label=config["drop_zero_label"],
             gt_label_map=config["gt_label_map"],
+            overwrite=args.relabel,
         )
 
         # convert to histo

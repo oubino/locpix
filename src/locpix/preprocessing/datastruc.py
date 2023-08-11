@@ -13,6 +13,7 @@ import pyarrow.parquet as pq
 import ast
 import os
 import json
+import warnings
 
 _interpolate = {
     "log2": lambda d: np.log2(d),
@@ -338,7 +339,9 @@ class item:
             #    .alias("z_pixel")
             # )
 
-    def manual_segment(self, cmap=["green", "red", "blue", "bop purple"]):
+    def manual_segment(
+        self, cmap=["green", "red", "blue", "bop purple"], relabel=False
+    ):
         """Manually segment the image (histogram.T). Return the segmented
         histogram and extra column in dataframe corresponding to label.
         0 should be reserved for background
@@ -346,10 +349,13 @@ class item:
         Args:
             cmap (list of strings) : Colourmaps napari uses to
                 plot the histograms
+
+        Returns:
+            markers (list) : Coordinates of markers if added
         """
 
         # if already has gt label raise error
-        if "gt_label" in self.df.columns:
+        if "gt_label" in self.df.columns and not relabel:
             raise ValueError(
                 "Manual segment cannot be called on a file which\
                               already has gt labels in it"
@@ -383,6 +389,13 @@ class item:
                             gamma=2,
                             contrast_limits=[0, 30],
                         )
+                    # add labels if present
+                    if relabel:
+                        warnings.warn("Haven't loaded in markers")
+                        # note this has to be called after coord_2_histo to be in the
+                        # correct shape
+                        histo_mask = self.render_seg()
+                        viewer.add_labels(histo_mask.T, name="Labels")
                     napari.run()
 
                 # only one channel
@@ -397,7 +410,23 @@ class item:
                         gamma=2,
                         contrast_limits=[0, 30],
                     )
+                    # add labels if present
+                    if relabel:
+                        warnings.warn("Haven't loaded in markers")
+                        # note this has to be called after coord_2_histo to be in the
+                        # correct shape
+                        histo_mask = self.render_seg()
+                        viewer.add_labels(histo_mask.T, name="Labels")
+
                     napari.run()
+
+                try:
+                    markers = viewer.layers["Points"].data
+                    x = [[int(float(j)) for j in i] for i in markers]
+                    markers = [tuple(i) for i in x]
+                except KeyError:
+                    print("You must add points!")
+                    markers = None
 
                 # histogram mask should be assigned to GUI output
                 try:
@@ -411,6 +440,8 @@ class item:
 
         # segment the coordinates
         self._manual_seg_pixel_2_coord()
+
+        return markers
 
     def _manual_seg_pixel_2_coord(self):
         """Get the localisations associated with manual annotation.
