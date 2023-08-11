@@ -234,7 +234,6 @@ def watershed_segment(img, file_name="Image", coords=None) -> np.ndarray:
     # markers [467:473,7:13] is populated i.e. height of 470 ish
     # and width 10 ish is populated
     # this ensures img and marker coords are in same space
-    print("coords", coords)
     for index, coord in enumerate(coords):
         markers[coord[0] - 3 : coord[0] + 3, coord[1] - 3 : coord[1] + 3] = int(
             index + 1
