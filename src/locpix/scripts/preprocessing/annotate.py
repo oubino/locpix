@@ -166,11 +166,13 @@ def main():
         # coord2histo
         item.coord_2_histo(histo_size, vis_interpolation=config["vis_interpolation"])
 
+        # markers loc
+        markers_loc = os.path.join(markers_folder, item.name + ".npy")
+
         # manual segment
-        markers = item.manual_segment(relabel=args.relabel)
+        markers = item.manual_segment(relabel=args.relabel, markers_loc=markers_loc)
 
         # save markers
-        markers_loc = os.path.join(markers_folder, item.name + ".npy")
         np.save(markers_loc, markers)
 
         # save df to parquet with mapping metadata

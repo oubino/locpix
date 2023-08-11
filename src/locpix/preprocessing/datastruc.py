@@ -340,7 +340,10 @@ class item:
             # )
 
     def manual_segment(
-        self, cmap=["green", "red", "blue", "bop purple"], relabel=False
+        self,
+        cmap=["green", "red", "blue", "bop purple"],
+        relabel=False,
+        markers_loc=None,
     ):
         """Manually segment the image (histogram.T). Return the segmented
         histogram and extra column in dataframe corresponding to label.
@@ -391,11 +394,13 @@ class item:
                         )
                     # add labels if present
                     if relabel:
-                        warnings.warn("Haven't loaded in markers")
                         # note this has to be called after coord_2_histo to be in the
                         # correct shape
                         histo_mask = self.render_seg()
                         viewer.add_labels(histo_mask.T, name="Labels")
+                        if markers_loc is not None:
+                            markers = np.load(markers_loc)
+                            viewer.add_points(markers, name="Points")
                     napari.run()
 
                 # only one channel
@@ -417,6 +422,9 @@ class item:
                         # correct shape
                         histo_mask = self.render_seg()
                         viewer.add_labels(histo_mask.T, name="Labels")
+                        if markers_loc is not None:
+                            markers = np.load(markers_loc)
+                            viewer.add_points(markers, name="Points")
 
                     napari.run()
 
