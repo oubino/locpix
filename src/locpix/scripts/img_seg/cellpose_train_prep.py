@@ -92,72 +92,72 @@ def preprocess_train_files(project_folder, config, metadata, fold):
     )
 
 
-def preprocess_test_files(project_folder, config, metadata):
-    """Preprocess data for cellpose
-
-    Args:
-        project_folder (string) : Project folder
-        config (dict) : Configuration for the
-            train cellpose script
-        metadata (dict) : Metadata associated with
-            the project"""
-
-    folds = len(metadata["train_folds"])
-    for fold in range(folds):
-        # check train val test files
-        train_files = metadata["train_folds"][fold]
-        val_files = metadata["val_folds"][fold]
-        test_files = metadata["test_files"]
-        # check files
-        if not set(train_files).isdisjoint(test_files):
-            raise ValueError("Train files and test files shared files!!")
-        if not set(train_files).isdisjoint(val_files):
-            raise ValueError("Train files and val files shared files!!")
-        if not set(val_files).isdisjoint(test_files):
-            raise ValueError("Val files and test files shared files!!")
-        if len(set(train_files)) != len(train_files):
-            raise ValueError("Train files contains duplicates")
-        if len(set(val_files)) != len(val_files):
-            raise ValueError("Val files contains duplicates")
-        if len(set(test_files)) != len(test_files):
-            raise ValueError("Test files contains duplicates")
-        print("Fold: ", fold)
-        print("Train files")
-        print(train_files)
-        print("Test files")
-        print(test_files)
-        print("Val files")
-        print(val_files)
-
-    # list items
-    input_root = os.path.join(project_folder, "annotate/annotated")
-    try:
-        files = os.listdir(input_root)
-        files = [os.path.splitext(file)[0] for file in files]
-    except FileNotFoundError:
-        raise ValueError("There should be some files to open")
-
-    # make necessary folders if not present
-    test_folder = os.path.join(project_folder, "test_files/cellpose/")
-    folders = [
-        test_folder,
-    ]
-    for folder in folders:
-        if os.path.exists(folder):
-            raise ValueError(f"Cannot proceed as {folder} already exists")
-        else:
-            os.makedirs(folder)
-
-    # convert files into imgs and masks
-    test_files = [os.path.join(input_root, file + ".parquet") for file in test_files]
-    parquet_2_img(
-        test_files,
-        config["labels"],
-        config["sum_chan"],
-        config["img_threshold"],
-        config["img_interpolate"],
-        test_folder,
-    )
+# def preprocess_test_files(project_folder, config, metadata):
+#     """Preprocess data for cellpose
+#
+#     Args:
+#         project_folder (string) : Project folder
+#         config (dict) : Configuration for the
+#             train cellpose script
+#         metadata (dict) : Metadata associated with
+#             the project"""
+#
+#     folds = len(metadata["train_folds"])
+#     for fold in range(folds):
+#         # check train val test files
+#         train_files = metadata["train_folds"][fold]
+#         val_files = metadata["val_folds"][fold]
+#         test_files = metadata["test_files"]
+#         # check files
+#         if not set(train_files).isdisjoint(test_files):
+#             raise ValueError("Train files and test files shared files!!")
+#         if not set(train_files).isdisjoint(val_files):
+#             raise ValueError("Train files and val files shared files!!")
+#         if not set(val_files).isdisjoint(test_files):
+#             raise ValueError("Val files and test files shared files!!")
+#         if len(set(train_files)) != len(train_files):
+#             raise ValueError("Train files contains duplicates")
+#         if len(set(val_files)) != len(val_files):
+#             raise ValueError("Val files contains duplicates")
+#         if len(set(test_files)) != len(test_files):
+#             raise ValueError("Test files contains duplicates")
+#         print("Fold: ", fold)
+#         print("Train files")
+#         print(train_files)
+#         print("Test files")
+#         print(test_files)
+#         print("Val files")
+#         print(val_files)
+#
+#     # list items
+#     input_root = os.path.join(project_folder, "annotate/annotated")
+#     try:
+#         files = os.listdir(input_root)
+#         files = [os.path.splitext(file)[0] for file in files]
+#     except FileNotFoundError:
+#         raise ValueError("There should be some files to open")
+#
+#     # make necessary folders if not present
+#     test_folder = os.path.join(project_folder, "test_files/cellpose/")
+#     folders = [
+#         test_folder,
+#     ]
+#     for folder in folders:
+#         if os.path.exists(folder):
+#             raise ValueError(f"Cannot proceed as {folder} already exists")
+#         else:
+#             os.makedirs(folder)
+#
+#     # convert files into imgs and masks
+#     test_files = [os.path.join(input_root, file + ".parquet") for file in test_files]
+#     parquet_2_img(
+#         test_files,
+#         config["labels"],
+#         config["sum_chan"],
+#         config["img_threshold"],
+#         config["img_interpolate"],
+#         test_folder,
+#     )
 
 
 def clean_up(project_folder):

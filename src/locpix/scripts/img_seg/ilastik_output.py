@@ -7,6 +7,7 @@ Process output of Ilastik
 import yaml
 import os
 from locpix.preprocessing import datastruc
+
 # from locpix.visualise import vis_img
 import numpy as np
 import argparse
@@ -180,7 +181,9 @@ def main():
             )
 
             # save cell segmentation image (as .npy) - consider only one channel
-            output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
+            output_cell_img = os.path.join(
+                project_folder, f"ilastik/output/cell/img/{fold}"
+            )
             save_loc = os.path.join(output_cell_img, item.name + ".npy")
             np.save(save_loc, ilastik_seg)
 

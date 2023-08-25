@@ -28,10 +28,9 @@ def visualise_seg_item(item, column):
     y_pixels = item.df.select(pl.col("y_pixel")).to_numpy()
 
     # note this assumes all histos have same shape
-    print(item.histo, 'here')
     if item.histo is not None and len(item.histo) != 0:
-        assert (item.histo[0].shape[0] == np.max(x_pixels) + 1)
-        assert (item.histo[0].shape[1] == np.max(y_pixels) + 1)
+        assert item.histo[0].shape[0] == np.max(x_pixels) + 1
+        assert item.histo[0].shape[1] == np.max(y_pixels) + 1
     histo_width = np.max(x_pixels) + 1
     histo_height = np.max(y_pixels) + 1
 
