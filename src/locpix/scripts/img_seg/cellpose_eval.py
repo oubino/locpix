@@ -180,7 +180,9 @@ def main(*args):
         imgs = [img]
 
         if args.user_model is not None:
-            model = models.CellposeModel(pretrained_model=args.user_model, gpu=config['use_gpu'])
+            model = models.CellposeModel(
+                pretrained_model=args.user_model, gpu=config["use_gpu"]
+            )
 
             # base model
             base_model = models.CellposeModel(model_type=config["model"])
@@ -196,9 +198,13 @@ def main(*args):
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow
-            _, flows, _ = model.eval(imgs, diameter=config["diameter"], channels=channels)
+            _, flows, _ = model.eval(
+                imgs, diameter=config["diameter"], channels=channels
+            )
         else:
-            model = models.CellposeModel(model_type=config["model"], gpu=config['use_gpu'])
+            model = models.CellposeModel(
+                model_type=config["model"], gpu=config["use_gpu"]
+            )
             channels = config["channels"]
             # note diameter is set here may want to make user choice
             # doing one at a time (rather than in batch) like this might be very slow
@@ -218,7 +224,7 @@ def main(*args):
         x99 = np.percentile(X, upper)
         X = (X - x01) / (x99 - x01)
         semantic_mask = np.clip(X, 0, 1)
-       
+
         # ---- segment cells ----
         # get markers
         markers_loc = os.path.join(project_folder, "markers")
@@ -255,14 +261,15 @@ def main(*args):
             project_folder, f"{output_folder}/cell/seg_dataframes"
         )
         item.save_to_parquet(output_cell_df, drop_zero_label=False, drop_pixel_col=True)
-        
+
         # save cell segmentation image (as .npy) - consider only one channel
-        output_cell_img = os.path.join(project_folder, "classic/cell/seg_img")
+        output_cell_img = os.path.join(project_folder, f"{output_folder}/cell/seg_img")
         save_loc = os.path.join(output_cell_img, item.name + ".npy")
         np.save(save_loc, instance_mask)
-        
+
         # save cell segmentation image
-        # output_cell_img = os.path.join(project_folder, f"{output_folder}/cell/seg_img")
+        # output_cell_img = os.path.join(project_folder,
+        # f"{output_folder}/cell/seg_img")
         # save_loc = os.path.join(output_cell_img, item.name + ".png")
 
         # only plot the one channel specified

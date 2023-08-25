@@ -399,8 +399,9 @@ class item:
                         histo_mask = self.render_seg()
                         viewer.add_labels(histo_mask.T, name="Labels")
                         if markers_loc is not None:
-                            markers = np.load(markers_loc)
-                            viewer.add_points(markers, name="Points")
+                            markers = np.load(markers_loc, allow_pickle=True)
+                            if markers.any() is not None:
+                                viewer.add_points(markers, name="Points")
                     napari.run()
 
                 # only one channel
@@ -423,8 +424,9 @@ class item:
                         histo_mask = self.render_seg()
                         viewer.add_labels(histo_mask.T, name="Labels")
                         if markers_loc is not None:
-                            markers = np.load(markers_loc)
-                            viewer.add_points(markers, name="Points")
+                            markers = np.load(markers_loc, allow_pickle=True)
+                            if markers.any() is not None:
+                                viewer.add_points(markers, name="Points")
 
                     napari.run()
 

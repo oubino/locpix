@@ -1,5 +1,5 @@
 # threshold for visualisation
-img_threshold: 5
+img_threshold: 0
 vis_interpolate: 'log2'
 vis_threshold: 0
 
