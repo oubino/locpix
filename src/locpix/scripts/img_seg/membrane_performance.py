@@ -418,7 +418,7 @@ def main():
             pr, rec, pr_threshold = precision_recall_curve(
                 gt_list, prob_list, pos_label=1
             )
-            baseline = len(gt[gt == 1]) / len(gt)
+            baseline = len(gt_list[gt_list == 1]) / len(gt_list)
 
             # plot pr curve
             # save_loc = os.path.join(output_test_pr, "_curve.pkl")
@@ -553,7 +553,7 @@ def main():
             pr, rec, pr_threshold = precision_recall_curve(
                 gt_list, prob_list, pos_label=1
             )
-            baseline = len(gt[gt == 1]) / len(gt)
+            baseline = len(gt_list[gt_list == 1]) / len(gt_list)
 
             # plot pr curve
             # save_loc = os.path.join(output_val_pr, "_curve.pkl")
