@@ -21,17 +21,20 @@ import yaml
 import os
 import numpy as np
 from locpix.preprocessing import datastruc
+
 # from locpix.visualise.performance import plot_pr_curve , generate_binary_conf_matrix
 import locpix.evaluate.metrics as metrics
 from sklearn.metrics import precision_recall_curve, auc
 import polars as pl
 from datetime import datetime
+
 # import matplotlib.pyplot as plt
 # from locpix.visualise import vis_img
 import argparse
 from locpix.scripts.img_seg import membrane_performance_config
 import json
 import time
+
 
 def main():
 
@@ -186,28 +189,29 @@ def main():
             # output_seg_imgs_test = os.path.join(
             #    project_folder,
             #    f"membrane_performance/{method}/membrane/seg_images/test/{fold}",
-            #)
+            # )
             # output_seg_imgs_val = os.path.join(
             #    project_folder,
             #    f"membrane_performance/{method}/membrane/seg_images/val/{fold}",
-            #)
-            #output_train_pr = os.path.join(
+            # )
+            # output_train_pr = os.path.join(
             #    project_folder,
             #    f"membrane_performance/{method}/membrane/train_pr/{fold}",
-            #)
-            #output_test_pr = os.path.join(
-            #    project_folder, f"membrane_performance/{method}/membrane/test_pr/{fold}"
-            #)
-            #output_val_pr = os.path.join(
+            # )
+            # output_test_pr = os.path.join(
+            #    project_folder, f"membrane_performance/{method}/membrane/test_pr/
+            # {fold}"
+            # )
+            # output_val_pr = os.path.join(
             #    project_folder, f"membrane_performance/{method}/membrane/val_pr/{fold}"
-            #)
+            # )
             output_metrics = os.path.join(
                 project_folder, f"membrane_performance/{method}/membrane/metrics/{fold}"
             )
-            #output_conf_matrix = os.path.join(
+            # output_conf_matrix = os.path.join(
             #    project_folder,
             #    f"membrane_performance/{method}/membrane/conf_matrix/{fold}",
-            #)
+            # )
 
             # create output folders
             folders = [
@@ -215,11 +219,11 @@ def main():
                 output_df_folder_val,
                 # output_seg_imgs_val,
                 # output_seg_imgs_test,
-                #output_train_pr,
-                #output_val_pr,
-                #output_test_pr,
+                # output_train_pr,
+                # output_val_pr,
+                # output_test_pr,
                 output_metrics,
-                #output_conf_matrix,
+                # output_conf_matrix,
             ]
 
             for folder in folders:
@@ -270,9 +274,9 @@ def main():
             pr, rec, pr_threshold = precision_recall_curve(
                 gt_list, prob_list, pos_label=1
             )
-            baseline = len(gt[gt == 1]) / len(gt)
+            baseline = len(gt_list[gt_list == 1]) / len(gt_list)
 
-            # pr, recall saved for train 
+            # pr, recall saved for train
             save_loc = os.path.join(output_metrics, f"train_{date}.txt")
             lines = ["Overall results", "-----------"]
             lines.append(f"prcurve_pr: {list(pr)}")
@@ -282,7 +286,7 @@ def main():
                 f.writelines("\n".join(lines))
 
             # plot pr curve
-            #save_loc = os.path.join(output_train_pr, "_curve.pkl")
+            # save_loc = os.path.join(output_train_pr, "_curve.pkl")
             # plot_pr_curve(
             #     ax_train,
             #     method.capitalize(),
@@ -417,7 +421,7 @@ def main():
             baseline = len(gt[gt == 1]) / len(gt)
 
             # plot pr curve
-            #save_loc = os.path.join(output_test_pr, "_curve.pkl")
+            # save_loc = os.path.join(output_test_pr, "_curve.pkl")
             # plot_pr_curve(
             #     ax_test,
             #     method.capitalize(),
@@ -430,14 +434,16 @@ def main():
             #     # pickle=True,
             # )
             pr_auc = auc(rec, pr)
-            add_metrics = {"pr_auc": pr_auc,
-                           "prcurve_pr": list(pr),
-                           "prcurve_rec": list(rec),
-                           "prcurve_baseline": baseline}
+            add_metrics = {
+                "pr_auc": pr_auc,
+                "prcurve_pr": list(pr),
+                "prcurve_rec": list(rec),
+                "prcurve_baseline": baseline,
+            }
 
             # metric calculations based on final prediction
             save_loc = os.path.join(output_metrics, f"test_{date}.txt")
-            agg_results = metrics.aggregated_metrics(
+            _ = metrics.aggregated_metrics(
                 output_df_folder_test,
                 save_loc,
                 gt_label_map,
@@ -549,10 +555,8 @@ def main():
             )
             baseline = len(gt[gt == 1]) / len(gt)
 
-            
-
             # plot pr curve
-            #save_loc = os.path.join(output_val_pr, "_curve.pkl")
+            # save_loc = os.path.join(output_val_pr, "_curve.pkl")
             # plot_pr_curve(
             #     ax_val,
             #     method.capitalize(),
@@ -565,14 +569,16 @@ def main():
             #     # pickle=True,
             # )
             pr_auc = auc(rec, pr)
-            add_metrics = {"pr_auc": pr_auc,
-                           "prcurve_pr": list(pr),
-                           "prcurve_rec": list(rec),
-                           "prcurve_baseline": baseline}
+            add_metrics = {
+                "pr_auc": pr_auc,
+                "prcurve_pr": list(pr),
+                "prcurve_rec": list(rec),
+                "prcurve_baseline": baseline,
+            }
 
             # metric calculations based on final prediction
             save_loc = os.path.join(output_metrics, f"val_{date}.txt")
-            agg_results =metrics.aggregated_metrics(
+            _ = metrics.aggregated_metrics(
                 output_df_folder_val,
                 save_loc,
                 gt_label_map,
@@ -602,9 +608,12 @@ def main():
             # ax_test.legend([handles_test[idx] for idx in order],
             #                   [methods[idx] for idx in order])
 
-            # fig_train.savefig(os.path.join(output_overlay_pr_curves, "_train.png"), dpi=600)
-            # fig_test.savefig(os.path.join(output_overlay_pr_curves, "_test.png"), dpi=600)
-            # fig_val.savefig(os.path.join(output_overlay_pr_curves, "_val.png"), dpi=600)
+            # fig_train.savefig(os.path.join(output_overlay_pr_curves,
+            # "_train.png"), dpi=600)
+            # fig_test.savefig(os.path.join(output_overlay_pr_curves,
+            # "_test.png"), dpi=600)
+            # fig_val.savefig(os.path.join(output_overlay_pr_curves,
+            # "_val.png"), dpi=600)
 
     # save yaml file
     yaml_save_loc = os.path.join(project_folder, "membrane_performance.yaml")
