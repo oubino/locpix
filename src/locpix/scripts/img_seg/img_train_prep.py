@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-"""Cellpose segmentation module
+"""Prepare images for training module
 
-Take in items and train the Cellpose module
+Take in items and convert to images ready for training
 """
 
 import os
@@ -15,13 +15,13 @@ from locpix.visualise import vis_img
 import tifffile
 
 
-def preprocess_train_files(project_folder, config, metadata, fold):
-    """Preprocess data for cellpose
+def preprocess_train_files(project_folder, config, metadata, fold, model_name):
+    """Preprocess data
 
     Args:
         project_folder (string) : Project folder
         config (dict) : Configuration for the
-            train cellpose script
+            train script
         metadata (dict) : Metadata associated with
             the project
         fold (int) : Fold to be preprocessed"""
@@ -59,8 +59,8 @@ def preprocess_train_files(project_folder, config, metadata, fold):
         raise ValueError("There should be some files to open")
 
     # make necessary folders if not present
-    train_folder = os.path.join(project_folder, "train_files/cellpose/train")
-    val_folder = os.path.join(project_folder, "train_files/cellpose/val")
+    train_folder = os.path.join(project_folder, f"train_files/{model_name}/train")
+    val_folder = os.path.join(project_folder, f"train_files/{model_name}/val")
     folders = [
         train_folder,
         val_folder,
@@ -92,13 +92,65 @@ def preprocess_train_files(project_folder, config, metadata, fold):
     )
 
 
+def preprocess_all_files(project_folder, config, metadata, model_name):
+    """Preprocess data
+
+    Args:
+        project_folder (string) : Project folder
+        config (dict) : Configuration for the
+            train script
+        metadata (dict) : Metadata associated with
+            the project
+        fold (int) : Fold to be preprocessed"""
+
+    # check train val test files
+    train_files = metadata["train_files"]
+    test_files = metadata["test_files"]
+    # check files
+    if not set(train_files).isdisjoint(test_files):
+        raise ValueError("Train files and test files shared files!!")
+    if len(set(train_files)) != len(train_files):
+        raise ValueError("Train files contains duplicates")
+    if len(set(test_files)) != len(test_files):
+        raise ValueError("Test files contains duplicates")
+    all_files = train_files + test_files
+    print("All files")
+    print(all_files)
+
+    # list items
+    input_root = os.path.join(project_folder, "annotate/annotated")
+    try:
+        files = os.listdir(input_root)
+        files = [os.path.splitext(file)[0] for file in files]
+    except FileNotFoundError:
+        raise ValueError("There should be some files to open")
+
+    # make necessary folders if not present
+    folder = os.path.join(project_folder, f"train_files/{model_name}/all")
+    if os.path.exists(folder):
+        raise ValueError(f"Cannot proceed as {folder} already exists")
+    else:
+        os.makedirs(folder)
+
+    # convert files into imgs and masks
+    all_files = [os.path.join(input_root, file + ".parquet") for file in all_files]
+    parquet_2_img(
+        all_files,
+        config["labels"],
+        config["sum_chan"],
+        config["img_threshold"],
+        config["img_interpolate"],
+        folder,
+    )
+
+
 # def preprocess_test_files(project_folder, config, metadata):
-#     """Preprocess data for cellpose
+#     """Preprocess data
 #
 #     Args:
 #         project_folder (string) : Project folder
 #         config (dict) : Configuration for the
-#             train cellpose script
+#             train script
 #         metadata (dict) : Metadata associated with
 #             the project"""
 #
@@ -138,7 +190,7 @@ def preprocess_train_files(project_folder, config, metadata, fold):
 #         raise ValueError("There should be some files to open")
 #
 #     # make necessary folders if not present
-#     test_folder = os.path.join(project_folder, "test_files/cellpose/")
+#     test_folder = os.path.join(project_folder, f"test_files/{model_name}/")
 #     folders = [
 #         test_folder,
 #     ]
@@ -160,14 +212,14 @@ def preprocess_train_files(project_folder, config, metadata, fold):
 #     )
 
 
-def clean_up(project_folder):
-    """Clean up data for cellpose from train
+def clean_up(project_folder, model_name):
+    """Clean up data
 
     Args:
         project_folder (string) : Project folder"""
 
-    train_folder = os.path.join(project_folder, "train_files/cellpose/train")
-    val_folder = os.path.join(project_folder, "train_files/cellpose/val")
+    train_folder = os.path.join(project_folder, f"train_files/{model_name}/train")
+    val_folder = os.path.join(project_folder, f"train_files/{model_name}/val")
 
     # remove train files
     for file in os.listdir(train_folder):
@@ -184,9 +236,25 @@ def clean_up(project_folder):
     os.rmdir(val_folder)
 
 
+def clean_up_all(project_folder, model_name):
+    """Clean up data
+
+    Args:
+        project_folder (string) : Project folder"""
+
+    img_folder = os.path.join(project_folder, f"train_files/{model_name}/all")
+
+    # remove train files
+    for file in os.listdir(img_folder):
+        file_path = os.path.join(img_folder, file)
+        os.remove(file_path)
+
+    os.rmdir(img_folder)
+
+
 def parquet_2_img(files, labels, sum_chan, img_threshold, img_interpolate, folder):
     """Convert data from .parquet files to .png files
-    for cellpose and save
+    and save
 
     Args:
         files (list) : List of files (.parquet)
