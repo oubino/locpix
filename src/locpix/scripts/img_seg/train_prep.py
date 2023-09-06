@@ -138,7 +138,7 @@ def main():
             raise ValueError("Val files contains duplicates")
         if len(set(test_files)) != len(test_files):
             raise ValueError("Test files contains duplicates")
-        print('Fold', fold)
+        print("Fold", fold)
         print("Train files")
         print(train_files)
         print("Val files")
@@ -159,7 +159,7 @@ def main():
             if check != "YES":
                 exit()
         # add train val test split
-        metadata["train_files"] = train_files
+        metadata["train_files"] = train_files + val_files
         metadata["test_files"] = test_files
         metadata["train_folds"] = train_folds
         metadata["val_folds"] = val_folds

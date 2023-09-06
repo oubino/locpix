@@ -6,7 +6,9 @@ import torch
 from torch.utils.data import Dataset
 import numpy as np
 import os
-from locpix.preprocessing import datastruc
+import tifffile
+from . import transforms
+import torchvision.transforms as T
 
 
 class ImgDataset(Dataset):
@@ -15,114 +17,73 @@ class ImgDataset(Dataset):
     Attributes:
     """
 
-    def __init__(self, input_root, files, input_type, transform):
+    def __init__(self, input_root, files, transform, train=False, mean=0, std=1):
         """
         Args:
 
-            input_root (string) : Directory containing the input annotated
-                SMLM data
+            input_root (string) : Directory containing the SMLM data and masks
             files (list) : List of the files to include from
                 the directory in this dataset
-            input_type (string) : String representing the data format of the
-                input
-            transform (pytorch transform) : Transforms to apply to
+            transform (dictionary) : Transforms to apply to
                 the dataset
         """
-        self.input_data = [
-            os.path.join(input_root, file + input_type) for file in files
+        self.input_data = [os.path.join(input_root, file + ".tif") for file in files]
+        self.label_data = [
+            os.path.join(input_root, file + "_masks.tif") for file in files
         ]
-        # self.label_data = [
-        #    os.path.join(label_root, file + label_type) for file in files
-        # ]
-        print("input root", input_root)
-        # self.input_data, self.label_data = zip(
-        #    *sorted(zip(self.input_data, self.label_data))
-        # )
-        # print("input and label data")
-        print(self.input_data)
-        # print(self.label_data)
-        self.transform = transform
+        self.input_data, self.label_data = zip(
+            *sorted(zip(self.input_data, self.label_data))
+        )
 
-    def preprocess(self, folder, labels):
-        """Convert the raw data into data ready for network
+        if train:
+            # calculate mean and standard deviation
+            for index, file in enumerate(self.input_data):
+                image = tifffile.imread(file)
+                if index == 0:
+                    output_image = image
+                else:
+                    output_image = np.concatenate((output_image, image))
+            self.mean = np.mean(output_image, axis=(0, 1))
+            self.std = np.std(output_image, axis=(0, 1))
+        else:
+            self.mean = mean
+            self.std = std
 
-        Args:
-            folder (string): Path containing folder to save data at
-            labels (list): List of channel labels defining the order
-                to render the channels in
-                i.e. ['egfr', 'ereg'] means the histogram will be
-                channel 0: egfr, channel 1: ereg
-        """
+        # define transforms
+        output_transforms = []
 
-        # join data
-        # join_data = zip(self.input_data, self.label_data)
+        # to tensor
+        output_transforms.append(T.ToTensor())
 
-        # make folders to save data at if not already present
-        img_folder = os.path.join(folder, "imgs")
-        label_folder = os.path.join(folder, "labels")
-        for folder in [img_folder, label_folder]:
-            if os.path.exists(folder):
-                raise ValueError(f"Cannot proceed as {folder} already exists")
-            else:
-                os.makedirs(folder)
+        # random rotation
+        if "rotation" in transform.keys():
+            output_transforms.append(T.RandomRotation(transform["rotation"]))
 
-        self.img_data = []
-        self.label_data = []
+        # random horizontal flip
+        if "h_flip" in transform.keys():
+            output_transforms.append(T.RandomHorizontalFlip())
 
-        # for file in input
-        for datum in self.input_data:
+        # random vertical flip
+        if "v_flip" in transform.keys():
+            output_transforms.append(T.RandomVerticalFlip())
 
-            # load img and label
-            # with open(img, "rb") as f:
-            #    histo_bad = pkl.load(f)
+        # random erasing
+        if "erasing" in transform.keys():
+            output_transforms.append(T.RandomErasing())
 
-            # check img and label and check img the same
-            # histos = []
-            # print(type(histo_bad))
-            # for key, value in histo_bad.items():
-            #    histos.append(value)
-            # histo_bad = np.stack(histos)
-            # print("histo")
-            # print(axis_2_chan)
-            # print(histo.shape)
-            # print(histo_bad.shape)
+        # random perspective
+        if "perspective" in transform.keys():
+            output_transforms.append(T.RandomPerspective(transform["perspective"]))
 
-            # np.testing.assert_array_equal(histo, histo_bad)
-
-            item = datastruc.item(None, None, None, None, None)
-            item.load_from_parquet(os.path.join(datum))
-            # print(item.df)
-
-            # convert
-            histo, channel_map, label_map = item.render_histo(labels)
-            label = item.render_seg()
-
-            print(label_map)
-            input("stop need to make sure all images of same format")
-            input("need to save label map as metadata somewhere")
-
-            # transpose to img space
-            img = np.transpose(histo, (0, 2, 1))
-            label = label.T
-
-            # import matplotlib.pyplot as plt
-            # plt.imshow(np.log2(img[0,:,:]), origin = 'upper', cmap = 'Greys', alpha=1)
-            # plt.imshow(label, origin='upper', cmap='Reds', alpha=.4)
-            # plt.show()
-            # print("label", label.shape)
-            # print('img', img.shape)
-
-            # img & label path
-            img_path = os.path.join(img_folder, item.name + ".npy")
-            label_path = os.path.join(label_folder, item.name + ".npy")
-
-            # add img and label path to lists
-            self.img_data.append(img_path)
-            self.label_data.append(label_path)
-
-            # save img and label
-            np.save(img_path, img)
-            np.save(label_path, label)
+        # convert to float32
+        if "dtypeconv" in transform.keys():
+            self.transform = transforms.transform(
+                self.mean, self.std, output_transforms, dtypeconv=True
+            )
+        else:
+            self.transform = transforms.transform(
+                self.mean, self.std, output_transforms, dtypeconv=False
+            )
 
     def __getitem__(self, idx):
         """Returns an item from the dataset, according to index idx
@@ -136,10 +97,9 @@ class ImgDataset(Dataset):
         input_path = self.input_data[idx]
         label_path = self.label_data[idx]
 
-        input = np.load(input_path)
-        label = np.load(label_path)
+        input = tifffile.imread(input_path)
+        label = tifffile.imread(label_path)
 
-        # transform input and label together
         input, label = self.transform(input, label)
 
         return input, label

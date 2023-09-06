@@ -18,7 +18,7 @@ import os
 # from cellpose import models
 # from torchsummary import summary
 import argparse
-from locpix.scripts.img_seg import cellpose_train_prep
+from locpix.scripts.img_seg import img_train_prep
 import json
 import time
 from cellpose import __main__
@@ -105,7 +105,7 @@ def main():
     folds = len(metadata["train_folds"])
 
     # cellpose test prep
-    # cellpose_train_prep.preprocess_test_files(project_folder, config, metadata)
+    # img_train_prep.preprocess_test_files(project_folder, config, metadata)
 
     # make folder
     cellpose_train_folder = os.path.join(project_folder, "cellpose_train")
@@ -125,8 +125,12 @@ def main():
         print(f"----- Fold {fold} -------")
 
         # cellpose train prep
-        cellpose_train_prep.preprocess_train_files(
-            project_folder, config, metadata, fold
+        img_train_prep.preprocess_train_files(
+            project_folder,
+            config,
+            metadata,
+            fold,
+            "cellpose",
         )
 
         # train cellpose
@@ -183,7 +187,7 @@ def main():
             )
 
         # clean up
-        cellpose_train_prep.clean_up(project_folder)
+        img_train_prep.clean_up(project_folder, "cellpose")
 
     print("------ Outputting for evaluation -------- ")
 
