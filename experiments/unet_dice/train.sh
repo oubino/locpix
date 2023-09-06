@@ -13,4 +13,4 @@
 #$ -m be
 
 #Now run the job
-python locpix/src/locpix/scripts/img_seg/unet_train.py -i ../../../output/c15_cells_filtered -c locpix/experiments/unet_dice/config.yaml
+python locpix/src/locpix/scripts/img_seg/unet_train.py -i /nobackup/scou/output/c15_cells_filtered -c locpix/experiments/unet_dice/config.yaml
