@@ -124,7 +124,9 @@ def main():
         print(f"----- Fold {fold} -------")
 
         # make folder
-        model_save_path = os.path.join(project_folder, f"unet_train/models/{fold}")
+        model_save_path = os.path.join(
+            project_folder, f"{config['folder_name']}/models/{fold}"
+        )
         if os.path.exists(model_save_path):
             raise ValueError(f"Cannot proceed as {model_save_path} already exists")
         else:
@@ -132,15 +134,15 @@ def main():
 
         # image train prep
         img_train_prep.preprocess_train_files(
-            project_folder, config, metadata, fold, "unet"
+            project_folder, config, metadata, fold, f"{config['folder_name']}"
         )
 
         # train model
         train_folder = os.path.abspath(
-            os.path.join(project_folder, "train_files/unet/train")
+            os.path.join(project_folder, f"train_files/{config['folder_name']}/train")
         )
         val_folder = os.path.abspath(
-            os.path.join(project_folder, "train_files/unet/val")
+            os.path.join(project_folder, f"train_files/{config['folder_name']}/val")
         )
 
         lr = config["learning_rate"]
@@ -236,14 +238,18 @@ def main():
         np.save(os.path.join(model_save_path, f"{time_o}_std.npy"), std)
 
         # clean up
-        img_train_prep.clean_up(project_folder, "unet")
+        img_train_prep.clean_up(project_folder, f"{config['folder_name']}")
 
     print("------ Outputting for evaluation -------- ")
 
     # prep images
-    img_train_prep.preprocess_all_files(project_folder, config, metadata, "unet")
+    img_train_prep.preprocess_all_files(
+        project_folder, config, metadata, f"{config['folder_name']}"
+    )
 
-    img_folder = os.path.join(project_folder, "train_files/unet/all")
+    img_folder = os.path.join(
+        project_folder, f"train_files/{config['folder_name']}/all"
+    )
 
     # create dataset
     train_files = metadata["train_files"]
@@ -254,7 +260,9 @@ def main():
 
     for fold in range(folds):
 
-        model_folder = os.path.join(project_folder, f"unet_train/models/{fold}")
+        model_folder = os.path.join(
+            project_folder, f"{config['folder_name']}/models/{fold}"
+        )
         mean_path = os.path.join(model_folder, f"{time_o}_mean.npy")
         std_path = os.path.join(model_folder, f"{time_o}_std.npy")
 
@@ -269,13 +277,13 @@ def main():
 
         # output folder
         cell_seg_df_folder = os.path.join(
-            project_folder, f"unet_train/{fold}/cell/seg_dataframes"
+            project_folder, f"{config['folder_name']}/{fold}/cell/seg_dataframes"
         )
         cell_seg_img_folder = os.path.join(
-            project_folder, f"unet_train/{fold}/cell/seg_img"
+            project_folder, f"{config['folder_name']}/{fold}/cell/seg_img"
         )
         cell_memb_folder = os.path.join(
-            project_folder, f"unet_train/{fold}/membrane/prob_map"
+            project_folder, f"{config['folder_name']}/{fold}/membrane/prob_map"
         )
         folders = [
             cell_memb_folder,
@@ -363,10 +371,10 @@ def main():
             np.save(save_loc, instance_mask)
 
     # clean up
-    img_train_prep.clean_up_all(project_folder, "unet")
+    img_train_prep.clean_up_all(project_folder, f"{config['folder_name']}")
 
     # save train yaml file
-    yaml_save_loc = os.path.join(project_folder, "unet_train.yaml")
+    yaml_save_loc = os.path.join(project_folder, f"{config['folder_name']}.yaml")
     with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config, outfile)
 
