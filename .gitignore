@@ -78,7 +78,7 @@ misc/
 sandpit/
 
 # Models
-models/
+ilastik_models/
 
 # Figures for paper
 paper_figures/
@@ -88,3 +88,5 @@ labnotes.rst
 
 # profile
 *.lprof
+
+wandb/

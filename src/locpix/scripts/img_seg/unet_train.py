@@ -211,7 +211,6 @@ def main():
             # track hyperparameters and run metadata
             config={
                 "learning_rate": lr,
-                "architecture": model.name,
                 "dataset": config["wandb_dataset"],
                 "epochs": epochs,
                 "fold": fold,

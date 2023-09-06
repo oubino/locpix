@@ -12,8 +12,5 @@
 #Get email at start and end of the job
 #$ -m be
 
-# only one job at a time
-#$ -tc 1
-
 #Now run the job
 python src/locpix/scripts/img_seg/unet_train.py -i ../../../output/c15_cells_filtered -c src/locpix/templates/unet_train_bce.yaml
