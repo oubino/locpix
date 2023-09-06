@@ -6,14 +6,7 @@ training the model.
 """
 
 import torch
-
-
-def dice_loss(logits, target):
-    prob = torch.sigmoid(logits)
-    int = torch.sum(prob * target)
-    union = torch.sum(prob) + torch.sum(target)
-    dice = (2.0 * int) / (union)
-    return 1.0 - dice
+import wandb
 
 
 def train_loop(
@@ -71,8 +64,6 @@ def train_loop(
                 # data.x = data.x.float()
                 output = model(img)
                 loss = loss_fn(output, label)
-                print("bce loss", loss)
-                print("dice loss", dice_loss(output, label))
                 running_train_loss += loss
                 train_items += img.shape[0]
 
@@ -115,8 +106,7 @@ def train_loop(
                     val_items += img.shape[0]
         running_val_loss /= val_items
 
-        print("Running train loss", running_train_loss)
-        print("Running val loss", running_val_loss)
+        wandb.log({"train loss": running_train_loss, "val loss": running_val_loss})
 
         if running_val_loss < best_loss:
             print("Saving best model")
@@ -131,5 +121,7 @@ def train_loop(
 
     if save_epoch + 1 != epochs:
         assert not (torch.equal(model.state_dict(), pre_state_dict))
+
+    wandb.log({"save epoch": save_epoch})
 
     return model

@@ -11,7 +11,7 @@ import json
 import time
 from locpix.img_processing.models.unet import two_d_UNet
 from locpix.scripts.img_seg import img_train_prep
-from locpix.img_processing.training import train
+from locpix.img_processing.training import train, loss
 from locpix.img_processing.data_loading import dataset
 import torch
 from torch.utils.data import DataLoader
@@ -19,6 +19,7 @@ from torch.optim import Adam
 import numpy as np
 from locpix.img_processing import watershed
 from locpix.preprocessing import datastruc
+import wandb
 
 
 def main():
@@ -195,7 +196,27 @@ def main():
         )
 
         # initialise loss function
-        loss_fn = torch.nn.BCEWithLogitsLoss()
+        if config["loss_fn"] == "bce":
+            loss_fn = torch.nn.BCEWithLogitsLoss()
+        elif config["loss_fn"] == "dice":
+            loss_fn = loss.DiceLoss()
+        else:
+            raise ValueError("Loss function must be specified in config")
+
+        # initialise wandb
+        # start a new wandb run to track this script
+        wandb.init(
+            # set the wandb project where this run will be logged
+            project=config["wandb_project"],
+            # track hyperparameters and run metadata
+            config={
+                "learning_rate": lr,
+                "architecture": model.name,
+                "dataset": config["wandb_dataset"],
+                "epochs": epochs,
+                "fold": fold,
+            },
+        )
 
         # train loop
         model = train.train_loop(
@@ -277,12 +298,10 @@ def main():
                 img, label = img_dataset.__getitem__(index)
 
                 # expand img dimensions so has batch of 1?
-                print(img.shape)
                 img_name = img_dataset.input_data[index]
                 img_name = os.path.basename(img_name)
                 img_name = os.path.splitext(img_name)[0]
                 img = torch.unsqueeze(img, 0)
-                input("puase")
 
                 # make sure model in eval mode
                 model.eval()
@@ -298,12 +317,9 @@ def main():
                 with torch.autocast(device_type="cuda"):
                     output = model(img)
 
-            print("output shape")
-            print(output.shape)
             # reduce batch and channel dimensions
             output = torch.squeeze(output, 0)
             output = torch.squeeze(output, 0)
-            input("stop")
 
             # convert tensor to numpy
             output = output.cpu().numpy()
