@@ -8,7 +8,14 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap
 import matplotlib.patches as mpatches
 import networkx as nx
-from skimage.future.graph import RAG
+
+try:
+    from skimage.graph import RAG
+except ImportError:
+    try:
+        from skimage.future.graph import RAG
+    except ImportError:
+        raise ImportError("Can't find module and workaround has failed")
 from skimage.transform import resize
 import os
 
