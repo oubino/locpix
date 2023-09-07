@@ -199,9 +199,11 @@ def main():
 
         # initialise loss function
         if config["loss_fn"] == "bce":
+            print("Using BCE loss!")
             loss_fn = torch.nn.BCEWithLogitsLoss()
         elif config["loss_fn"] == "dice":
-            loss_fn = loss.DiceLoss()
+            print("Using DICE loss")
+            loss_fn = loss.dice_loss()
         else:
             raise ValueError("Loss function must be specified in config")
 
