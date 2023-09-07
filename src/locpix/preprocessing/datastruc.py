@@ -472,7 +472,7 @@ class item:
             data = {"x_pixel": x_pixel, "y_pixel": y_pixel, "gt_label": label}
             mask_df = pl.DataFrame(
                 data,
-                columns=[
+                schema=[
                     ("x_pixel", pl.Int64),
                     ("y_pixel", pl.Int64),
                     ("gt_label", pl.Int64),
@@ -531,7 +531,7 @@ class item:
             data = {"x_pixel": x_pixel, "y_pixel": y_pixel, "pred_label": label}
             mask_df = pl.DataFrame(
                 data,
-                columns=[
+                schema=[
                     ("x_pixel", pl.Int64),
                     ("y_pixel", pl.Int64),
                     ("pred_label", pl.Float64),
