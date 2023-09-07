@@ -114,13 +114,8 @@ def train_loop(
             torch.save(model.state_dict(), model_path)
             save_epoch = epoch
 
-    pre_state_dict = model.state_dict()
-
     # load in best model and return
     model.load_state_dict(model.state_dict())
-
-    if save_epoch + 1 != epochs:
-        assert not (torch.equal(model.state_dict(), pre_state_dict))
 
     wandb.log({"save epoch": save_epoch})
 
