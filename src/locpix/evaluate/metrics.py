@@ -82,13 +82,16 @@ def mean_metrics(results, labels):
         iou_list.append((TP) / (TP + FP + FN))
         recall = TP / (TP + FN)
         if TP + FP == 0:
-            warnings.warn("No positive values therefore precision set to zero")
+            warnings.warn(
+                "No positive values therefore precision and f1 score set to zero"
+            )
             precision = 0
+            f1_score.append(0)
         else:
             precision = TP / (TP + FP)
+            f1_score.append((2 * precision * recall) / (precision + recall))
         recall_list.append(recall)
         pr_list.append(precision)
-        f1_score.append((2 * precision * recall) / (precision + recall))
     macc = np.mean(acc_list)
     miou = np.mean(iou_list)
     return iou_list, acc_list, recall_list, pr_list, miou, macc, f1_score
