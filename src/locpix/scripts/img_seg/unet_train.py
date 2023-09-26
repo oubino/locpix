@@ -328,6 +328,7 @@ def main():
                 # forward pass - with autocasting
                 with torch.autocast(device_type="cuda"):
                     output = model(img)
+                    output = torch.sigmoid(output)
 
             # reduce batch and channel dimensions
             output = torch.squeeze(output, 0)
