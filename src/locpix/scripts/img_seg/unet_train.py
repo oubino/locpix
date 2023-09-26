@@ -242,6 +242,9 @@ def main():
         # clean up
         img_train_prep.clean_up(project_folder, f"{config['folder_name']}")
 
+        # stop wandb
+        wandb.finish()
+
     print("------ Outputting for evaluation -------- ")
 
     # prep images
