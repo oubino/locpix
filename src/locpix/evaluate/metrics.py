@@ -4,6 +4,7 @@ from locpix.preprocessing import datastruc
 import os
 import polars as pl
 import numpy as np
+import warnings
 
 
 def metric_calculation(item: datastruc.item, labels):
@@ -80,13 +81,18 @@ def mean_metrics(results, labels):
         acc_list.append((TP + TN) / (TP + TN + FP + FN))
         iou_list.append((TP) / (TP + FP + FN))
         recall = TP / (TP + FN)
-        precision = TP/(TP + FP)
+        if TP + FP == 0:
+            warnings.warn("No positive values therefore precision set to zero")
+            precision = 0
+        else:
+            precision = TP / (TP + FP)
         recall_list.append(recall)
         pr_list.append(precision)
-        f1_score.append((2*precision*recall)/(precision + recall))
+        f1_score.append((2 * precision * recall) / (precision + recall))
     macc = np.mean(acc_list)
     miou = np.mean(iou_list)
     return iou_list, acc_list, recall_list, pr_list, miou, macc, f1_score
+
 
 def aggregated_metrics(
     files_folder, save_loc, gt_label_map, add_metrics={}, metadata={}
@@ -105,11 +111,10 @@ def aggregated_metrics(
             label
         metadata (dictionary): Any additional metadata
             to save
-            
+
     Returns:
         agg_results (dict) : Dictionary containining TP, etc.
             for labels"""
-
 
     # list items
     try:
@@ -144,7 +149,9 @@ def aggregated_metrics(
     results = {}
 
     # calculate macc/miou/oacc
-    iou_list, acc_list, recall_list, pr_list, miou, macc, f1_score = mean_metrics(agg_results, labels)
+    iou_list, acc_list, recall_list, pr_list, miou, macc, f1_score = mean_metrics(
+        agg_results, labels
+    )
     results["iou_list"] = iou_list
     results["acc_list"] = acc_list
     results["recall_list"] = recall_list
@@ -180,9 +187,9 @@ def aggregated_metrics(
     # assume label 1 is positive label
     ones = tp + fn
     zeros = fp + tn
-    skew = ones/(zeros + ones)
-    aucprmin = 1 + ((1-skew)*np.log(1-skew))/skew
-    add_metrics["aucnpr"] = (auc - aucprmin)/(1 - aucprmin)
+    skew = ones / (zeros + ones)
+    aucprmin = 1 + ((1 - skew) * np.log(1 - skew)) / skew
+    add_metrics["aucnpr"] = (auc - aucprmin) / (1 - aucprmin)
 
     # save to .csv in output results
     # df = pl.DataFrame(results)
@@ -229,5 +236,3 @@ def aggregated_metrics(
         f.writelines("\n".join(lines))
 
     return agg_results
-
-
