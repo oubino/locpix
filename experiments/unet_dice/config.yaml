@@ -35,5 +35,5 @@ test_transforms:
 folder_name: unet_dice
 
 # wandb parameters
-wandb_project: c15_img_unet_bce
+wandb_project: c15_img_unet_dice
 wandb_dataset: c15_imgs
