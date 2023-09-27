@@ -298,18 +298,18 @@ class item:
             ]
         )
         # floor the pixel locations
-        self.df = self.df.with_column(pl.col("x_pixel").cast(int, strict=True))
-        self.df = self.df.with_column(pl.col("y_pixel").cast(int, strict=True))
+        self.df = self.df.with_columns(pl.col("x_pixel").cast(int, strict=True))
+        self.df = self.df.with_columns(pl.col("y_pixel").cast(int, strict=True))
 
         # localisations at the end get assigned to outside the histogram,
         # therefore need to be assigned to previous pixel
-        # self.df = self.df.with_column(
+        # self.df = self.df.with_columns(
         #    pl.when(pl.col("x_pixel") == self.df.max()["x_pixel"][0])
         #    .then(self.df.max()["x_pixel"][0] - 1)
         #    .otherwise(pl.col("x_pixel"))
         #    .alias("x_pixel")
         # )
-        # self.df = self.df.with_column(
+        # self.df = self.df.with_columns(
         #    pl.when(pl.col("y_pixel") == self.df.max()["y_pixel"][0])
         #    .then(self.df.max()["y_pixel"][0] - 1)
         #    .otherwise(pl.col("y_pixel"))
@@ -328,11 +328,11 @@ class item:
                 ]
             )
             # floor the pixel locations
-            self.df = self.df.with_column(pl.col("z_pixel").cast(int, strict=True))
+            self.df = self.df.with_columns(pl.col("z_pixel").cast(int, strict=True))
             # localisations at the end get assigned to outside the histogram,
             # therefore need to be assigned
             # to previous pixel
-            # self.df = self.df.with_column(
+            # self.df = self.df.with_columns(
             #    pl.when(pl.col("z_pixel") == self.df.max()["z_pixel"][0])
             #    .then(self.df.max()["z_pixel"][0] - 1)
             #    .otherwise(pl.col("z_pixel"))
@@ -606,7 +606,7 @@ class item:
             label_df = pl.DataFrame({"chan_label": self.channel_label}).with_row_count(
                 "channel"
             )
-            label_df = label_df.with_column(pl.col("channel").cast(pl.Int64))
+            label_df = label_df.with_columns(pl.col("channel").cast(pl.Int64))
             save_df = save_df.join(label_df, on="channel", how="inner")
 
         # save to location
