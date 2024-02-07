@@ -16,7 +16,8 @@ For more comprehensive documentation please see https://oubino.github.io/locpix/
 #. Segmentation:
 
    #. `Classic segmentation`_ : Use classic method to segment histograms to extract relevant localisations
-   #. `Cellpose segmentation`_ : Use Cellpose method to segment histograms to extract relevant localisations
+   #. `Cellpose segmentation (no training)`_ : Use Cellpose method to segment histograms to extract relevant localisations with no retraining of Cellpose model
+   #. `Cellpose segmentation (training)`_ : Use Cellpose method to segment histograms to extract relevant localisations with retraining of Cellpose model
    #. `Ilastik segmentation`_ : Use Ilastik method to segment histograms to extract relevant localisations
 
 #. `Membrane performance`_ : Performance metrics calculation based on the localisations (not the histograms!)
@@ -190,7 +191,7 @@ To run the script without a GUI -i and -c flags should be specified
 
 
 Cellpose segmentation (training)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
    Need to activate extra requirements - these are big and not included in initial install.
 
@@ -247,7 +248,7 @@ Need to prepare the data for Ilastik segmentation
 
 Then run the data through the Ilastik GUI, which needs to be installed from
 `Ilastik <https://www.ilastik.org/download.html>`_  and to run it
-please see `usage:Ilastik GUI`_
+please see https://oubino.github.io/locpix/user_guide/usage.html#id7
 
 Then convert the output of the Ilastik GUI back into our format
 
