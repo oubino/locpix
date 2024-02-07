@@ -155,9 +155,7 @@ Cellpose segmentation (no training)
 
    Note we modified Cellpose to fit in with our analysis, therefore you need to install our forked repository - note below will clone the Cellpose repository to wherever you are located
 
-   If you
-
-   have a GPU
+   If you have a GPU
 
    .. code-block:: console
 
@@ -166,7 +164,7 @@ Cellpose segmentation (no training)
       (locpix-env) $ cd cellpose
       (locpix-env) $ pip install .
 
-   don't have a GPU
+   If you don't have a GPU
 
    .. code-block:: console
 
@@ -200,9 +198,7 @@ Cellpose segmentation (training)
 
    Note we modified Cellpose to fit in with our analysis, therefore you need to install our forked repository - note below will clone the Cellpose repository to wherever you are located
 
-   If you:
-
-   have a GPU
+   If you have a GPU
 
    .. code-block:: console
 
@@ -211,7 +207,7 @@ Cellpose segmentation (training)
       (locpix-env) $ cd cellpose
       (locpix-env) $ pip install .
 
-   don't have a GPU
+   If you don't have a GPU
 
    .. code-block:: console
 
