@@ -248,7 +248,7 @@ Need to prepare the data for Ilastik segmentation
 
 Then run the data through the Ilastik GUI, which needs to be installed from
 `Ilastik <https://www.ilastik.org/download.html>`_  and to run it
-please see Usage: Ilastik GUI at https://oubino.github.io/locpix/
+please see https://oubino.github.io/locpix/user_guide/usage.html#id7
 
 Then convert the output of the Ilastik GUI back into our format
 
