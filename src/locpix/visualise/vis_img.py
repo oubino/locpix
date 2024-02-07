@@ -249,11 +249,11 @@ def visualise_seg(
     if save:
         if save_loc is None:
             raise ValueError("Need a save location!")
-        save_name = save_name + ".svg"
+        save_name = save_name + ".eps"
         plt.savefig(
             os.path.join(save_loc, save_name),
             bbox_inches="tight",
-            format="svg",
+            format="eps",
             dpi=1200,
         )
 
