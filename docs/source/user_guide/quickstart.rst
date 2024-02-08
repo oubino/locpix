@@ -15,12 +15,10 @@ will not be accessed again!
 Usage configuration
 -------------------
 
-Each script can be run with a GUI, but can also be run in headless mode.
-
-In headless mode each script needs a configuration file (.yaml file), which should be
+Each script needs a configuration file (.yaml file), which should be
 specified using the -c flag.
 
-Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
+Each configuration used will be saved in the project directory.
 
 The templates for the configuration files can be found in :ref:`templates`
 
@@ -58,13 +56,7 @@ This script preprocesses the input .csv data for later use AND **must be run fir
 This script will take in .csv files, and convert them to .parquet files,
 while also wrangling the data into our data format.
 
-To run the script using the GUI, run
-
-.. code-block:: console
-
-   (locpix-env) $ preprocess
-
-To run the script without a GUI -i -c and -o flags should be specified
+To run the script -i -c and -o flags should be specified
 
 .. code-block:: console
 
@@ -78,13 +70,7 @@ Annotate
 
 This script allows for manual segmentation of the localisations.
 
-To run the script using the GUI, run
-
-.. code-block:: console
-
-   (locpix-env) $ annotate
-
-To run the script without a GUI -i and -c flags should be specified
+To run the script -i and -c flags should be specified
 
 .. code-block:: console
 
@@ -101,13 +87,7 @@ Get markers
 
 This script allows for labelling the localisation image with a marker to represent the cells.
 
-To run the script using the GUI, run
-
-.. code-block:: console
-
-   (locpix-env) $ get_markers
-
-To run the script without a GUI -i and -c flags should be specified
+To run the script -i and -c flags should be specified
 
 .. code-block:: console
 
@@ -121,13 +101,7 @@ Classic segmentation
 
 Perform classic segmentation on our localisation dataset.
 
-To run the script using the GUI, run
-
-.. code-block:: console
-
-   (locpix-env) $ classic
-
-To run the script without a GUI -i and -c flags should be specified
+To run the script without -i and -c flags should be specified
 
 .. code-block:: console
 
@@ -166,22 +140,31 @@ Cellpose segmentation
         (locpix-env) $ cd cellpose
         (locpix-env) $ pip install .
 
-Perform Cellpose segmentation on our localisation dataset.
+Perform Cellpose segmentation on our without any retraining on your dataset run the script with -i and -c flags specified
 
-To run the script using the GUI, run
+   .. code-block:: console
 
-.. code-block:: console
+      (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file
 
-   (locpix-env) $ cellpose
+To retrain first then evaluate we instead
 
-To run the script without a GUI -i and -c flags should be specified
+   Prepare data for training
 
-.. code-block:: console
+   .. code-block:: console
 
-   (locpix-env) $ cellpose -i path/to/project/directory -c path/to/config/file
+      (locpix-env) $ train_prep -i path/to/project/directory -c path/to/config/file
+
+   Train cellpose
+
+   .. code-block:: console
+
+      (locpix-env) $ cellpose_train -i path/to/project/directory -ct path/to/config/train_file -ce path/to/config/eval_file
+
 
 **API**
-:py:mod:`locpix.scripts.img_seg.cellpose`
+:py:mod:`locpix.scripts.img_seg.train_prep`
+:py:mod:`locpix.scripts.img_seg.cellpose_eval`
+:py:mod:`locpix.scripts.img_seg.cellpose_train`
 
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^
