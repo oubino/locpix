@@ -365,15 +365,25 @@ document.write(`
 
   <section id="annotate">
 <h1>annotate<a class="headerlink" href="#annotate" title="Link to this heading">#</a></h1>
+<p>The number of bins in each dimension i.e. x_bins = 500, y_bins = 500 will create a
+500x500 pixel image - where the bin size in metric space will vary depending on the
+input data</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x_bins</span><span class="p">:</span> <span class="mi">500</span>
 <span class="n">y_bins</span><span class="p">:</span> <span class="mi">500</span>
 <span class="n">z_bins</span><span class="p">:</span> <span class="kc">None</span>
-
-<span class="n">dim</span><span class="p">:</span> <span class="mi">2</span>
-
-<span class="n">drop_zero_label</span><span class="p">:</span> <span class="kc">False</span>
-
-<span class="n">gt_label_map</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>Dimensions of the data either 2 or 3</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dim</span><span class="p">:</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>When saving annotations - you can choose to NOT save the localisations associated with the background
+which are assigned a label of zero</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">drop_zero_label</span><span class="p">:</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Mapping from integers to real concepts</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gt_label_map</span><span class="p">:</span>
   <span class="mi">0</span> <span class="p">:</span> <span class="s1">&#39;background&#39;</span>
   <span class="mi">1</span> <span class="p">:</span> <span class="s1">&#39;membrane&#39;</span>
 </pre></div>

@@ -365,30 +365,50 @@ document.write(`
 
   <section id="unet-train">
 <h1>unet_train<a class="headerlink" href="#unet-train" title="Link to this heading">#</a></h1>
+<p>Training parameters including batch size, epochs, learning rate, weight decay, loss function (dice or bce), number of workers, whether to use the GPU</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">batch_size</span><span class="p">:</span> <span class="mi">1</span>
 <span class="n">epochs</span><span class="p">:</span> <span class="mi">1</span>
-<span class="n">img_interpolate</span><span class="p">:</span> <span class="n">log2</span>
-<span class="n">img_threshold</span><span class="p">:</span> <span class="mi">0</span>
-<span class="n">channels</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">egfr</span>
-<span class="o">-</span> <span class="n">ereg</span>
 <span class="n">learning_rate</span><span class="p">:</span> <span class="mf">0.01</span>
+<span class="n">weight_decay</span><span class="p">:</span> <span class="mf">0.0001</span>
 <span class="n">loss_fn</span><span class="p">:</span> <span class="n">bce</span>
 <span class="n">num_workers</span><span class="p">:</span> <span class="mi">1</span>
-<span class="n">sum_chan</span><span class="p">:</span> <span class="n">true</span>
-<span class="n">test_transforms</span><span class="p">:</span>
-  <span class="n">dtypeconv</span><span class="p">:</span> <span class="n">null</span>
-<span class="n">train_transforms</span><span class="p">:</span>
+<span class="n">use_gpu</span><span class="p">:</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>Threshold/interpolation to apply to image
+For interpolation options are: log2, log10 or linear</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img_interpolate</span><span class="p">:</span> <span class="n">log2</span>
+<span class="n">img_threshold</span><span class="p">:</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Transformations to apply during training/test</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">train_transforms</span><span class="p">:</span>
   <span class="n">dtypeconv</span><span class="p">:</span> <span class="n">null</span>
   <span class="n">erasing</span><span class="p">:</span> <span class="n">null</span>
   <span class="n">h_flip</span><span class="p">:</span> <span class="n">null</span>
   <span class="n">perspective</span><span class="p">:</span> <span class="mf">0.2</span>
   <span class="n">rotation</span><span class="p">:</span> <span class="mi">90</span>
   <span class="n">v_flip</span><span class="p">:</span> <span class="n">null</span>
-<span class="n">use_gpu</span><span class="p">:</span> <span class="n">true</span>
-<span class="n">wandb_dataset</span><span class="p">:</span> <span class="n">c15_imgs</span>
+<span class="n">test_transforms</span><span class="p">:</span>
+  <span class="n">dtypeconv</span><span class="p">:</span> <span class="n">null</span>
+</pre></div>
+</div>
+<p>Weights and bias parameters</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wandb_dataset</span><span class="p">:</span> <span class="n">c15_imgs</span>
 <span class="n">wandb_project</span><span class="p">:</span> <span class="n">c15_img_unet_bce</span>
-<span class="n">weight_decay</span><span class="p">:</span> <span class="mf">0.0001</span>
+</pre></div>
+</div>
+<p>The following is not generic, if you need to use this please raise an
+issue and tag &#64;oubino</p>
+<p>For two channel image, we visualise both channels then sum them together
+Need the name of the first and second channel in terms of the real concepts</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">channels</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">egfr</span>
+<span class="o">-</span> <span class="n">ereg</span>
+</pre></div>
+</div>
+<p>Whether to sum the two channels</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sum_chan</span><span class="p">:</span> <span class="n">true</span>
 </pre></div>
 </div>
 </section>

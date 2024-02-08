@@ -365,21 +365,38 @@ document.write(`
 
   <section id="preprocess">
 <h1>preprocess<a class="headerlink" href="#preprocess" title="Link to this heading">#</a></h1>
+<p>Name of the column which has the x, y, z (if present) coordinates,
+the channel and frame information in the csvs being processed
+[If not present put null]</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x_col</span><span class="p">:</span> <span class="s1">&#39;X (nm)&#39;</span>
 <span class="n">y_col</span><span class="p">:</span> <span class="s1">&#39;Y (nm)&#39;</span>
 <span class="n">z_col</span><span class="p">:</span> <span class="n">null</span>
 <span class="n">channel_col</span><span class="p">:</span> <span class="s1">&#39;Channel&#39;</span>
 <span class="n">frame_col</span><span class="p">:</span> <span class="s1">&#39;Frame&#39;</span>
-
-<span class="n">dim</span><span class="p">:</span> <span class="mi">2</span>
-
-<span class="n">channel_choice</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
-
-<span class="n">channel_label</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;egfr&#39;</span><span class="p">,</span><span class="s1">&#39;ereg&#39;</span><span class="p">,</span><span class="s1">&#39;unk&#39;</span><span class="p">,</span><span class="s1">&#39;unk&#39;</span><span class="p">]</span>
-
-<span class="n">include_files</span><span class="p">:</span> <span class="nb">all</span>
 </pre></div>
 </div>
+<p>The number of dimensions to consider
+If 2 only deals with x and y
+If 3 will read in and deal with z as well (currently not fully supported)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dim</span><span class="p">:</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>Choice of which channels user wants to consider</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">channel_choice</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Label for what each channel represents in real terms where unk is unknown</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">channel_label</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;egfr&#39;</span><span class="p">,</span><span class="s1">&#39;ereg&#39;</span><span class="p">,</span><span class="s1">&#39;unk&#39;</span><span class="p">,</span><span class="s1">&#39;unk&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Files to include - if want all files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include_files</span><span class="p">:</span> <span class="nb">all</span>
+</pre></div>
+</div>
+<p>Otherwise list the files without extensions (e.g. .csv)
+include_files:
+- file_1
+- file_2</p>
 </section>
 
 

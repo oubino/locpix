@@ -1,14 +1,30 @@
 annotate
 ========
+The number of bins in each dimension i.e. x_bins = 500, y_bins = 500 will create a
+500x500 pixel image - where the bin size in metric space will vary depending on the
+input data
 ::
 
   x_bins: 500
   y_bins: 500
   z_bins: None
 
+
+Dimensions of the data either 2 or 3
+::
+
   dim: 2
 
+
+When saving annotations - you can choose to NOT save the localisations associated with the background
+which are assigned a label of zero
+::
+
   drop_zero_label: False
+
+
+Mapping from integers to real concepts
+::
 
   gt_label_map:
     0 : 'background'

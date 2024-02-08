@@ -365,14 +365,22 @@ document.write(`
 
   <section id="classic">
 <h1>classic<a class="headerlink" href="#classic" title="Link to this heading">#</a></h1>
+<p>Threshold/interpolation to apply to image
+For interpolation options are: log2, log10 or linear</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img_threshold</span><span class="p">:</span> <span class="mi">0</span>
 <span class="n">img_interpolate</span><span class="p">:</span> <span class="s1">&#39;log2&#39;</span>
-
-<span class="n">sum_chan</span><span class="p">:</span> <span class="kc">True</span>
-
-<span class="n">channel</span><span class="p">:</span> <span class="s1">&#39;egfr&#39;</span>
-
+</pre></div>
+</div>
+<p>The following is not generic, if you need to use this please raise an
+issue and tag &#64;oubino</p>
+<p>For two channel image, we visualise both channels then sum them together
+Need the name of the first and second channel in terms of the real concepts</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">channel</span><span class="p">:</span> <span class="s1">&#39;egfr&#39;</span>
 <span class="n">alt_channel</span><span class="p">:</span> <span class="s1">&#39;ereg&#39;</span>
+</pre></div>
+</div>
+<p>Whether to sum the two channels</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sum_chan</span><span class="p">:</span> <span class="kc">True</span>
 </pre></div>
 </div>
 </section>

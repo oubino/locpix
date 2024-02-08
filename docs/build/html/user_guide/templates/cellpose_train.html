@@ -365,23 +365,36 @@ document.write(`
 
   <section id="cellpose-train">
 <h1>cellpose_train<a class="headerlink" href="#cellpose-train" title="Link to this heading">#</a></h1>
+<p>Threshold/interpolation to apply to image
+For interpolation options are: log2, log10 or linear</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img_interpolate</span><span class="p">:</span> <span class="n">log2</span>
-
 <span class="n">img_threshold</span><span class="p">:</span> <span class="mi">0</span>
-
-<span class="n">model</span><span class="p">:</span> <span class="n">LC1</span>
-
-<span class="n">learning_rate</span><span class="p">:</span> <span class="mf">0.01</span>
-
+</pre></div>
+</div>
+<p>Cellpose model we are training</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">:</span> <span class="n">LC1</span>
+</pre></div>
+</div>
+<p>Learning rate/weight decay/epochs for training</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">learning_rate</span><span class="p">:</span> <span class="mf">0.01</span>
 <span class="n">weight_decay</span><span class="p">:</span> <span class="mf">0.0001</span>
-
 <span class="n">epochs</span><span class="p">:</span> <span class="mi">1000</span>
-
-<span class="n">use_gpu</span><span class="p">:</span> <span class="kc">True</span>
-
-<span class="n">channels</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;egfr&quot;</span><span class="p">,</span> <span class="s2">&quot;ereg&quot;</span><span class="p">]</span>
-
-<span class="n">sum_chan</span><span class="p">:</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>Whether to use GPU for training</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use_gpu</span><span class="p">:</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>The following is not generic, if you need to use this please raise an
+issue and tag &#64;oubino</p>
+<p>For two channel image, we visualise both channels then sum them together
+Need the name of the first and second channel in terms of the real concepts
+In this case in the form of a list</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">channels</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;egfr&quot;</span><span class="p">,</span> <span class="s2">&quot;ereg&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Whether to sum the two channels</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sum_chan</span><span class="p">:</span> <span class="kc">True</span>
 </pre></div>
 </div>
 </section>
