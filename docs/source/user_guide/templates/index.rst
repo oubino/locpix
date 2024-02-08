@@ -17,10 +17,12 @@ Templates
 
     cellpose
 
-    ilastik_prep
-
-    ilastik_output
-
-    membrane_performance
+    train_prep
 
     cellpose_train
+
+    unet_train
+
+    ilastik_prep
+
+    membrane_performance

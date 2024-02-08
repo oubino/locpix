@@ -1,42 +1,42 @@
 cellpose_train
 ==============
-device to train on (gpu or cpu)
+
+Threshold/interpolation to apply to image
+For interpolation options are: log2, log10 or linear
 ::
 
-  gpu: True
+  img_threshold: 0
+  img_interpolate: 'log2'
 
-
-model parameters
+Cellpose model we are training
 ::
 
-  model: pointnet
+  model: LC1
 
 
-optimiser parameters
+Learning rate/weight decay/epochs for training
 ::
 
-  optimiser: adam
-  lr: 0.001
+  learning_rate: 0.01
   weight_decay: 0.0001
+  epochs: 1000
 
-
-training parameters
+Whether to use GPU for training
 ::
 
-  epochs: 2
-  batch_size: 1
-  num_workers: 1 # generall higher -> faster
-  loss_fn: nll
+  use_gpu: True
 
-  train_files:
-  - Fov1_DC
-  - Fov2_DC
-  - Fov3_DC
-  - Fov5_DC
-  - Fov6_DC
+The following is not generic, if you need to use this please raise an
+issue and tag @oubino
 
-  test_files:
-  - Fov7_DC
-  - Fov8_DC
-  - Fov9_DC
-  - Fov10_DC
+For two channel image, we visualise both channels then sum them together
+Need the name of the first and second channel in terms of the real concepts
+In this case in the form of a list
+::
+
+  channels: ["egfr", "ereg"]
+
+Whether to sum the two channels
+::
+
+  sum_chan: True

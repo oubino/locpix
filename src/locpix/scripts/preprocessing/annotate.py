@@ -143,7 +143,7 @@ def main():
         #    continue
 
         # coord2histo
-        item.coord_2_histo(histo_size, vis_interpolation=config["vis_interpolation"])
+        item.coord_2_histo(histo_size)
 
         # markers loc
         markers_loc = os.path.join(markers_folder, item.name + ".npy")

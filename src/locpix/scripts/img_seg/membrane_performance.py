@@ -321,11 +321,6 @@ def main():
                 item = datastruc.item(None, None, None, None, None)
                 item.load_from_parquet(os.path.join(gt_file_path, file))
 
-                # convert to histo
-                histo, channel_map, label_map = item.render_histo(
-                    [config["channel"], config["alt_channel"]]
-                )
-
                 # load prob map
                 img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
 
@@ -358,30 +353,6 @@ def main():
                 item.save_to_parquet(
                     output_df_folder_test, drop_zero_label=False, drop_pixel_col=True
                 )
-
-                # also save image of predicted membrane
-                # output_img = np.where(img_prob > threshold, 1, 0)
-
-                # img = np.transpose(histo, (0, 2, 1))
-
-                # consider the correct channel
-                # save_loc = os.path.join(output_seg_imgs_test, item.name + ".png")
-                # vis_img.visualise_seg(
-                #     img,
-                #     output_img,
-                #     item.bin_sizes,
-                #     axes=[0],
-                #     label_map=label_map,
-                #     threshold=config["vis_threshold"],
-                #     how=config["vis_interpolate"],
-                #     origin="upper",
-                #     blend_overlays=False,
-                #     alpha_seg=0.8,
-                #     cmap_seg=["k", "y"],
-                #     save=True,
-                #     save_loc=save_loc,
-                #     four_colour=False,
-                # )
 
                 # sanity check all have same gt label map
                 if gt_label_map is None:
@@ -456,11 +427,6 @@ def main():
                 item = datastruc.item(None, None, None, None, None)
                 item.load_from_parquet(os.path.join(gt_file_path, file))
 
-                # convert to histo
-                histo, channel_map, label_map = item.render_histo(
-                    [config["channel"], config["alt_channel"]]
-                )
-
                 # load prob map
                 img_prob = np.load(os.path.join(seg_folder, item.name + ".npy"))
 
@@ -493,30 +459,6 @@ def main():
                 item.save_to_parquet(
                     output_df_folder_val, drop_zero_label=False, drop_pixel_col=True
                 )
-
-                # also save image of predicted membrane
-                # output_img = np.where(img_prob > threshold, 1, 0)
-
-                # img = np.transpose(histo, (0, 2, 1))
-
-                # consider the correct channel
-                # save_loc = os.path.join(output_seg_imgs_val, item.name + ".png")
-                # vis_img.visualise_seg(
-                #     img,
-                #     output_img,
-                #     item.bin_sizes,
-                #     axes=[0],
-                #     label_map=label_map,
-                #     threshold=config["vis_threshold"],
-                #     how=config["vis_interpolate"],
-                #     origin="upper",
-                #     blend_overlays=False,
-                #     alpha_seg=0.8,
-                #     cmap_seg=["k", "y"],
-                #     save=True,
-                #     save_loc=save_loc,
-                #     four_colour=False,
-                # )
 
                 # sanity check all have same gt label map
                 if gt_label_map is None:

@@ -1,8 +1,9 @@
 preprocess
 ==========
-The following are the names of the
-x column, y column, z column if present, channel, frame,
-in the csvs being processed
+
+Name of the column which has the x, y, z (if present) coordinates,
+the channel and frame information in the csvs being processed
+[If not present put null]
 ::
 
   x_col: 'X (nm)'
@@ -20,29 +21,24 @@ If 3 will read in and deal with z as well (currently not fully supported)
   dim: 2
 
 
-choice of which channels user wants to consider
+Choice of which channels user wants to consider
 ::
 
   channel_choice: [0,1,2,3]
 
-
-whether to not drop the column containing
-pixel
+Label for what each channel represents in real terms where unk is unknown
 ::
 
-  drop_pixel_col: False
+  channel_label: ['647nm','568nm','unk','unk']
 
+Files to include - if want all files
+::
 
-files to include
+  include_files: all
+
+Otherwise list the files without extensions (e.g. .csv)
 ::
 
   include_files:
-  - Fov1_DC
-  - Fov2_DC
-  - Fov3_DC
-  - Fov5_DC
-  - Fov6_DC
-  - Fov7_DC
-  - Fov8_DC
-  - Fov9_DC
-  - Fov10_DC
+  - file_1
+  - file_2

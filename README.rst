@@ -18,6 +18,7 @@ For more comprehensive documentation please see https://oubino.github.io/locpix/
    #. `Classic segmentation`_ : Use classic method to segment histograms to extract relevant localisations
    #. `Cellpose segmentation`_ : Use Cellpose method to segment histograms to extract relevant localisations
    #. `Ilastik segmentation`_ : Use Ilastik method to segment histograms to extract relevant localisations
+   #. `UNET segmentation`_ : Use UNET to segment histograms to extract relevant localisations
 
 #. `Membrane performance`_ : Performance metrics calculation based on the localisations (not the histograms!)
 
@@ -41,6 +42,8 @@ specified using the -c flag.
 Each configuration used will be saved in the project directory.
 
 The templates for the configuration files can be found in the `templates folder <https://github.com/oubino/locpix/tree/master/src/locpix/templates>`_.
+
+For instructions for the parameters in the configuration files see https://oubino.github.io/locpix/user_guide/templates/index.html
 
 Quickstart
 ==========
@@ -168,6 +171,32 @@ To retrain first then evaluate we instead
 
       (locpix-env) $ cellpose_train -i path/to/project/directory -ct path/to/config/train_file -ce path/to/config/eval_file
 
+UNET segmentation
+^^^^^^^^^^^^^^^^^
+
+Need to activate extra requirements - these are big and not included in initial install.
+
+Note that if you have a GPU this will speed this up.
+
+Note this is only needed if haven't done for cellpose above
+
+If you have a GPU
+
+.. code-block:: console
+
+   (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+
+If you don't have a GPU
+
+.. code-block:: console
+
+   (locpix-env) $ pip install pytorch
+
+To train UNET
+
+   .. code-block:: console
+
+      (locpix-env) $ unet -i path/to/project/directory -c path/to/config/file
 
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^
@@ -186,12 +215,19 @@ Then convert the output of the Ilastik GUI back into our format
 
 .. code-block:: console
 
-   (locpix-env) $ ilastik_output -i path/to/project/directory -c path/to/config/file
+   (locpix-env) $ ilastik_output -i path/to/project/directory
+
 
 Membrane performance
 ^^^^^^^^^^^^^^^^^^^^
 
-Need to evaluate the performance of the membrane segmentation
+To evaluate membrane performance for a particular method, run below, where method name needs to match where the segmentation files are
+
+.. code-block:: console
+
+   (locpix-env) $ membrane_performance_method -i path/to/project/directory -c path/to/config/file -o method_name
+
+To evaluate performance of  membrane segmentation from classic, cellpose and ilastik
 
 .. code-block:: console
 

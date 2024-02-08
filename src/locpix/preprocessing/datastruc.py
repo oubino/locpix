@@ -153,8 +153,6 @@ class item:
     def coord_2_histo(
         self,
         histo_size,
-        cmap=["Greens", "Reds", "Blues", "Purples"],
-        vis_interpolation="linear",
     ):
         """Converts localisations into histogram of desired size,
         with option to plot the image (histo.T).
@@ -163,12 +161,7 @@ class item:
 
         Args:
             histo_size (tuple): Tuple representing number of
-                bins/pixels in x,y,z
-            cmap (list of strings) : The colourmaps used to
-                plot the histograms
-            plot (bool): Whether to plot the output
-            vis_interpolation (string): How to inerpolate
-                the image for visualisation"""
+                bins/pixels in x,y,z"""
 
         # get max and min x/y/(z) values
         df_max = self.df.max()

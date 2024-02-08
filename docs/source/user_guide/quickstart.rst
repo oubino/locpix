@@ -166,6 +166,36 @@ To retrain first then evaluate we instead
 :py:mod:`locpix.scripts.img_seg.cellpose_eval`
 :py:mod:`locpix.scripts.img_seg.cellpose_train`
 
+UNET segmentation
+^^^^^^^^^^^^^^^^^
+
+Need to activate extra requirements - these are big and not included in initial install.
+
+Note that if you have a GPU this will speed this up.
+
+Note this is only needed if haven't done for cellpose above
+
+If you have a GPU
+
+.. code-block:: console
+
+   (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+
+If you don't have a GPU
+
+.. code-block:: console
+
+   (locpix-env) $ pip install pytorch
+
+To train UNET
+
+   .. code-block:: console
+
+      (locpix-env) $ unet -i path/to/project/directory -c path/to/config/file
+
+**API**
+:py:mod:`locpix.scripts.img_seg.unet_train`
+
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -182,7 +212,7 @@ Then convert the output of the Ilastik GUI back into our format
 
 .. code-block:: console
 
-   (locpix-env) $ ilastik_output -i path/to/project/directory -c path/to/config/file
+   (locpix-env) $ ilastik_output -i path/to/project/directory
 
 **API**
 :py:mod:`locpix.scripts.img_seg.ilastik_prep`
@@ -192,11 +222,18 @@ Then convert the output of the Ilastik GUI back into our format
 Membrane performance
 ^^^^^^^^^^^^^^^^^^^^
 
-Need to evaluate the performance of the membrane segmentation
+To evaluate membrane performance for a particular method, run below, where method name needs to match where the segmentation files are
+
+.. code-block:: console
+
+   (locpix-env) $ membrane_performance_method -i path/to/project/directory -c path/to/config/file -o method_name
+
+To evaluate performance of  membrane segmentation from classic, cellpose and ilastik
 
 .. code-block:: console
 
    (locpix-env) $ membrane_performance -i path/to/project/directory -c path/to/config/file
 
 **API**
+:py:mod:`locpix.scripts.img_seg.membrane_performance_method`
 :py:mod:`locpix.scripts.img_seg.membrane_performance`

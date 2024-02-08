@@ -1,5 +1,6 @@
 annotate
 ========
+
 The number of bins in each dimension i.e. x_bins = 500, y_bins = 500 will create a
 500x500 pixel image - where the bin size in metric space will vary depending on the
 input data
@@ -15,45 +16,16 @@ Dimensions of the data either 2 or 3
 
   dim: 2
 
-
-Whether plot should occur to screen (for anything/everything!)
-::
-
-  plot: True
-
-
-this defines the interpolation applied to the histogram when visualising the image of the histogram
-- importantly the histogram which is part of dataitem will be kept in "raw form"
-  ::
-
-    vis_interpolation: 'log2'
-
-
-When saving annotations - you can choose to not save the localisations associated with the background
+When saving annotations - you can choose to NOT save the localisations associated with the background
 which are assigned a label of zero
 ::
 
   drop_zero_label: False
 
 
-Mapping from integers to real terms
+Mapping from integers to real concepts
 ::
 
   gt_label_map:
     0 : 'background'
     1 : 'membrane'
-
-
-Save segmentation images settings
-::
-
-  .. save_img: True
-  save_threshold: 0
-  save_interpolate: 'log2'
-  background_one_colour: True
-  four_colour: True
-  alphas: [1,.5,.2,.1]
-  alpha_seg: .8
-  cmap_seg: ["k", "y"]
-  fig_size: [10,10]
-  vis_channels: [0]

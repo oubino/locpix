@@ -13,6 +13,7 @@ This includes the following functionality:
    #. :ref:`classic-segmentation` : Use classic method to segment histograms to extract relevant localisations
    #. :ref:`cellpose-segmentation` : Use Cellpose method to segment histograms to extract relevant localisations
    #. :ref:`ilastik-segmentation` : Use Ilastik method to segment histograms to extract relevant localisations
+   #. :ref:`unet-segmentation` : Use UNET to segment histograms to extract relevant localisations
 
 #. :ref:`membrane-performance` : Performance metrics calculation based on the localisations (not the histograms!)
 

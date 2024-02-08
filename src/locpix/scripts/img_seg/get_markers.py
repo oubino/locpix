@@ -11,6 +11,7 @@ import numpy as np
 import argparse
 import json
 import time
+import warnings
 
 
 def main():
@@ -99,6 +100,9 @@ def main():
         )
 
         # sum the histos
+        warnings.warn(
+            "This assumes we have two channel image - needs to change if don't"
+        )
         img = histo[0].T + histo[1].T
 
         # convert image to more visible form
