@@ -1,0 +1,79 @@
+locpix.img\_processing.models.unet.two\_d\_UNet
+===============================================
+
+.. currentmodule:: locpix.img_processing.models.unet
+
+.. autoclass:: two_d_UNet
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+   .. automethod:: __init__
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~two_d_UNet.__init__
+      ~two_d_UNet.add_module
+      ~two_d_UNet.apply
+      ~two_d_UNet.bfloat16
+      ~two_d_UNet.buffers
+      ~two_d_UNet.children
+      ~two_d_UNet.compile
+      ~two_d_UNet.cpu
+      ~two_d_UNet.cuda
+      ~two_d_UNet.double
+      ~two_d_UNet.eval
+      ~two_d_UNet.extra_repr
+      ~two_d_UNet.float
+      ~two_d_UNet.forward
+      ~two_d_UNet.get_buffer
+      ~two_d_UNet.get_extra_state
+      ~two_d_UNet.get_parameter
+      ~two_d_UNet.get_submodule
+      ~two_d_UNet.half
+      ~two_d_UNet.ipu
+      ~two_d_UNet.load_state_dict
+      ~two_d_UNet.modules
+      ~two_d_UNet.named_buffers
+      ~two_d_UNet.named_children
+      ~two_d_UNet.named_modules
+      ~two_d_UNet.named_parameters
+      ~two_d_UNet.parameters
+      ~two_d_UNet.register_backward_hook
+      ~two_d_UNet.register_buffer
+      ~two_d_UNet.register_forward_hook
+      ~two_d_UNet.register_forward_pre_hook
+      ~two_d_UNet.register_full_backward_hook
+      ~two_d_UNet.register_full_backward_pre_hook
+      ~two_d_UNet.register_load_state_dict_post_hook
+      ~two_d_UNet.register_module
+      ~two_d_UNet.register_parameter
+      ~two_d_UNet.register_state_dict_pre_hook
+      ~two_d_UNet.requires_grad_
+      ~two_d_UNet.set_extra_state
+      ~two_d_UNet.share_memory
+      ~two_d_UNet.state_dict
+      ~two_d_UNet.to
+      ~two_d_UNet.to_empty
+      ~two_d_UNet.train
+      ~two_d_UNet.type
+      ~two_d_UNet.use_checkpointing
+      ~two_d_UNet.xpu
+      ~two_d_UNet.zero_grad
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~two_d_UNet.T_destination
+      ~two_d_UNet.call_super_init
+      ~two_d_UNet.dump_patches
+      ~two_d_UNet.training

@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.img\_train\_prep.clean\_up\_all
+=======================================================
+
+.. currentmodule:: locpix.scripts.img_seg.img_train_prep
+
+.. autofunction:: clean_up_all

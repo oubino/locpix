@@ -1,0 +1,17 @@
+locpix.scripts.img\_seg.classic
+===============================
+
+.. automodule:: locpix.scripts.img_seg.classic
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main

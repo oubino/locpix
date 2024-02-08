@@ -1,0 +1,17 @@
+locpix.scripts.img\_seg.get\_markers
+====================================
+
+.. automodule:: locpix.scripts.img_seg.get_markers
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main

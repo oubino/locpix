@@ -1,0 +1,78 @@
+locpix.img\_processing.models.unet.Up
+=====================================
+
+.. currentmodule:: locpix.img_processing.models.unet
+
+.. autoclass:: Up
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+   .. automethod:: __init__
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~Up.__init__
+      ~Up.add_module
+      ~Up.apply
+      ~Up.bfloat16
+      ~Up.buffers
+      ~Up.children
+      ~Up.compile
+      ~Up.cpu
+      ~Up.cuda
+      ~Up.double
+      ~Up.eval
+      ~Up.extra_repr
+      ~Up.float
+      ~Up.forward
+      ~Up.get_buffer
+      ~Up.get_extra_state
+      ~Up.get_parameter
+      ~Up.get_submodule
+      ~Up.half
+      ~Up.ipu
+      ~Up.load_state_dict
+      ~Up.modules
+      ~Up.named_buffers
+      ~Up.named_children
+      ~Up.named_modules
+      ~Up.named_parameters
+      ~Up.parameters
+      ~Up.register_backward_hook
+      ~Up.register_buffer
+      ~Up.register_forward_hook
+      ~Up.register_forward_pre_hook
+      ~Up.register_full_backward_hook
+      ~Up.register_full_backward_pre_hook
+      ~Up.register_load_state_dict_post_hook
+      ~Up.register_module
+      ~Up.register_parameter
+      ~Up.register_state_dict_pre_hook
+      ~Up.requires_grad_
+      ~Up.set_extra_state
+      ~Up.share_memory
+      ~Up.state_dict
+      ~Up.to
+      ~Up.to_empty
+      ~Up.train
+      ~Up.type
+      ~Up.xpu
+      ~Up.zero_grad
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Up.T_destination
+      ~Up.call_super_init
+      ~Up.dump_patches
+      ~Up.training

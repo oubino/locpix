@@ -1,0 +1,26 @@
+﻿locpix.img\_processing.models.unet
+==================================
+
+.. automodule:: locpix.img_processing.models.unet
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      DoubleConv
+      Down
+      OutConv
+      Up
+      two_d_UNet

@@ -1,0 +1,6 @@
+locpix.visualise.vis\_img.img\_2\_grey
+======================================
+
+.. currentmodule:: locpix.visualise.vis_img
+
+.. autofunction:: img_2_grey

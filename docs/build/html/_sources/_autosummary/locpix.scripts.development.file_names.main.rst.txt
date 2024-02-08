@@ -1,0 +1,6 @@
+locpix.scripts.development.file\_names.main
+===========================================
+
+.. currentmodule:: locpix.scripts.development.file_names
+
+.. autofunction:: main

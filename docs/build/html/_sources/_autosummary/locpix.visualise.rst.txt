@@ -1,0 +1,32 @@
+locpix.visualise
+================
+
+.. automodule:: locpix.visualise
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   locpix.visualise.performance
+   locpix.visualise.vis_img

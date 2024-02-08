@@ -1,0 +1,6 @@
+locpix.preprocessing.functions.file\_to\_datastruc
+==================================================
+
+.. currentmodule:: locpix.preprocessing.functions
+
+.. autofunction:: file_to_datastruc

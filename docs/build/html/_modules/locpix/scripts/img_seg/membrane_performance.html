@@ -1,0 +1,957 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>locpix.scripts.img_seg.membrane_performance &#8212; locpix 0.1.0.1 documentation</title>
+
+
+
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/locpix/scripts/img_seg/membrane_performance';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+
+
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+
+
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div id="pst-scroll-pixel-helper"></div>
+
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+
+
+  <div class="col-lg-3 navbar-header-items__start">
+
+      <div class="navbar-item">
+
+
+
+<a class="navbar-brand logo" href="../../../../index.html">
+
+
+
+
+
+
+
+
+
+
+    <img src="../../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
+    <script>document.write(`<img src="../../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+
+
+</a></div>
+
+  </div>
+
+  <div class="col-lg-9 navbar-header-items">
+
+    <div class="me-auto navbar-header-items__center">
+
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../development/index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../_autosummary/locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+    </div>
+
+
+    <div class="navbar-header-items__end">
+
+        <div class="navbar-item navbar-persistent--container">
+
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+
+
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+    </div>
+
+  </div>
+
+
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+
+
+
+</div>
+
+    </header>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+
+
+
+
+
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+
+
+
+  <div class="sidebar-header-items sidebar-primary__section">
+
+
+      <div class="sidebar-header-items__center">
+
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../development/index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../_autosummary/locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+      </div>
+
+
+
+      <div class="sidebar-header-items__end">
+
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+      </div>
+
+  </div>
+
+
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+
+      <main id="main-content" class="bd-main">
+
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+
+    <div class="header-article-items__start">
+
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+
+    <li class="breadcrumb-item active" aria-current="page">locpix.scrip...</li>
+  </ul>
+</nav>
+</div>
+
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+<div id="searchbox"></div>
+                <article class="bd-article">
+
+  <h1>Source code for locpix.scripts.img_seg.membrane_performance</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="sd">&quot;&quot;&quot;Module for evluating performance of membrane</span>
+<span class="sd">segmentation</span>
+
+<span class="sd">For the train set, it will use the probability map over</span>
+<span class="sd">the image, and use this to assign probability of belonging</span>
+<span class="sd">to membrane to each localisation.</span>
+<span class="sd">Then it will use this to plot precision-recall curve,</span>
+<span class="sd">and calculate the optimal threshold.</span>
+
+<span class="sd">For the test set, it will use the probability maps to</span>
+<span class="sd">plot a precision recall curve.</span>
+<span class="sd">It will then use the threshold calculated from the train</span>
+<span class="sd">set to threshold the test images</span>
+
+<span class="sd">Now we have output membrane segmentations on the test set</span>
+<span class="sd">which we can use to finally calculate the other</span>
+<span class="sd">remaining performance metrics.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">locpix.preprocessing</span> <span class="kn">import</span> <span class="n">datastruc</span>
+
+<span class="c1"># from locpix.visualise.performance import plot_pr_curve , generate_binary_conf_matrix</span>
+<span class="kn">import</span> <span class="nn">locpix.evaluate.metrics</span> <span class="k">as</span> <span class="nn">metrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">precision_recall_curve</span><span class="p">,</span> <span class="n">auc</span>
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># import matplotlib.pyplot as plt</span>
+<span class="c1"># from locpix.visualise import vis_img</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../../_autosummary/locpix.scripts.img_seg.membrane_performance.main.html#locpix.scripts.img_seg.membrane_performance.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Membrane performance metrics on data.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--project_directory&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the location of the project directory&quot;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-c&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--config&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the location of the .yaml configuaration file</span><span class="se">\</span>
+<span class="s2">                             for preprocessing&quot;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--project_metadata&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;check the metadata for the specified project and&quot;</span> <span class="s2">&quot;seek confirmation!&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">project_folder</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">project_directory</span>
+    <span class="c1"># load config</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ymlfile</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">ymlfile</span><span class="p">)</span>
+
+    <span class="n">metadata_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;metadata.json&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+        <span class="n">metadata_path</span><span class="p">,</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="c1"># check metadata</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">project_metadata</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
+            <span class="n">check</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Are you happy with this? (YES)&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">check</span> <span class="o">!=</span> <span class="s2">&quot;YES&quot;</span><span class="p">:</span>
+                <span class="n">exit</span><span class="p">()</span>
+        <span class="c1"># add time ran this script to metadata</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Overwriting metadata...&quot;</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
+        <span class="c1"># load in train and test files</span>
+        <span class="n">train_folds</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;train_folds&quot;</span><span class="p">]</span>
+        <span class="n">val_folds</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;val_folds&quot;</span><span class="p">]</span>
+        <span class="n">test_files</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;test_files&quot;</span><span class="p">]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">fold</span><span class="p">,</span> <span class="p">(</span><span class="n">train_files</span><span class="p">,</span> <span class="n">val_files</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">train_folds</span><span class="p">,</span> <span class="n">val_folds</span><span class="p">)):</span>
+
+        <span class="c1"># check files</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">train_files</span><span class="p">)</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">test_files</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Train files and test files shared files!!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">train_files</span><span class="p">)</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">val_files</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Train files and test files shared files!!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">val_files</span><span class="p">)</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">test_files</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Train files and test files shared files!!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">train_files</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_files</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Train files contains duplicates&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">val_files</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_files</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Test files contains duplicates&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">test_files</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_files</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Test files contains duplicates&quot;</span><span class="p">)</span>
+
+        <span class="c1"># list items</span>
+        <span class="n">gt_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;annotate/annotated&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">gt_file_path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;There should be some files to open&quot;</span><span class="p">)</span>
+
+        <span class="c1"># fig_train, ax_train = plt.subplots()</span>
+        <span class="c1"># fig_test, ax_test = plt.subplots()</span>
+        <span class="c1"># fig_val, ax_val = plt.subplots()</span>
+
+        <span class="c1"># linestyles = [&quot;dashdot&quot;, &quot;-&quot;, &quot;--&quot;, &quot;dotted&quot;]</span>
+        <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;classic&quot;</span><span class="p">,</span> <span class="s2">&quot;cellpose_no_train&quot;</span><span class="p">,</span> <span class="s2">&quot;cellpose_train&quot;</span><span class="p">,</span> <span class="s2">&quot;ilastik&quot;</span><span class="p">]</span>
+
+        <span class="c1"># output_overlay_pr_curves = os.path.join(</span>
+        <span class="c1">#     project_folder, f&quot;membrane_performance/overlaid_pr_curves/{fold}&quot;</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># if os.path.exists(output_overlay_pr_curves):</span>
+        <span class="c1">#    raise ValueError(</span>
+        <span class="c1">#        f&quot;Cannot proceed as {output_overlay_pr_curves} already exists&quot;</span>
+        <span class="c1">#    )</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     os.makedirs(output_overlay_pr_curves)</span>
+
+        <span class="c1"># one date for all methods</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H_%M_</span><span class="si">%d</span><span class="s2">_%m_%Y&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">methods</span><span class="p">):</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+
+            <span class="c1"># get folder names</span>
+
+            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;ilastik&quot;</span><span class="p">:</span>
+                <span class="n">seg_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;ilastik/output/membrane/prob_map/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;classic&quot;</span> <span class="ow">or</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;cellpose_no_train&quot;</span><span class="p">:</span>
+                <span class="n">seg_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">/membrane/prob_map/&quot;</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;cellpose_train&quot;</span><span class="p">:</span>
+                <span class="n">seg_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">/membrane/prob_map/&quot;</span>
+                <span class="p">)</span>
+
+            <span class="n">output_df_folder_test</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">project_folder</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;membrane_performance/</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">/membrane/seg_dataframes/test/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">output_df_folder_val</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">project_folder</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;membrane_performance/</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">/membrane/seg_dataframes/val/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="c1"># output_seg_imgs_test = os.path.join(</span>
+            <span class="c1">#    project_folder,</span>
+            <span class="c1">#    f&quot;membrane_performance/{method}/membrane/seg_images/test/{fold}&quot;,</span>
+            <span class="c1"># )</span>
+            <span class="c1"># output_seg_imgs_val = os.path.join(</span>
+            <span class="c1">#    project_folder,</span>
+            <span class="c1">#    f&quot;membrane_performance/{method}/membrane/seg_images/val/{fold}&quot;,</span>
+            <span class="c1"># )</span>
+            <span class="c1"># output_train_pr = os.path.join(</span>
+            <span class="c1">#    project_folder,</span>
+            <span class="c1">#    f&quot;membrane_performance/{method}/membrane/train_pr/{fold}&quot;,</span>
+            <span class="c1"># )</span>
+            <span class="c1"># output_test_pr = os.path.join(</span>
+            <span class="c1">#    project_folder, f&quot;membrane_performance/{method}/membrane/test_pr/</span>
+            <span class="c1"># {fold}&quot;</span>
+            <span class="c1"># )</span>
+            <span class="c1"># output_val_pr = os.path.join(</span>
+            <span class="c1">#    project_folder, f&quot;membrane_performance/{method}/membrane/val_pr/{fold}&quot;</span>
+            <span class="c1"># )</span>
+            <span class="n">output_metrics</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;membrane_performance/</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">/membrane/metrics/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="c1"># output_conf_matrix = os.path.join(</span>
+            <span class="c1">#    project_folder,</span>
+            <span class="c1">#    f&quot;membrane_performance/{method}/membrane/conf_matrix/{fold}&quot;,</span>
+            <span class="c1"># )</span>
+
+            <span class="c1"># create output folders</span>
+            <span class="n">folders</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">output_df_folder_test</span><span class="p">,</span>
+                <span class="n">output_df_folder_val</span><span class="p">,</span>
+                <span class="c1"># output_seg_imgs_val,</span>
+                <span class="c1"># output_seg_imgs_test,</span>
+                <span class="c1"># output_train_pr,</span>
+                <span class="c1"># output_val_pr,</span>
+                <span class="c1"># output_test_pr,</span>
+                <span class="n">output_metrics</span><span class="p">,</span>
+                <span class="c1"># output_conf_matrix,</span>
+            <span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">:</span>
+                <span class="c1"># if output directory not present create it</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot proceed as </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2"> already exists&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train set...&quot;</span><span class="p">)</span>
+
+            <span class="n">prob_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+            <span class="n">gt_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.parquet&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">train_files</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File &quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+
+                <span class="c1"># load df</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">datastruc</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">load_from_parquet</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gt_file_path</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+
+                <span class="c1"># load prob map</span>
+                <span class="n">img_prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seg_folder</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.npy&quot;</span><span class="p">))</span>
+
+                <span class="c1"># merge prob map and df</span>
+
+                <span class="n">merged_df</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">mask_pixel_2_coord</span><span class="p">(</span><span class="n">img_prob</span><span class="p">)</span>
+                <span class="n">merged_df</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;pred_label&quot;</span><span class="p">:</span> <span class="s2">&quot;prob&quot;</span><span class="p">})</span>
+
+                <span class="c1"># get gt and predicted probability</span>
+                <span class="n">gt</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;gt_label&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+                <span class="n">prob</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prob&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+                <span class="c1"># append to aggregated data set</span>
+                <span class="n">prob_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prob_list</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span>
+                <span class="n">gt_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gt_list</span><span class="p">,</span> <span class="n">gt</span><span class="p">)</span>
+
+            <span class="c1"># print(&quot;Sanity check... &quot;)</span>
+            <span class="c1"># print(&quot;gt&quot;, len(gt_list), gt_list)</span>
+
+            <span class="c1"># calculate precision recall curve</span>
+            <span class="n">gt_list</span> <span class="o">=</span> <span class="n">gt_list</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">prob_list</span> <span class="o">=</span> <span class="n">prob_list</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">pr</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">pr_threshold</span> <span class="o">=</span> <span class="n">precision_recall_curve</span><span class="p">(</span>
+                <span class="n">gt_list</span><span class="p">,</span> <span class="n">prob_list</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">baseline</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gt_list</span><span class="p">[</span><span class="n">gt_list</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">gt_list</span><span class="p">)</span>
+
+            <span class="c1"># pr, recall saved for train</span>
+            <span class="n">save_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_metrics</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;train_</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">.txt&quot;</span><span class="p">)</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Overall results&quot;</span><span class="p">,</span> <span class="s2">&quot;-----------&quot;</span><span class="p">]</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;prcurve_pr: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">pr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;prcurve_rec: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;prcurve_baseline: </span><span class="si">{</span><span class="n">baseline</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_loc</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">))</span>
+
+            <span class="c1"># plot pr curve</span>
+            <span class="c1"># save_loc = os.path.join(output_train_pr, &quot;_curve.pkl&quot;)</span>
+            <span class="c1"># plot_pr_curve(</span>
+            <span class="c1">#     ax_train,</span>
+            <span class="c1">#     method.capitalize(),</span>
+            <span class="c1">#     linestyles[index],</span>
+            <span class="c1">#     &quot;darkorange&quot;,</span>
+            <span class="c1">#     pr,</span>
+            <span class="c1">#     rec,</span>
+            <span class="c1">#     baseline,</span>
+            <span class="c1">#     # save_loc,</span>
+            <span class="c1">#     # pickle=True,</span>
+            <span class="c1"># )</span>
+
+            <span class="c1"># calculate optimal threshold</span>
+            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;maximise_choice&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;recall&quot;</span><span class="p">:</span>
+                <span class="n">max_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;maximise_choice&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
+                <span class="c1"># get f measure and find optimal</span>
+                <span class="n">fmeas</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pr</span> <span class="o">*</span> <span class="n">rec</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">pr</span> <span class="o">+</span> <span class="n">rec</span><span class="p">)</span>
+                <span class="c1"># remove nan from optimal threshold calculation</span>
+                <span class="n">nan_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">fmeas</span><span class="p">)</span>
+                <span class="n">fmeas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nan_array</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fmeas</span><span class="p">)</span>
+                <span class="n">max_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">fmeas</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Choice not supported&quot;</span><span class="p">)</span>
+
+            <span class="n">threshold</span> <span class="o">=</span> <span class="n">pr_threshold</span><span class="p">[</span><span class="n">max_index</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Threshold for &quot;</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="s2">&quot; :&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test set...&quot;</span><span class="p">)</span>
+
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;train_set&quot;</span><span class="p">:</span> <span class="n">train_files</span><span class="p">,</span>
+                <span class="s2">&quot;test_set&quot;</span><span class="p">:</span> <span class="n">test_files</span><span class="p">,</span>
+                <span class="s2">&quot;threshold&quot;</span><span class="p">:</span> <span class="n">threshold</span><span class="p">,</span>
+                <span class="s2">&quot;val_set&quot;</span><span class="p">:</span> <span class="n">val_files</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="n">prob_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+            <span class="n">gt_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+            <span class="c1"># sanity check all have same gt label map</span>
+            <span class="n">gt_label_map</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># threshold dataframe and save to parquet file with pred label</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.parquet&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">test_files</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File &quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+
+                <span class="n">item</span> <span class="o">=</span> <span class="n">datastruc</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">load_from_parquet</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gt_file_path</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+
+                <span class="c1"># load prob map</span>
+                <span class="n">img_prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seg_folder</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.npy&quot;</span><span class="p">))</span>
+
+                <span class="c1"># merge prob map and df</span>
+                <span class="n">merged_df</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">mask_pixel_2_coord</span><span class="p">(</span><span class="n">img_prob</span><span class="p">)</span>
+                <span class="n">merged_df</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;pred_label&quot;</span><span class="p">:</span> <span class="s2">&quot;prob&quot;</span><span class="p">})</span>
+
+                <span class="c1"># get gt and predicted probability</span>
+                <span class="n">gt</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;gt_label&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+                <span class="n">prob</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prob&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+                <span class="n">save_df</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">pl</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
+                        <span class="n">pl</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prob&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;pred_label&quot;</span><span class="p">),</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+
+                <span class="c1"># append to aggregated data set</span>
+                <span class="n">prob_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prob_list</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span>
+                <span class="n">gt_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gt_list</span><span class="p">,</span> <span class="n">gt</span><span class="p">)</span>
+
+                <span class="c1"># assign save dataframe to item</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">save_df</span>
+
+                <span class="c1"># save dataframe with predicted label column</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">save_to_parquet</span><span class="p">(</span>
+                    <span class="n">output_df_folder_test</span><span class="p">,</span> <span class="n">drop_zero_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">drop_pixel_col</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+
+                <span class="c1"># sanity check all have same gt label map</span>
+                <span class="k">if</span> <span class="n">gt_label_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">gt_label_map</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">gt_label_map</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">item</span><span class="o">.</span><span class="n">gt_label_map</span> <span class="o">==</span> <span class="n">gt_label_map</span>
+
+            <span class="c1"># print(&quot;Sanity check... &quot;)</span>
+            <span class="c1"># print(&quot;gt&quot;, len(gt_list), gt_list)</span>
+
+            <span class="c1"># calculate precision recall curve</span>
+            <span class="n">gt_list</span> <span class="o">=</span> <span class="n">gt_list</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">prob_list</span> <span class="o">=</span> <span class="n">prob_list</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">pr</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">pr_threshold</span> <span class="o">=</span> <span class="n">precision_recall_curve</span><span class="p">(</span>
+                <span class="n">gt_list</span><span class="p">,</span> <span class="n">prob_list</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">baseline</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gt_list</span><span class="p">[</span><span class="n">gt_list</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">gt_list</span><span class="p">)</span>
+
+            <span class="c1"># plot pr curve</span>
+            <span class="c1"># save_loc = os.path.join(output_test_pr, &quot;_curve.pkl&quot;)</span>
+            <span class="c1"># plot_pr_curve(</span>
+            <span class="c1">#     ax_test,</span>
+            <span class="c1">#     method.capitalize(),</span>
+            <span class="c1">#     linestyles[index],</span>
+            <span class="c1">#     &quot;darkorange&quot;,</span>
+            <span class="c1">#     pr,</span>
+            <span class="c1">#     rec,</span>
+            <span class="c1">#     baseline,</span>
+            <span class="c1">#     # save_loc,</span>
+            <span class="c1">#     # pickle=True,</span>
+            <span class="c1"># )</span>
+            <span class="n">pr_auc</span> <span class="o">=</span> <span class="n">auc</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">pr</span><span class="p">)</span>
+            <span class="n">add_metrics</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;pr_auc&quot;</span><span class="p">:</span> <span class="n">pr_auc</span><span class="p">,</span>
+                <span class="s2">&quot;prcurve_pr&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">pr</span><span class="p">),</span>
+                <span class="s2">&quot;prcurve_rec&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">rec</span><span class="p">),</span>
+                <span class="s2">&quot;prcurve_baseline&quot;</span><span class="p">:</span> <span class="n">baseline</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="c1"># metric calculations based on final prediction</span>
+            <span class="n">save_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_metrics</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;test_</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">.txt&quot;</span><span class="p">)</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">aggregated_metrics</span><span class="p">(</span>
+                <span class="n">output_df_folder_test</span><span class="p">,</span>
+                <span class="n">save_loc</span><span class="p">,</span>
+                <span class="n">gt_label_map</span><span class="p">,</span>
+                <span class="n">add_metrics</span><span class="o">=</span><span class="n">add_metrics</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># calculate confusion matrix</span>
+            <span class="c1"># saveloc = os.path.join(output_conf_matrix, f&quot;conf_matrix_test_{date}.png&quot;)</span>
+            <span class="c1"># classes = [item.gt_label_map[0], item.gt_label_map[1]]</span>
+            <span class="c1"># generate_binary_conf_matrix(tn, fp, fn, tp, classes, saveloc)</span>
+            <span class="c1"># could just use aggregated metric function to plot the confusion matrix</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Val set...&quot;</span><span class="p">)</span>
+
+            <span class="n">prob_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+            <span class="n">gt_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+            <span class="c1"># sanity check all have same gt label map</span>
+            <span class="n">gt_label_map</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># threshold dataframe and save to parquet file with pred label</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.parquet&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">val_files</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File &quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+
+                <span class="n">item</span> <span class="o">=</span> <span class="n">datastruc</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">load_from_parquet</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gt_file_path</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+
+                <span class="c1"># load prob map</span>
+                <span class="n">img_prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seg_folder</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.npy&quot;</span><span class="p">))</span>
+
+                <span class="c1"># merge prob map and df</span>
+                <span class="n">merged_df</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">mask_pixel_2_coord</span><span class="p">(</span><span class="n">img_prob</span><span class="p">)</span>
+                <span class="n">merged_df</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;pred_label&quot;</span><span class="p">:</span> <span class="s2">&quot;prob&quot;</span><span class="p">})</span>
+
+                <span class="c1"># get gt and predicted probability</span>
+                <span class="n">gt</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;gt_label&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+                <span class="n">prob</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prob&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+                <span class="n">save_df</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">pl</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span>
+                        <span class="n">pl</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;prob&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;pred_label&quot;</span><span class="p">),</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+
+                <span class="c1"># append to aggregated data set</span>
+                <span class="n">prob_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prob_list</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span>
+                <span class="n">gt_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gt_list</span><span class="p">,</span> <span class="n">gt</span><span class="p">)</span>
+
+                <span class="c1"># assign save dataframe to item</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">save_df</span>
+
+                <span class="c1"># save dataframe with predicted label column</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">save_to_parquet</span><span class="p">(</span>
+                    <span class="n">output_df_folder_val</span><span class="p">,</span> <span class="n">drop_zero_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">drop_pixel_col</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+
+                <span class="c1"># sanity check all have same gt label map</span>
+                <span class="k">if</span> <span class="n">gt_label_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">gt_label_map</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">gt_label_map</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">item</span><span class="o">.</span><span class="n">gt_label_map</span> <span class="o">==</span> <span class="n">gt_label_map</span>
+
+                <span class="c1"># print(&quot;Sanity check... &quot;)</span>
+                <span class="c1"># print(&quot;gt&quot;, len(gt_list), gt_list)</span>
+
+            <span class="c1"># calculate precision recall curve</span>
+            <span class="n">gt_list</span> <span class="o">=</span> <span class="n">gt_list</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">prob_list</span> <span class="o">=</span> <span class="n">prob_list</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">pr</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">pr_threshold</span> <span class="o">=</span> <span class="n">precision_recall_curve</span><span class="p">(</span>
+                <span class="n">gt_list</span><span class="p">,</span> <span class="n">prob_list</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">baseline</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gt_list</span><span class="p">[</span><span class="n">gt_list</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">gt_list</span><span class="p">)</span>
+
+            <span class="c1"># plot pr curve</span>
+            <span class="c1"># save_loc = os.path.join(output_val_pr, &quot;_curve.pkl&quot;)</span>
+            <span class="c1"># plot_pr_curve(</span>
+            <span class="c1">#     ax_val,</span>
+            <span class="c1">#     method.capitalize(),</span>
+            <span class="c1">#     linestyles[index],</span>
+            <span class="c1">#     &quot;darkorange&quot;,</span>
+            <span class="c1">#     pr,</span>
+            <span class="c1">#     rec,</span>
+            <span class="c1">#     baseline,</span>
+            <span class="c1">#     # save_loc,</span>
+            <span class="c1">#     # pickle=True,</span>
+            <span class="c1"># )</span>
+            <span class="n">pr_auc</span> <span class="o">=</span> <span class="n">auc</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">pr</span><span class="p">)</span>
+            <span class="n">add_metrics</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;pr_auc&quot;</span><span class="p">:</span> <span class="n">pr_auc</span><span class="p">,</span>
+                <span class="s2">&quot;prcurve_pr&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">pr</span><span class="p">),</span>
+                <span class="s2">&quot;prcurve_rec&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">rec</span><span class="p">),</span>
+                <span class="s2">&quot;prcurve_baseline&quot;</span><span class="p">:</span> <span class="n">baseline</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="c1"># metric calculations based on final prediction</span>
+            <span class="n">save_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_metrics</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;val_</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">.txt&quot;</span><span class="p">)</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">aggregated_metrics</span><span class="p">(</span>
+                <span class="n">output_df_folder_val</span><span class="p">,</span>
+                <span class="n">save_loc</span><span class="p">,</span>
+                <span class="n">gt_label_map</span><span class="p">,</span>
+                <span class="n">add_metrics</span><span class="o">=</span><span class="n">add_metrics</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># calculate confusion matrix</span>
+            <span class="c1"># saveloc = os.path.join(output_conf_matrix, f&quot;conf_matrix_val_{date}.png&quot;)</span>
+            <span class="c1"># classes = [item.gt_label_map[0], item.gt_label_map[1]]</span>
+            <span class="c1"># generate_binary_conf_matrix(tn, fp, fn, tp, classes, saveloc)</span>
+
+            <span class="c1"># fig_train.tight_layout()</span>
+            <span class="c1"># fig_test.tight_layout()</span>
+            <span class="c1"># fig_val.tight_layout()</span>
+
+            <span class="c1"># get handles and labels</span>
+            <span class="c1"># handles_train, labels_train = ax_train.get_legend_handles_labels()</span>
+            <span class="c1"># handles_test, labels_test = ax_test.get_legend_handles_labels()</span>
+
+            <span class="c1"># specify order of items in legend</span>
+            <span class="c1"># order = [1,0,2]</span>
+
+            <span class="c1"># add legend to plot</span>
+            <span class="c1"># ax_train.legend([handles_train[idx] for idx in order],</span>
+            <span class="c1">#                   [methods[idx] for idx in order])</span>
+            <span class="c1"># ax_test.legend([handles_test[idx] for idx in order],</span>
+            <span class="c1">#                   [methods[idx] for idx in order])</span>
+
+            <span class="c1"># fig_train.savefig(os.path.join(output_overlay_pr_curves,</span>
+            <span class="c1"># &quot;_train.png&quot;), dpi=600)</span>
+            <span class="c1"># fig_test.savefig(os.path.join(output_overlay_pr_curves,</span>
+            <span class="c1"># &quot;_test.png&quot;), dpi=600)</span>
+            <span class="c1"># fig_val.savefig(os.path.join(output_overlay_pr_curves,</span>
+            <span class="c1"># &quot;_val.png&quot;), dpi=600)</span>
+
+    <span class="c1"># save yaml file</span>
+    <span class="n">yaml_save_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;membrane_performance.yaml&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_save_loc</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+                </article>
+
+
+
+
+
+                <footer class="prev-next-footer">
+
+<div class="prev-next-area">
+</div>
+                </footer>
+
+            </div>
+
+
+
+                <div class="bd-sidebar-secondary bd-toc"></div>
+
+
+          </div>
+          <footer class="bd-footer-content">
+
+          </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+
+    <div class="footer-items__start">
+
+        <div class="footer-item">
+
+  <p class="copyright">
+
+      © Copyright 2022, Oliver Umney.
+      <br/>
+
+  </p>
+</div>
+
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+
+    </div>
+
+
+
+    <div class="footer-items__end">
+
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+
+    </div>
+
+</div>
+
+  </footer>
+  </body>
+</html>

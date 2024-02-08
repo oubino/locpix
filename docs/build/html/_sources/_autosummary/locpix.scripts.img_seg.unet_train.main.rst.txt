@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.unet\_train.main
+========================================
+
+.. currentmodule:: locpix.scripts.img_seg.unet_train
+
+.. autofunction:: main

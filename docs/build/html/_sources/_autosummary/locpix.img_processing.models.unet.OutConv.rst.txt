@@ -1,0 +1,78 @@
+locpix.img\_processing.models.unet.OutConv
+==========================================
+
+.. currentmodule:: locpix.img_processing.models.unet
+
+.. autoclass:: OutConv
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+   .. automethod:: __init__
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~OutConv.__init__
+      ~OutConv.add_module
+      ~OutConv.apply
+      ~OutConv.bfloat16
+      ~OutConv.buffers
+      ~OutConv.children
+      ~OutConv.compile
+      ~OutConv.cpu
+      ~OutConv.cuda
+      ~OutConv.double
+      ~OutConv.eval
+      ~OutConv.extra_repr
+      ~OutConv.float
+      ~OutConv.forward
+      ~OutConv.get_buffer
+      ~OutConv.get_extra_state
+      ~OutConv.get_parameter
+      ~OutConv.get_submodule
+      ~OutConv.half
+      ~OutConv.ipu
+      ~OutConv.load_state_dict
+      ~OutConv.modules
+      ~OutConv.named_buffers
+      ~OutConv.named_children
+      ~OutConv.named_modules
+      ~OutConv.named_parameters
+      ~OutConv.parameters
+      ~OutConv.register_backward_hook
+      ~OutConv.register_buffer
+      ~OutConv.register_forward_hook
+      ~OutConv.register_forward_pre_hook
+      ~OutConv.register_full_backward_hook
+      ~OutConv.register_full_backward_pre_hook
+      ~OutConv.register_load_state_dict_post_hook
+      ~OutConv.register_module
+      ~OutConv.register_parameter
+      ~OutConv.register_state_dict_pre_hook
+      ~OutConv.requires_grad_
+      ~OutConv.set_extra_state
+      ~OutConv.share_memory
+      ~OutConv.state_dict
+      ~OutConv.to
+      ~OutConv.to_empty
+      ~OutConv.train
+      ~OutConv.type
+      ~OutConv.xpu
+      ~OutConv.zero_grad
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~OutConv.T_destination
+      ~OutConv.call_super_init
+      ~OutConv.dump_patches
+      ~OutConv.training

@@ -1,3 +1,5 @@
+# IGNORE THIS IS JUST FOR PURPOSE OF KEEPING IT SAFE SOMEWHERE
+
 # Workflow for building and deploying html site to GitHub Pages
 name: Generate html pages
 

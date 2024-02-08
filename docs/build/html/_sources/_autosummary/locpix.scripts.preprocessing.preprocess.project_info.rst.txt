@@ -1,0 +1,21 @@
+locpix.scripts.preprocessing.preprocess.project\_info
+=====================================================
+
+.. currentmodule:: locpix.scripts.preprocessing.preprocess
+
+.. autoclass:: project_info
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+   .. automethod:: __init__
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~project_info.__init__
+      ~project_info.load
+      ~project_info.save

@@ -1,0 +1,4 @@
+locpix.templates
+================
+
+.. automodule:: locpix.templates

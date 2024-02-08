@@ -1,0 +1,30 @@
+locpix.img\_processing.watershed
+================================
+
+.. automodule:: locpix.img_processing.watershed
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      get_markers
+      watershed_segment
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      WatershedWidget

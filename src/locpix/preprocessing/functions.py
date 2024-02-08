@@ -3,8 +3,8 @@
 This module contains functions to preprocess the data,
 including (add as added):
 - file to datastructure
-    - convert .csv to datastructure
-    - convert .parquet to datastructure
+- convert .csv to datastructure
+- convert .parquet to datastructure
 """
 
 import polars as pl

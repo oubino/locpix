@@ -1,0 +1,17 @@
+locpix.scripts.img\_seg.train\_prep
+===================================
+
+.. automodule:: locpix.scripts.img_seg.train_prep
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main

@@ -1,0 +1,6 @@
+locpix.visualise.vis\_img.manual\_threshold
+===========================================
+
+.. currentmodule:: locpix.visualise.vis_img
+
+.. autofunction:: manual_threshold

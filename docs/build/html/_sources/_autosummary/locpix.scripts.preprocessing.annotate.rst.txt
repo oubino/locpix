@@ -1,0 +1,17 @@
+locpix.scripts.preprocessing.annotate
+=====================================
+
+.. automodule:: locpix.scripts.preprocessing.annotate
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main

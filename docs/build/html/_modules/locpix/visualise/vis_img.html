@@ -1,0 +1,742 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>locpix.visualise.vis_img &#8212; locpix 0.1.0.1 documentation</title>
+
+
+
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/locpix/visualise/vis_img';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+
+
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+
+
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div id="pst-scroll-pixel-helper"></div>
+
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+
+
+  <div class="col-lg-3 navbar-header-items__start">
+
+      <div class="navbar-item">
+
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+
+
+
+
+
+
+
+
+
+
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+
+
+</a></div>
+
+  </div>
+
+  <div class="col-lg-9 navbar-header-items">
+
+    <div class="me-auto navbar-header-items__center">
+
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../development/index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../_autosummary/locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+    </div>
+
+
+    <div class="navbar-header-items__end">
+
+        <div class="navbar-item navbar-persistent--container">
+
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+
+
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+    </div>
+
+  </div>
+
+
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+
+
+
+</div>
+
+    </header>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+
+
+
+
+
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+
+
+
+  <div class="sidebar-header-items sidebar-primary__section">
+
+
+      <div class="sidebar-header-items__center">
+
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../development/index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../_autosummary/locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+      </div>
+
+
+
+      <div class="sidebar-header-items__end">
+
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+      </div>
+
+  </div>
+
+
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+
+      <main id="main-content" class="bd-main">
+
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+
+    <div class="header-article-items__start">
+
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+
+    <li class="breadcrumb-item active" aria-current="page">locpix.visua...</li>
+  </ul>
+</nav>
+</div>
+
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+<div id="searchbox"></div>
+                <article class="bd-article">
+
+  <h1>Source code for locpix.visualise.vis_img</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; Visualise module for images</span>
+
+<span class="sd">Contains functions for visualising histograms</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LinearSegmentedColormap</span><span class="p">,</span> <span class="n">ListedColormap</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">skimage.graph</span> <span class="kn">import</span> <span class="n">RAG</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">skimage.future.graph</span> <span class="kn">import</span> <span class="n">RAG</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t find module and workaround has failed&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">skimage.transform</span> <span class="kn">import</span> <span class="n">resize</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">_interpolate</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;log2&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">d</span><span class="p">),</span>
+    <span class="s2">&quot;log10&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">d</span><span class="p">),</span>
+    <span class="s2">&quot;linear&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="manual_threshold">
+<a class="viewcode-back" href="../../../_autosummary/locpix.visualise.vis_img.manual_threshold.html#locpix.visualise.vis_img.manual_threshold">[docs]</a>
+<span class="k">def</span> <span class="nf">manual_threshold</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform manual threshold of the input array</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        array (np.ndarray): numpy array</span>
+<span class="sd">        threshold (float or int): Threshold above</span>
+<span class="sd">            which array will be thresholded</span>
+<span class="sd">        how (string): How to interpolate the array</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        thresh_array (np.ndarray): The thresholded output on the input array&quot;&quot;&quot;</span>
+
+    <span class="c1"># interpolate the image</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">_interpolate</span><span class="p">[</span><span class="n">how</span><span class="p">](</span><span class="n">array</span><span class="p">)</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># clip to at least 0</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">array</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="label_2_4_colours">
+<a class="viewcode-back" href="../../../_autosummary/locpix.visualise.vis_img.label_2_4_colours.html#locpix.visualise.vis_img.label_2_4_colours">[docs]</a>
+<span class="k">def</span> <span class="nf">label_2_4_colours</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This takes in an array of labels</span>
+<span class="sd">    e.g. [5,0,2,2,17,1,...]</span>
+<span class="sd">    and returns a list where each label is now</span>
+<span class="sd">    in range 0-3 such that no 2 integers next to</span>
+<span class="sd">    each other are the same.</span>
+<span class="sd">    This can be used for to plot so no 2 colours</span>
+<span class="sd">    next to each other are the same</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        labels (np.ndarray): Array of ints</span>
+<span class="sd">        each representing a unique label</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array of ints each representing a</span>
+<span class="sd">        unique label (between 0 and 3) no</span>
+<span class="sd">        2 of same label should be next to each other&quot;&quot;&quot;</span>
+
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">RAG</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">coloring</span><span class="o">.</span><span class="n">greedy_color</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="c1"># dict empty and only one label</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">)(</span><span class="n">labels</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="img_2_grey">
+<a class="viewcode-back" href="../../../_autosummary/locpix.visualise.vis_img.img_2_grey.html#locpix.visualise.vis_img.img_2_grey">[docs]</a>
+<span class="k">def</span> <span class="nf">img_2_grey</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;converts img to 0 255 greyscale image</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        img (np.ndarray) : Image to be converted to greyscale</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        img (np.ndarray): Image in uint8 form greyscale&quot;&quot;&quot;</span>
+
+    <span class="n">mini</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">maxi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="p">((</span><span class="n">img</span> <span class="o">-</span> <span class="n">mini</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">maxi</span> <span class="o">-</span> <span class="n">mini</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span>
+    <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="visualise_seg">
+<a class="viewcode-back" href="../../../_autosummary/locpix.visualise.vis_img.visualise_seg.html#locpix.visualise.vis_img.visualise_seg">[docs]</a>
+<span class="k">def</span> <span class="nf">visualise_seg</span><span class="p">(</span>
+    <span class="n">image</span><span class="p">,</span>
+    <span class="n">segmentation</span><span class="p">,</span>
+    <span class="n">bin_sizes</span><span class="p">,</span>
+    <span class="n">axes</span><span class="p">,</span>
+    <span class="n">label_map</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">how</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="n">alphas</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+    <span class="n">alpha_seg</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">blend_overlays</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">cmap_img</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">cmap_seg</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;lightsalmon&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">],</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span>
+    <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">save_loc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">save_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">four_colour</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">background_one_colour</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">vmin_img</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">vmax_img</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+    <span class="n">sum_chans</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Take in image and the associated segmentation and plot it,</span>
+<span class="sd">    with option to convert to 4 colours and also option to choose to</span>
+<span class="sd">    plot background as one particular colour</span>
+<span class="sd">    (only relevant if four colour is true)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (array) : Shape C x H x W</span>
+<span class="sd">            Therefore to plot the first axis of the image</span>
+<span class="sd">            we would just want to consider</span>
+<span class="sd">            image[0]</span>
+<span class="sd">        segmentation (np.ndarray) : Array of integers where</span>
+<span class="sd">            each represents unique label in the segmentation</span>
+<span class="sd">        bin_sizes (list) : List of sizes of the bins of the</span>
+<span class="sd">            histogram</span>
+<span class="sd">        axes (list): List of axes to plot</span>
+<span class="sd">        label_map (list) : List of labels associated with each</span>
+<span class="sd">            axis</span>
+<span class="sd">        threshold (int) : Threshold applied to images</span>
+<span class="sd">            when plotting</span>
+<span class="sd">        how (string) : Interpolation applied to image</span>
+<span class="sd">            when plotting</span>
+<span class="sd">        alphas (list) : List of alpha to be used in plt.imshow</span>
+<span class="sd">        alpha_seg (float) : Value of alpha for segmentation</span>
+<span class="sd">        blend_overlays (bool) : Whether to blend img and seg</span>
+<span class="sd">        cmap_img (list) : List of cmaps to plot images</span>
+<span class="sd">            (transpose of histograms)</span>
+<span class="sd">        cmap_seg (list) : List of cmaps to plot segmentations</span>
+<span class="sd">        figsize (tuple) : Tuple of figure size in 2D (x,y) sizes</span>
+<span class="sd">        origin (string) : Location of origin in plot, image</span>
+<span class="sd">            convention is &#39;upper&#39; but for cartesian use &#39;lower&#39;</span>
+<span class="sd">        save (bool) : Whether to save</span>
+<span class="sd">        save_loc (string) : Where to save if chosen to save</span>
+<span class="sd">        save_name (string) : Name of file</span>
+<span class="sd">        four_colour (bool) : Whether to convert localisations</span>
+<span class="sd">            to 4 colour</span>
+<span class="sd">        background_one_colour (bool) : Whether to keep background</span>
+<span class="sd">            as all same colour when doing 4 colour conversion</span>
+<span class="sd">        legend (bool) : Whether to include a legend</span>
+<span class="sd">        show (bool) : Whether to show img to screen</span>
+<span class="sd">        vmin_img (int) : vmin for plotting image</span>
+<span class="sd">        vmax_img (int) : vmax for plotting image</span>
+<span class="sd">        sum_chans (bool) : If true all image channels are summed and one</span>
+<span class="sd">            image is plotted</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">cmap_img</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cmap_img</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">N</span><span class="o">=</span><span class="mi">256</span><span class="p">),</span>
+            <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="n">N</span><span class="o">=</span><span class="mi">256</span><span class="p">),</span>
+            <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">N</span><span class="o">=</span><span class="mi">256</span><span class="p">),</span>
+            <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">],</span> <span class="n">N</span><span class="o">=</span><span class="mi">256</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cmap_img</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">N</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cmap_img</span>
+        <span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">four_colour</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">background_one_colour</span><span class="p">:</span>
+            <span class="n">four_colour_seg</span> <span class="o">=</span> <span class="n">label_2_4_colours</span><span class="p">(</span><span class="n">segmentation</span><span class="p">)</span>
+            <span class="c1"># now set all regions which were 0 before to 0</span>
+            <span class="c1"># and increase four colour by 1</span>
+            <span class="c1"># and add white to cmap_seg --&gt; ensures</span>
+            <span class="c1"># background comes up as untouched</span>
+            <span class="n">segmentation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">segmentation</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">four_colour_seg</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">cmap_seg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">cmap_seg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">segmentation</span> <span class="o">=</span> <span class="n">label_2_4_colours</span><span class="p">(</span><span class="n">segmentation</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="n">cmap_seg</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">cmap_seg</span><span class="p">)</span>
+
+    <span class="n">patches</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># legend creation</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sum_chans</span><span class="p">:</span>
+        <span class="c1"># plot for each channel in sequence</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">manual_threshold</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="n">how</span><span class="p">)</span>
+            <span class="n">h_old</span><span class="p">,</span> <span class="n">w_old</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">plot_img</span><span class="p">(</span>
+                <span class="n">img</span><span class="p">,</span>
+                <span class="n">h_old</span><span class="p">,</span>
+                <span class="n">w_old</span><span class="p">,</span>
+                <span class="n">bin_sizes</span><span class="p">,</span>
+                <span class="n">ax</span><span class="p">,</span>
+                <span class="n">cmap_img</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+                <span class="n">origin</span><span class="p">,</span>
+                <span class="n">alphas</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+                <span class="n">vmin_img</span><span class="p">,</span>
+                <span class="n">vmax_img</span><span class="p">,</span>
+                <span class="n">legend</span><span class="p">,</span>
+                <span class="n">patches</span><span class="p">,</span>
+                <span class="n">label_map</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">manual_threshold</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="n">how</span><span class="p">)</span>
+        <span class="n">h_old</span><span class="p">,</span> <span class="n">w_old</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">label_map</span> <span class="o">=</span> <span class="s2">&quot; + &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">label_map</span><span class="p">)</span>
+        <span class="n">plot_img</span><span class="p">(</span>
+            <span class="n">img</span><span class="p">,</span>
+            <span class="n">h_old</span><span class="p">,</span>
+            <span class="n">w_old</span><span class="p">,</span>
+            <span class="n">bin_sizes</span><span class="p">,</span>
+            <span class="n">ax</span><span class="p">,</span>
+            <span class="n">cmap_img</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">origin</span><span class="p">,</span>
+            <span class="n">alphas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">vmin_img</span><span class="p">,</span>
+            <span class="n">vmax_img</span><span class="p">,</span>
+            <span class="n">legend</span><span class="p">,</span>
+            <span class="n">patches</span><span class="p">,</span>
+            <span class="n">label_map</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+            <span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span>
+            <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+        <span class="p">)</span>
+
+    <span class="c1"># resize segmentation</span>
+    <span class="n">segmentation</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">segmentation</span><span class="p">,</span> <span class="p">(</span><span class="n">h_old</span> <span class="o">*</span> <span class="n">bin_sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">bin_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">w_old</span><span class="p">))</span>
+    <span class="n">segmentation</span> <span class="o">=</span> <span class="n">segmentation</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">h_old</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">w_old</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">blend_overlays</span><span class="p">:</span>
+        <span class="n">alphas</span> <span class="o">=</span> <span class="n">alpha_seg</span>
+    <span class="k">elif</span> <span class="n">blend_overlays</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">segmentation</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alpha_seg</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">segmentation</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_seg</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alphas</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">save_loc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Need a save location!&quot;</span><span class="p">)</span>
+        <span class="n">save_name</span> <span class="o">=</span> <span class="n">save_name</span> <span class="o">+</span> <span class="s2">&quot;.eps&quot;</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_loc</span><span class="p">,</span> <span class="n">save_name</span><span class="p">),</span>
+            <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;eps&quot;</span><span class="p">,</span>
+            <span class="n">dpi</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="plot_img">
+<a class="viewcode-back" href="../../../_autosummary/locpix.visualise.vis_img.plot_img.html#locpix.visualise.vis_img.plot_img">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_img</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">,</span>
+    <span class="n">h_old</span><span class="p">,</span>
+    <span class="n">w_old</span><span class="p">,</span>
+    <span class="n">bin_sizes</span><span class="p">,</span>
+    <span class="n">ax</span><span class="p">,</span>
+    <span class="n">cmap_img</span><span class="p">,</span>
+    <span class="n">origin</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="p">,</span>
+    <span class="n">vmin_img</span><span class="p">,</span>
+    <span class="n">vmax_img</span><span class="p">,</span>
+    <span class="n">legend</span><span class="p">,</span>
+    <span class="n">patches</span><span class="p">,</span>
+    <span class="n">label_map</span><span class="p">,</span>
+<span class="p">):</span>
+
+    <span class="c1"># resize img according to bin size - so that pixel size same in x and y</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">h_old</span> <span class="o">*</span> <span class="n">bin_sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">bin_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">w_old</span><span class="p">))</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">h_old</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">w_old</span><span class="p">]</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="n">img</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_img</span><span class="p">,</span>
+        <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">vmin_img</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="n">vmax_img</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># x,y scale bars</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">115</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">465</span><span class="p">,</span> <span class="mi">465</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="mi">35</span><span class="p">,</span>
+        <span class="mi">490</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bin_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="o">/</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="se">\u03BC</span><span class="s2">m&quot;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;pad&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+    <span class="c1"># cmap = plt.cm.get_cmap(cmap_list[index]) # legend creation</span>
+
+    <span class="c1"># legend creation</span>
+    <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap_img</span><span class="p">)</span>
+        <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label_map</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+            <span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span>
+            <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+
+
+
+
+
+                <footer class="prev-next-footer">
+
+<div class="prev-next-area">
+</div>
+                </footer>
+
+            </div>
+
+
+
+                <div class="bd-sidebar-secondary bd-toc"></div>
+
+
+          </div>
+          <footer class="bd-footer-content">
+
+          </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+
+    <div class="footer-items__start">
+
+        <div class="footer-item">
+
+  <p class="copyright">
+
+      © Copyright 2022, Oliver Umney.
+      <br/>
+
+  </p>
+</div>
+
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+
+    </div>
+
+
+
+    <div class="footer-items__end">
+
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+
+    </div>
+
+</div>
+
+  </footer>
+  </body>
+</html>

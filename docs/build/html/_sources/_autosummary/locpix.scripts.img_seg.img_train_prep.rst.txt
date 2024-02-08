@@ -1,0 +1,21 @@
+locpix.scripts.img\_seg.img\_train\_prep
+========================================
+
+.. automodule:: locpix.scripts.img_seg.img_train_prep
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      clean_up
+      clean_up_all
+      parquet_2_img
+      preprocess_all_files
+      preprocess_train_files

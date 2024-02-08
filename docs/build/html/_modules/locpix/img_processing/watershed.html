@@ -1,0 +1,674 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>locpix.img_processing.watershed &#8212; locpix 0.1.0.1 documentation</title>
+
+
+
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/locpix/img_processing/watershed';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+
+
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+
+
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div id="pst-scroll-pixel-helper"></div>
+
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+
+
+  <div class="col-lg-3 navbar-header-items__start">
+
+      <div class="navbar-item">
+
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+
+
+
+
+
+
+
+
+
+
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+
+
+</a></div>
+
+  </div>
+
+  <div class="col-lg-9 navbar-header-items">
+
+    <div class="me-auto navbar-header-items__center">
+
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../development/index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../_autosummary/locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+    </div>
+
+
+    <div class="navbar-header-items__end">
+
+        <div class="navbar-item navbar-persistent--container">
+
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+
+
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+    </div>
+
+  </div>
+
+
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+
+
+
+</div>
+
+    </header>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+
+
+
+
+
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+
+
+
+  <div class="sidebar-header-items sidebar-primary__section">
+
+
+      <div class="sidebar-header-items__center">
+
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../development/index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../_autosummary/locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+      </div>
+
+
+
+      <div class="sidebar-header-items__end">
+
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+      </div>
+
+  </div>
+
+
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+
+      <main id="main-content" class="bd-main">
+
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+
+    <div class="header-article-items__start">
+
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+
+    <li class="breadcrumb-item active" aria-current="page">locpix.img_p...</li>
+  </ul>
+</nav>
+</div>
+
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+<div id="searchbox"></div>
+                <article class="bd-article">
+
+  <h1>Source code for locpix.img_processing.watershed</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module which allows for the watershed algorithm to</span>
+<span class="sd">be implemented&quot;&quot;&quot;</span>
+
+<span class="c1"># imports for widget</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QGraphicsScene</span><span class="p">,</span> <span class="n">QGraphicsView</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QGraphicsPixmapItem</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QPushButton</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QBrush</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QImage</span><span class="p">,</span> <span class="n">QColor</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
+
+<span class="kn">from</span> <span class="nn">skimage.segmentation</span> <span class="kn">import</span> <span class="n">watershed</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+
+<div class="viewcode-block" id="WatershedWidget">
+<a class="viewcode-back" href="../../../_autosummary/locpix.img_processing.watershed.WatershedWidget.html#locpix.img_processing.watershed.WatershedWidget">[docs]</a>
+<span class="k">class</span> <span class="nc">WatershedWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;WatershedWidget</span>
+
+<span class="sd">    Widget to visualise an image as Grayscale 8 bit, then annotate with the seeds</span>
+<span class="sd">    used for watershed.</span>
+<span class="sd">    Child of QWidget.</span>
+<span class="sd">    Left click places a seed, right click removes the seed.</span>
+<span class="sd">    On closing the seed coordinates are saved</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        scene(QGraphicsScene): This holds all the 2D items (img, all ellipses added)</span>
+<span class="sd">        view(QGraphicsView): Visualise the scene</span>
+<span class="sd">        pixmap_item(QGraphicsPixmapItem): Image representation that can be used as</span>
+<span class="sd">             a paint device</span>
+<span class="sd">        help_button (QPushButton): Displays help for user</span>
+<span class="sd">        pen(QPen): How the QPainter draws lines and outlines of shapes</span>
+<span class="sd">        brush(QBrush): How to fill the shapes drawn by the painter</span>
+<span class="sd">        marker_coords(list): List containing coordinates of the seeds for watershed</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="WatershedWidget.__init__">
+<a class="viewcode-back" href="../../../_autosummary/locpix.img_processing.watershed.WatershedWidget.html#locpix.img_processing.watershed.WatershedWidget.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">[],</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;Image&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">             img (int8 numpy array): Numpy array range [0 255] which will be</span>
+<span class="sd">                 converted to correct format for pixmap</span>
+<span class="sd">             coords (list): Seed coordinate list which will pass by reference</span>
+<span class="sd">             file_name (img name): Will display the image name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># create scene to add to and visualise it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">QGraphicsScene</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">QGraphicsView</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+        <span class="c1"># create layout manager add the widget to it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>  <span class="c1"># set layout manager for widget</span>
+
+        <span class="c1"># image in format pyqt needs</span>
+        <span class="c1"># create pixmap item and add to scene</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">QImage</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">QImage</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">Format_Grayscale8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pixmap_item</span> <span class="o">=</span> <span class="n">QGraphicsPixmapItem</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pixmap_item</span><span class="p">)</span>
+
+        <span class="c1"># instructions button</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">help_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Help&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">help_button</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">help_button</span><span class="o">.</span><span class="n">toggle</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">help_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">help_button_state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">help_button</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># overload mouse press event for pixmap item to our function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pixmap_item</span><span class="o">.</span><span class="n">mousePressEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_cell</span>
+
+        <span class="c1"># set pen and brush for labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">brush</span> <span class="o">=</span> <span class="n">QBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">))</span>
+
+        <span class="c1"># create empty set of marker coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">marker_coords</span> <span class="o">=</span> <span class="n">coords</span></div>
+
+
+<div class="viewcode-block" id="WatershedWidget.help_button_state">
+<a class="viewcode-back" href="../../../_autosummary/locpix.img_processing.watershed.WatershedWidget.html#locpix.img_processing.watershed.WatershedWidget.help_button_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">help_button_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If help button is clicked display alert widget which details the help&quot;&quot;&quot;</span>
+
+        <span class="n">alert</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">alert</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Help&quot;</span><span class="p">)</span>
+        <span class="n">alert</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="s2">&quot;Left click: add a seed </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Right click: remove a seed</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;When closing all seed coordinates will be saved!&quot;</span>
+        <span class="p">)</span>
+        <span class="n">alert</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="WatershedWidget.label_cell">
+<a class="viewcode-back" href="../../../_autosummary/locpix.img_processing.watershed.WatershedWidget.html#locpix.img_processing.watershed.WatershedWidget.label_cell">[docs]</a>
+    <span class="k">def</span> <span class="nf">label_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;On mouse click this definition will be called</span>
+
+<span class="sd">        Left click: add seed</span>
+<span class="sd">        Right click: remove seed</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (QEvent): Event triggered by click&quot;&quot;&quot;</span>
+
+        <span class="c1"># add label on left click</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MouseButton</span><span class="o">.</span><span class="n">LeftButton</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addEllipse</span><span class="p">(</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">brush</span>
+            <span class="p">)</span>
+        <span class="c1"># delete label on right click</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MouseButton</span><span class="o">.</span><span class="n">RightButton</span><span class="p">:</span>
+            <span class="c1"># get list of items at that location</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">items</span><span class="p">(</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="n">Qt</span><span class="o">.</span><span class="n">ItemSelectionMode</span><span class="o">.</span><span class="n">IntersectsItemShape</span><span class="p">,</span>
+                <span class="n">Qt</span><span class="o">.</span><span class="n">SortOrder</span><span class="o">.</span><span class="n">AscendingOrder</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="c1"># if item is ellipse (type 4) remove it (don&#39;t remove image!)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WatershedWidget.get_coords">
+<a class="viewcode-back" href="../../../_autosummary/locpix.img_processing.watershed.WatershedWidget.html#locpix.img_processing.watershed.WatershedWidget.get_coords">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;On closing the widget the coordinates of the remaining seeds are extracted&quot;&quot;&quot;</span>
+
+        <span class="c1"># perform when closed</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Not accurate - needs to be adjusted before exact coordinate is returned&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># if ellipse add item coordinates to list</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="c1"># if ellipse</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="c1"># note not sure if lines up correct position - not issue here</span>
+                <span class="c1"># i.e. if click at 100,240 is marker placed at 100,240?</span>
+                <span class="c1"># and if its the centre of the marker? shouldn&#39;t we return</span>
+                <span class="c1"># centre of marker</span>
+                <span class="c1"># as the location</span>
+                <span class="c1"># flag as issue!!!</span>
+                <span class="c1"># but would be for accurate segmentation</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span>
+                <span class="n">pos</span> <span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">topLeft</span><span class="p">()</span>
+                <span class="c1"># marker_coords is [H,W] relative to top left of image</span>
+                <span class="c1"># i.e. if click bottom left of image marker_coords = [470,10]</span>
+                <span class="c1"># this is what is returned to user</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">marker_coords</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">()),</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">())))</span></div>
+
+
+<div class="viewcode-block" id="WatershedWidget.closeEvent">
+<a class="viewcode-back" href="../../../_autosummary/locpix.img_processing.watershed.WatershedWidget.html#locpix.img_processing.watershed.WatershedWidget.closeEvent">[docs]</a>
+    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;When closing the widget this function will be overloaded.</span>
+
+<span class="sd">        It will ask the user if they are sure, on closing the coords of the markers</span>
+<span class="sd">        will be extracted</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (QEvent): Event triggered by click&quot;&quot;&quot;</span>
+
+        <span class="c1"># Confirm user choice</span>
+        <span class="n">reply</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">reply</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Are you sure you want to close? (Markers are saved on closing)&quot;</span><span class="p">)</span>
+        <span class="n">reply</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">No</span>
+        <span class="p">)</span>
+        <span class="n">reply</span> <span class="o">=</span> <span class="n">reply</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">reply</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+            <span class="c1"># get the coordinates of the markers</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_coords</span><span class="p">()</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="get_markers">
+<a class="viewcode-back" href="../../../_autosummary/locpix.img_processing.watershed.get_markers.html#locpix.img_processing.watershed.get_markers">[docs]</a>
+<span class="k">def</span> <span class="nf">get_markers</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;Image&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get markers for the image for watershed_segment using PyQt6 widget</span>
+<span class="sd">    Image will be converted to [0 255] greyscale image for compatibility</span>
+<span class="sd">    with PyQt6 widget</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        img (np.ndarray): Image for which need markers for watershed</span>
+<span class="sd">        file_name (string): Name of the file</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        marker_coords (list): List of tuples containing coordinates of markers (h,w)</span>
+<span class="sd">            relative to top left of image&quot;&quot;&quot;</span>
+
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>  <span class="c1"># sys.argv if need command line inputs</span>
+    <span class="c1"># scale img to [0 255] and convert to int8</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">img</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">img</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+    <span class="c1"># marker coords</span>
+    <span class="n">marker_coords</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># create widget</span>
+    <span class="n">widget</span> <span class="o">=</span> <span class="n">WatershedWidget</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">marker_coords</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">)</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+    <span class="c1"># note marker coords are (h,w) relative to top left of image i.e.</span>
+    <span class="c1"># if click bottom left of image</span>
+    <span class="c1"># marker_coords = [470,10]</span>
+    <span class="k">return</span> <span class="n">marker_coords</span></div>
+
+
+
+<div class="viewcode-block" id="watershed_segment">
+<a class="viewcode-back" href="../../../_autosummary/locpix.img_processing.watershed.watershed_segment.html#locpix.img_processing.watershed.watershed_segment">[docs]</a>
+<span class="k">def</span> <span class="nf">watershed_segment</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;Image&quot;</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform watershed segmentation on image - with option either to provide</span>
+<span class="sd">    coordinates of markers (coords)</span>
+<span class="sd">    or obtain annotation using a widget.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        img (np.ndarray): Image which performing watershed on</span>
+<span class="sd">        file_name (string): Name of the image</span>
+<span class="sd">        coords (list): List of tuples where each tuple represents coordinate</span>
+<span class="sd">            of a marker (x,y)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        labels (np.ndarray): Numpy array containing integer labels, each</span>
+<span class="sd">        representing different segmented region of the input</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">markers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+    <span class="c1"># get markers if not provided</span>
+    <span class="k">if</span> <span class="n">coords</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">get_markers</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+    <span class="c1"># coords are (h,w) in image space</span>
+    <span class="c1"># markers[row,col] where row is h-3:h+3 and col is w-3:w+3</span>
+    <span class="c1"># i.e. imagine if select marker in bottom left of image</span>
+    <span class="c1"># in image space [h,w] with origin at top this would be e.g. (470,10)</span>
+    <span class="c1"># return coordinate (470,10) from get_coords</span>
+    <span class="c1"># markers [467:473,7:13] is populated i.e. height of 470 ish</span>
+    <span class="c1"># and width 10 ish is populated</span>
+    <span class="c1"># this ensures img and marker coords are in same space</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coords</span><span class="p">):</span>
+        <span class="n">markers</span><span class="p">[</span><span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span> <span class="p">:</span> <span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span> <span class="p">:</span> <span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="p">)</span>
+    <span class="c1"># perform watershed</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">watershed</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="n">markers</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">labels</span></div>
+
+</pre></div>
+
+                </article>
+
+
+
+
+
+                <footer class="prev-next-footer">
+
+<div class="prev-next-area">
+</div>
+                </footer>
+
+            </div>
+
+
+
+                <div class="bd-sidebar-secondary bd-toc"></div>
+
+
+          </div>
+          <footer class="bd-footer-content">
+
+          </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+
+    <div class="footer-items__start">
+
+        <div class="footer-item">
+
+  <p class="copyright">
+
+      © Copyright 2022, Oliver Umney.
+      <br/>
+
+  </p>
+</div>
+
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+
+    </div>
+
+
+
+    <div class="footer-items__end">
+
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+
+    </div>
+
+</div>
+
+  </footer>
+  </body>
+</html>

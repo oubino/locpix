@@ -556,7 +556,7 @@ class item:
                 drop positions which are background
                 drop the column containing pixel information
                 save additional column with labels for each
-                    localisation
+                localisation
 
         Args:
             csv_loc (String): Save the csv to this location
@@ -751,8 +751,7 @@ class item:
             label_map (list) : List where the first value is the
                 label in the first axis of the histogram, second value
                 is the channel in the second axis of the histogram etc.
-                e.g. ['egfr','ereg'] : egfr is in 1st axis, ereg in 2nd axis
-        """
+                e.g. ['egfr','ereg'] : egfr is in 1st axis, ereg in 2nd axis"""
 
         histos = []
 

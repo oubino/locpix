@@ -1,0 +1,33 @@
+locpix.scripts.development
+==========================
+
+.. automodule:: locpix.scripts.development
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   locpix.scripts.development.clean_up
+   locpix.scripts.development.file_names
+   locpix.scripts.development.licenses

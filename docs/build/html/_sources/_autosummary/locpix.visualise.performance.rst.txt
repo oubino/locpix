@@ -1,0 +1,18 @@
+locpix.visualise.performance
+============================
+
+.. automodule:: locpix.visualise.performance
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      generate_binary_conf_matrix
+      plot_pr_curve

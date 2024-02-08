@@ -1,0 +1,6 @@
+locpix.evaluate.metrics.mean\_metrics
+=====================================
+
+.. currentmodule:: locpix.evaluate.metrics
+
+.. autofunction:: mean_metrics

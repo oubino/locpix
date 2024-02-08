@@ -1,0 +1,29 @@
+locpix.preprocessing.datastruc.item
+===================================
+
+.. currentmodule:: locpix.preprocessing.datastruc
+
+.. autoclass:: item
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+   .. automethod:: __init__
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~item.__init__
+      ~item.chan_2_label
+      ~item.coord_2_histo
+      ~item.label_2_chan
+      ~item.load_from_parquet
+      ~item.manual_segment
+      ~item.mask_pixel_2_coord
+      ~item.render_histo
+      ~item.render_seg
+      ~item.save_df_to_csv
+      ~item.save_to_parquet

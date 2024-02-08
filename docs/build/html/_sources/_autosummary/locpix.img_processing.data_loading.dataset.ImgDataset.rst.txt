@@ -1,0 +1,19 @@
+locpix.img\_processing.data\_loading.dataset.ImgDataset
+=======================================================
+
+.. currentmodule:: locpix.img_processing.data_loading.dataset
+
+.. autoclass:: ImgDataset
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+   .. automethod:: __init__
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~ImgDataset.__init__

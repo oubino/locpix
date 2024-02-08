@@ -1,0 +1,6 @@
+locpix.img\_processing.training.train.train\_loop
+=================================================
+
+.. currentmodule:: locpix.img_processing.training.train
+
+.. autofunction:: train_loop

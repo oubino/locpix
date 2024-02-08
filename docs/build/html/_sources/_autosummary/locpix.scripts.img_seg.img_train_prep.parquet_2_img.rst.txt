@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.img\_train\_prep.parquet\_2\_img
+========================================================
+
+.. currentmodule:: locpix.scripts.img_seg.img_train_prep
+
+.. autofunction:: parquet_2_img

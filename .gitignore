@@ -10,7 +10,7 @@ nppBackup/
 
 # Distribution / packaging
 #.Python
-build/
+#build/
 #develop-eggs/
 dist/
 #downloads/
@@ -44,7 +44,6 @@ eggs/
 #cover/
 
 # Sphinx documentation
-docs/build/
 docs/source/_autosummary
 # let github make this live
 
@@ -89,4 +88,8 @@ labnotes.rst
 # profile
 *.lprof
 
+# ignore docs apart  from source and html
+docs/build/doctrees
+
 wandb/
+cellpose/

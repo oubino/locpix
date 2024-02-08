@@ -1,0 +1,4 @@
+locpix.scripts.development.clean\_up
+====================================
+
+.. automodule:: locpix.scripts.development.clean_up

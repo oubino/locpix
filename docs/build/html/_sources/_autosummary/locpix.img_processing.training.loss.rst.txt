@@ -1,0 +1,22 @@
+﻿locpix.img\_processing.training.loss
+====================================
+
+.. automodule:: locpix.img_processing.training.loss
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      dice_loss

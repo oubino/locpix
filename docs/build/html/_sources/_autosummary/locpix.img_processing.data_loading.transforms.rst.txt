@@ -1,0 +1,22 @@
+﻿locpix.img\_processing.data\_loading.transforms
+===============================================
+
+.. automodule:: locpix.img_processing.data_loading.transforms
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      transform

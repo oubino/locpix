@@ -1,0 +1,21 @@
+locpix.visualise.vis\_img
+=========================
+
+.. automodule:: locpix.visualise.vis_img
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      img_2_grey
+      label_2_4_colours
+      manual_threshold
+      plot_img
+      visualise_seg

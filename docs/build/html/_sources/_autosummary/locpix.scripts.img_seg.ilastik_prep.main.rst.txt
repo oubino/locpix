@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.ilastik\_prep.main
+==========================================
+
+.. currentmodule:: locpix.scripts.img_seg.ilastik_prep
+
+.. autofunction:: main

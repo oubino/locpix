@@ -1,0 +1,17 @@
+﻿locpix.scripts.img\_seg.cellpose\_eval
+======================================
+
+.. automodule:: locpix.scripts.img_seg.cellpose_eval
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main

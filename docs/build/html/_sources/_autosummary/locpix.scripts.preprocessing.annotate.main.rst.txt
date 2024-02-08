@@ -1,0 +1,6 @@
+locpix.scripts.preprocessing.annotate.main
+==========================================
+
+.. currentmodule:: locpix.scripts.preprocessing.annotate
+
+.. autofunction:: main

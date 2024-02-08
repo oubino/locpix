@@ -1,0 +1,78 @@
+locpix.img\_processing.models.unet.DoubleConv
+=============================================
+
+.. currentmodule:: locpix.img_processing.models.unet
+
+.. autoclass:: DoubleConv
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+   .. automethod:: __init__
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~DoubleConv.__init__
+      ~DoubleConv.add_module
+      ~DoubleConv.apply
+      ~DoubleConv.bfloat16
+      ~DoubleConv.buffers
+      ~DoubleConv.children
+      ~DoubleConv.compile
+      ~DoubleConv.cpu
+      ~DoubleConv.cuda
+      ~DoubleConv.double
+      ~DoubleConv.eval
+      ~DoubleConv.extra_repr
+      ~DoubleConv.float
+      ~DoubleConv.forward
+      ~DoubleConv.get_buffer
+      ~DoubleConv.get_extra_state
+      ~DoubleConv.get_parameter
+      ~DoubleConv.get_submodule
+      ~DoubleConv.half
+      ~DoubleConv.ipu
+      ~DoubleConv.load_state_dict
+      ~DoubleConv.modules
+      ~DoubleConv.named_buffers
+      ~DoubleConv.named_children
+      ~DoubleConv.named_modules
+      ~DoubleConv.named_parameters
+      ~DoubleConv.parameters
+      ~DoubleConv.register_backward_hook
+      ~DoubleConv.register_buffer
+      ~DoubleConv.register_forward_hook
+      ~DoubleConv.register_forward_pre_hook
+      ~DoubleConv.register_full_backward_hook
+      ~DoubleConv.register_full_backward_pre_hook
+      ~DoubleConv.register_load_state_dict_post_hook
+      ~DoubleConv.register_module
+      ~DoubleConv.register_parameter
+      ~DoubleConv.register_state_dict_pre_hook
+      ~DoubleConv.requires_grad_
+      ~DoubleConv.set_extra_state
+      ~DoubleConv.share_memory
+      ~DoubleConv.state_dict
+      ~DoubleConv.to
+      ~DoubleConv.to_empty
+      ~DoubleConv.train
+      ~DoubleConv.type
+      ~DoubleConv.xpu
+      ~DoubleConv.zero_grad
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~DoubleConv.T_destination
+      ~DoubleConv.call_super_init
+      ~DoubleConv.dump_patches
+      ~DoubleConv.training
