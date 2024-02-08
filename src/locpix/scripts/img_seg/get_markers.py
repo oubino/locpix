@@ -9,16 +9,13 @@ from locpix.visualise import vis_img
 from locpix.img_processing import watershed
 import numpy as np
 import argparse
-from locpix.scripts.img_seg import get_markers_config
 import json
 import time
 
 
 def main():
 
-    parser = argparse.ArgumentParser(
-        description="Get markers." "If no args are supplied will be run in GUI mode"
-    )
+    parser = argparse.ArgumentParser(description="Get markers.")
     # config_group = parser.add_mutually_exclusive_group(required=True)
     parser.add_argument(
         "-i",
@@ -26,6 +23,7 @@ def main():
         action="store",
         type=str,
         help="the location of the project directory",
+        required=True,
     )
     parser.add_argument(
         "-c",
@@ -34,6 +32,7 @@ def main():
         type=str,
         help="the location of the .yaml configuaration file\
                              for get markers",
+        required=True,
     )
     parser.add_argument(
         "-m",
@@ -47,29 +46,10 @@ def main():
 
     args = parser.parse_args()
 
-    # if want to run in headless mode specify all arguments
-    if args.project_directory is None and args.config is None:
-        config, project_folder = get_markers_config.config_gui()
-
-    if args.project_directory is not None and args.config is None:
-        parser.error(
-            "If want to run in headless mode please supply arguments to"
-            "config as well"
-        )
-
-    if args.config is not None and args.project_directory is None:
-        parser.error(
-            "If want to run in headless mode please supply arguments to project"
-            "directory as well"
-        )
-
-    # headless mode
-    if args.project_directory is not None and args.config is not None:
-        project_folder = args.project_directory
-        # load config
-        with open(args.config, "r") as ymlfile:
-            config = yaml.safe_load(ymlfile)
-            get_markers_config.parse_config(config)
+    project_folder = args.project_directory
+    # load config
+    with open(args.config, "r") as ymlfile:
+        config = yaml.safe_load(ymlfile)
 
     metadata_path = os.path.join(project_folder, "metadata.json")
     with open(

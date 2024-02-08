@@ -36,12 +36,10 @@ will not be accessed again!
 Usage configuration
 -------------------
 
-Each script can be run with a GUI, but can also be run in headless mode.
-
-In headless mode each script needs a configuration file (.yaml file), which should be
+Each script needs a configuration file (.yaml file), which should be
 specified using the -c flag.
 
-Each configuration used, whether run in GUI or headless mode will be saved in the project directory.
+Each configuration used will be saved in the project directory.
 
 The templates for the configuration files can be found in the `templates folder <https://github.com/oubino/locpix/tree/master/src/locpix/templates>`_.
 

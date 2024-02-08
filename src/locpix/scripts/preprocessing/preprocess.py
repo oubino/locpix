@@ -8,7 +8,6 @@ import os
 import yaml
 from locpix.preprocessing import functions
 import argparse
-from locpix.scripts.preprocessing import preprocess_config
 import time
 import json
 import socket
@@ -62,11 +61,15 @@ def main():
     parser = argparse.ArgumentParser(
         description="Preprocess the data for\
         further processing."
-        "If no args are supplied will be run in GUI mode"
     )
 
     parser.add_argument(
-        "-i", "--input", action="store", type=str, help="path for the input data folder"
+        "-i",
+        "--input",
+        action="store",
+        type=str,
+        help="path for the input data folder",
+        required=True,
     )
     parser.add_argument(
         "-s",
@@ -81,6 +84,7 @@ def main():
         type=str,
         help="the location of the .yaml configuaration file\
                              for preprocessing",
+        required=True,
     )
     parser.add_argument(
         "-o",
@@ -88,6 +92,7 @@ def main():
         action="store",
         type=str,
         help="the location of the project directory",
+        required=True,
     )
     parser.add_argument(
         "-p",
@@ -98,62 +103,11 @@ def main():
 
     args = parser.parse_args()
 
-    # if want to run in headless mode specify all arguments
-    if (
-        args.input is None
-        and args.project_directory is None
-        and args.config is None
-        and args.parquet_files is False
-    ):
-        config, input_path, project_folder = preprocess_config.config_gui()
-        print("data path", input_path)
-
-    if args.input is not None and (
-        args.project_directory is None or args.config is None
-    ):
-        parser.error(
-            "If want to run in headless mode please supply arguments to project"
-            "directory and config as well"
-        )
-
-    if args.project_directory is not None and (
-        args.input is None or args.config is None
-    ):
-        parser.error(
-            "If want to run in headless mode please supply arguments to input"
-            "directory and config as well"
-        )
-
-    if args.config is not None and (args.input is None or args.config is None):
-        parser.error(
-            "If want to run in headless mode please supply arguments to project"
-            "directory and input directory as well"
-        )
-
-    if (
-        args.input is None
-        and args.project_directory is None
-        and args.config is None
-        and args.parquet_files is True
-    ):
-        parser.error(
-            "You didn't specify any arguments therefore"
-            "tried to run in GUI, however you cannot process"
-            "as parquet files in the GUI"
-        )
-
-    # headless mode
-    if (
-        args.input is not None
-        and args.project_directory is not None
-        and args.config is not None
-    ):
-        input_path = args.input
-        project_folder = args.project_directory
-        # load config
-        with open(args.config, "r") as ymlfile:
-            config = yaml.safe_load(ymlfile)
-            preprocess_config.parse_config(config)
+    input_path = args.input
+    project_folder = args.project_directory
+    # load config
+    with open(args.config, "r") as ymlfile:
+        config = yaml.safe_load(ymlfile)
 
     # if output directory not present create it
     output_folder = os.path.join(project_folder, "preprocess/no_gt_label")
@@ -228,7 +182,10 @@ def main():
         )
 
     # add visualisation notebook
-    shutil.copyfile("src/locpix/templates/visualisation.ipynb", os.path.join(project_folder, "visualisation.ipynb"))
+    shutil.copyfile(
+        "src/locpix/templates/visualisation.ipynb",
+        os.path.join(project_folder, "visualisation.ipynb"),
+    )
 
     # save yaml file
     config["input_data_folder"] = input_path
