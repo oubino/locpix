@@ -10,8 +10,7 @@ This includes the following functionality:
 #. :ref:`get-markers` : Labelling histogram with seeds for watershed algorithm
 #. Segmentation:
    #. :ref:`classic-segmentation` : Use classic method to segment histograms to extract relevant localisations
-   #. :ref:`cellpose-segmentation-train` : Use Cellpose method to train cellpose to extract relevant localisations
-   #. :ref:`cellpose-segmentation-eval` : Use Cellpose method to segment histograms to extract relevant localisations
+   #. :ref:`cellpose-segmentation` : Use Cellpose method to segment histograms to extract relevant localisations
    #. :ref:`ilastik-segmentation` : Use Ilastik method to segment histograms to extract relevant localisations
 #. :ref:`membrane-performance` : Performance metrics calculation based on the localisations (not the histograms!)
 

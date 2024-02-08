@@ -39,12 +39,19 @@ def main():
         required=True,
     )
     parser.add_argument(
-        "-c",
-        "--config",
+        "-ct",
+        "--config_train",
         action="store",
         type=str,
-        help="the location of the .yaml configuaration file\
-                             for preprocessing",
+        help="the location of the .yaml configuaration file for cellpose training",
+        required=True,
+    )
+    parser.add_argument(
+        "-ce",
+        "--config_eval",
+        action="store",
+        type=str,
+        help="the location of the .yaml configuaration file for cellpose evaluation",
         required=True,
     )
     parser.add_argument(
@@ -57,7 +64,7 @@ def main():
     args = parser.parse_args()
     project_folder = args.project_directory
     # load config
-    with open(args.config, "r") as ymlfile:
+    with open(args.config_train, "r") as ymlfile:
         config = yaml.safe_load(ymlfile)
 
     metadata_path = os.path.join(project_folder, "metadata.json")
@@ -189,7 +196,8 @@ def main():
             os.makedirs(output_folder)
 
         # run cellpose_eval
-        config_eval = "src/locpix/templates/cellpose.yaml"
+        with open(args.config_eval, "r") as ymlfile:
+            config_eval = yaml.safe_load(ymlfile)
         cellpose_eval.main(
             (
                 [

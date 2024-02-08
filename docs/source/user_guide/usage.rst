@@ -103,16 +103,10 @@ To run the script -i and -c flags should be specified
 **API**
 :py:mod:`locpix.scripts.img_seg.classic`
 
-.. _cellpose-segmentation-eval:
+.. _cellpose-segmentation:
 
-Cellpose segmentation (Training)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To train a Cellpose model we have had to include/modify the following.
-
-#. `Cellpose fork` : Firstly we have a fork of Cellpose which differs to Cellpose in the loss function - as Cellpose assumes the
-   output is for cell segmentation not membranes.
-#. `Cellpose train prep script` : This script prepares the data for Cellpose training
+Cellpose segmentation
+^^^^^^^^^^^^^^^^^^^^^
 
 .. warning::
    Need to activate extra requirements - these are big and not included in initial install.
@@ -141,75 +135,32 @@ To train a Cellpose model we have had to include/modify the following.
       (locpix-env) $ cd cellpose
       (locpix-env) $ pip install .
 
-
-Prepare the data for Cellpose training
-
-Crucially this is also where the train/val/test split is defined and saved to the project metadata.
-
-.. code-block:: console
-
-   (locpix-env) $ cellpose_train_prep -i path/to/project/directory -c path/to/config/file
-
-Train cellpose (using their scripts)
-
-.. code-block:: console
-
-   (locpix-env) $ python -m cellpose --train --dir path/to/project/directory/cellpose_train/train --test_dir path/to/project/directory/cellpose_train/test --pretrained_model LC1 --chan 0 --chan2 0 --learning_rate 0.1 --weight_decay 0.0001 --n_epochs 10 --min_train_masks 1 --verbose
-
-Evaluate cellpose
-
-.. code-block:: console
-
-   (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file -u -o cellpose_train_eval
-
-**API**
-:py:mod:`locpix.scripts.img_seg.cellpose_train_prep`
-
-.. _cellpose-segmentation-train:
-
-Cellpose segmentation (Evaluation)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. warning::
-   If you haven't done as above you will need to...
-
-   Need to activate extra requirements - these are big and not included in initial install.
-
-   Note that if you have a GPU this will speed this up.
-
-   Note we modified Cellpose to fit in with our analysis, therefore you need to install our forked repository - note below will clone the Cellpose repository to wherever you are located
-
-   If you:
-
-   * have a GPU
+Perform Cellpose segmentation on our without any retraining on your dataset run the script with -i and -c flags specified
 
    .. code-block:: console
 
-      (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
-      (locpix-env) $ git clone https://github.com/oubino/cellpose
-      (locpix-env) $ cd cellpose
-      (locpix-env) $ pip install .
+      (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file
 
-   * don't have a GPU
+To retrain first then evaluate we instead
+
+   Prepare data for training
+   Crucially this is also where the train/val/test split is defined and saved to the project metadata.
 
    .. code-block:: console
 
-      (locpix-env) $ pip install pytorch
-      (locpix-env) $ git clone https://github.com/oubino/cellpose
-      (locpix-env) $ cd cellpose
-      (locpix-env) $ pip install .
+      (locpix-env) $ train_prep -i path/to/project/directory -c path/to/config/file
 
+   Train cellpose
 
-Perform Cellpose segmentation on our localisation dataset.
+   .. code-block:: console
 
-To run the script -i and -c flags should be specified
+      (locpix-env) $ cellpose_train -i path/to/project/directory -ct path/to/config/train_file -ce path/to/config/eval_file
 
-.. code-block:: console
-
-   (locpix-env) $ cellpose -i path/to/project/directory -c path/to/config/file
 
 **API**
+:py:mod:`locpix.scripts.img_seg.train_prep`
 :py:mod:`locpix.scripts.img_seg.cellpose_eval`
+:py:mod:`locpix.scripts.img_seg.cellpose_train`
 
 .. _ilastik-segmentation:
 

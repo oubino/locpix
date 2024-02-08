@@ -140,16 +140,31 @@ Cellpose segmentation
         (locpix-env) $ cd cellpose
         (locpix-env) $ pip install .
 
-Perform Cellpose segmentation on our localisation dataset.
+Perform Cellpose segmentation on our without any retraining on your dataset run the script with -i and -c flags specified
 
-To run the script -i and -c flags should be specified
+   .. code-block:: console
 
-.. code-block:: console
+      (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file
 
-   (locpix-env) $ cellpose -i path/to/project/directory -c path/to/config/file
+To retrain first then evaluate we instead
+
+   Prepare data for training
+
+   .. code-block:: console
+
+      (locpix-env) $ train_prep -i path/to/project/directory -c path/to/config/file
+
+   Train cellpose
+
+   .. code-block:: console
+
+      (locpix-env) $ cellpose_train -i path/to/project/directory -ct path/to/config/train_file -ce path/to/config/eval_file
+
 
 **API**
-:py:mod:`locpix.scripts.img_seg.cellpose`
+:py:mod:`locpix.scripts.img_seg.train_prep`
+:py:mod:`locpix.scripts.img_seg.cellpose_eval`
+:py:mod:`locpix.scripts.img_seg.cellpose_train`
 
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^
