@@ -9,9 +9,11 @@ This includes the following functionality:
 #. :ref:`annotate` : Generating histograms from the SMLM data and manually annotating these histograms to extract relevant localisations
 #. :ref:`get-markers` : Labelling histogram with seeds for watershed algorithm
 #. Segmentation:
+
    #. :ref:`classic-segmentation` : Use classic method to segment histograms to extract relevant localisations
    #. :ref:`cellpose-segmentation` : Use Cellpose method to segment histograms to extract relevant localisations
    #. :ref:`ilastik-segmentation` : Use Ilastik method to segment histograms to extract relevant localisations
+
 #. :ref:`membrane-performance` : Performance metrics calculation based on the localisations (not the histograms!)
 
 .. note::
