@@ -308,13 +308,13 @@ Click the add new button under Raw Data.
 
 Click add separate images.
 
-Note we are going to be loading in train images to train on then validation images to evaluate on for each fold
+(Note we are going to be loading in train images to train on then validation images to evaluate on for each fold_
 
 Then navigate to
 
 .. code-block:: console
 
-   path/to/project/directory/ilastik/prep
+   path/to/project/directory/ilastik/prep/imgs
 
 and select all the files at once and click open.
 The axes should say yxc, and the shape should be (x_bins, y_bins, number channels).

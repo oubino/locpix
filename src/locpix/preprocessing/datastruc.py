@@ -671,7 +671,8 @@ class item:
         )  # note if change this need to adjust annotate.py
         if os.path.exists(save_loc) and not overwrite:
             raise ValueError(
-                "Cannot overwite. If you want to overwrite please set overwrite==True"
+                f"Cannot overwite file at {save_loc}."
+                "If you want to overwrite please set overwrite==True"
             )
         pq.write_table(arrow_table, save_loc)
 

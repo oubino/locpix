@@ -196,13 +196,11 @@ def main():
             os.makedirs(output_folder)
 
         # run cellpose_eval
-        with open(args.config_eval, "r") as ymlfile:
-            config_eval = yaml.safe_load(ymlfile)
         cellpose_eval.main(
             (
                 [
                     f"--project_directory={project_folder}",
-                    f"--config={config_eval}",
+                    f"--config={args.config_eval}",
                     f"--output_folder=cellpose_train/{fold}",
                     f"--user_model={model}",
                 ]
@@ -216,6 +214,8 @@ def main():
 
     # save eval yaml file
     yaml_save_loc = os.path.join(project_folder, "cellpose_train_eval.yaml")
+    with open(args.config_eval, "r") as ymlfile:
+        config_eval = yaml.safe_load(ymlfile)
     with open(yaml_save_loc, "w") as outfile:
         yaml.dump(config_eval, outfile)
 
