@@ -57,9 +57,6 @@ def main():
         default=False,
         help="If true will relabel and assume labels are present (default = False)",
     )
-    parser.add_argument(
-        "-f", "--force", action="store_true", help="if true then will overwrite files"
-    )
 
     args = parser.parse_args()
 
@@ -133,9 +130,7 @@ def main():
         # os.path.join(save_folder, self.name + '.parquet')
         parquet_save_loc = os.path.join(output_folder, item.name + ".parquet")
         # seg_save_loc = os.path.join(output_seg_folder, item.name + ".png")
-        if args.force or args.relabel:
-            go_ahead = True
-        if os.path.exists(parquet_save_loc) and not go_ahead:
+        if os.path.exists(parquet_save_loc) and not args.relabel:
             print(f"Skipping file as already present: {parquet_save_loc}")
             continue
         # if os.path.exists(seg_save_loc) and not args.force:

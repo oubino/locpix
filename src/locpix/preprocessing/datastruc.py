@@ -13,7 +13,6 @@ import pyarrow.parquet as pq
 import ast
 import os
 import json
-import warnings
 
 _interpolate = {
     "log2": lambda d: np.log2(d),
@@ -411,7 +410,6 @@ class item:
                     )
                     # add labels if present
                     if relabel:
-                        warnings.warn("Haven't loaded in markers")
                         # note this has to be called after coord_2_histo to be in the
                         # correct shape
                         histo_mask = self.render_seg()

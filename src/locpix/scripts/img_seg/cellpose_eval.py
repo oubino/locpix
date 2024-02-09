@@ -48,7 +48,6 @@ def main(*args):
         action="store",
         type=str,
         help="folder in project directory to save output",
-        required=True,
     )
     parser.add_argument(
         "-u",
