@@ -1,0 +1,6 @@
+locpix.scripts.development.licenses.print\_packages\_and\_licenses
+==================================================================
+
+.. currentmodule:: locpix.scripts.development.licenses
+
+.. autofunction:: print_packages_and_licenses

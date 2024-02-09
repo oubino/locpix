@@ -1,0 +1,36 @@
+﻿locpix
+======
+
+.. automodule:: locpix
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   locpix.evaluate
+   locpix.img_processing
+   locpix.preprocessing
+   locpix.scripts
+   locpix.templates
+   locpix.visualise

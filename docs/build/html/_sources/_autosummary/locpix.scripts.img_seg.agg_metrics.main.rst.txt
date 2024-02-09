@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.agg\_metrics.main
+=========================================
+
+.. currentmodule:: locpix.scripts.img_seg.agg_metrics
+
+.. autofunction:: main

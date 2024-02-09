@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.classic.main
+====================================
+
+.. currentmodule:: locpix.scripts.img_seg.classic
+
+.. autofunction:: main

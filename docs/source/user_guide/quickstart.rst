@@ -62,13 +62,18 @@ To run the script -i -c and -o flags should be specified
 
    (locpix-env) $ preprocess -i path/to/input/data -c path/to/config/file -o path/to/project/directory
 
+Optionally we can add:
+
+* -s flag to check the correct files are selected before preprocessing them
+* -p flag if our files are .parquet files not .csv files.
+
 **API**
 :py:mod:`locpix.scripts.preprocessing.preprocess`
 
 Annotate
 ^^^^^^^^
 
-This script allows for manual segmentation of the localisations.
+This script allows for manual segmentation of the localisations and adding markers to the images as seeds for the watershed algorithm
 
 To run the script -i and -c flags should be specified
 
@@ -76,25 +81,16 @@ To run the script -i and -c flags should be specified
 
    (locpix-env) $ annotate -i path/to/project/directory -c path/to/config/file
 
+Optionally we can add:
+
+* -m flag to check the metadata of the project before running
+* -r flag to relabel histograms, will assume some labels are already present
+
 **API**
 :py:mod:`locpix.scripts.preprocessing.annotate`
 
 Image segmentation
 ------------------
-
-Get markers
-^^^^^^^^^^^
-
-This script allows for labelling the localisation image with a marker to represent the cells.
-
-To run the script -i and -c flags should be specified
-
-.. code-block:: console
-
-   (locpix-env) $ get_markers -i path/to/project/directory -c path/to/config/file
-
-**API**
-:py:mod:`locpix.scripts.img_seg.get_markers`
 
 Classic segmentation
 ^^^^^^^^^^^^^^^^^^^^
@@ -106,6 +102,10 @@ To run the script without -i and -c flags should be specified
 .. code-block:: console
 
    (locpix-env) $ classic -i path/to/project/directory -c path/to/config/file
+
+Optionally we can add:
+
+* -m flag to check the metadata of the project before running
 
 **API**
 :py:mod:`locpix.scripts.img_seg.classic`
@@ -146,6 +146,12 @@ Perform Cellpose segmentation on our without any retraining on your dataset run 
 
       (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file
 
+Optionally we can add:
+
+* -m flag to check the metadata of the project before running
+* -o flag to specify folder in project dir to save output (defaults to cellpose_no_train)
+* -u flag to specify a user model to load in
+
 To retrain first then evaluate we instead
 
    Prepare data for training
@@ -154,17 +160,58 @@ To retrain first then evaluate we instead
 
       (locpix-env) $ train_prep -i path/to/project/directory -c path/to/config/file
 
+   Optionally we can add:
+
+   * -m flag to check the metadata of the project before running
+
    Train cellpose
 
    .. code-block:: console
 
       (locpix-env) $ cellpose_train -i path/to/project/directory -ct path/to/config/train_file -ce path/to/config/eval_file
 
+   Optionally we can add:
+
+   * -m flag to check the metadata of the project before running
 
 **API**
 :py:mod:`locpix.scripts.img_seg.train_prep`
 :py:mod:`locpix.scripts.img_seg.cellpose_eval`
 :py:mod:`locpix.scripts.img_seg.cellpose_train`
+
+UNET segmentation
+^^^^^^^^^^^^^^^^^
+
+Need to activate extra requirements - these are big and not included in initial install.
+
+Note that if you have a GPU this will speed this up.
+
+Note this is only needed if haven't done for cellpose above
+
+If you have a GPU
+
+.. code-block:: console
+
+   (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+
+If you don't have a GPU
+
+.. code-block:: console
+
+   (locpix-env) $ pip install pytorch
+
+To train UNET
+
+   .. code-block:: console
+
+      (locpix-env) $ unet -i path/to/project/directory -c path/to/config/file
+
+Optionally we can add:
+
+* -m flag to check the metadata of the project before running
+
+**API**
+:py:mod:`locpix.scripts.img_seg.unet_train`
 
 Ilastik segmentation
 ^^^^^^^^^^^^^^^^^^^^
@@ -175,6 +222,10 @@ Need to prepare the data for Ilastik segmentation
 
    (locpix-env) $ ilastik_prep -i path/to/project/directory -c path/to/config/file
 
+Optionally we can add:
+
+* -m flag to check the metadata of the project before running
+
 Then run the data through the Ilastik GUI, which needs to be installed from
 `Ilastik <https://www.ilastik.org/download.html>`_  and to run it please see :ref:`ilastik-gui`.
 
@@ -182,7 +233,11 @@ Then convert the output of the Ilastik GUI back into our format
 
 .. code-block:: console
 
-   (locpix-env) $ ilastik_output -i path/to/project/directory -c path/to/config/file
+   (locpix-env) $ ilastik_output -i path/to/project/directory
+
+Optionally we can add:
+
+* -m flag to check the metadata of the project before running
 
 **API**
 :py:mod:`locpix.scripts.img_seg.ilastik_prep`
@@ -192,11 +247,33 @@ Then convert the output of the Ilastik GUI back into our format
 Membrane performance
 ^^^^^^^^^^^^^^^^^^^^
 
-Need to evaluate the performance of the membrane segmentation
+To evaluate membrane performance for a particular method, run below, where method name needs to match where the segmentation files are
+
+.. code-block:: console
+
+   (locpix-env) $ membrane_performance_method -i path/to/project/directory -c path/to/config/file -o method_name
+
+Optionally we can add:
+
+* -m flag to check the metadata of the project before running
+
+To evaluate performance of  membrane segmentation from classic, cellpose and ilastik
 
 .. code-block:: console
 
    (locpix-env) $ membrane_performance -i path/to/project/directory -c path/to/config/file
 
+Optionally we can add:
+
+* -m flag to check the metadata of the project before running
+
+To aggregate the performance over the folds for methods classic, cellpose without training, cellpose with training and ilastik
+
+.. code-block:: console
+
+   (locpix-env) $ agg_metrics -i path/to/project/directory
+
 **API**
+:py:mod:`locpix.scripts.img_seg.membrane_performance_method`
 :py:mod:`locpix.scripts.img_seg.membrane_performance`
+:py:mod:`locpix.scripts.img_seg.agg_metrics`

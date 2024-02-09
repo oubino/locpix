@@ -118,7 +118,7 @@ def main():
         else:
             raise ValueError("sum_chan should be true or false")
         log_img = vis_img.manual_threshold(
-            img, config["vis_threshold"], how=config["vis_interpolate"]
+            img, config["img_threshold"], how=config["img_interpolate"]
         )
         grey_log_img = vis_img.img_2_grey(log_img)  # convert img to grey
 

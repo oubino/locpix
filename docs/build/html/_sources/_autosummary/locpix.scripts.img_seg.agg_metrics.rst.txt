@@ -1,0 +1,17 @@
+locpix.scripts.img\_seg.agg\_metrics
+====================================
+
+.. automodule:: locpix.scripts.img_seg.agg_metrics
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main

@@ -76,7 +76,7 @@ def preprocess_train_files(project_folder, config, metadata, fold, model_name):
     val_files = [os.path.join(input_root, file + ".parquet") for file in val_files]
     parquet_2_img(
         train_files,
-        config["labels"],
+        config["channels"],
         config["sum_chan"],
         config["img_threshold"],
         config["img_interpolate"],
@@ -84,7 +84,7 @@ def preprocess_train_files(project_folder, config, metadata, fold, model_name):
     )
     parquet_2_img(
         val_files,
-        config["labels"],
+        config["channels"],
         config["sum_chan"],
         config["img_threshold"],
         config["img_interpolate"],
@@ -136,7 +136,7 @@ def preprocess_all_files(project_folder, config, metadata, model_name):
     all_files = [os.path.join(input_root, file + ".parquet") for file in all_files]
     parquet_2_img(
         all_files,
-        config["labels"],
+        config["channels"],
         config["sum_chan"],
         config["img_threshold"],
         config["img_interpolate"],
@@ -252,13 +252,13 @@ def clean_up_all(project_folder, model_name):
     os.rmdir(img_folder)
 
 
-def parquet_2_img(files, labels, sum_chan, img_threshold, img_interpolate, folder):
+def parquet_2_img(files, channels, sum_chan, img_threshold, img_interpolate, folder):
     """Convert data from .parquet files to .png files
     and save
 
     Args:
         files (list) : List of files (.parquet)
-        labels (list) : List of channels id by label
+        channels (list) : List of channels id by label
             to render in img
         sum_chan (bool) : If True the channels are
             summed
@@ -274,7 +274,7 @@ def parquet_2_img(files, labels, sum_chan, img_threshold, img_interpolate, folde
         item.load_from_parquet(os.path.join(datum))
 
         # convert
-        histo, channel_map, label_map = item.render_histo(labels)
+        histo, channel_map, label_map = item.render_histo(channels)
         label = item.render_seg()
 
         img_info_path = os.path.join(folder, "img_info.json")

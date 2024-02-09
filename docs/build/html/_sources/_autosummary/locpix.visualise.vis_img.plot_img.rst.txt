@@ -1,0 +1,6 @@
+locpix.visualise.vis\_img.plot\_img
+===================================
+
+.. currentmodule:: locpix.visualise.vis_img
+
+.. autofunction:: plot_img

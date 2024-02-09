@@ -1,0 +1,17 @@
+locpix.scripts.img\_seg.membrane\_performance
+=============================================
+
+.. automodule:: locpix.scripts.img_seg.membrane_performance
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main

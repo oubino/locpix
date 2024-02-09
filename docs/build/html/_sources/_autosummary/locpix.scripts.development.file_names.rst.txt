@@ -1,0 +1,17 @@
+locpix.scripts.development.file\_names
+======================================
+
+.. automodule:: locpix.scripts.development.file_names
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main

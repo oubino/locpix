@@ -1,0 +1,17 @@
+locpix.preprocessing.functions
+==============================
+
+.. automodule:: locpix.preprocessing.functions
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      file_to_datastruc

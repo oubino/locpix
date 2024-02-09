@@ -4,7 +4,6 @@
 Process output of Ilastik
 """
 
-import yaml
 import os
 from locpix.preprocessing import datastruc
 
@@ -27,15 +26,6 @@ def main():
         required=True,
     )
     parser.add_argument(
-        "-c",
-        "--config",
-        action="store",
-        type=str,
-        help="the location of the .yaml configuaration file\
-                             for preprocessing",
-        required=True,
-    )
-    parser.add_argument(
         "-m",
         "--project_metadata",
         action="store_true",
@@ -44,9 +34,6 @@ def main():
 
     args = parser.parse_args()
     project_folder = args.project_directory
-    # load config
-    with open(args.config, "r") as ymlfile:
-        config = yaml.safe_load(ymlfile)
 
     metadata_path = os.path.join(project_folder, "metadata.json")
     with open(
@@ -111,11 +98,6 @@ def main():
             item = datastruc.item(None, None, None, None, None)
             item.load_from_parquet(os.path.join(input_folder, file))
 
-            # convert to histo
-            # histo, channel_map, label_map = item.render_histo(
-            #     [config["channel"], config["alt_channel"]]
-            # )
-
             # ---- membrane segmentation ----
 
             # load in ilastik_seg
@@ -175,8 +157,6 @@ def main():
             #     item.bin_sizes,
             #     axes=[0],
             #     label_map=label_map,
-            #     threshold=config["vis_threshold"],
-            #     how=config["vis_interpolate"],
             #     blend_overlays=True,
             #     alpha_seg=0.5,
             #     origin="upper",
@@ -184,11 +164,6 @@ def main():
             #     save_loc=save_loc,
             #     four_colour=True,
             # )
-
-        # save yaml file
-        yaml_save_loc = os.path.join(project_folder, "ilastik_output.yaml")
-        with open(yaml_save_loc, "w") as outfile:
-            yaml.dump(config, outfile)
 
 
 if __name__ == "__main__":

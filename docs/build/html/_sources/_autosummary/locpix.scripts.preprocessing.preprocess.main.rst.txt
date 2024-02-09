@@ -1,0 +1,6 @@
+locpix.scripts.preprocessing.preprocess.main
+============================================
+
+.. currentmodule:: locpix.scripts.preprocessing.preprocess
+
+.. autofunction:: main

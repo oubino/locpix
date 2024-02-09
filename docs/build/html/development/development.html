@@ -1,0 +1,637 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Development &#8212; locpix 0.1.0.1 documentation</title>
+
+
+
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'development/development';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="locpix" href="../_autosummary/locpix.html" />
+    <link rel="prev" title="Development" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+
+
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+
+
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div id="pst-scroll-pixel-helper"></div>
+
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+
+
+  <div class="col-lg-3 navbar-header-items__start">
+
+      <div class="navbar-item">
+
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+
+
+
+
+
+
+
+
+
+    <img src="../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+
+
+</a></div>
+
+  </div>
+
+  <div class="col-lg-9 navbar-header-items">
+
+    <div class="me-auto navbar-header-items__center">
+
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../_autosummary/locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+    </div>
+
+
+    <div class="navbar-header-items__end">
+
+        <div class="navbar-item navbar-persistent--container">
+
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+
+
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+    </div>
+
+  </div>
+
+
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+
+
+
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+
+</div>
+
+    </header>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+
+
+
+      <div class="bd-sidebar-primary bd-sidebar">
+
+
+
+  <div class="sidebar-header-items sidebar-primary__section">
+
+
+      <div class="sidebar-header-items__center">
+
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../_autosummary/locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+      </div>
+
+
+
+      <div class="sidebar-header-items__end">
+
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+      </div>
+
+  </div>
+
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Development</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+
+
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+
+      <main id="main-content" class="bd-main">
+
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+
+    <div class="header-article-items__start">
+
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Development</a></li>
+
+    <li class="breadcrumb-item active" aria-current="page">Development</li>
+  </ul>
+</nav>
+</div>
+
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+<div id="searchbox"></div>
+                <article class="bd-article">
+
+  <section id="development">
+<h1>Development<a class="headerlink" href="#development" title="Link to this heading">#</a></h1>
+<section id="git">
+<h2>Git<a class="headerlink" href="#git" title="Link to this heading">#</a></h2>
+<p>If have accidentally committed to wrong branch need these series of commands</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Note:<span class="w"> </span>Any<span class="w"> </span>changes<span class="w"> </span>not<span class="w"> </span>committed<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>lost.
+<span class="go">git branch newbranch # Create a new branch, saving the desired commits</span>
+<span class="go">git checkout master # checkout master, this is the place you want to go back</span>
+<span class="go">git reset --hard HEAD~3 # Move master back by 3 commits (Make sure you know how many commits you need to go back)</span>
+<span class="go">git checkout newbranch # Go to the new branch that still has the desired commits</span>
+</pre></div>
+</div>
+</section>
+<section id="docstring-coverage">
+<h2>Docstring coverage<a class="headerlink" href="#docstring-coverage" title="Link to this heading">#</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>docstr-coverage
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>docstr-coverage<span class="w"> </span>src/locpix
+</pre></div>
+</div>
+</section>
+<section id="sphinx-documentation">
+<h2>Sphinx documentation<a class="headerlink" href="#sphinx-documentation" title="Link to this heading">#</a></h2>
+<p>Ran</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>sphinx-quickstart<span class="w"> </span>docs
+</pre></div>
+</div>
+<p>Choose yes for separate docs and src directories.</p>
+<p>Then followed: <a class="reference external" href="https://stackoverflow.com/questions/2701998/sphinx-autodoc-is-not-automatic-enough/62613202#62613202">sphinx auto summary</a></p>
+<p>Had to install sphinx-autoapi &amp; pydata theme</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>sphinx-autoapi
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>pydata-sphinx-theme
+</pre></div>
+</div>
+<p>Then need to make sure installed torch, torchvision, cellpose as according to README and prettytable</p>
+<p>To run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>make<span class="w"> </span>clean_templates
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>make<span class="w"> </span>templates
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>make<span class="w"> </span>clean
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>make<span class="w"> </span>html
+</pre></div>
+</div>
+<section id="yaml-files">
+<h3>YAML files<a class="headerlink" href="#yaml-files" title="Link to this heading">#</a></h3>
+<p>Have yaml files with configuration - need to convert these to .rst</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>yaml2rst
+</pre></div>
+</div>
+<p>Then for all the template files convert to .rst , add heading and put in docs/source</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>yaml2rst<span class="w"> </span>src/locpix/templates/*.yaml<span class="w"> </span>docs/source/*.rst
+</pre></div>
+</div>
+<p>To support CI, we add this to the makefile for sphinx</p>
+<p>To generates templates run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>make<span class="w"> </span>clean_templates
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>make<span class="w"> </span>templates
+</pre></div>
+</div>
+<p>Then can run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>make<span class="w"> </span>clean
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>make<span class="w"> </span>html
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You get an error when running</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>make<span class="w"> </span>templates
+</pre></div>
+</div>
+<p>This is because the makefile contains a catch all, so it will run make templates then trys to run
+templates into Sphinx but this doesn’t work!</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note that to get the templates.rst in the correct format we had to edit yaml2rst.
+The additions are on lines 46-48</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">title</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">infilename</span><span class="p">)</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s1">&#39;.yaml&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfh</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">outfh</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note this will fail on github actions - so need to include these functions as part of this package - not rely on yaml2rst!</p>
+</div>
+</section>
+</section>
+<section id="pypi">
+<h2>PyPI<a class="headerlink" href="#pypi" title="Link to this heading">#</a></h2>
+<p>See this documentation for how to integrate publishing to PyPI using GitHub actions.</p>
+<p><a class="reference external" href="https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/">PyPI</a></p>
+<p>However, as I protected master branch this was causing issues therefore moved towards this instead</p>
+<p><a class="reference external" href="https://www.seanh.cc/2022/05/21/publishing-python-packages-from-github-actions/">GitHub PyPI</a></p>
+<p>#. Removed version from pyproject.toml as setuptools_scm finds this - however Sphinx needs this - therefore follow <a class="reference external" href="https://pypi.org/project/setuptools-scm/">version</a>
+under usage from sphinx - requires adding to the docs/conf.py file
+#. Went up to “You could stop here” - could later implement automatic version increasing</p>
+</section>
+<section id="linting">
+<h2>Linting<a class="headerlink" href="#linting" title="Link to this heading">#</a></h2>
+<p>In line with GitHub actions run the following, note the GitHub editor is 127 chars wide</p>
+<p>Python syntax errors or undefined names</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>flake8<span class="w"> </span>.<span class="w"> </span>--count<span class="w"> </span>--select<span class="o">=</span>E9,F63,F7,F82<span class="w"> </span>--show-source<span class="w"> </span>--statistics
+</pre></div>
+</div>
+<p>Note that exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>flake8<span class="w"> </span>.<span class="w"> </span>--count<span class="w"> </span>--exit-zero<span class="w"> </span>--max-complexity<span class="o">=</span><span class="m">10</span><span class="w"> </span>--max-line-length<span class="o">=</span><span class="m">127</span><span class="w"> </span>--statistics
+</pre></div>
+</div>
+</section>
+<section id="github">
+<h2>GitHub<a class="headerlink" href="#github" title="Link to this heading">#</a></h2>
+<section id="ci">
+<h3>CI<a class="headerlink" href="#ci" title="Link to this heading">#</a></h3>
+<p>Master branch is protected therefore have to checkout new branch and then merge this instead.</p>
+<p>Steps for CI</p>
+<ol class="arabic simple">
+<li><p>Commit changes to working_branch and push this up to GitHub, no actions will run</p></li>
+<li><p>When happy create pull request - this will trigger tests to run - if tests successful then merge to master</p></li>
+<li><p>When merges, will generate documentation for master branch also runs CI again (maybe remove the latter). Could do this by removing on push from CI (but need to check that when the tests run on a pull request are they running on the new branch or the merged branch?)</p></li>
+<li><p>When happy can create release on master and will only run publish workflow</p></li>
+</ol>
+</section>
+<section id="skip-actions">
+<h3>Skip actions<a class="headerlink" href="#skip-actions" title="Link to this heading">#</a></h3>
+<p>When push can choose not to run actions by including string</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[skip actions]</span>
+</pre></div>
+</div>
+<p>To publish to pypi needs a tag therefore do in sequence</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git checkout -b &lt;branch-name&gt;</span>
+</pre></div>
+</div>
+<p>Make changes then run (if don’t want to push to pypi)</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git add -A</span>
+<span class="go">git commit</span>
+<span class="go">git push origin &lt;branch-name&gt;</span>
+</pre></div>
+</div>
+<p>Then to push to pypi have to just push tagged master branch, where tag must start with v</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git checkout master</span>
+<span class="go">git tag &lt;tag-name&gt;</span>
+<span class="go">git push origin &lt;tag-name&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="code-coverage">
+<h2>Code coverage<a class="headerlink" href="#code-coverage" title="Link to this heading">#</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>pytest
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>pytest-cov
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>tests/
+</pre></div>
+</div>
+</section>
+<section id="cellpose-train">
+<h2>Cellpose train<a class="headerlink" href="#cellpose-train" title="Link to this heading">#</a></h2>
+<p>To train cellpose first need .npy files of imgs and labels</p>
+<p>Therefore use src/locpix/scripts/img_seg/custom_train.py to convert all images to .npy</p>
+<p>Then move images to folder with Fov1-&gt;6 in train and move masks into this folder as well
+Fov 7,8,9,10 in test and move masks into this folder as well</p>
+<p>Had to append name _masks to each of the masks</p>
+<p>Then run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>cellpose<span class="w"> </span>--train<span class="w"> </span>--dir<span class="w"> </span>~/imgs/train/<span class="w"> </span>--test_dir<span class="w"> </span>~/imgs/test/<span class="w"> </span>--pretrained_model<span class="w"> </span>LC1<span class="w"> </span>--chan<span class="w"> </span><span class="m">0</span><span class="w"> </span>--chan2<span class="w"> </span><span class="m">0</span><span class="w"> </span>--learning_rate<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--weight_decay<span class="w"> </span><span class="m">0</span>.0001<span class="w"> </span>--n_epochs<span class="w"> </span><span class="m">3</span>
+<span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>cellpose<span class="w"> </span>--dir<span class="w"> </span>~/imgs/test/<span class="w"> </span>--pretrained_model<span class="w"> </span>model<span class="w"> </span>--chan<span class="w"> </span><span class="m">0</span><span class="w"> </span>--chan2<span class="w"> </span><span class="m">0</span><span class="w"> </span>--save_png
+</pre></div>
+</div>
+<p>python -m cellpose –train –dir “C:UsersoliveOneDrive - University of LeedsProjectoutputlocpix_projectcellpose_traintrain” –test_dir “C:UsersoliveOneDrive - University of LeedsProjectoutputlocpix_projectcellpose_traintest” –pretrained_model LC1 –chan 0 –chan2 0 –learning_rate 0.1 –weight_decay 0.0001 –n_epochs 10 –min_train_masks 1 –verbose</p>
+<p>python -m cellpose –dir  “C:UsersoliveOneDrive - University of LeedsProjectoutputlocpix_projectcellpose_traintest” –pretrained_model  “C:UsersoliveOneDrive - University of LeedsProjectoutputlocpix_projectcellpose_traintrainmodelscellpose_residual_on_style_on_concatenation_off_train_2022_12_20_14_56_59.377919” –chan 0 –chan2 0 –save_png</p>
+</section>
+</section>
+
+
+                </article>
+
+
+
+
+
+                <footer class="prev-next-footer">
+
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Development</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../_autosummary/locpix.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">locpix</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+
+            </div>
+
+
+
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git">Git</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docstring-coverage">Docstring coverage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sphinx-documentation">Sphinx documentation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yaml-files">YAML files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pypi">PyPI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linting">Linting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#github">GitHub</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ci">CI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#skip-actions">Skip actions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-coverage">Code coverage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cellpose-train">Cellpose train</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+
+
+          </div>
+          <footer class="bd-footer-content">
+
+          </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+
+    <div class="footer-items__start">
+
+        <div class="footer-item">
+
+  <p class="copyright">
+
+      © Copyright 2022, Oliver Umney.
+      <br/>
+
+  </p>
+</div>
+
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+
+    </div>
+
+
+
+    <div class="footer-items__end">
+
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+
+    </div>
+
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+locpix.img\_processing
+======================
+
+.. automodule:: locpix.img_processing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   locpix.img_processing.data_loading
+   locpix.img_processing.models
+   locpix.img_processing.render
+   locpix.img_processing.training
+   locpix.img_processing.watershed

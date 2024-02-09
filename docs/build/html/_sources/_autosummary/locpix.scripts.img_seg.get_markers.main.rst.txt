@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.get\_markers.main
+=========================================
+
+.. currentmodule:: locpix.scripts.img_seg.get_markers
+
+.. autofunction:: main

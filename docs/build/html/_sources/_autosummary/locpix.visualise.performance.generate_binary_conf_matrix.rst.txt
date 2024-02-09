@@ -1,0 +1,6 @@
+locpix.visualise.performance.generate\_binary\_conf\_matrix
+===========================================================
+
+.. currentmodule:: locpix.visualise.performance
+
+.. autofunction:: generate_binary_conf_matrix

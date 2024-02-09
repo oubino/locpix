@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.img\_train\_prep.preprocess\_all\_files
+===============================================================
+
+.. currentmodule:: locpix.scripts.img_seg.img_train_prep
+
+.. autofunction:: preprocess_all_files

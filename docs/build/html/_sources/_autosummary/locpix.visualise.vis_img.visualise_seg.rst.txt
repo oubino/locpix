@@ -1,0 +1,6 @@
+locpix.visualise.vis\_img.visualise\_seg
+========================================
+
+.. currentmodule:: locpix.visualise.vis_img
+
+.. autofunction:: visualise_seg

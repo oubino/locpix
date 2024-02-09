@@ -13,7 +13,6 @@ import pyarrow.parquet as pq
 import ast
 import os
 import json
-import warnings
 
 _interpolate = {
     "log2": lambda d: np.log2(d),
@@ -153,8 +152,6 @@ class item:
     def coord_2_histo(
         self,
         histo_size,
-        cmap=["Greens", "Reds", "Blues", "Purples"],
-        vis_interpolation="linear",
     ):
         """Converts localisations into histogram of desired size,
         with option to plot the image (histo.T).
@@ -163,12 +160,7 @@ class item:
 
         Args:
             histo_size (tuple): Tuple representing number of
-                bins/pixels in x,y,z
-            cmap (list of strings) : The colourmaps used to
-                plot the histograms
-            plot (bool): Whether to plot the output
-            vis_interpolation (string): How to inerpolate
-                the image for visualisation"""
+                bins/pixels in x,y,z"""
 
         # get max and min x/y/(z) values
         df_max = self.df.max()
@@ -418,7 +410,6 @@ class item:
                     )
                     # add labels if present
                     if relabel:
-                        warnings.warn("Haven't loaded in markers")
                         # note this has to be called after coord_2_histo to be in the
                         # correct shape
                         histo_mask = self.render_seg()
@@ -563,7 +554,7 @@ class item:
                 drop positions which are background
                 drop the column containing pixel information
                 save additional column with labels for each
-                    localisation
+                localisation
 
         Args:
             csv_loc (String): Save the csv to this location
@@ -680,7 +671,8 @@ class item:
         )  # note if change this need to adjust annotate.py
         if os.path.exists(save_loc) and not overwrite:
             raise ValueError(
-                "Cannot overwite. If you want to overwrite please set overwrite==True"
+                f"Cannot overwite file at {save_loc}."
+                "If you want to overwrite please set overwrite==True"
             )
         pq.write_table(arrow_table, save_loc)
 
@@ -758,8 +750,7 @@ class item:
             label_map (list) : List where the first value is the
                 label in the first axis of the histogram, second value
                 is the channel in the second axis of the histogram etc.
-                e.g. ['egfr','ereg'] : egfr is in 1st axis, ereg in 2nd axis
-        """
+                e.g. ['egfr','ereg'] : egfr is in 1st axis, ereg in 2nd axis"""
 
         histos = []
 

@@ -1,0 +1,17 @@
+locpix.scripts.img\_seg.ilastik\_prep
+=====================================
+
+.. automodule:: locpix.scripts.img_seg.ilastik_prep
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main

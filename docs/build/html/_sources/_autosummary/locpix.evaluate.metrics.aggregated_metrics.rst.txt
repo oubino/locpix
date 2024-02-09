@@ -1,0 +1,6 @@
+locpix.evaluate.metrics.aggregated\_metrics
+===========================================
+
+.. currentmodule:: locpix.evaluate.metrics
+
+.. autofunction:: aggregated_metrics

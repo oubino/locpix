@@ -1,0 +1,6 @@
+locpix.visualise.vis\_img.label\_2\_4\_colours
+==============================================
+
+.. currentmodule:: locpix.visualise.vis_img
+
+.. autofunction:: label_2_4_colours

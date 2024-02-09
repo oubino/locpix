@@ -1,0 +1,6 @@
+locpix.img\_processing.watershed.get\_markers
+=============================================
+
+.. currentmodule:: locpix.img_processing.watershed
+
+.. autofunction:: get_markers

@@ -1,0 +1,18 @@
+﻿locpix.scripts.development.licenses
+===================================
+
+.. automodule:: locpix.scripts.development.licenses
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      get_pkg_license
+      print_packages_and_licenses

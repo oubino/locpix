@@ -1,0 +1,6 @@
+locpix.visualise.performance.plot\_pr\_curve
+============================================
+
+.. currentmodule:: locpix.visualise.performance
+
+.. autofunction:: plot_pr_curve

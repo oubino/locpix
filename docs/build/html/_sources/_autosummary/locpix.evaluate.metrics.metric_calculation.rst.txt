@@ -1,0 +1,6 @@
+locpix.evaluate.metrics.metric\_calculation
+===========================================
+
+.. currentmodule:: locpix.evaluate.metrics
+
+.. autofunction:: metric_calculation

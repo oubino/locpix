@@ -1,0 +1,78 @@
+locpix.img\_processing.models.unet.Down
+=======================================
+
+.. currentmodule:: locpix.img_processing.models.unet
+
+.. autoclass:: Down
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+   .. automethod:: __init__
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~Down.__init__
+      ~Down.add_module
+      ~Down.apply
+      ~Down.bfloat16
+      ~Down.buffers
+      ~Down.children
+      ~Down.compile
+      ~Down.cpu
+      ~Down.cuda
+      ~Down.double
+      ~Down.eval
+      ~Down.extra_repr
+      ~Down.float
+      ~Down.forward
+      ~Down.get_buffer
+      ~Down.get_extra_state
+      ~Down.get_parameter
+      ~Down.get_submodule
+      ~Down.half
+      ~Down.ipu
+      ~Down.load_state_dict
+      ~Down.modules
+      ~Down.named_buffers
+      ~Down.named_children
+      ~Down.named_modules
+      ~Down.named_parameters
+      ~Down.parameters
+      ~Down.register_backward_hook
+      ~Down.register_buffer
+      ~Down.register_forward_hook
+      ~Down.register_forward_pre_hook
+      ~Down.register_full_backward_hook
+      ~Down.register_full_backward_pre_hook
+      ~Down.register_load_state_dict_post_hook
+      ~Down.register_module
+      ~Down.register_parameter
+      ~Down.register_state_dict_pre_hook
+      ~Down.requires_grad_
+      ~Down.set_extra_state
+      ~Down.share_memory
+      ~Down.state_dict
+      ~Down.to
+      ~Down.to_empty
+      ~Down.train
+      ~Down.type
+      ~Down.xpu
+      ~Down.zero_grad
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Down.T_destination
+      ~Down.call_super_init
+      ~Down.dump_patches
+      ~Down.training

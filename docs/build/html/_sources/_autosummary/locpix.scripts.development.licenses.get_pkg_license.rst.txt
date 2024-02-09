@@ -1,0 +1,6 @@
+locpix.scripts.development.licenses.get\_pkg\_license
+=====================================================
+
+.. currentmodule:: locpix.scripts.development.licenses
+
+.. autofunction:: get_pkg_license

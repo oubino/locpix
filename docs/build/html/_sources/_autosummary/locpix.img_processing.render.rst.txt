@@ -1,0 +1,17 @@
+locpix.img\_processing.render
+=============================
+
+.. automodule:: locpix.img_processing.render
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      visualise_seg_item

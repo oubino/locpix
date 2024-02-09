@@ -1,0 +1,6 @@
+locpix.img\_processing.render.visualise\_seg\_item
+==================================================
+
+.. currentmodule:: locpix.img_processing.render
+
+.. autofunction:: visualise_seg_item

@@ -1,0 +1,22 @@
+﻿locpix.img\_processing.data\_loading.dataset
+============================================
+
+.. automodule:: locpix.img_processing.data_loading.dataset
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      ImgDataset

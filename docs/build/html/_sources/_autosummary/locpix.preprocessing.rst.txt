@@ -1,0 +1,32 @@
+locpix.preprocessing
+====================
+
+.. automodule:: locpix.preprocessing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   locpix.preprocessing.datastruc
+   locpix.preprocessing.functions

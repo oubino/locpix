@@ -148,44 +148,16 @@ def main():
             project_folder,
             f"membrane_performance/{method}/membrane/seg_dataframes/val/{fold}",
         )
-        # output_seg_imgs_test = os.path.join(
-        #    project_folder,
-        #    f"membrane_performance/{method}/membrane/seg_images/test/{fold}",
-        # )
-        # output_seg_imgs_val = os.path.join(
-        #    project_folder,
-        #    f"membrane_performance/{method}/membrane/seg_images/val/{fold}",
-        # )
-        # output_train_pr = os.path.join(
-        #    project_folder,
-        #    f"membrane_performance/{method}/membrane/train_pr/{fold}",
-        # )
-        # output_test_pr = os.path.join(
-        #    project_folder, f"membrane_performance/{method}/membrane/test_pr/
-        # {fold}"
-        # )
-        # output_val_pr = os.path.join(
-        #    project_folder, f"membrane_performance/{method}/membrane/val_pr/{fold}"
-        # )
+
         output_metrics = os.path.join(
             project_folder, f"membrane_performance/{method}/membrane/metrics/{fold}"
         )
-        # output_conf_matrix = os.path.join(
-        #    project_folder,
-        #    f"membrane_performance/{method}/membrane/conf_matrix/{fold}",
-        # )
 
         # create output folders
         folders = [
             output_df_folder_test,
             output_df_folder_val,
-            # output_seg_imgs_val,
-            # output_seg_imgs_test,
-            # output_train_pr,
-            # output_val_pr,
-            # output_test_pr,
             output_metrics,
-            # output_conf_matrix,
         ]
 
         for folder in folders:
@@ -244,20 +216,6 @@ def main():
         lines.append(f"prcurve_baseline: {baseline}")
         with open(save_loc, "w") as f:
             f.writelines("\n".join(lines))
-
-        # plot pr curve
-        # save_loc = os.path.join(output_train_pr, "_curve.pkl")
-        # plot_pr_curve(
-        #     ax_train,
-        #     method.capitalize(),
-        #     linestyles[index],
-        #     "darkorange",
-        #     pr,
-        #     rec,
-        #     baseline,
-        #     # save_loc,
-        #     # pickle=True,
-        # )
 
         # calculate optimal threshold
         if config["maximise_choice"] == "recall":
@@ -339,30 +297,6 @@ def main():
                 output_df_folder_test, drop_zero_label=False, drop_pixel_col=True
             )
 
-            # also save image of predicted membrane
-            # output_img = np.where(img_prob > threshold, 1, 0)
-
-            # img = np.transpose(histo, (0, 2, 1))
-
-            # consider the correct channel
-            # save_loc = os.path.join(output_seg_imgs_test, item.name + ".png")
-            # vis_img.visualise_seg(
-            #     img,
-            #     output_img,
-            #     item.bin_sizes,
-            #     axes=[0],
-            #     label_map=label_map,
-            #     threshold=config["vis_threshold"],
-            #     how=config["vis_interpolate"],
-            #     origin="upper",
-            #     blend_overlays=False,
-            #     alpha_seg=0.8,
-            #     cmap_seg=["k", "y"],
-            #     save=True,
-            #     save_loc=save_loc,
-            #     four_colour=False,
-            # )
-
             # sanity check all have same gt label map
             if gt_label_map is None:
                 gt_label_map = item.gt_label_map
@@ -378,19 +312,6 @@ def main():
         pr, rec, pr_threshold = precision_recall_curve(gt_list, prob_list, pos_label=1)
         baseline = len(gt_list[gt_list == 1]) / len(gt_list)
 
-        # plot pr curve
-        # save_loc = os.path.join(output_test_pr, "_curve.pkl")
-        # plot_pr_curve(
-        #     ax_test,
-        #     method.capitalize(),
-        #     linestyles[index],
-        #     "darkorange",
-        #     pr,
-        #     rec,
-        #     baseline,
-        #     # save_loc,
-        #     # pickle=True,
-        # )
         pr_auc = auc(rec, pr)
         add_metrics = {
             "pr_auc": pr_auc,
@@ -408,12 +329,6 @@ def main():
             add_metrics=add_metrics,
             metadata=metadata,
         )
-
-        # calculate confusion matrix
-        # saveloc = os.path.join(output_conf_matrix, f"conf_matrix_test_{date}.png")
-        # classes = [item.gt_label_map[0], item.gt_label_map[1]]
-        # generate_binary_conf_matrix(tn, fp, fn, tp, classes, saveloc)
-        # could just use aggregated metric function to plot the confusion matrix
 
         print("Val set...")
 
@@ -472,30 +387,6 @@ def main():
                 output_df_folder_val, drop_zero_label=False, drop_pixel_col=True
             )
 
-            # also save image of predicted membrane
-            # output_img = np.where(img_prob > threshold, 1, 0)
-
-            # img = np.transpose(histo, (0, 2, 1))
-
-            # consider the correct channel
-            # save_loc = os.path.join(output_seg_imgs_val, item.name + ".png")
-            # vis_img.visualise_seg(
-            #     img,
-            #     output_img,
-            #     item.bin_sizes,
-            #     axes=[0],
-            #     label_map=label_map,
-            #     threshold=config["vis_threshold"],
-            #     how=config["vis_interpolate"],
-            #     origin="upper",
-            #     blend_overlays=False,
-            #     alpha_seg=0.8,
-            #     cmap_seg=["k", "y"],
-            #     save=True,
-            #     save_loc=save_loc,
-            #     four_colour=False,
-            # )
-
             # sanity check all have same gt label map
             if gt_label_map is None:
                 gt_label_map = item.gt_label_map
@@ -511,19 +402,6 @@ def main():
         pr, rec, pr_threshold = precision_recall_curve(gt_list, prob_list, pos_label=1)
         baseline = len(gt_list[gt_list == 1]) / len(gt_list)
 
-        # plot pr curve
-        # save_loc = os.path.join(output_val_pr, "_curve.pkl")
-        # plot_pr_curve(
-        #     ax_val,
-        #     method.capitalize(),
-        #     linestyles[index],
-        #     "darkorange",
-        #     pr,
-        #     rec,
-        #     baseline,
-        #     # save_loc,
-        #     # pickle=True,
-        # )
         pr_auc = auc(rec, pr)
         add_metrics = {
             "pr_auc": pr_auc,
@@ -541,35 +419,6 @@ def main():
             add_metrics=add_metrics,
             metadata=metadata,
         )
-
-        # calculate confusion matrix
-        # saveloc = os.path.join(output_conf_matrix, f"conf_matrix_val_{date}.png")
-        # classes = [item.gt_label_map[0], item.gt_label_map[1]]
-        # generate_binary_conf_matrix(tn, fp, fn, tp, classes, saveloc)
-
-        # fig_train.tight_layout()
-        # fig_test.tight_layout()
-        # fig_val.tight_layout()
-
-        # get handles and labels
-        # handles_train, labels_train = ax_train.get_legend_handles_labels()
-        # handles_test, labels_test = ax_test.get_legend_handles_labels()
-
-        # specify order of items in legend
-        # order = [1,0,2]
-
-        # add legend to plot
-        # ax_train.legend([handles_train[idx] for idx in order],
-        #                   [methods[idx] for idx in order])
-        # ax_test.legend([handles_test[idx] for idx in order],
-        #                   [methods[idx] for idx in order])
-
-        # fig_train.savefig(os.path.join(output_overlay_pr_curves,
-        # "_train.png"), dpi=600)
-        # fig_test.savefig(os.path.join(output_overlay_pr_curves,
-        # "_test.png"), dpi=600)
-        # fig_val.savefig(os.path.join(output_overlay_pr_curves,
-        # "_val.png"), dpi=600)
 
     # save yaml file
     yaml_save_loc = os.path.join(project_folder, "membrane_performance.yaml")

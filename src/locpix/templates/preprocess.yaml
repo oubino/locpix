@@ -1,6 +1,6 @@
-# The following are the names of the
-# x column, y column, z column if present, channel, frame,
-# in the csvs being processed
+# Name of the column which has the x, y, z (if present) coordinates,
+# the channel and frame information in the csvs being processed
+# [If not present put null]
 x_col: 'X (nm)'
 y_col: 'Y (nm)'
 z_col: null
@@ -12,18 +12,16 @@ frame_col: 'Frame'
 # If 3 will read in and deal with z as well (currently not fully supported)
 dim: 2
 
-# choice of which channels user wants to consider
+# Choice of which channels user wants to consider
 channel_choice: [0,1,2,3]
 
-# label for what each channel represents
-# where unk is unknown
+# Label for what each channel represents in real terms where unk is unknown
 channel_label: ['egfr','ereg','unk','unk']
 
-# whether to not drop the column containing
-# pixel
-drop_pixel_col: False
-
-# files to include
+# Files to include - if want all files
 include_files: all
-#- file_1
-#- file_2 (no extensions!)
+
+# Otherwise list the files without extensions (e.g. .csv)
+# include_files:
+# - file_1
+# - file_2

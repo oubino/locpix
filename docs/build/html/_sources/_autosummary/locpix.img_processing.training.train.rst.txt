@@ -1,0 +1,17 @@
+﻿locpix.img\_processing.training.train
+=====================================
+
+.. automodule:: locpix.img_processing.training.train
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      train_loop

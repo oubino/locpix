@@ -1,0 +1,1043 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>locpix.preprocessing.datastruc.item &#8212; locpix 0.1.0.1 documentation</title>
+
+
+
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/locpix.preprocessing.datastruc.item';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="locpix.preprocessing.functions" href="locpix.preprocessing.functions.html" />
+    <link rel="prev" title="locpix.preprocessing.datastruc" href="locpix.preprocessing.datastruc.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+
+
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+
+
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div id="pst-scroll-pixel-helper"></div>
+
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+
+
+  <div class="col-lg-3 navbar-header-items__start">
+
+      <div class="navbar-item">
+
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+
+
+
+
+
+
+
+
+
+    <img src="../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+
+
+</a></div>
+
+  </div>
+
+  <div class="col-lg-9 navbar-header-items">
+
+    <div class="me-auto navbar-header-items__center">
+
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../development/index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+    </div>
+
+
+    <div class="navbar-header-items__end">
+
+        <div class="navbar-item navbar-persistent--container">
+
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+
+
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+    </div>
+
+  </div>
+
+
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+
+
+
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+
+</div>
+
+    </header>
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+
+
+
+      <div class="bd-sidebar-primary bd-sidebar">
+
+
+
+  <div class="sidebar-header-items sidebar-primary__section">
+
+
+      <div class="sidebar-header-items__center">
+
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        User guide
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../development/index.html">
+                        Development
+                      </a>
+                    </li>
+
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="locpix.html">
+                        API
+                      </a>
+                    </li>
+
+  </ul>
+</nav></div>
+
+      </div>
+
+
+
+      <div class="sidebar-header-items__end">
+
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+
+      </div>
+
+  </div>
+
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="locpix.evaluate.html">locpix.evaluate</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.evaluate.metrics.html">locpix.evaluate.metrics</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="locpix.evaluate.metrics.aggregated_metrics.html">locpix.evaluate.metrics.aggregated_metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locpix.evaluate.metrics.mean_metrics.html">locpix.evaluate.metrics.mean_metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locpix.evaluate.metrics.metric_calculation.html">locpix.evaluate.metrics.metric_calculation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="locpix.img_processing.html">locpix.img_processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.img_processing.data_loading.html">locpix.img_processing.data_loading</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.img_processing.data_loading.dataset.html">locpix.img_processing.data_loading.dataset</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.img_processing.data_loading.dataset.ImgDataset.html">locpix.img_processing.data_loading.dataset.ImgDataset</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.img_processing.data_loading.transforms.html">locpix.img_processing.data_loading.transforms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.img_processing.data_loading.transforms.transform.html">locpix.img_processing.data_loading.transforms.transform</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.img_processing.models.html">locpix.img_processing.models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.img_processing.models.unet.html">locpix.img_processing.models.unet</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.img_processing.models.unet.DoubleConv.html">locpix.img_processing.models.unet.DoubleConv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.img_processing.models.unet.Down.html">locpix.img_processing.models.unet.Down</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.img_processing.models.unet.OutConv.html">locpix.img_processing.models.unet.OutConv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.img_processing.models.unet.Up.html">locpix.img_processing.models.unet.Up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.img_processing.models.unet.two_d_UNet.html">locpix.img_processing.models.unet.two_d_UNet</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.img_processing.render.html">locpix.img_processing.render</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="locpix.img_processing.render.visualise_seg_item.html">locpix.img_processing.render.visualise_seg_item</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.img_processing.training.html">locpix.img_processing.training</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.img_processing.training.loss.html">locpix.img_processing.training.loss</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.img_processing.training.loss.dice_loss.html">locpix.img_processing.training.loss.dice_loss</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.img_processing.training.train.html">locpix.img_processing.training.train</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.img_processing.training.train.train_loop.html">locpix.img_processing.training.train.train_loop</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.img_processing.watershed.html">locpix.img_processing.watershed</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="locpix.img_processing.watershed.get_markers.html">locpix.img_processing.watershed.get_markers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locpix.img_processing.watershed.watershed_segment.html">locpix.img_processing.watershed.watershed_segment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locpix.img_processing.watershed.WatershedWidget.html">locpix.img_processing.watershed.WatershedWidget</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="locpix.preprocessing.html">locpix.preprocessing</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="locpix.preprocessing.datastruc.html">locpix.preprocessing.datastruc</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">locpix.preprocessing.datastruc.item</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.preprocessing.functions.html">locpix.preprocessing.functions</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="locpix.preprocessing.functions.file_to_datastruc.html">locpix.preprocessing.functions.file_to_datastruc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="locpix.scripts.html">locpix.scripts</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-17"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.scripts.development.html">locpix.scripts.development</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-18"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="locpix.scripts.development.clean_up.html">locpix.scripts.development.clean_up</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.development.file_names.html">locpix.scripts.development.file_names</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-19"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.development.file_names.main.html">locpix.scripts.development.file_names.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.development.licenses.html">locpix.scripts.development.licenses</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-20"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.development.licenses.get_pkg_license.html">locpix.scripts.development.licenses.get_pkg_license</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.development.licenses.print_packages_and_licenses.html">locpix.scripts.development.licenses.print_packages_and_licenses</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.scripts.img_seg.html">locpix.scripts.img_seg</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-21"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.agg_metrics.html">locpix.scripts.img_seg.agg_metrics</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-22"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.agg_metrics.main.html">locpix.scripts.img_seg.agg_metrics.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.cellpose_eval.html">locpix.scripts.img_seg.cellpose_eval</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-23"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.cellpose_eval.main.html">locpix.scripts.img_seg.cellpose_eval.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.cellpose_train.html">locpix.scripts.img_seg.cellpose_train</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-24"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.cellpose_train.main.html">locpix.scripts.img_seg.cellpose_train.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.classic.html">locpix.scripts.img_seg.classic</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-25"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.classic.main.html">locpix.scripts.img_seg.classic.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.get_markers.html">locpix.scripts.img_seg.get_markers</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-26"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.get_markers.main.html">locpix.scripts.img_seg.get_markers.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.ilastik_output.html">locpix.scripts.img_seg.ilastik_output</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-27"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.ilastik_output.main.html">locpix.scripts.img_seg.ilastik_output.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.ilastik_prep.html">locpix.scripts.img_seg.ilastik_prep</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-28"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.ilastik_prep.main.html">locpix.scripts.img_seg.ilastik_prep.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.img_train_prep.html">locpix.scripts.img_seg.img_train_prep</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-29"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.img_train_prep.clean_up.html">locpix.scripts.img_seg.img_train_prep.clean_up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.img_train_prep.clean_up_all.html">locpix.scripts.img_seg.img_train_prep.clean_up_all</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.img_train_prep.parquet_2_img.html">locpix.scripts.img_seg.img_train_prep.parquet_2_img</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.img_train_prep.preprocess_all_files.html">locpix.scripts.img_seg.img_train_prep.preprocess_all_files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.img_train_prep.preprocess_train_files.html">locpix.scripts.img_seg.img_train_prep.preprocess_train_files</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.membrane_performance.html">locpix.scripts.img_seg.membrane_performance</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-30"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.membrane_performance.main.html">locpix.scripts.img_seg.membrane_performance.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.membrane_performance_method.html">locpix.scripts.img_seg.membrane_performance_method</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-31"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.membrane_performance_method.main.html">locpix.scripts.img_seg.membrane_performance_method.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.train_prep.html">locpix.scripts.img_seg.train_prep</a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-32"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.train_prep.main.html">locpix.scripts.img_seg.train_prep.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.img_seg.unet_train.html">locpix.scripts.img_seg.unet_train</a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-33"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.img_seg.unet_train.main.html">locpix.scripts.img_seg.unet_train.main</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.scripts.preprocessing.html">locpix.scripts.preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-34"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.preprocessing.annotate.html">locpix.scripts.preprocessing.annotate</a><input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-35"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.preprocessing.annotate.main.html">locpix.scripts.preprocessing.annotate.main</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="locpix.scripts.preprocessing.preprocess.html">locpix.scripts.preprocessing.preprocess</a><input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-36"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.preprocessing.preprocess.main.html">locpix.scripts.preprocessing.preprocess.main</a></li>
+<li class="toctree-l4"><a class="reference internal" href="locpix.scripts.preprocessing.preprocess.project_info.html">locpix.scripts.preprocessing.preprocess.project_info</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="locpix.templates.html">locpix.templates</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="locpix.visualise.html">locpix.visualise</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-37"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.visualise.performance.html">locpix.visualise.performance</a><input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-38"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="locpix.visualise.performance.generate_binary_conf_matrix.html">locpix.visualise.performance.generate_binary_conf_matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locpix.visualise.performance.plot_pr_curve.html">locpix.visualise.performance.plot_pr_curve</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="locpix.visualise.vis_img.html">locpix.visualise.vis_img</a><input class="toctree-checkbox" id="toctree-checkbox-39" name="toctree-checkbox-39" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-39"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="locpix.visualise.vis_img.img_2_grey.html">locpix.visualise.vis_img.img_2_grey</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locpix.visualise.vis_img.label_2_4_colours.html">locpix.visualise.vis_img.label_2_4_colours</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locpix.visualise.vis_img.manual_threshold.html">locpix.visualise.vis_img.manual_threshold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locpix.visualise.vis_img.plot_img.html">locpix.visualise.vis_img.plot_img</a></li>
+<li class="toctree-l3"><a class="reference internal" href="locpix.visualise.vis_img.visualise_seg.html">locpix.visualise.vis_img.visualise_seg</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+
+
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+
+      <main id="main-content" class="bd-main">
+
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+
+    <div class="header-article-items__start">
+
+        <div class="header-article-item">
+
+
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+
+    <li class="breadcrumb-item"><a href="locpix.html" class="nav-link">locpix</a></li>
+
+
+    <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
+
+
+    <li class="breadcrumb-item"><a href="locpix.preprocessing.datastruc.html" class="nav-link">locpix.preprocessing.datastruc</a></li>
+
+    <li class="breadcrumb-item active" aria-current="page">locpix.prepr...</li>
+  </ul>
+</nav>
+</div>
+
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+<div id="searchbox"></div>
+                <article class="bd-article">
+
+  <section id="locpix-preprocessing-datastruc-item">
+<h1>locpix.preprocessing.datastruc.item<a class="headerlink" href="#locpix-preprocessing-datastruc-item" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">histo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">histo_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">histo_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_sizes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt_label_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>smlm datastructure.</p>
+<p>This is the basic datastructure which will contain all the information
+from a point set that is needed</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.name" title="Link to this definition">#</a></dt>
+<dd><p>Contains the name of the item</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.df">
+<span class="sig-name descname"><span class="pre">df</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.df" title="Link to this definition">#</a></dt>
+<dd><p>Dataframe with the data contained, containing
+columns: ‘channel’ ‘frame’ ‘x’ ‘y’ ‘z’.
+If manual annotation is done an additional column ‘gt_label’
+will be present</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>polars dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.dim">
+<span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.dim" title="Link to this definition">#</a></dt>
+<dd><p>Dimensions of data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.channels">
+<span class="sig-name descname"><span class="pre">channels</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.channels" title="Link to this definition">#</a></dt>
+<dd><p>list of ints, representing channels user wants
+to consider in the original data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.channel_label">
+<span class="sig-name descname"><span class="pre">channel_label</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.channel_label" title="Link to this definition">#</a></dt>
+<dd><p>The label for each channel
+i.e. [‘egfr’, ‘ereg’,’unk’] means
+channel 0 is egfr protein, channel 1 is ereg proteins and
+channel 2 is unknown</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.histo">
+<span class="sig-name descname"><span class="pre">histo</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.histo" title="Link to this definition">#</a></dt>
+<dd><p>Dictionary of 2D or 3D arrays. Each key corresponds
+to the channel for which the histogram
+contains the relevant binned data, in form [X,Y,Z]
+i.e. histo[1] = histogram of channel 1 localisations.
+Note that if considering an image, need to transpose
+the histogram to follow image conventions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.histo_edges">
+<span class="sig-name descname"><span class="pre">histo_edges</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.histo_edges" title="Link to this definition">#</a></dt>
+<dd><p>Tuple containing (x_edges,y_edges) or (x_edges, y_edges, z_edges)
+where x/y/z_edges are list of floats, each representing the
+edge of the bin in the original space.
+e.g. ([0,10,20],[13,25,20],[2,3,4])</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple of lists; each list contains floats</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.histo_mask">
+<span class="sig-name descname"><span class="pre">histo_mask</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.histo_mask" title="Link to this definition">#</a></dt>
+<dd><p>Array containing integers where each should
+represent a different label of the MANUAL segmentation
+0 is reserved for background, is of form [X,Y,Z]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.bin_sizes">
+<span class="sig-name descname"><span class="pre">bin_sizes</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.bin_sizes" title="Link to this definition">#</a></dt>
+<dd><p>Size of bins of the histogram
+e.g. (23.2, 34.5, 21.3)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple of floats</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.gt_label_map">
+<span class="sig-name descname"><span class="pre">gt_label_map</span></span><a class="headerlink" href="#locpix.preprocessing.datastruc.item.gt_label_map" title="Link to this definition">#</a></dt>
+<dd><p>Dictionary with integer keys
+representing the gt labels for each localisation
+with value being a string, representing the
+real concept e.g. 0:’dog’, 1:’cat’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialises item</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">histo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">histo_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">histo_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_sizes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt_label_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialises item</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.__init__" title="locpix.preprocessing.datastruc.item.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(name, df, dim, channels, channel_label)</p></td>
+<td><p>Initialises item</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.chan_2_label" title="locpix.preprocessing.datastruc.item.chan_2_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chan_2_label</span></code></a>(chan)</p></td>
+<td><p>Returns the label associated with the channel specified</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.coord_2_histo" title="locpix.preprocessing.datastruc.item.coord_2_histo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coord_2_histo</span></code></a>(histo_size)</p></td>
+<td><p>Converts localisations into histogram of desired size, with option to plot the image (histo.T).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.label_2_chan" title="locpix.preprocessing.datastruc.item.label_2_chan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label_2_chan</span></code></a>(label)</p></td>
+<td><p>Returns the channel associated with the channel label specified</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.load_from_parquet" title="locpix.preprocessing.datastruc.item.load_from_parquet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from_parquet</span></code></a>(input_file)</p></td>
+<td><p>Loads item saved as .parquet file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.manual_segment" title="locpix.preprocessing.datastruc.item.manual_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manual_segment</span></code></a>([cmap, relabel, markers_loc])</p></td>
+<td><p>Manually segment the image (histogram.T).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.mask_pixel_2_coord" title="locpix.preprocessing.datastruc.item.mask_pixel_2_coord"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mask_pixel_2_coord</span></code></a>(img_mask)</p></td>
+<td><p>For a given mask over the image (value at each pixel normally representing a label), return the dataframe with a column giving the value for each localisation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.render_histo" title="locpix.preprocessing.datastruc.item.render_histo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_histo</span></code></a>([labels])</p></td>
+<td><p>Render the histogram from the .parquet file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.render_seg" title="locpix.preprocessing.datastruc.item.render_seg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_seg</span></code></a>()</p></td>
+<td><p>Render the segmentation of the histogram</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.save_df_to_csv" title="locpix.preprocessing.datastruc.item.save_df_to_csv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_df_to_csv</span></code></a>(csv_loc[, drop_zero_label, ...])</p></td>
+<td><p>Save the dataframe to a .csv with option to:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#locpix.preprocessing.datastruc.item.save_to_parquet" title="locpix.preprocessing.datastruc.item.save_to_parquet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_to_parquet</span></code></a>(save_folder[, ...])</p></td>
+<td><p>Save the dataframe to a parquet with option to drop positions which</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.chan_2_label">
+<span class="sig-name descname"><span class="pre">chan_2_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.chan_2_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.chan_2_label" title="Link to this definition">#</a></dt>
+<dd><p>Returns the label associated with the channel specified</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chan</strong> (<em>int</em>) – Integer representing the channel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.coord_2_histo">
+<span class="sig-name descname"><span class="pre">coord_2_histo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">histo_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.coord_2_histo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.coord_2_histo" title="Link to this definition">#</a></dt>
+<dd><p>Converts localisations into histogram of desired size,
+with option to plot the image (histo.T).
+Note the interpolation is only applied for visualisation,
+not for the actual data in the histogram!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>histo_size</strong> (<em>tuple</em>) – Tuple representing number of
+bins/pixels in x,y,z</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.label_2_chan">
+<span class="sig-name descname"><span class="pre">label_2_chan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.label_2_chan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.label_2_chan" title="Link to this definition">#</a></dt>
+<dd><p>Returns the channel associated with the channel label
+specified</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>string</em>) – String representing the label you want
+to find the channel for</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.load_from_parquet">
+<span class="sig-name descname"><span class="pre">load_from_parquet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.load_from_parquet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.load_from_parquet" title="Link to this definition">#</a></dt>
+<dd><p>Loads item saved as .parquet file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_file</strong> (<em>string</em>) – Location of the .parquet file to
+load dataitem from</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.manual_segment">
+<span class="sig-name descname"><span class="pre">manual_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['green',</span> <span class="pre">'red',</span> <span class="pre">'blue',</span> <span class="pre">'bop</span> <span class="pre">purple']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markers_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.manual_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.manual_segment" title="Link to this definition">#</a></dt>
+<dd><p>Manually segment the image (histogram.T). Return the segmented
+histogram and extra column in dataframe corresponding to label.
+0 should be reserved for background</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cmap</strong> (<em>list</em><em> of </em><em>strings</em>) – Colourmaps napari uses to
+plot the histograms</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Coordinates of markers if added</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>markers (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.mask_pixel_2_coord">
+<span class="sig-name descname"><span class="pre">mask_pixel_2_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.mask_pixel_2_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.mask_pixel_2_coord" title="Link to this definition">#</a></dt>
+<dd><p>For a given mask over the image (value at each pixel
+normally representing a label), return the dataframe with a column
+giving the value for each localisation. Note that it is
+assumed that the img_mask is a mask of the image,
+therefore have to transpose img_mask for it to be in the same
+configuration as the histogram</p>
+<p>Note we also use this for  labels and when
+the img_mask represents probabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img_mask</strong> (<em>np.ndarray</em>) – Mask over the image -</p></li>
+<li><p><strong>reiterate</strong> (<em>to</em>) – </p></li>
+<li><p><strong>need</strong> (<em>to convert this to histogram space</em>) – </p></li>
+<li><p><strong>it</strong> (<em>to transpose</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Original dataframe with
+additional column with the predicted label</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>df (polars dataframe)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.render_histo">
+<span class="sig-name descname"><span class="pre">render_histo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.render_histo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.render_histo" title="Link to this definition">#</a></dt>
+<dd><p>Render the histogram from the .parquet file</p>
+<p>If labels are specified then the histogram is rendered in the order
+of these lables
+If not specified defaults to rendering in the channels specified
+in order by user e.g. [0,3,1,2]
+Assumes localisations have associated x_pixel and y_pixel already.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>labels</strong> (<em>list</em>) – Order of labels to stack histograms in
+e.g. labels=[‘egfr’,’ereg’] means all images will
+be returned with egfr in channel 0 and ereg in
+channel 1</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Histogram of the localisation data
+channel_map (list) : List where the first value is the</p>
+<blockquote>
+<div><p>channel in the first axis of the histogram, second value
+is the channel in the second axis of the histogram etc.
+e.g. [1,3] : 1st channel is in 1st axis, 3rd channel in 2nd axis</p>
+</div></blockquote>
+<dl class="simple">
+<dt>label_map (list)<span class="classifier">List where the first value is the</span></dt><dd><p>label in the first axis of the histogram, second value
+is the channel in the second axis of the histogram etc.
+e.g. [‘egfr’,’ereg’] : egfr is in 1st axis, ereg in 2nd axis</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>histo (np.histogram)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.render_seg">
+<span class="sig-name descname"><span class="pre">render_seg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.render_seg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.render_seg" title="Link to this definition">#</a></dt>
+<dd><p>Render the segmentation of the histogram</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.save_df_to_csv">
+<span class="sig-name descname"><span class="pre">save_df_to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_zero_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_pixel_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_chan_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.save_df_to_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.save_df_to_csv" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Save the dataframe to a .csv with option to:</dt><dd><p>drop positions which are background
+drop the column containing pixel information
+save additional column with labels for each
+localisation</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_loc</strong> (<em>String</em>) – Save the csv to this location</p></li>
+<li><p><strong>drop_zero_label</strong> (<em>bool</em>) – If True then only non zero
+label positions are saved to csv</p></li>
+<li><p><strong>drop_pixel_col</strong> (<em>bool</em>) – If True then don’t save
+the column with x,y,z pixel</p></li>
+<li><p><strong>save_chan_label</strong> (<em>bool</em>) – If True then save an
+additional column for each localisation
+containing the label for each channel</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="locpix.preprocessing.datastruc.item.save_to_parquet">
+<span class="sig-name descname"><span class="pre">save_to_parquet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_zero_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_pixel_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt_label_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/locpix/preprocessing/datastruc.html#item.save_to_parquet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#locpix.preprocessing.datastruc.item.save_to_parquet" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Save the dataframe to a parquet with option to drop positions which</dt><dd><p>are background and can drop the column containing pixel
+information</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save_folder</strong> (<em>String</em>) – Save the df to this folder</p></li>
+<li><p><strong>drop_zero_label</strong> (<em>bool</em>) – If True then only non zero
+label positions are saved to parquet</p></li>
+<li><p><strong>drop_pixel_col</strong> (<em>bool</em>) – If True then don’t save
+the column with x,y,z pixel</p></li>
+<li><p><strong>gt_label_map</strong> (<em>dict</em>) – Dictionary with integer keys
+representing the gt labels for each localisation
+with value being a string, representing the
+real concept e.g. 0:’dog’, 1:’cat’</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em>) – Whether to overwrite</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+
+
+
+
+
+                <footer class="prev-next-footer">
+
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="locpix.preprocessing.datastruc.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">locpix.preprocessing.datastruc</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="locpix.preprocessing.functions.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">locpix.preprocessing.functions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+
+            </div>
+
+
+
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item"><code class="docutils literal notranslate"><span class="pre">item</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.name"><code class="docutils literal notranslate"><span class="pre">item.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.df"><code class="docutils literal notranslate"><span class="pre">item.df</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.dim"><code class="docutils literal notranslate"><span class="pre">item.dim</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.channels"><code class="docutils literal notranslate"><span class="pre">item.channels</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.channel_label"><code class="docutils literal notranslate"><span class="pre">item.channel_label</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.histo"><code class="docutils literal notranslate"><span class="pre">item.histo</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.histo_edges"><code class="docutils literal notranslate"><span class="pre">item.histo_edges</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.histo_mask"><code class="docutils literal notranslate"><span class="pre">item.histo_mask</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.bin_sizes"><code class="docutils literal notranslate"><span class="pre">item.bin_sizes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.gt_label_map"><code class="docutils literal notranslate"><span class="pre">item.gt_label_map</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.__init__"><code class="docutils literal notranslate"><span class="pre">item.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.chan_2_label"><code class="docutils literal notranslate"><span class="pre">item.chan_2_label()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.coord_2_histo"><code class="docutils literal notranslate"><span class="pre">item.coord_2_histo()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.label_2_chan"><code class="docutils literal notranslate"><span class="pre">item.label_2_chan()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.load_from_parquet"><code class="docutils literal notranslate"><span class="pre">item.load_from_parquet()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.manual_segment"><code class="docutils literal notranslate"><span class="pre">item.manual_segment()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.mask_pixel_2_coord"><code class="docutils literal notranslate"><span class="pre">item.mask_pixel_2_coord()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.render_histo"><code class="docutils literal notranslate"><span class="pre">item.render_histo()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.render_seg"><code class="docutils literal notranslate"><span class="pre">item.render_seg()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.save_df_to_csv"><code class="docutils literal notranslate"><span class="pre">item.save_df_to_csv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#locpix.preprocessing.datastruc.item.save_to_parquet"><code class="docutils literal notranslate"><span class="pre">item.save_to_parquet()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+
+
+          </div>
+          <footer class="bd-footer-content">
+
+          </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+
+    <div class="footer-items__start">
+
+        <div class="footer-item">
+
+  <p class="copyright">
+
+      © Copyright 2022, Oliver Umney.
+      <br/>
+
+  </p>
+</div>
+
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+
+    </div>
+
+
+
+    <div class="footer-items__end">
+
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+
+    </div>
+
+</div>
+
+  </footer>
+  </body>
+</html>

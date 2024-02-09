@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.cellpose\_eval.main
+===========================================
+
+.. currentmodule:: locpix.scripts.img_seg.cellpose_eval
+
+.. autofunction:: main

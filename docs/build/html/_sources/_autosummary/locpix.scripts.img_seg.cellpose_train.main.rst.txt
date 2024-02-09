@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.cellpose\_train.main
+============================================
+
+.. currentmodule:: locpix.scripts.img_seg.cellpose_train
+
+.. autofunction:: main

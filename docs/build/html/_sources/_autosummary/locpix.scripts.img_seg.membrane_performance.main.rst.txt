@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.membrane\_performance.main
+==================================================
+
+.. currentmodule:: locpix.scripts.img_seg.membrane_performance
+
+.. autofunction:: main

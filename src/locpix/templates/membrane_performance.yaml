@@ -1,11 +1,2 @@
-# which to maximise (recall or f)
+# Which to maximise during precision-recall curve - recall or F1 score
 maximise_choice: 'f'
-
-# membrane images
-vis_threshold: 0
-vis_interpolate: 'log2'
-
-# which channel to save image of
-channel: 'egfr'
-
-alt_channel: 'ereg'

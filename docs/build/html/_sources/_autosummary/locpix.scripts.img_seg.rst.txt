@@ -1,0 +1,42 @@
+locpix.scripts.img\_seg
+=======================
+
+.. automodule:: locpix.scripts.img_seg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   locpix.scripts.img_seg.agg_metrics
+   locpix.scripts.img_seg.cellpose_eval
+   locpix.scripts.img_seg.cellpose_train
+   locpix.scripts.img_seg.classic
+   locpix.scripts.img_seg.get_markers
+   locpix.scripts.img_seg.ilastik_output
+   locpix.scripts.img_seg.ilastik_prep
+   locpix.scripts.img_seg.img_train_prep
+   locpix.scripts.img_seg.membrane_performance
+   locpix.scripts.img_seg.membrane_performance_method
+   locpix.scripts.img_seg.train_prep
+   locpix.scripts.img_seg.unet_train

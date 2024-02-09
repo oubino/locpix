@@ -1,0 +1,19 @@
+locpix.evaluate.metrics
+=======================
+
+.. automodule:: locpix.evaluate.metrics
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      aggregated_metrics
+      mean_metrics
+      metric_calculation

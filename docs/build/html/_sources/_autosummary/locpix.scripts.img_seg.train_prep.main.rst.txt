@@ -1,0 +1,6 @@
+locpix.scripts.img\_seg.train\_prep.main
+========================================
+
+.. currentmodule:: locpix.scripts.img_seg.train_prep
+
+.. autofunction:: main

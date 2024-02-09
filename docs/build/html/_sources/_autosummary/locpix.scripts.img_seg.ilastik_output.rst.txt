@@ -1,0 +1,17 @@
+locpix.scripts.img\_seg.ilastik\_output
+=======================================
+
+.. automodule:: locpix.scripts.img_seg.ilastik_output
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+
+      main
