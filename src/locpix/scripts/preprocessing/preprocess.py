@@ -8,6 +8,7 @@ import os
 import yaml
 from locpix.preprocessing import functions
 import argparse
+from importlib.resources import files as importlib_files
 import time
 import json
 import socket
@@ -135,7 +136,6 @@ def main():
             output_path = os.path.join(
                 output_folder, f"{file_name.replace('.csv', '.parquet')}"
             )
-            input("check this makes sense and if it doesnt then stop")
             if os.path.exists(output_path):
                 raise ValueError("Can't preprocess as output file already exists")
         print(files)
@@ -182,8 +182,9 @@ def main():
         )
 
     # add visualisation notebook
+    src = importlib_files("locpix.templates").joinpath("visualisation.ipynb")
     shutil.copyfile(
-        "src/locpix/templates/visualisation.ipynb",
+        src,
         os.path.join(project_folder, "visualisation.ipynb"),
     )
 
