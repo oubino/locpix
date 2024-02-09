@@ -1,4 +1,4 @@
-﻿locpix.img\_processing.data\_loading.transforms
+locpix.img\_processing.data\_loading.transforms
 ===============================================
 
 .. automodule:: locpix.img_processing.data_loading.transforms

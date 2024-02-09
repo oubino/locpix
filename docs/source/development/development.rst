@@ -46,7 +46,9 @@ Had to install sphinx-autoapi & pydata theme
 
 Then need to make sure installed torch, torchvision, cellpose as according to README and prettytable
 
-To run
+First delete folder docs/source/_autosummary
+
+Then run
 
 .. code-block:: console
 

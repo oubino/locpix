@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>locpix.scripts.img_seg.agg_metrics &#8212; locpix 0.1.0.1 documentation</title>
+    <title>locpix.scripts.img_seg.agg_metrics &#8212; locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation</title>
 
 
 
@@ -34,7 +34,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../../../../_static/documentation_options.js?v=496ccbbf"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/locpix/scripts/img_seg/agg_metrics';</script>
@@ -116,8 +116,8 @@
 
 
 
-    <img src="../../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
-    <script>document.write(`<img src="../../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+    <img src="../../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>
+    <script>document.write(`<img src="../../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>`);</script>
 
 
 </a></div>
@@ -340,13 +340,12 @@ document.write(`
 <span class="kn">from</span> <span class="nn">locpix.preprocessing</span> <span class="kn">import</span> <span class="n">datastruc</span>
 <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
 
+
 <div class="viewcode-block" id="main">
 <a class="viewcode-back" href="../../../../_autosummary/locpix.scripts.img_seg.agg_metrics.main.html#locpix.scripts.img_seg.agg_metrics.main">[docs]</a>
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Aggregated metrics&quot;</span>
-    <span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Aggregated metrics&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
         <span class="s2">&quot;--project_directory&quot;</span><span class="p">,</span>
@@ -359,7 +358,7 @@ document.write(`
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
     <span class="n">project_folder</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">project_directory</span>
 
-    <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;classic&#39;</span><span class="p">,</span> <span class="s1">&#39;cellpose_no_train&#39;</span><span class="p">,</span> <span class="s1">&#39;cellpose_train&#39;</span><span class="p">,</span> <span class="s1">&#39;ilastik&#39;</span><span class="p">]</span>
+    <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;classic&quot;</span><span class="p">,</span> <span class="s2">&quot;cellpose_no_train&quot;</span><span class="p">,</span> <span class="s2">&quot;cellpose_train&quot;</span><span class="p">,</span> <span class="s2">&quot;ilastik&quot;</span><span class="p">]</span>
 
     <span class="n">metadata_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;metadata.json&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
@@ -367,8 +366,8 @@ document.write(`
     <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
         <span class="c1"># load in train and test files</span>
-        <span class="n">train_folds</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;train_folds&quot;</span><span class="p">]</span>
-        <span class="n">val_folds</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;val_folds&quot;</span><span class="p">]</span>
+        <span class="c1"># train_folds = metadata[&quot;train_folds&quot;]</span>
+        <span class="c1"># val_folds = metadata[&quot;val_folds&quot;]</span>
         <span class="n">test_files</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;test_files&quot;</span><span class="p">]</span>
 
     <span class="c1"># calculate aucprmin</span>
@@ -387,14 +386,24 @@ document.write(`
         <span class="n">item</span><span class="o">.</span><span class="n">load_from_parquet</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gt_file_path</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
 
         <span class="c1"># count labels</span>
-        <span class="n">zeros</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;gt_label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;gt_label&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;counts&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">ones</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;gt_label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;gt_label&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;counts&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">zeros</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;gt_label&quot;</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;gt_label&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">ones</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;gt_label&quot;</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;gt_label&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="n">zero_tot</span> <span class="o">+=</span> <span class="n">zeros</span>
         <span class="n">one_tot</span> <span class="o">+=</span> <span class="n">ones</span>
 
-    <span class="n">skew</span> <span class="o">=</span> <span class="n">one_tot</span><span class="o">/</span><span class="p">(</span><span class="n">zero_tot</span> <span class="o">+</span> <span class="n">one_tot</span><span class="p">)</span>
-    <span class="n">aucprmin</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">skew</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">skew</span><span class="p">))</span><span class="o">/</span><span class="n">skew</span>
+    <span class="n">skew</span> <span class="o">=</span> <span class="n">one_tot</span> <span class="o">/</span> <span class="p">(</span><span class="n">zero_tot</span> <span class="o">+</span> <span class="n">one_tot</span><span class="p">)</span>
+    <span class="n">aucprmin</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skew</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">skew</span><span class="p">))</span> <span class="o">/</span> <span class="n">skew</span>
 
     <span class="c1"># for every fold</span>
     <span class="n">folds</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;train_folds&quot;</span><span class="p">])</span>
@@ -411,17 +420,20 @@ document.write(`
 
         <span class="k">for</span> <span class="n">fold</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">folds</span><span class="p">):</span>
 
-            <span class="c1">#if method == &#39;classic&#39; or method == &#39;cellpose_no_train&#39;:</span>
+            <span class="c1"># if method == &#39;classic&#39; or method == &#39;cellpose_no_train&#39;:</span>
             <span class="c1">#    if fold != 0:</span>
             <span class="c1">#        continue</span>
 
-            <span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;membrane_performance/</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">/membrane/metrics/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
+            <span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">project_folder</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;membrane_performance/</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">/membrane/metrics/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">test_metrics_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
-            <span class="n">test_metrics_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_metrics_loc</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;test_&#39;</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">test_metrics_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_metrics_loc</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;test_&quot;</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">test_metrics_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">test_metrics_loc</span><span class="p">)</span>
 
             <span class="c1"># load in test file</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">test_metrics_loc</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">test_metrics_loc</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">no</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">no</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="n">iou_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">11</span><span class="p">:])</span>
@@ -433,32 +445,31 @@ document.write(`
                         <span class="n">recall_0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recall_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                         <span class="n">recall_1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recall_list</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-                    <span class="k">elif</span> <span class="n">no</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                    <span class="k">elif</span> <span class="n">no</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
                         <span class="n">macc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
                         <span class="n">macc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">macc</span><span class="p">)</span>
 
-                    <span class="k">elif</span> <span class="n">no</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                    <span class="k">elif</span> <span class="n">no</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
                         <span class="n">miou</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
                         <span class="n">miou_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">miou</span><span class="p">)</span>
 
-                    <span class="k">elif</span> <span class="n">no</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
-                        <span class="n">pr_auc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">10</span><span class="p">:])</span>
+                    <span class="k">elif</span> <span class="n">no</span> <span class="o">==</span> <span class="mi">11</span><span class="p">:</span>
+                        <span class="n">pr_auc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">9</span><span class="p">:])</span>
                         <span class="n">pr_auc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pr_auc</span><span class="p">)</span>
 
-
         <span class="c1"># return method results</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Method&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Iou_0 &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">iou_0</span><span class="p">),</span> <span class="s1">&#39; +/- &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">iou_0</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Iou_1 &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">iou_1</span><span class="p">),</span> <span class="s1">&#39; +/- &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">iou_1</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;recall_0 &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">recall_0</span><span class="p">),</span> <span class="s1">&#39; +/- &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">recall_0</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;recall_1 &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">recall_1</span><span class="p">),</span> <span class="s1">&#39; +/- &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">recall_1</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;macc &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">macc_list</span><span class="p">),</span> <span class="s1">&#39; +/- &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">macc_list</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;miou &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">miou_list</span><span class="p">),</span> <span class="s1">&#39; +/- &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">miou_list</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pr_auc&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pr_auc_list</span><span class="p">),</span> <span class="s1">&#39; +/- &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">pr_auc_list</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Method&quot;</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iou_0 &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">iou_0</span><span class="p">),</span> <span class="s2">&quot; +/- &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">iou_0</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iou_1 &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">iou_1</span><span class="p">),</span> <span class="s2">&quot; +/- &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">iou_1</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;recall_0 &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">recall_0</span><span class="p">),</span> <span class="s2">&quot; +/- &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">recall_0</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;recall_1 &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">recall_1</span><span class="p">),</span> <span class="s2">&quot; +/- &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">recall_1</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;macc &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">macc_list</span><span class="p">),</span> <span class="s2">&quot; +/- &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">macc_list</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;miou &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">miou_list</span><span class="p">),</span> <span class="s2">&quot; +/- &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">miou_list</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pr_auc&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pr_auc_list</span><span class="p">),</span> <span class="s2">&quot; +/- &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">pr_auc_list</span><span class="p">))</span>
         <span class="n">auc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pr_auc_list</span><span class="p">)</span>
-        <span class="n">pr_auc_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">auc</span> <span class="o">-</span> <span class="n">aucprmin</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">aucprmin</span><span class="p">)</span>
-        <span class="n">pr_auc_norm_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">pr_auc_list</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">aucprmin</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pr_auc_normalised&#39;</span><span class="p">,</span> <span class="n">pr_auc_norm</span><span class="p">,</span> <span class="s1">&#39; +/- &#39;</span><span class="p">,</span> <span class="n">pr_auc_norm_err</span><span class="p">)</span>
+        <span class="n">pr_auc_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">auc</span> <span class="o">-</span> <span class="n">aucprmin</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">aucprmin</span><span class="p">)</span>
+        <span class="n">pr_auc_norm_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">pr_auc_list</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">aucprmin</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pr_auc_normalised&quot;</span><span class="p">,</span> <span class="n">pr_auc_norm</span><span class="p">,</span> <span class="s2">&quot; +/- &quot;</span><span class="p">,</span> <span class="n">pr_auc_norm_err</span><span class="p">)</span>
 
         <span class="c1"># return method results in latex form</span>
         <span class="n">latex_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -470,25 +481,26 @@ document.write(`
         <span class="n">latex_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">macc_list</span><span class="p">)</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">$\pm$</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">macc_list</span><span class="p">)</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">latex_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pr_auc_list</span><span class="p">)</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">$\pm$</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">pr_auc_list</span><span class="p">)</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">latex_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pr_auc_norm</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">$\pm$</span><span class="si">{</span><span class="n">pr_auc_norm_err</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39; &amp; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">latex_list</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="s2">&quot; &amp; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">latex_list</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
-    <span class="c1">#iou_list (line3 : list of size 2)</span>
-    <span class="c1">#recall lsit (line 5: list of size 2)</span>
-    <span class="c1">#macc == accuraacy (line6 : int)</span>
-    <span class="c1">#miou (line7 int)</span>
-    <span class="c1">#pr_auc = line 9 int </span>
+    <span class="c1"># iou_list (line3 : list of size 2)</span>
+    <span class="c1"># recall lsit (line 5: list of size 2)</span>
+    <span class="c1"># macc == accuraacy (line6 : int)</span>
+    <span class="c1"># miou (line7 int)</span>
+    <span class="c1"># pr_auc = line 9 int</span>
+
+
 <span class="c1">#</span>
-    <span class="c1">#recall</span>
-    <span class="c1">#iou</span>
-    <span class="c1">#accuracy</span>
-    <span class="c1">#pr auc</span>
+<span class="c1"># recall</span>
+<span class="c1"># iou</span>
+<span class="c1"># accuracy</span>
+<span class="c1"># pr auc</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
-
 </pre></div>
 
                 </article>

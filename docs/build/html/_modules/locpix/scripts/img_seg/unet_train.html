@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>locpix.scripts.img_seg.unet_train &#8212; locpix 0.1.0.1 documentation</title>
+    <title>locpix.scripts.img_seg.unet_train &#8212; locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation</title>
 
 
 
@@ -34,7 +34,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../../../../_static/documentation_options.js?v=496ccbbf"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/locpix/scripts/img_seg/unet_train';</script>
@@ -116,8 +116,8 @@
 
 
 
-    <img src="../../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
-    <script>document.write(`<img src="../../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+    <img src="../../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>
+    <script>document.write(`<img src="../../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>`);</script>
 
 
 </a></div>
@@ -439,9 +439,7 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;----- Fold </span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2"> -------&quot;</span><span class="p">)</span>
 
         <span class="c1"># make folder</span>
-        <span class="n">model_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/models/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
+        <span class="n">model_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;unet/models/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">model_save_path</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot proceed as </span><span class="si">{</span><span class="n">model_save_path</span><span class="si">}</span><span class="s2"> already exists&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -449,15 +447,15 @@ document.write(`
 
         <span class="c1"># image train prep</span>
         <span class="n">img_train_prep</span><span class="o">.</span><span class="n">preprocess_train_files</span><span class="p">(</span>
-            <span class="n">project_folder</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">fold</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">project_folder</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">fold</span><span class="p">,</span> <span class="s2">&quot;unet&quot;</span>
         <span class="p">)</span>
 
         <span class="c1"># train model</span>
         <span class="n">train_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;train_files/</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/train&quot;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;train_files/unet/train&quot;</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">val_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;train_files/</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/val&quot;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;train_files/unet/val&quot;</span><span class="p">)</span>
         <span class="p">)</span>
 
         <span class="n">lr</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">]</span>
@@ -555,7 +553,7 @@ document.write(`
         <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_save_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_o</span><span class="si">}</span><span class="s2">_std.npy&quot;</span><span class="p">),</span> <span class="n">std</span><span class="p">)</span>
 
         <span class="c1"># clean up</span>
-        <span class="n">img_train_prep</span><span class="o">.</span><span class="n">clean_up</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">img_train_prep</span><span class="o">.</span><span class="n">clean_up</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;unet&quot;</span><span class="p">)</span>
 
         <span class="c1"># stop wandb</span>
         <span class="n">wandb</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
@@ -563,13 +561,9 @@ document.write(`
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------ Outputting for evaluation -------- &quot;</span><span class="p">)</span>
 
     <span class="c1"># prep images</span>
-    <span class="n">img_train_prep</span><span class="o">.</span><span class="n">preprocess_all_files</span><span class="p">(</span>
-        <span class="n">project_folder</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="p">)</span>
+    <span class="n">img_train_prep</span><span class="o">.</span><span class="n">preprocess_all_files</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="s2">&quot;unet&quot;</span><span class="p">)</span>
 
-    <span class="n">img_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;train_files/</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/all&quot;</span>
-    <span class="p">)</span>
+    <span class="n">img_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;train_files/unet/all&quot;</span><span class="p">)</span>
 
     <span class="c1"># create dataset</span>
     <span class="n">train_files</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;train_files&quot;</span><span class="p">]</span>
@@ -580,9 +574,7 @@ document.write(`
 
     <span class="k">for</span> <span class="n">fold</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">folds</span><span class="p">):</span>
 
-        <span class="n">model_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/models/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
+        <span class="n">model_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;unet/models/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">mean_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_o</span><span class="si">}</span><span class="s2">_mean.npy&quot;</span><span class="p">)</span>
         <span class="n">std_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_o</span><span class="si">}</span><span class="s2">_std.npy&quot;</span><span class="p">)</span>
 
@@ -597,13 +589,11 @@ document.write(`
 
         <span class="c1"># output folder</span>
         <span class="n">cell_seg_df_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">/cell/seg_dataframes&quot;</span>
+            <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;unet/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">/cell/seg_dataframes&quot;</span>
         <span class="p">)</span>
-        <span class="n">cell_seg_img_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">/cell/seg_img&quot;</span>
-        <span class="p">)</span>
+        <span class="n">cell_seg_img_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;unet/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">/cell/seg_img&quot;</span><span class="p">)</span>
         <span class="n">cell_memb_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">/membrane/prob_map&quot;</span>
+            <span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;unet/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">/membrane/prob_map&quot;</span>
         <span class="p">)</span>
         <span class="n">folders</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">cell_memb_folder</span><span class="p">,</span>
@@ -692,10 +682,10 @@ document.write(`
             <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">save_loc</span><span class="p">,</span> <span class="n">instance_mask</span><span class="p">)</span>
 
     <span class="c1"># clean up</span>
-    <span class="n">img_train_prep</span><span class="o">.</span><span class="n">clean_up_all</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">img_train_prep</span><span class="o">.</span><span class="n">clean_up_all</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;unet&quot;</span><span class="p">)</span>
 
     <span class="c1"># save train yaml file</span>
-    <span class="n">yaml_save_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;folder_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">)</span>
+    <span class="n">yaml_save_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;unet.yaml&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_save_loc</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
         <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span></div>
 

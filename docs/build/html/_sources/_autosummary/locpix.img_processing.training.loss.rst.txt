@@ -1,4 +1,4 @@
-﻿locpix.img\_processing.training.loss
+locpix.img\_processing.training.loss
 ====================================
 
 .. automodule:: locpix.img_processing.training.loss

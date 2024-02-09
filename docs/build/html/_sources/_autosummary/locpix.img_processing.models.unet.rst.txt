@@ -1,4 +1,4 @@
-﻿locpix.img\_processing.models.unet
+locpix.img\_processing.models.unet
 ==================================
 
 .. automodule:: locpix.img_processing.models.unet

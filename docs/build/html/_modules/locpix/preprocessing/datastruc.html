@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>locpix.preprocessing.datastruc &#8212; locpix 0.1.0.1 documentation</title>
+    <title>locpix.preprocessing.datastruc &#8212; locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation</title>
 
 
 
@@ -34,7 +34,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../../../_static/documentation_options.js?v=496ccbbf"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/locpix/preprocessing/datastruc';</script>
@@ -116,8 +116,8 @@
 
 
 
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
-    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>`);</script>
 
 
 </a></div>
@@ -345,7 +345,6 @@ document.write(`
 <span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="n">_interpolate</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;log2&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">d</span><span class="p">),</span>
@@ -759,7 +758,6 @@ document.write(`
                     <span class="p">)</span>
                     <span class="c1"># add labels if present</span>
                     <span class="k">if</span> <span class="n">relabel</span><span class="p">:</span>
-                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Haven&#39;t loaded in markers&quot;</span><span class="p">)</span>
                         <span class="c1"># note this has to be called after coord_2_histo to be in the</span>
                         <span class="c1"># correct shape</span>
                         <span class="n">histo_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_seg</span><span class="p">()</span>
@@ -1030,7 +1028,8 @@ document.write(`
         <span class="p">)</span>  <span class="c1"># note if change this need to adjust annotate.py</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_loc</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot overwite. If you want to overwrite please set overwrite==True&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot overwite file at </span><span class="si">{</span><span class="n">save_loc</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="s2">&quot;If you want to overwrite please set overwrite==True&quot;</span>
             <span class="p">)</span>
         <span class="n">pq</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="n">arrow_table</span><span class="p">,</span> <span class="n">save_loc</span><span class="p">)</span></div>
 

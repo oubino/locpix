@@ -1,4 +1,4 @@
-﻿locpix.img\_processing.training.train
+locpix.img\_processing.training.train
 =====================================
 
 .. automodule:: locpix.img_processing.training.train

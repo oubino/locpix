@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Usage &#8212; locpix 0.1.0.1 documentation</title>
+    <title>Usage &#8212; locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation</title>
 
 
 
@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../_static/documentation_options.js?v=496ccbbf"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/usage';</script>
@@ -119,8 +119,8 @@
 
 
 
-    <img src="../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+    <img src="../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>`);</script>
 
 
 </a></div>
@@ -297,7 +297,6 @@ document.write(`
 <li class="toctree-l1 has-children"><a class="reference internal" href="templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="templates/preprocess.html">preprocess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="templates/annotate.html">annotate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="templates/get_markers.html">get_markers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="templates/classic.html">classic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="templates/cellpose.html">cellpose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="templates/train_prep.html">train_prep</a></li>
@@ -399,44 +398,48 @@ while also wrangling the data into our data format.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>preprocess<span class="w"> </span>-i<span class="w"> </span>path/to/input/data<span class="w"> </span>-c<span class="w"> </span>path/to/config/file<span class="w"> </span>-o<span class="w"> </span>path/to/project/directory
 </pre></div>
 </div>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-s flag to check the correct files are selected before preprocessing them</p></li>
+<li><p>-p flag if our files are .parquet files not .csv files.</p></li>
+</ul>
 <p><strong>API</strong>
 <a class="reference internal" href="../_autosummary/locpix.scripts.preprocessing.preprocess.html#module-locpix.scripts.preprocessing.preprocess" title="locpix.scripts.preprocessing.preprocess"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.preprocessing.preprocess</span></code></a></p>
 </section>
 <section id="annotate">
 <span id="id2"></span><h3>Annotate<a class="headerlink" href="#annotate" title="Link to this heading">#</a></h3>
-<p>This script allows for manual segmentation of the localisations.</p>
+<p>This script allows for manual segmentation of the localisations and adding markers to the images as seeds for the watershed algorithm</p>
 <p>To run the script -i and -c flags should be specified</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>annotate<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory<span class="w"> </span>-c<span class="w"> </span>path/to/config/file
 </pre></div>
 </div>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+<li><p>-r flag to relabel histograms, will assume some labels are already present</p></li>
+</ul>
 <p><strong>API</strong>
 <a class="reference internal" href="../_autosummary/locpix.scripts.preprocessing.annotate.html#module-locpix.scripts.preprocessing.annotate" title="locpix.scripts.preprocessing.annotate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.preprocessing.annotate</span></code></a></p>
 </section>
 </section>
 <section id="image-segmentation">
 <h2>Image segmentation<a class="headerlink" href="#image-segmentation" title="Link to this heading">#</a></h2>
-<section id="get-markers">
-<span id="id3"></span><h3>Get markers<a class="headerlink" href="#get-markers" title="Link to this heading">#</a></h3>
-<p>This script allows for labelling the localisation image with a marker to represent the cells.</p>
-<p>To run the script -i and -c flags should be specified</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>get_markers<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory<span class="w"> </span>-c<span class="w"> </span>path/to/config/file
-</pre></div>
-</div>
-<p><strong>API</strong>
-<a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.get_markers.html#module-locpix.scripts.img_seg.get_markers" title="locpix.scripts.img_seg.get_markers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.get_markers</span></code></a></p>
-</section>
 <section id="classic-segmentation">
-<span id="id4"></span><h3>Classic segmentation<a class="headerlink" href="#classic-segmentation" title="Link to this heading">#</a></h3>
+<span id="id3"></span><h3>Classic segmentation<a class="headerlink" href="#classic-segmentation" title="Link to this heading">#</a></h3>
 <p>Perform classic segmentation on our localisation dataset.</p>
 <p>To run the script -i and -c flags should be specified</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>classic<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory<span class="w"> </span>-c<span class="w"> </span>path/to/config/file
 </pre></div>
 </div>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+</ul>
 <p><strong>API</strong>
 <a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.classic.html#module-locpix.scripts.img_seg.classic" title="locpix.scripts.img_seg.classic"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.classic</span></code></a></p>
 </section>
 <section id="cellpose-segmentation">
-<span id="id5"></span><h3>Cellpose segmentation<a class="headerlink" href="#cellpose-segmentation" title="Link to this heading">#</a></h3>
+<span id="id4"></span><h3>Cellpose segmentation<a class="headerlink" href="#cellpose-segmentation" title="Link to this heading">#</a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Need to activate extra requirements - these are big and not included in initial install.</p>
@@ -468,6 +471,12 @@ while also wrangling the data into our data format.</p>
 </pre></div>
 </div>
 </div></blockquote>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+<li><p>-o flag to specify folder in project dir to save output (defaults to cellpose_no_train)</p></li>
+<li><p>-u flag to specify a user model to load in</p></li>
+</ul>
 <p>To retrain first then evaluate we instead</p>
 <blockquote>
 <div><p>Prepare data for training
@@ -475,10 +484,18 @@ Crucially this is also where the train/val/test split is defined and saved to th
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>train_prep<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory<span class="w"> </span>-c<span class="w"> </span>path/to/config/file
 </pre></div>
 </div>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+</ul>
 <p>Train cellpose</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>cellpose_train<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory<span class="w"> </span>-ct<span class="w"> </span>path/to/config/train_file<span class="w"> </span>-ce<span class="w"> </span>path/to/config/eval_file
 </pre></div>
 </div>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+</ul>
 </div></blockquote>
 <p><strong>API</strong>
 <a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.train_prep.html#module-locpix.scripts.img_seg.train_prep" title="locpix.scripts.img_seg.train_prep"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.train_prep</span></code></a>
@@ -486,7 +503,7 @@ Crucially this is also where the train/val/test split is defined and saved to th
 <a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.cellpose_train.html#module-locpix.scripts.img_seg.cellpose_train" title="locpix.scripts.img_seg.cellpose_train"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.cellpose_train</span></code></a></p>
 </section>
 <section id="unet-segmentation">
-<span id="id6"></span><h3>UNET segmentation<a class="headerlink" href="#unet-segmentation" title="Link to this heading">#</a></h3>
+<span id="id5"></span><h3>UNET segmentation<a class="headerlink" href="#unet-segmentation" title="Link to this heading">#</a></h3>
 <p>Need to activate extra requirements - these are big and not included in initial install.</p>
 <p>Note that if you have a GPU this will speed this up.</p>
 <p>Note this is only needed if haven’t done for cellpose above</p>
@@ -504,40 +521,65 @@ Crucially this is also where the train/val/test split is defined and saved to th
 </pre></div>
 </div>
 </div></blockquote>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+</ul>
 <p><strong>API</strong>
 <a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.unet_train.html#module-locpix.scripts.img_seg.unet_train" title="locpix.scripts.img_seg.unet_train"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.unet_train</span></code></a></p>
 </section>
 <section id="ilastik-segmentation">
-<span id="id7"></span><h3>Ilastik segmentation<a class="headerlink" href="#ilastik-segmentation" title="Link to this heading">#</a></h3>
+<span id="id6"></span><h3>Ilastik segmentation<a class="headerlink" href="#ilastik-segmentation" title="Link to this heading">#</a></h3>
 <p>Need to prepare the data for Ilastik segmentation</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>ilastik_prep<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory<span class="w"> </span>-c<span class="w"> </span>path/to/config/file
 </pre></div>
 </div>
-<p>Then run the data through the Ilastik GUI, please see <a class="reference internal" href="#id9">Ilastik GUI</a></p>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+</ul>
+<p>Then run the data through the Ilastik GUI, please see <a class="reference internal" href="#id8">Ilastik GUI</a></p>
 <p>Then convert the output of the Ilastik GUI back into our format</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>ilastik_output<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory
 </pre></div>
 </div>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+</ul>
 <p><strong>API</strong>
 <a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.ilastik_prep.html#module-locpix.scripts.img_seg.ilastik_prep" title="locpix.scripts.img_seg.ilastik_prep"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.ilastik_prep</span></code></a>
 <a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.ilastik_output.html#module-locpix.scripts.img_seg.ilastik_output" title="locpix.scripts.img_seg.ilastik_output"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.ilastik_output</span></code></a></p>
 </section>
 <section id="membrane-performance">
-<span id="id8"></span><h3>Membrane performance<a class="headerlink" href="#membrane-performance" title="Link to this heading">#</a></h3>
+<span id="id7"></span><h3>Membrane performance<a class="headerlink" href="#membrane-performance" title="Link to this heading">#</a></h3>
 <p>To evaluate membrane performance for a particular method, run below, where method name needs to match where the segmentation files are</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>membrane_performance_method<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory<span class="w"> </span>-c<span class="w"> </span>path/to/config/file<span class="w"> </span>-o<span class="w"> </span>method_name
 </pre></div>
 </div>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+</ul>
 <p>To evaluate performance of  membrane segmentation from classic, cellpose and ilastik</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>membrane_performance<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory<span class="w"> </span>-c<span class="w"> </span>path/to/config/file
 </pre></div>
 </div>
+<p>Optionally we can add:</p>
+<ul class="simple">
+<li><p>-m flag to check the metadata of the project before running</p></li>
+</ul>
+<p>To aggregate the performance over the folds for methods classic, cellpose without training, cellpose with training and ilastik</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(locpix-env)</span> <span class="gp">$ </span>agg_metrics<span class="w"> </span>-i<span class="w"> </span>path/to/project/directory
+</pre></div>
+</div>
 <p><strong>API</strong>
 <a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.membrane_performance_method.html#module-locpix.scripts.img_seg.membrane_performance_method" title="locpix.scripts.img_seg.membrane_performance_method"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.membrane_performance_method</span></code></a>
-<a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.membrane_performance.html#module-locpix.scripts.img_seg.membrane_performance" title="locpix.scripts.img_seg.membrane_performance"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.membrane_performance</span></code></a></p>
+<a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.membrane_performance.html#module-locpix.scripts.img_seg.membrane_performance" title="locpix.scripts.img_seg.membrane_performance"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.membrane_performance</span></code></a>
+<a class="reference internal" href="../_autosummary/locpix.scripts.img_seg.agg_metrics.html#module-locpix.scripts.img_seg.agg_metrics" title="locpix.scripts.img_seg.agg_metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">locpix.scripts.img_seg.agg_metrics</span></code></a></p>
 </section>
 <section id="ilastik-gui">
-<span id="id9"></span><h3>Ilastik GUI<a class="headerlink" href="#ilastik-gui" title="Link to this heading">#</a></h3>
+<span id="id8"></span><h3>Ilastik GUI<a class="headerlink" href="#ilastik-gui" title="Link to this heading">#</a></h3>
 <p>We need to install ilastik
 Install binary from <a class="reference external" href="https://www.ilastik.org/download.html">Ilastik</a></p>
 <p><strong>Ilastik membrane segmentation</strong></p>
@@ -553,9 +595,9 @@ Install binary from <a class="reference external" href="https://www.ilastik.org/
 </div>
 <p>Click the add new button under Raw Data.</p>
 <p>Click add separate images.</p>
-<p>Note we are going to be loading in train images to train on then validation images to evaluate on for each fold</p>
+<p>(Note we are going to be loading in train images to train on then validation images to evaluate on for each fold)</p>
 <p>Then navigate to</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">path/to/project/directory/ilastik/prep</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">path/to/project/directory/ilastik/prep/imgs</span>
 </pre></div>
 </div>
 <p>and select all the files at once and click open.
@@ -715,7 +757,6 @@ choose the dataset directory as</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-segmentation">Image segmentation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-markers">Get markers</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-segmentation">Classic segmentation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cellpose-segmentation">Cellpose segmentation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unet-segmentation">UNET segmentation</a></li>

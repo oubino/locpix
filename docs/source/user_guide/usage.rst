@@ -308,7 +308,7 @@ Click the add new button under Raw Data.
 
 Click add separate images.
 
-(Note we are going to be loading in train images to train on then validation images to evaluate on for each fold_
+(Note we are going to be loading in train images to train on then validation images to evaluate on for each fold)
 
 Then navigate to
 

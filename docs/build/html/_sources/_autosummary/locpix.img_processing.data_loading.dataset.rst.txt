@@ -1,4 +1,4 @@
-﻿locpix.img\_processing.data\_loading.dataset
+locpix.img\_processing.data\_loading.dataset
 ============================================
 
 .. automodule:: locpix.img_processing.data_loading.dataset
