@@ -94,7 +94,7 @@ Optionally we can add:
 Annotate
 ^^^^^^^^
 
-This script allows for manual segmentation of the localisations.
+This script allows for manual segmentation of the localisations and adding markers to the images as seeds for the watershed algorithm.
 
 To run the script -i and -c flags should be specified
 
