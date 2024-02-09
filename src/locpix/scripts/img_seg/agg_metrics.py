@@ -32,8 +32,8 @@ def main():
     ) as file:
         metadata = json.load(file)
         # load in train and test files
-        #train_folds = metadata["train_folds"]
-        #val_folds = metadata["val_folds"]
+        # train_folds = metadata["train_folds"]
+        # val_folds = metadata["val_folds"]
         test_files = metadata["test_files"]
 
     # calculate aucprmin
