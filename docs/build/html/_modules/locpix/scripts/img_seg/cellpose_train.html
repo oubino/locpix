@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>locpix.scripts.img_seg.cellpose_train &#8212; locpix 0.1.0.1 documentation</title>
+    <title>locpix.scripts.img_seg.cellpose_train &#8212; locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation</title>
 
 
 
@@ -34,7 +34,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=63f53e11"></script>
+    <script src="../../../../_static/documentation_options.js?v=496ccbbf"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/locpix/scripts/img_seg/cellpose_train';</script>
@@ -116,8 +116,8 @@
 
 
 
-    <img src="../../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1 documentation - Home"/>
-    <script>document.write(`<img src="../../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1 documentation - Home"/>`);</script>
+    <img src="../../../../_static/logo.png" class="logo__image only-light" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>
+    <script>document.write(`<img src="../../../../_static/logo.png" class="logo__image only-dark" alt="locpix 0.1.0.1.dev8+g1a8e0b3.d20240209 documentation - Home"/>`);</script>
 
 
 </a></div>
@@ -530,13 +530,11 @@ document.write(`
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">)</span>
 
         <span class="c1"># run cellpose_eval</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config_eval</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ymlfile</span><span class="p">:</span>
-            <span class="n">config_eval</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">ymlfile</span><span class="p">)</span>
         <span class="n">cellpose_eval</span><span class="o">.</span><span class="n">main</span><span class="p">(</span>
             <span class="p">(</span>
                 <span class="p">[</span>
                     <span class="sa">f</span><span class="s2">&quot;--project_directory=</span><span class="si">{</span><span class="n">project_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="sa">f</span><span class="s2">&quot;--config=</span><span class="si">{</span><span class="n">config_eval</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;--config=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">config_eval</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="sa">f</span><span class="s2">&quot;--output_folder=cellpose_train/</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="sa">f</span><span class="s2">&quot;--user_model=</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="p">]</span>
@@ -550,6 +548,8 @@ document.write(`
 
     <span class="c1"># save eval yaml file</span>
     <span class="n">yaml_save_loc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_folder</span><span class="p">,</span> <span class="s2">&quot;cellpose_train_eval.yaml&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config_eval</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ymlfile</span><span class="p">:</span>
+        <span class="n">config_eval</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">ymlfile</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_save_loc</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
         <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config_eval</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span></div>
 

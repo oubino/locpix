@@ -32,7 +32,6 @@ locpix.scripts.img\_seg
    locpix.scripts.img_seg.cellpose_eval
    locpix.scripts.img_seg.cellpose_train
    locpix.scripts.img_seg.classic
-   locpix.scripts.img_seg.get_markers
    locpix.scripts.img_seg.ilastik_output
    locpix.scripts.img_seg.ilastik_prep
    locpix.scripts.img_seg.img_train_prep

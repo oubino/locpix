@@ -1,4 +1,4 @@
-﻿locpix.scripts.development.licenses
+locpix.scripts.development.licenses
 ===================================
 
 .. automodule:: locpix.scripts.development.licenses

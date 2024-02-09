@@ -1,4 +1,4 @@
-﻿locpix.scripts.img\_seg.cellpose\_train
+locpix.scripts.img\_seg.cellpose\_train
 =======================================
 
 .. automodule:: locpix.scripts.img_seg.cellpose_train

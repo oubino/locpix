@@ -1,4 +1,4 @@
-﻿locpix.scripts.img\_seg.unet\_train
+locpix.scripts.img\_seg.unet\_train
 ===================================
 
 .. automodule:: locpix.scripts.img_seg.unet_train

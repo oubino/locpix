@@ -11,8 +11,6 @@ Templates
 
     annotate
 
-    get_markers
-
     classic
 
     cellpose
