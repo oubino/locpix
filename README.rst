@@ -64,9 +64,9 @@ Create an environment and install via pypi
 
 .. code-block:: console
 
-   (base) $ conda create -n locpix-env python==3.10
-   (base) $ conda activate locpix-env
-   (locpix-env) $ pip install locpix
+   conda create -n locpix-env python==3.10
+   conda activate locpix-env
+   pip install locpix
 
 
 Preprocessing
@@ -84,7 +84,7 @@ To run the script -i -c and -o flags should be specified
 
 .. code-block:: console
 
-   (locpix-env) $ preprocess -i path/to/input/data -c path/to/config/file -o path/to/project/directory
+   preprocess -i path/to/input/data -c path/to/config/file -o path/to/project/directory
 
 Optionally we can add:
 
@@ -100,7 +100,7 @@ To run the script -i and -c flags should be specified
 
 .. code-block:: console
 
-   (locpix-env) $ annotate -i path/to/project/directory -c path/to/config/file
+   annotate -i path/to/project/directory -c path/to/config/file
 
 Optionally we can add:
 
@@ -119,7 +119,7 @@ To run the script -i and -c flags should be specified
 
 .. code-block:: console
 
-   (locpix-env) $ classic -i path/to/project/directory -c path/to/config/file
+   classic -i path/to/project/directory -c path/to/config/file
 
 Optionally we can add:
 
@@ -138,26 +138,26 @@ If you have a GPU
 
 .. code-block:: console
 
-   (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
-   (locpix-env) $ git clone https://github.com/oubino/cellpose
-   (locpix-env) $ cd cellpose
-   (locpix-env) $ pip install .
+   pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+   git clone https://github.com/oubino/cellpose
+   cd cellpose
+   pip install .
 
 If you don't have a GPU
 
 .. code-block:: console
 
-   (locpix-env) $ pip install pytorch
-   (locpix-env) $ git clone https://github.com/oubino/cellpose
-   (locpix-env) $ cd cellpose
-   (locpix-env) $ pip install .
+   pip install pytorch
+   git clone https://github.com/oubino/cellpose
+   cd cellpose
+   pip install .
 
 
 To evaluate Cellpose model on the localisation dataset without any retraining on your dataset run the script with -i and -c flags specified
 
    .. code-block:: console
 
-      (locpix-env) $ cellpose_eval -i path/to/project/directory -c path/to/config/file
+      cellpose_eval -i path/to/project/directory -c path/to/config/file
 
 Optionally we can add:
 
@@ -171,7 +171,7 @@ To retrain first then evaluate we instead
 
    .. code-block:: console
 
-      (locpix-env) $ train_prep -i path/to/project/directory -c path/to/config/file
+      train_prep -i path/to/project/directory -c path/to/config/file
 
    Optionally we can add:
 
@@ -181,7 +181,7 @@ To retrain first then evaluate we instead
 
    .. code-block:: console
 
-      (locpix-env) $ cellpose_train -i path/to/project/directory -ct path/to/config/train_file -ce path/to/config/eval_file
+      cellpose_train -i path/to/project/directory -ct path/to/config/train_file -ce path/to/config/eval_file
 
    Optionally we can add:
 
@@ -200,19 +200,19 @@ If you have a GPU
 
 .. code-block:: console
 
-   (locpix-env) $ pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+   pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
 If you don't have a GPU
 
 .. code-block:: console
 
-   (locpix-env) $ pip install pytorch
+   pip install pytorch
 
 To train UNET
 
    .. code-block:: console
 
-      (locpix-env) $ unet -i path/to/project/directory -c path/to/config/file
+      unet -i path/to/project/directory -c path/to/config/file
 
 Optionally we can add:
 
@@ -225,7 +225,7 @@ Need to prepare the data for Ilastik segmentation
 
 .. code-block:: console
 
-   (locpix-env) $ ilastik_prep -i path/to/project/directory -c path/to/config/file
+   ilastik_prep -i path/to/project/directory -c path/to/config/file
 
 Optionally we can add:
 
@@ -239,7 +239,7 @@ Then convert the output of the Ilastik GUI back into our format
 
 .. code-block:: console
 
-   (locpix-env) $ ilastik_output -i path/to/project/directory
+   ilastik_output -i path/to/project/directory
 
 Optionally we can add:
 
@@ -252,7 +252,7 @@ To evaluate membrane performance for a particular method, run below, where metho
 
 .. code-block:: console
 
-   (locpix-env) $ membrane_performance_method -i path/to/project/directory -c path/to/config/file -o method_name
+   membrane_performance_method -i path/to/project/directory -c path/to/config/file -o method_name
 
 Optionally we can add:
 
@@ -262,7 +262,7 @@ To evaluate performance of  membrane segmentation from classic, cellpose and ila
 
 .. code-block:: console
 
-   (locpix-env) $ membrane_performance -i path/to/project/directory -c path/to/config/file
+   membrane_performance -i path/to/project/directory -c path/to/config/file
 
 Optionally we can add:
 
@@ -272,7 +272,7 @@ To aggregate the performance over the folds for methods classic, cellpose withou
 
 .. code-block:: console
 
-   (locpix-env) $ agg_metrics -i path/to/project/directory
+   agg_metrics -i path/to/project/directory
 
 Licenses
 --------
