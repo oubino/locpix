@@ -455,10 +455,12 @@ class item:
             # create dataframe
             flatten_mask = np.ravel(self.histo_mask)
             mesh_grid = np.meshgrid(
-                range(self.histo_mask.shape[0]), range(self.histo_mask.shape[1])
+                range(self.histo_mask.shape[0]),
+                range(self.histo_mask.shape[1]),
+                indexing="ij",
             )
-            x_pixel = np.ravel(mesh_grid[1])
-            y_pixel = np.ravel(mesh_grid[0])
+            x_pixel = np.ravel(mesh_grid[0])
+            y_pixel = np.ravel(mesh_grid[1])
             label = flatten_mask
             data = {"x_pixel": x_pixel, "y_pixel": y_pixel, "gt_label": label}
             mask_df = pl.DataFrame(
@@ -514,10 +516,12 @@ class item:
             # create dataframe
             flatten_mask = np.ravel(histo_mask)
             mesh_grid = np.meshgrid(
-                range(histo_mask.shape[0]), range(histo_mask.shape[1])
+                range(histo_mask.shape[0]),
+                range(histo_mask.shape[1]),
+                indexing="ij",
             )
-            x_pixel = np.ravel(mesh_grid[1])
-            y_pixel = np.ravel(mesh_grid[0])
+            x_pixel = np.ravel(mesh_grid[0])
+            y_pixel = np.ravel(mesh_grid[1])
             label = flatten_mask
             data = {"x_pixel": x_pixel, "y_pixel": y_pixel, "pred_label": label}
             mask_df = pl.DataFrame(
