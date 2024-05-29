@@ -1,0 +1,24 @@
+batch_size: 1
+epochs: 100
+img_interpolate: log2
+img_threshold: 0
+channels:
+- egfr
+- ereg
+learning_rate: 0.01
+loss_fn: bce
+num_workers: 1
+sum_chan: true
+test_transforms:
+  dtypeconv: null
+train_transforms:
+  dtypeconv: null
+  erasing: null
+  h_flip: null
+  perspective: 0.2
+  rotation: 90
+  v_flip: null
+use_gpu: True
+wandb_dataset: c15_imgs
+wandb_project: c15_img_unet_bce
+weight_decay: 0.0001

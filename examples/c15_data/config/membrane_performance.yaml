@@ -1,0 +1,5 @@
+alt_channel: ereg
+channel: egfr
+maximise_choice: f
+vis_interpolate: log2
+vis_threshold: 0

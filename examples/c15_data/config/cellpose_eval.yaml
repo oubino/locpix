@@ -1,0 +1,13 @@
+alt_channel: ereg
+channel: egfr
+channels:
+- 0
+- 0
+diameter: 100
+img_threshold: 0
+model: LC1
+sum_chan: true
+test_files: all
+use_gpu: true
+img_interpolate: log2
+img_threshold: 0

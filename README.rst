@@ -21,6 +21,8 @@ For more comprehensive documentation please see https://oubino.github.io/locpix/
 
 #. `Membrane performance`_ : Performance metrics calculation based on the localisations (not the histograms!)
 
+For an example workflow (seen in paper) see examples/c15_data workflow
+
 Project Structure
 -----------------
 
@@ -95,6 +97,16 @@ Annotate
 ^^^^^^^^
 
 This script allows for manual segmentation of the localisations and adding markers to the images as seeds for the watershed algorithm.
+
+You need to 
+
+1. Click "New labels layer"
+- Activate the paint brush
+- Draw onto membranes
+
+2. Click "New points layer"
+- Add points
+- Place points at each cell
 
 To run the script -i and -c flags should be specified
 

@@ -1,0 +1,10 @@
+img_threshold: 0
+img_interpolate: 'log2'
+channels: [0,0]
+test_files: all
+use_gpu: True
+diameter: 100
+model: 'LC1'
+channel: 'egfr'
+alt_channel: 'ereg'
+sum_chan: True
