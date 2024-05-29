@@ -64,6 +64,16 @@ Annotate
 
 This script allows for manual segmentation of the localisations and adding markers to the images as seeds for the watershed algorithm
 
+You need to 
+
+1. Click "New labels layer"
+- Activate the paint brush
+- Draw onto membranes
+
+2. Click "New points layer"
+- Add points
+- Place points at each cell
+
 To run the script -i and -c flags should be specified
 
 .. code-block:: console

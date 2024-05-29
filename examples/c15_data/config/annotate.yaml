@@ -1,0 +1,27 @@
+alpha_seg: 0.8
+alphas:
+- 1
+- 0.5
+- 0.2
+- 0.1
+background_one_colour: true
+channel: egfr
+cmap_seg:
+- k
+- y
+dim: 2
+drop_zero_label: false
+fig_size:
+- 10
+- 10
+four_colour: true
+gt_label_map:
+  0: background
+  1: membrane
+plot: true
+save_interpolate: log2
+save_threshold: 0
+vis_interpolation: log2
+x_bins: 500
+y_bins: 500
+z_bins: None

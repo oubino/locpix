@@ -1,0 +1,5 @@
+channels:
+- egfr
+- ereg
+interpolation: log2
+threshold: 0

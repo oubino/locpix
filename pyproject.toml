@@ -36,6 +36,7 @@ dependencies = [
     "pre-commit",
     "seaborn",
     "wandb",
+    "jupyter",
 ]
 
 [project.scripts]

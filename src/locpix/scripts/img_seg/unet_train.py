@@ -130,10 +130,10 @@ def main():
         batch_size = config["batch_size"]
         num_workers = config["num_workers"]
         tf = config["train_transforms"]
-        if config["use_gpu"] is True and torch.cuda.is_available():
+        if config["use_gpu"] and torch.cuda.is_available():
             device = torch.device("cuda")
             pin_memory = False
-        elif config["use_gpu"] is False:
+        elif not config["use_gpu"]:
             pin_memory = True
             device = torch.device("cpu")
         else:
