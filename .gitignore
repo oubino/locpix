@@ -89,7 +89,7 @@ labnotes.rst
 *.lprof
 
 # ignore docs apart  from source and html
-docs/build/doctrees
+docs/
 
 wandb/
 cellpose/

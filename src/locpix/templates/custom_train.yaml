@@ -1,0 +1,35 @@
+# device to train on (gpu or cpu)
+gpu: True
+
+# model parameters
+model: LC1
+
+# optimiser parameters
+optimiser: adam
+lr: 0.001
+weight_decay: 0.0001
+
+# training parameters
+epochs: 100
+batch_size: 1
+num_workers: 1 # generall higher -> faster
+loss_fn: nll
+
+train_files:
+- Fov1_DC
+- Fov2_DC
+- Fov3_DC
+- Fov5_DC
+
+val_files:
+- Fov6_DC
+
+test_files:
+- Fov7_DC
+- Fov8_DC
+- Fov9_DC
+- Fov10_DC
+
+# labels - this is the channel labels to consider and will render
+# in this order
+labels: ['egfr', 'ereg']
