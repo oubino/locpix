@@ -37,6 +37,8 @@ dependencies = [
     "seaborn",
     "wandb",
     "jupyter",
+    "mplcursors",
+    "ipympl",
 ]
 
 [project.scripts]
