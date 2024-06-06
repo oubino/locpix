@@ -98,3 +98,6 @@ docs/*
 
 wandb/
 cellpose/
+
+# notebook checkpoints
+.ipynb_checkpoints/
