@@ -2,18 +2,24 @@
 
 ## Starting files
 
--- examples
-    -- c15_data
-        -- README.md
-        -- config/
-        -- raw/
-        -- output/
-            -- annotate/annotated/
-            -- markers/
-            -- ilastik/
-                -- ilastik_pixel/
-                -- ilastik_boundary/
-                -- models/
+```bash
+c15_data
+├── README.md
+├── config
+├── output
+│   ├── annotate
+|   |   └── annotated
+│   ├── markers
+│   └── ilastik
+|       ├── ilastik_pixel
+|       ├── ilastik_boundary
+|       └── models
+└── raw
+    ├── C15_EGFR568_EREG647
+    ├── C15_EGFR647_EREG568
+    ├── C15_EREG568_EGFR647
+    └── C15_EREG647_EGFR568
+```
 
 ## Workflow
 
