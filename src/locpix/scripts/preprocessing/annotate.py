@@ -57,6 +57,12 @@ def main():
         default=False,
         help="If true will relabel and assume labels are present (default = False)",
     )
+    parser.add_argument(
+        "-x",
+        "--two_cell_types",
+        action="store_true",
+        help="if specified then annotate two types of cell"
+    )
 
     args = parser.parse_args()
 
@@ -103,6 +109,11 @@ def main():
         os.makedirs(output_folder)
 
     # if output directory not present create it
+    labels_folder = os.path.join(project_folder, "annotate/labels")
+    if not os.path.exists(labels_folder):
+        os.makedirs(labels_folder)
+
+    # if output directory not present create it
     markers_folder = os.path.join(project_folder, "markers")
     if not os.path.exists(markers_folder):
         os.makedirs(markers_folder)
@@ -120,6 +131,7 @@ def main():
         raise ValueError("Dim should be 2 or 3")
 
     for file in files:
+        print(f"File: {file}")
         item = datastruc.item(None, None, None, None, None)
 
         item.load_from_parquet(os.path.join(input_folder, file))
@@ -140,11 +152,22 @@ def main():
         # coord2histo
         item.coord_2_histo(histo_size)
 
+        # labels loc
+        labels_loc = os.path.join(labels_folder, item.name + ".npy")
+
         # markers loc
         markers_loc = os.path.join(markers_folder, item.name + ".npy")
 
         # manual segment
-        markers = item.manual_segment(relabel=args.relabel, markers_loc=markers_loc)
+        labels, markers = item.manual_segment(
+            relabel=args.relabel,
+            markers_loc=markers_loc,
+            labels_loc=labels_loc,
+            two_cell_types=args.two_cell_types,
+        )
+
+        # save labels
+        np.save(labels_loc, labels)
 
         # save markers
         np.save(markers_loc, markers)
