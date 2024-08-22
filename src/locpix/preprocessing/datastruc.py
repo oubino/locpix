@@ -336,6 +336,8 @@ class item:
         cmap=["green", "red", "blue", "bop purple"],
         relabel=False,
         markers_loc=None,
+        labels_loc=None,
+        two_cell_types=False,
     ):
         """Manually segment the image (histogram.T). Return the segmented
         histogram and extra column in dataframe corresponding to label.
@@ -388,12 +390,17 @@ class item:
                     if relabel:
                         # note this has to be called after coord_2_histo to be in the
                         # correct shape
-                        histo_mask = self.render_seg()
                         viewer.add_labels(histo_mask.T, name="Labels")
                         if markers_loc is not None:
                             markers = np.load(markers_loc, allow_pickle=True)
                             if markers.any() is not None:
-                                viewer.add_points(markers, name="Points")
+                                if two_cell_types:
+                                    if "norm" in markers.keys():
+                                        viewer.add_points(markers["norm"], name="Points_normal")
+                                    if "other" in markers.keys():
+                                        viewer.add_points(markers["other"], name="Points_other")
+                                else:
+                                    viewer.add_points(markers, name="Points")
                     napari.run()
 
                 # only one channel
@@ -411,23 +418,56 @@ class item:
                     # add labels if present
                     if relabel:
                         # note this has to be called after coord_2_histo to be in the
-                        # correct shape
-                        histo_mask = self.render_seg()
+                        histo_mask = np.load(labels_loc)
                         viewer.add_labels(histo_mask.T, name="Labels")
                         if markers_loc is not None:
                             markers = np.load(markers_loc, allow_pickle=True)
                             if markers.any() is not None:
-                                viewer.add_points(markers, name="Points")
+                                if two_cell_types:
+                                    markers = markers.item()
+                                    if "norm" in markers.keys():
+                                        viewer.add_points(markers["norm"], name="Points_normal")
+                                    if "other" in markers.keys():
+                                        viewer.add_points(markers["other"], name="Points_other")
+                                else:
+                                    viewer.add_points(markers, name="Points")
 
                     napari.run()
 
-                try:
-                    markers = viewer.layers["Points"].data
-                    x = [[int(float(j)) for j in i] for i in markers]
-                    markers = [tuple(i) for i in x]
-                except KeyError:
-                    print("You must add points!")
-                    markers = None
+                if not two_cell_types:
+                    try:
+                        markers = viewer.layers["Points"].data
+                        x = [[int(float(j)) for j in i] for i in markers]
+                        markers = [tuple(i) for i in x]
+                    except KeyError:
+                        print("No markers found")
+                        markers = None
+                else:
+                    try:
+                        markers_norm = viewer.layers["Points_normal"].data
+                        x_norm = [[int(float(j)) for j in i] for i in markers_norm]
+                        markers_norm = [tuple(i) for i in x_norm]
+                    except KeyError:
+                        print("No normal points")
+                        markers_norm = None
+
+                    try:
+                        markers_other = viewer.layers["Points_other"].data
+                        x_other = [[int(float(j)) for j in i] for i in markers_other]
+                        markers_other = [tuple(i) for i in x_other]
+                    except KeyError:
+                        print("No other points")
+                        markers_other = None
+
+                    markers = {}
+                    
+                    if markers_norm is not None:
+                        markers["norm"] = markers_norm
+                    if markers_other is not None:
+                        markers["other"] = markers_other
+                    if markers_norm is None and markers_other is None:
+                        print("No points!")
+                        markers = None   
 
                 # histogram mask should be assigned to GUI output
                 try:
@@ -442,7 +482,7 @@ class item:
         # segment the coordinates
         self._manual_seg_pixel_2_coord()
 
-        return markers
+        return self.histo_mask, markers
 
     def _manual_seg_pixel_2_coord(self):
         """Get the localisations associated with manual annotation.
