@@ -74,6 +74,7 @@ class item:
         histo_mask=None,
         bin_sizes=None,
         gt_label_map={},
+        gt_label=None,
     ):
         """Initialises item"""
 
@@ -87,6 +88,7 @@ class item:
         self.channels = channels
         self.channel_label = channel_label
         self.gt_label_map = gt_label_map
+        self.gt_label = gt_label
 
         # channel labels and channel choice need to be same in length
         if (channels is not None) or (channel_label is not None):
@@ -527,7 +529,7 @@ class item:
         elif self.dim == 3:
             print("segment the 3d coords")
 
-    def mask_pixel_2_coord(self, img_mask: np.ndarray) -> pl.DataFrame:
+    def mask_pixel_2_coord(self, img_mask: np.ndarray, col_name = "pred_label") -> pl.DataFrame:
         """For a given mask over the image (value at each pixel
         normally representing a label), return the dataframe with a column
         giving the value for each localisation. Note that it is
@@ -542,10 +544,11 @@ class item:
             img_mask (np.ndarray): Mask over the image -
             to reiterate, to convert this to histogram space need
             to transpose it
+            col_name (str): Name of the column the label will be in
 
         Returns:
             df (polars dataframe): Original dataframe with
-            additional column with the predicted label"""
+            additional column with the label"""
 
         if self.dim == 2:
             # list of mask dataframes, each mask dataframe contains
@@ -563,13 +566,13 @@ class item:
             x_pixel = np.ravel(mesh_grid[0])
             y_pixel = np.ravel(mesh_grid[1])
             label = flatten_mask
-            data = {"x_pixel": x_pixel, "y_pixel": y_pixel, "pred_label": label}
+            data = {"x_pixel": x_pixel, "y_pixel": y_pixel, col_name: label}
             mask_df = pl.DataFrame(
                 data,
                 schema=[
                     ("x_pixel", pl.Int64),
                     ("y_pixel", pl.Int64),
-                    ("pred_label", pl.Float64),
+                    (col_name, pl.Float64),
                 ],
             ).sort(["x_pixel", "y_pixel"])
 
@@ -704,6 +707,8 @@ class item:
             "gt_label_map": gt_label_map,
             "bin_sizes": str(self.bin_sizes),
         }
+        if self.gt_label is not None:
+            meta_data["gt_label"] = str(self.gt_label)
 
         # add in label mapping
         # meta_data.update(gt_label_map)
@@ -727,12 +732,14 @@ class item:
         # parquet_table.schema.metadata[b'key_name'])
         # note that b is bytes
 
-    def load_from_parquet(self, input_file):
+    def load_from_parquet(self, input_file, gt_label=False):
         """Loads item saved as .parquet file
 
         Args:
             input_file (string) : Location of the .parquet file to
-                load dataitem from"""
+                load dataitem from
+            gt_label (bool) : Whether there is a gt_label for
+                the whole FOV to load in"""
 
         # read in parquet file
         arrow_table = pq.read_table(input_file)
@@ -756,6 +763,11 @@ class item:
         channel_label = ast.literal_eval(channel_label.decode("utf-8"))
         bin_sizes = arrow_table.schema.metadata[b"bin_sizes"]
         bin_sizes = ast.literal_eval(bin_sizes.decode("utf-8"))
+        if gt_label:
+            gt_label = arrow_table.schema.metadata[b"gt_label"]
+            gt_label = int(gt_label)
+        else:
+            gt_label = None
         df = pl.from_arrow(arrow_table)
 
         # print("channel label", channel_label)
@@ -768,6 +780,7 @@ class item:
             channel_label=channel_label,
             gt_label_map=gt_label_map,
             bin_sizes=bin_sizes,
+            gt_label=gt_label,
         )
 
     def render_histo(self, labels=None):
