@@ -397,8 +397,8 @@ class item:
                             markers = np.load(markers_loc, allow_pickle=True)
                             if markers.any() is not None:
                                 if two_cell_types:
-                                    if "norm" in markers.keys():
-                                        viewer.add_points(markers["norm"], name="Points_normal")
+                                    if "main" in markers.keys():
+                                        viewer.add_points(markers["main"], name="Points_main")
                                     if "other" in markers.keys():
                                         viewer.add_points(markers["other"], name="Points_other")
                                 else:
@@ -427,8 +427,8 @@ class item:
                             if markers.any() is not None:
                                 if two_cell_types:
                                     markers = markers.item()
-                                    if "norm" in markers.keys():
-                                        viewer.add_points(markers["norm"], name="Points_normal")
+                                    if "main" in markers.keys():
+                                        viewer.add_points(markers["main"], name="Points_main")
                                     if "other" in markers.keys():
                                         viewer.add_points(markers["other"], name="Points_other")
                                 else:
@@ -446,12 +446,12 @@ class item:
                         markers = None
                 else:
                     try:
-                        markers_norm = viewer.layers["Points_normal"].data
-                        x_norm = [[int(float(j)) for j in i] for i in markers_norm]
-                        markers_norm = [tuple(i) for i in x_norm]
+                        markers_main = viewer.layers["Points_main"].data
+                        x_main = [[int(float(j)) for j in i] for i in markers_main]
+                        markers_main = [tuple(i) for i in x_main]
                     except KeyError:
-                        print("No normal points")
-                        markers_norm = None
+                        print("No main points")
+                        markers_main = None
 
                     try:
                         markers_other = viewer.layers["Points_other"].data
@@ -463,11 +463,11 @@ class item:
 
                     markers = {}
                     
-                    if markers_norm is not None:
-                        markers["norm"] = markers_norm
+                    if markers_main is not None:
+                        markers["main"] = markers_main
                     if markers_other is not None:
                         markers["other"] = markers_other
-                    if markers_norm is None and markers_other is None:
+                    if markers_main is None and markers_other is None:
                         print("No points!")
                         markers = None   
 
