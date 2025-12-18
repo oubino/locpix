@@ -118,7 +118,7 @@ Optionally we can add:
 
 * -m flag to check the metadata of the project before running
 * -r flag to relabel histograms, will assume some labels are already present
-* -x flag to label two types of cell, assumes points layresr are called "Points_normal" and "Points_other"
+* -x flag to label two types of cell, assumes points layers are called "Points_main" and "Points_other"
 
 Image segmentation
 ------------------
